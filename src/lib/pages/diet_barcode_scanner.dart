@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:fitness_tracker/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
@@ -26,6 +27,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
   bool _isScanned = false;
 
   MobileScannerController scannerController = MobileScannerController(
+    torchEnabled: false,
     detectionSpeed: DetectionSpeed.noDuplicates,
     facing: CameraFacing.back,
   );
@@ -42,7 +44,36 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
   Widget build(BuildContext context) {
     //[LO3.7.3.5]
     return Scaffold(
-      appBar: AppBar(title: const Text('Mobile Scanner')),
+      backgroundColor: appPrimaryColour,
+      floatingActionButton: IconButton(
+        color: Colors.white,
+        icon: ValueListenableBuilder(
+          valueListenable: scannerController.torchState,
+          builder: (context, state, child) {
+            switch (state as TorchState) {
+              case TorchState.off:
+                return const Icon(Icons.flash_off, color: Colors.grey);
+              case TorchState.on:
+                return const Icon(Icons.flash_on, color: appSecondaryColour);
+            }
+          },
+        ),
+        iconSize: 32.0,
+        onPressed: () => scannerController.toggleTorch(),
+      ),
+      appBar: AppBar(
+        elevation: 2,
+        toolbarHeight: 50,
+        shadowColor: Colors.black,
+        backgroundColor: appTertiaryColour,
+        title: const Center(
+            child: Text(
+              'Barcode Scanner',
+              style: TextStyle(
+                color: appSecondaryColour,
+              ),
+            )),
+      ),
       body: MobileScanner(
         key: UniqueKey(),
         errorBuilder: (context, error, child) {
