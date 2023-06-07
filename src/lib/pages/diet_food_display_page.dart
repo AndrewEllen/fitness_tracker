@@ -1,0 +1,634 @@
+import 'package:fitness_tracker/widgets/screen_width_container.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../constants.dart';
+import '../models/food_data_list_item.dart';
+import '../models/food_item.dart';
+import '../providers/page_change_provider.dart';
+import '../providers/user_nutrition_data.dart';
+import '../widgets/app_default_button.dart';
+import '../widgets/diet_list_header_box.dart';
+import '../widgets/food_nutrition_list_formfield.dart';
+import 'food_nutrition_list_edit.dart';
+import '../widgets/food_nutrition_list_text.dart';
+
+class FoodDisplayPage extends StatefulWidget {
+  FoodDisplayPage({Key? key, required this.category}) : super(key: key);
+  String category;
+
+  @override
+  State<FoodDisplayPage> createState() => _FoodDisplayPageState();
+}
+
+class _FoodDisplayPageState extends State<FoodDisplayPage> {
+
+  late FoodItem currentFoodItem;
+  late ListFoodItem currentFoodListItem;
+  late TextEditingController servingSizeController = TextEditingController();
+  late TextEditingController servingsController = TextEditingController();
+
+  late final servingSizekey = GlobalKey<FormState>();
+  late final servingskey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+
+    InitializeControllers();
+    super.initState();
+  }
+
+  void InitializeControllers() {
+
+    currentFoodItem = context.read<UserNutritionData>().currentFoodItem;
+
+    currentFoodListItem = context.read<UserNutritionData>().currentFoodListItem;
+
+
+    servingSizeController.text = currentFoodListItem.foodServingSize;
+    servingsController.text = currentFoodListItem.foodServings;
+
+  }
+
+  void AddToDiary() {
+    context.read<UserNutritionData>().addFoodItemToDiary(
+        currentFoodItem,
+        widget.category,
+        servingsController.text,
+        servingSizeController.text,
+    );
+
+    context.read<PageChange>().backPage();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    context.watch<UserNutritionData>().isCurrentFoodItemLoaded;
+
+    InitializeControllers();
+
+    double _margin = 15;
+    double _bigContainerMin = 230;
+    double _smallContainerMin = 95;
+    double _height = MediaQuery.of(context).size.height;
+    double _width = MediaQuery.of(context).size.width;
+
+    print(widget.category);
+
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: appPrimaryColour,
+        body: NotificationListener<OverscrollIndicatorNotification>(
+        onNotification: (overscroll) {
+      overscroll.disallowIndicator();
+      return true;
+    },
+      child: ListView(
+        children: [
+          ScreenWidthContainer(
+            minHeight: _bigContainerMin,
+            maxHeight: _bigContainerMin*4,
+            height: _height/3,
+            margin: _margin,
+            child: ListView(
+              children: [
+                DietListHeaderBox(
+                  width: _width,
+                  title: currentFoodItem.foodName,
+                  largeTitle: true,
+                  color: Colors.white,
+                ),
+                FoodNutritionListFormField(
+                  servings: true,
+                  controller: servingsController,
+                  formKey: servingskey,
+                  width: _width,
+                  formName: "Servings",
+                ),
+                FoodNutritionListFormField(
+                  servingSize: true,
+                  controller: servingSizeController,
+                  formKey: servingSizekey,
+                  width: _width,
+                  formName: "Serving Size",
+                ),
+                ScreenWidthContainer(
+                  minHeight: _smallContainerMin * 0.2,
+                  maxHeight: _smallContainerMin * 1.5,
+                  height: (_height / 100) * 6,
+                  margin: _margin / 1.5,
+                  child: FractionallySizedBox(
+                    heightFactor: 1,
+                    widthFactor: 1,
+                    child: AppButton(
+                      buttonText: "Add to Diary",
+                      onTap: AddToDiary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ScreenWidthContainer(
+            minHeight: _bigContainerMin,
+            maxHeight: _bigContainerMin*4,
+            height: _height/2,
+            margin: _margin,
+            child: ListView(
+              children: [
+                SizedBox(
+                  width: _width/2,
+                  height: 40,
+                  child: Stack(
+                    children: [
+                      DietListHeaderBox(
+                        width: _width,
+                        title: "Values per 100g ${servingSizeController.text.isEmpty ? "" : "/ " + (double.parse(servingSizeController.text) * double.parse(servingsController.text)).toStringAsFixed(0) + "g"}",
+                        largeTitle: true,
+                        color: Colors.white,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Material(
+                            type: MaterialType.transparency,
+                            shape: CircleBorder(),
+                            clipBehavior: Clip.antiAlias,
+                            child: IconButton(
+                              icon: const Icon(
+                                  Icons.edit
+                              ),
+                              onPressed: () => context.read<PageChange>().changePageCache(FoodNutritionListEdit(category: widget.category)),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                DietListHeaderBox(
+                  width: _width,
+                  title: "Calories and Macro Nutrients",
+                ),
+
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: caloriesController,
+                  value: currentFoodItem.calories,
+                  width: _width,
+                  title: "Calories",
+                ),
+
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: proteinsController,
+                  value: currentFoodItem.proteins,
+                  width: _width,
+                  title: "Protein",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: carbsController,
+                  value: currentFoodItem.carbs,
+                  width: _width,
+                  title: "Carbohydrates",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: fatController,
+                  value: currentFoodItem.fat,
+                  width: _width,
+                  title: "Fat",
+                ),
+
+                DietListHeaderBox(
+                  width: _width,
+                  title: "Carbohydrates and Fats",
+                ),
+
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: fiberController,
+                  value: currentFoodItem.fiber,
+                  width: _width,
+                  title: "Fiber",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: sugarsController,
+                  value: currentFoodItem.sugars,
+                  width: _width,
+                  title: "Sugars",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: saturatedFatController,
+                  value: currentFoodItem.saturatedFat,
+                  width: _width,
+                  title: "Saturated Fat",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: polyUnsaturatedFatController,
+                  value: currentFoodItem.polyUnsaturatedFat,
+                  width: _width,
+                  title: "Polyunsaturated Fat",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: monoUnsaturatedFatController,
+                  value: currentFoodItem.monoUnsaturatedFat,
+                  width: _width,
+                  title: "Monounsaturated Fat",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: transFatController,
+                  value: currentFoodItem.transFat,
+                  width: _width,
+                  title: "Trans Fat",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: cholesterolController,
+                  value: currentFoodItem.cholesterol,
+                  width: _width,
+                  title: "Cholesterol",
+                ),
+
+                DietListHeaderBox(
+                  width: _width,
+                  title: "Caffeine and Alcohol",
+                ),
+
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: caffeineController,
+                  value: currentFoodItem.caffeine,
+                  width: _width,
+                  title: "Caffeine (mg)",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: alcoholController,
+                  value: currentFoodItem.alcohol,
+                  width: _width,
+                  title: "Alcohol (g)",
+                ),
+
+                DietListHeaderBox(
+                  width: _width,
+                  title: "Minerals (g)",
+                ),
+
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: sodiumController,
+                  value: currentFoodItem.sodium,
+                  width: _width,
+                  title: "Sodium",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: magnesiumController,
+                  value: currentFoodItem.magnesium,
+                  width: _width,
+                  title: "Magnesium",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: potassiumController,
+                  value: currentFoodItem.potassium,
+                  width: _width,
+                  title: "Potassium",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: ironController,
+                  value: currentFoodItem.iron,
+                  width: _width,
+                  title: "Iron",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: zincController,
+                  value: currentFoodItem.zinc,
+                  width: _width,
+                  title: "Zinc",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: calciumController,
+                  value: currentFoodItem.calcium,
+                  width: _width,
+                  title: "Calcium",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: seleniumController,
+                  value: currentFoodItem.selenium,
+                  width: _width,
+                  title: "Selenium",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: chlorideController,
+                  value: currentFoodItem.chloride,
+                  width: _width,
+                  title: "Chloride",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: chromiumController,
+                  value: currentFoodItem.chromium,
+                  width: _width,
+                  title: "Chromium",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: copperController,
+                  value: currentFoodItem.copper,
+                  width: _width,
+                  title: "Copper",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: fluorideController,
+                  value: currentFoodItem.fluoride,
+                  width: _width,
+                  title: "Fluoride",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: iodineController,
+                  value: currentFoodItem.iodine,
+                  width: _width,
+                  title: "Iodine",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: manganeseController,
+                  value: currentFoodItem.manganese,
+                  width: _width,
+                  title: "Manganese",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: molybdenumController,
+                  value: currentFoodItem.molybdenum,
+                  width: _width,
+                  title: "Molybdenum",
+                ),
+
+                DietListHeaderBox(
+                  width: _width,
+                  title: "Vitamins and Amino Acids (mg)",
+                ),
+
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: vitaminAController,
+                  value: currentFoodItem.vitaminA,
+                  width: _width,
+                  title: "Vitamin A",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: vitaminB1Controller,
+                  value: currentFoodItem.vitaminB1,
+                  width: _width,
+                  title: "Vitamin B1",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: vitaminB2Controller,
+                  value: currentFoodItem.vitaminB2,
+                  width: _width,
+                  title: "Vitamin B2",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: vitaminB3Controller,
+                  value: currentFoodItem.vitaminB3,
+                  width: _width,
+                  title: "Niacin",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: vitaminB6Controller,
+                  value: currentFoodItem.vitaminB6,
+                  width: _width,
+                  title: "Vitamin B6",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: biotinController,
+                  value: currentFoodItem.biotin,
+                  width: _width,
+                  title: "Biotin",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: vitaminB9Controller,
+                  value: currentFoodItem.vitaminB9,
+                  width: _width,
+                  title: "Vitamin B9",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: vitaminB12Controller,
+                  value: currentFoodItem.vitaminB12,
+                  width: _width,
+                  title: "Vitamin B12",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: vitaminCController,
+                  value: currentFoodItem.vitaminC,
+                  width: _width,
+                  title: "Vitamin C",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: vitaminDController,
+                  value: currentFoodItem.vitaminD,
+                  width: _width,
+                  title: "Vitamin D",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: vitaminEController,
+                  value: currentFoodItem.vitaminE,
+                  width: _width,
+                  title: "Vitamin E",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: vitaminKController,
+                  value: currentFoodItem.vitaminK,
+                  width: _width,
+                  title: "Vitamin K",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: omega3Controller,
+                  value: currentFoodItem.omega3,
+                  width: _width,
+                  title: "Omega3",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: omega6Controller,
+                  value: currentFoodItem.omega6,
+                  width: _width,
+                  title: "Omega6",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: butyricAcidController,
+                  value: currentFoodItem.butyricAcid,
+                  width: _width,
+                  title: "Butyric Acid",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: capricAcidController,
+                  value: currentFoodItem.capricAcid,
+                  width: _width,
+                  title: "Capric Acid",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: caproicAcidController,
+                  value: currentFoodItem.caproicAcid,
+                  width: _width,
+                  title: "Caproic Acid",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: caprylicAcidController,
+                  value: currentFoodItem.caprylicAcid,
+                  width: _width,
+                  title: "Caprylic Acid",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: docosahexaenoicAcidController,
+                  value: currentFoodItem.docosahexaenoicAcid,
+                  width: _width,
+                  title: "Docosahexaenoic Acid",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: eicosapentaenoicAcidController,
+                  value: currentFoodItem.eicosapentaenoicAcid,
+                  width: _width,
+                  title: "Eicosapentaenoic Acid",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: erucicAcidController,
+                  value: currentFoodItem.erucicAcid,
+                  width: _width,
+                  title: "Erucic Acid",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: myristicAcidController,
+                  value: currentFoodItem.myristicAcid,
+                  width: _width,
+                  title: "Myristic Acid",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: oleicAcidController,
+                  value: currentFoodItem.oleicAcid,
+                  width: _width,
+                  title: "Oleic Acid",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: palmiticAcidController,
+                  value: currentFoodItem.palmiticAcid,
+                  width: _width,
+                  title: "Palmitic Acid",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: pantothenicAcidController,
+                  value: currentFoodItem.pantothenicAcid,
+                  width: _width,
+                  title: "Pantothenic Acid",
+                ),
+                FoodNutritionListText(
+                  servingSize: servingSizeController.text,
+                  servings: servingsController.text,
+                  //controller: stearicAcidController,
+                  value: currentFoodItem.stearicAcid,
+                  width: _width,
+                  title: "Stearic Acid",
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+    );
+  }
+}

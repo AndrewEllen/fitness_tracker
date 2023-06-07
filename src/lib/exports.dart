@@ -1,0 +1,22 @@
+export 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+export 'pages/main_page.dart';
+export 'pages/home.dart';
+export 'pages/workout_exercises_home.dart';
+export 'pages/diet_diet_home.dart';
+export 'pages/stats_measurements_home.dart';
+export 'pages/stats_tracking_page.dart';
+export 'pages/info_information_home.dart';
+export 'pages/workout_create_routines_screen.dart';
+export 'pages/workout_routines_screen.dart';
+export 'pages/workout_create_routines_screen.dart';
+export 'pages/workout_create_training_plan_screen.dart';
+export 'pages/workout_show_routine_screen.dart';
+export 'pages/workout_show_training_plan_screen.dart';
+export 'pages/workout_training_plans_list_screen.dart';
+export 'package:fitness_tracker/providers/page_change_provider.dart';
+export 'package:fitness_tracker/providers/user_nutrition_data.dart';
+export 'package:fitness_tracker/providers/exercise_list_data.dart';
+export 'package:fitness_tracker/providers/user_routines_data.dart';
+export 'package:fitness_tracker/providers/user_training_plan_data.dart';
+export 'package:fitness_tracker/providers/user_measurements.dart';
