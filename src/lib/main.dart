@@ -1,3 +1,7 @@
+import 'dart:ui';
+
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/pages/auth_choose_login_signup.dart';
 import 'package:fitness_tracker/pages/splashscreen.dart';
@@ -43,6 +47,18 @@ void main() async {
         child: const AppMain()
     ),
   );
+
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance
+        .recordFlutterFatalError(errorDetails);
+  };
+
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance
+        .recordError(error, stack, fatal: true);
+    return true;
+  };
+
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     systemNavigationBarColor: appTertiaryColour,
   ));
@@ -72,9 +88,13 @@ class AppMain extends StatefulWidget {
 
 class _AppMainState extends State<AppMain> {
 
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
+      scaffoldMessengerKey: _scaffoldKey,
       title: 'FIT',
       theme: ThemeData(
         fontFamily: 'Impact',

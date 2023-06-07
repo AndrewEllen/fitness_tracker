@@ -39,10 +39,10 @@ String ServingSizeCalculator(String valuePerOneHundred, String servingSize, Stri
 
 class UserNutritionData with ChangeNotifier {
 
-  late List<ListFoodItem> _foodListItemsBreakfast = [];
-  late List<ListFoodItem> _foodListItemsLunch = [];
-  late List<ListFoodItem> _foodListItemsDinner = [];
-  late List<ListFoodItem> _foodListItemsSnacks = [];
+  //late List<ListFoodItem> _foodListItemsBreakfast = [];
+  //late List<ListFoodItem> _foodListItemsLunch = [];
+  //late List<ListFoodItem> _foodListItemsDinner = [];
+  //late List<ListFoodItem> _foodListItemsSnacks = [];
 
   late UserNutritionModel _userDailyNutrition = UserNutritionModel(
     date: DateTime(DateTime
@@ -60,7 +60,7 @@ class UserNutritionData with ChangeNotifier {
 
 
   late FoodItem _currentFoodItem;
-  late ListFoodItem _currentFoodListItem = ListFoodItem(barcode: "", category: "", foodName: "", foodServings: "", foodServingSize: "", foodCalories: "", kiloJoules: "", proteins: "", carbs: "", fiber: "", sugars: "", fat: "", saturatedFat: "", polyUnsaturatedFat: "", monoUnsaturatedFat: "", transFat: "", cholesterol: "", calcium: "", iron: "", sodium: "", zinc: "", magnesium: "", potassium: "", vitaminA: "", vitaminB1: "", vitaminB2: "", vitaminB3: "", vitaminB6: "", vitaminB9: "", vitaminB12: "", vitaminC: "", vitaminD: "", vitaminE: "", vitaminK: "", omega3: "", omega6: "", alcohol: "", biotin: "", butyricAcid: "", caffeine: "", capricAcid: "", caproicAcid: "", caprylicAcid: "", chloride: "", chromium: "", copper: "", docosahexaenoicAcid: "", eicosapentaenoicAcid: "", erucicAcid: "", fluoride: "", iodine: "", manganese: "", molybdenum: "", myristicAcid: "", oleicAcid: "", palmiticAcid: "", pantothenicAcid: "", selenium: "", stearicAcid: "");
+  late ListFoodItem _currentFoodListItem = ListFoodItem(barcode: "", category: "", foodName: "N/A", foodServings: "1", foodServingSize: "100", foodCalories: "", kiloJoules: "", proteins: "", carbs: "", fiber: "", sugars: "", fat: "", saturatedFat: "", polyUnsaturatedFat: "", monoUnsaturatedFat: "", transFat: "", cholesterol: "", calcium: "", iron: "", sodium: "", zinc: "", magnesium: "", potassium: "", vitaminA: "", vitaminB1: "", vitaminB2: "", vitaminB3: "", vitaminB6: "", vitaminB9: "", vitaminB12: "", vitaminC: "", vitaminD: "", vitaminE: "", vitaminK: "", omega3: "", omega6: "", alcohol: "", biotin: "", butyricAcid: "", caffeine: "", capricAcid: "", caproicAcid: "", caprylicAcid: "", chloride: "", chromium: "", copper: "", docosahexaenoicAcid: "", eicosapentaenoicAcid: "", erucicAcid: "", fluoride: "", iodine: "", manganese: "", molybdenum: "", myristicAcid: "", oleicAcid: "", palmiticAcid: "", pantothenicAcid: "", selenium: "", stearicAcid: "");
   late bool _isCurrentFoodItemLoaded = false;
   late DateTime _nutritionDate = DateTime(DateTime
       .now()
@@ -201,8 +201,10 @@ class UserNutritionData with ChangeNotifier {
       String servingSize) {
     _userDailyNutrition.date = _nutritionDate.toString();
 
+    print("ADding food");
+
     if (category.toLowerCase() == "breakfast") {
-      _foodListItemsBreakfast.add(ListFoodItem(
+      _userDailyNutrition.foodListItemsBreakfast.add(ListFoodItem(
         barcode: newItem.barcode,
         category: category,
         foodName: newItem.foodName,
@@ -318,9 +320,9 @@ class UserNutritionData with ChangeNotifier {
           currentFoodItem.stearicAcid, servingSize, servings, 0,),
       ));
 
-      _userDailyNutrition.foodListItemsBreakfast = _foodListItemsBreakfast;
+      //_userDailyNutrition.foodListItemsBreakfast += _foodListItemsBreakfast;
     } else if (category.toLowerCase() == "lunch") {
-      _foodListItemsLunch.add(ListFoodItem(
+      _userDailyNutrition.foodListItemsLunch.add(ListFoodItem(
         barcode: newItem.barcode,
         category: category,
         foodName: newItem.foodName,
@@ -436,9 +438,9 @@ class UserNutritionData with ChangeNotifier {
           currentFoodItem.stearicAcid, servingSize, servings, 0,),
       ));
 
-      _userDailyNutrition.foodListItemsLunch = _foodListItemsLunch;
+      //_userDailyNutrition.foodListItemsLunch += _foodListItemsLunch;
     } else if (category.toLowerCase() == "dinner") {
-      _foodListItemsDinner.add(ListFoodItem(
+      _userDailyNutrition.foodListItemsDinner.add(ListFoodItem(
         barcode: newItem.barcode,
         category: category,
         foodName: newItem.foodName,
@@ -554,9 +556,9 @@ class UserNutritionData with ChangeNotifier {
           currentFoodItem.stearicAcid, servingSize, servings, 0,),
       ));
 
-      _userDailyNutrition.foodListItemsDinner = _foodListItemsDinner;
+      //_userDailyNutrition.foodListItemsDinner += _foodListItemsDinner;
     } else if (category.toLowerCase() == "snacks") {
-      _foodListItemsSnacks.add(ListFoodItem(
+      _userDailyNutrition.foodListItemsSnacks.add(ListFoodItem(
         barcode: newItem.barcode,
         category: category,
         foodName: newItem.foodName,
@@ -672,7 +674,7 @@ class UserNutritionData with ChangeNotifier {
           currentFoodItem.stearicAcid, servingSize, servings, 0,),
       ));
 
-      _userDailyNutrition.foodListItemsSnacks = _foodListItemsSnacks;
+      //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
     }
 
     UpdateUserNutritionalData(_userDailyNutrition);

@@ -4,7 +4,7 @@ import 'package:fitness_tracker/exports.dart';
 
 import '../models/food_data_list_item.dart';
 
-class FoodListDisplayBox extends StatelessWidget {
+class FoodListDisplayBox extends StatefulWidget {
   FoodListDisplayBox({Key? key,
     required this.foodObject,
     required this.width,
@@ -24,13 +24,46 @@ class FoodListDisplayBox extends StatelessWidget {
   late double width;
 
   @override
+  State<FoodListDisplayBox> createState() => _FoodListDisplayBoxState();
+}
+
+class _FoodListDisplayBoxState extends State<FoodListDisplayBox> {
+
+  final ScrollController scrollController = ScrollController();
+
+  ScrollToEnd() async {
+
+    await Future.delayed(const Duration(milliseconds: 200), (){});
+
+    await scrollController.animateTo(
+        scrollController.position.maxScrollExtent / 25,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOut,
+    );
+
+    await scrollController.animateTo(
+      scrollController.position.minScrollExtent,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeOut,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => ScrollToEnd());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (iconColour?.value == null) {
-      iconColour = Colors.white;
+    if (widget.iconColour?.value == null) {
+      widget.iconColour = Colors.white;
     }
-    if (icon2Colour?.value == null) {
-      icon2Colour = Colors.white;
+    if (widget.icon2Colour?.value == null) {
+      widget.icon2Colour = Colors.white;
     }
+
     return Container(
       margin: const EdgeInsets.all(4),
       height: 60,
@@ -39,7 +72,7 @@ class FoodListDisplayBox extends StatelessWidget {
         color: appQuinaryColour,
       ),
       child: ListTile(
-        onTap: onTap,
+        onTap: widget.onTap,
         leading: Padding(
           padding: const EdgeInsets.only(
             bottom: 15,
@@ -58,13 +91,21 @@ class FoodListDisplayBox extends StatelessWidget {
               color: Colors.transparent,
             ),
             child: Center(
-              child: FittedBox(
-                clipBehavior: Clip.antiAlias,
-                child: Text(
-                  foodObject.foodCalories + "\n Kcal",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.white,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxHeight: 100,
+                  minHeight: 10,
+                  maxWidth: 100,
+                  minWidth: 100,
+                ),
+                child: FittedBox(
+                  clipBehavior: Clip.antiAlias,
+                  child: Text(
+                    widget.foodObject.foodCalories + "\n Kcal",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -73,26 +114,45 @@ class FoodListDisplayBox extends StatelessWidget {
         ),
         title: Padding(
           padding: EdgeInsets.only(
-              left: width/30,
+              left: widget.width/30,
             bottom: 10,
           ),
-          child: FittedBox(
-            child: Text(
-              foodObject.foodName,
-              style: const TextStyle(
-                  color: Colors.white,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxHeight: 25,
+              minHeight: 15,
+            ),
+            child: FittedBox(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: 25,
+                  minHeight: 15,
+                  maxWidth: widget.width/1.25,
+                ),
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  clipBehavior: Clip.hardEdge,
+                  scrollDirection: Axis.horizontal,
+                  child: Text(
+                    widget.foodObject.foodName,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: Colors.white,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
         ),
         subtitle: Padding(
           padding: EdgeInsets.only(
-              left: width/8,
+              left: widget.width/8,
             bottom: 10,
           ),
           child: Text(
-            foodObject.foodServings + " Servings, " +
-                (double.parse(foodObject.foodServingSize) * double.parse(foodObject.foodServings)).toStringAsFixed(1)
+            widget.foodObject.foodServings + " Servings, " +
+                (double.parse(widget.foodObject.foodServingSize) * double.parse(widget.foodObject.foodServings)).toStringAsFixed(1)
                 + "g",
             style: const TextStyle(
                 color: Colors.white70,
@@ -100,38 +160,39 @@ class FoodListDisplayBox extends StatelessWidget {
             ),
           ),
         ),
-        trailing: icon != null && icon2 != null ?
+        trailing: widget.icon != null && widget.icon2 != null ?
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
-                onPressed: onTapIcon,
+                onPressed: widget.onTapIcon,
                 icon: Icon(
-                  icon,
-                  color: iconColour,
+                  widget.icon,
+                  color: widget.iconColour,
                 ),
               ),
               IconButton(
-                onPressed: onTapIcon2,
+                onPressed: widget.onTapIcon2,
                 icon: Icon(
-                  icon2,
-                  color: icon2Colour,
+                  widget.icon2,
+                  color: widget.icon2Colour,
                 ),
               ),
             ],
           ),
-        ) : icon != null ?
+        ) : widget.icon != null ?
         IconButton(
-          onPressed: onTapIcon,
+          onPressed: widget.onTapIcon,
           icon: Icon(
-            icon,
-            color: iconColour,
+            widget.icon,
+            color: widget.iconColour,
           ),
         ) :
         null,
       ),
     );
+
   }
 }

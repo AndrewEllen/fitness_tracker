@@ -51,14 +51,35 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
   }
 
   void AddToDiary() {
-    context.read<UserNutritionData>().addFoodItemToDiary(
+
+    if (currentFoodItem.foodName.length > 0 &&
+        currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
+        (servingsController.text != "-" || servingsController.text.isNotEmpty) &&
+        (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
+        ) {
+
+      context.read<UserNutritionData>().addFoodItemToDiary(
         currentFoodItem,
         widget.category,
         servingsController.text,
         servingSizeController.text,
-    );
+      );
 
-    context.read<PageChange>().backPage();
+      context.read<PageChange>().backPage();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text(
+          "Missing Food Name, Servings or Calories",
+          style: TextStyle(
+            color: Colors.red,
+          ),
+        ),
+        action: SnackBarAction(
+          label: "Edit",
+          onPressed: () => context.read<PageChange>().changePageCache(FoodNutritionListEdit(category: widget.category)),
+        ),
+      ));
+    }
   }
 
   @override
@@ -105,6 +126,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   formKey: servingskey,
                   width: _width,
                   formName: "Servings",
+                  centerForm: true,
                 ),
                 FoodNutritionListFormField(
                   servingSize: true,
@@ -112,6 +134,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   formKey: servingSizekey,
                   width: _width,
                   formName: "Serving Size",
+                  centerForm: true,
                 ),
                 ScreenWidthContainer(
                   minHeight: _smallContainerMin * 0.2,

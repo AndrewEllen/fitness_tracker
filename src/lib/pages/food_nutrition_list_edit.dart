@@ -337,6 +337,7 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
                           width: _width,
                           formName: "Name",
                           numbersOnly: false,
+                          centerForm: true,
                         ),
                         SizedBox(
                           width: _width / 2,
