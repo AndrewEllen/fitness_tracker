@@ -51,14 +51,35 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
   }
 
   void AddToDiary() {
-    context.read<UserNutritionData>().addFoodItemToDiary(
+
+    if (currentFoodItem.foodName.length > 0 &&
+        currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
+        (servingsController.text != "-" || servingsController.text.isNotEmpty) &&
+        (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
+        ) {
+
+      context.read<UserNutritionData>().addFoodItemToDiary(
         currentFoodItem,
         widget.category,
         servingsController.text,
         servingSizeController.text,
-    );
+      );
 
-    context.read<PageChange>().backPage();
+      context.read<PageChange>().backPage();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text(
+          "Missing Food Name, Servings or Calories",
+          style: TextStyle(
+            color: Colors.red,
+          ),
+        ),
+        action: SnackBarAction(
+          label: "Edit",
+          onPressed: () => context.read<PageChange>().changePageCache(FoodNutritionListEdit(category: widget.category)),
+        ),
+      ));
+    }
   }
 
   @override

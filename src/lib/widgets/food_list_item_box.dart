@@ -58,13 +58,21 @@ class FoodListDisplayBox extends StatelessWidget {
               color: Colors.transparent,
             ),
             child: Center(
-              child: FittedBox(
-                clipBehavior: Clip.antiAlias,
-                child: Text(
-                  foodObject.foodCalories + "\n Kcal",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.white,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxHeight: 100,
+                  minHeight: 10,
+                  maxWidth: 100,
+                  minWidth: 100,
+                ),
+                child: FittedBox(
+                  clipBehavior: Clip.antiAlias,
+                  child: Text(
+                    foodObject.foodCalories + "\n Kcal",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -76,11 +84,19 @@ class FoodListDisplayBox extends StatelessWidget {
               left: width/30,
             bottom: 10,
           ),
-          child: FittedBox(
-            child: Text(
-              foodObject.foodName,
-              style: const TextStyle(
-                  color: Colors.white,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxHeight: 100,
+              minHeight: 10,
+              maxWidth: 100,
+              minWidth: 100,
+            ),
+            child: FittedBox(
+              child: Text(
+                foodObject.foodName,
+                style: const TextStyle(
+                    color: Colors.white,
+                ),
               ),
             ),
           ),

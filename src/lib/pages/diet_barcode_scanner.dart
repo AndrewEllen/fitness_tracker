@@ -56,7 +56,12 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
           final List<Barcode> barcodes = capture.barcodes;
 
             debugPrint('Barcode found! ${barcodes[0].displayValue}');
-            analyseBarcode(capture.image);
+            try {
+              analyseBarcode(capture.image);
+            }
+            catch (error) {
+              print(error);
+            }
 
             String? barcodeDisplayValue = barcodes[0].displayValue;
 
