@@ -31,11 +31,11 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
   @override
   Widget build(BuildContext context) {
 
-    return ScreenWidthContainer(
-      minHeight: widget.bigContainerMin,
-      maxHeight: widget.bigContainerMin * 1.6,
+    return Container(
+      margin: EdgeInsets.only(top: widget.margin),
       height: (widget.height / 100) * 32,
-      margin: widget.margin,
+      width: (widget.width / 100) * 97,
+      decoration: homeBoxDecoration,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -193,6 +193,9 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
             goal: context.watch<UserNutritionData>().carbohydratesGoal,
             width: widget.width,
           ),
+
+          //ExtraNutritionBars(width: widget.width,),
+
           Spacer(),
           Material(
             type: MaterialType.transparency,
@@ -212,3 +215,51 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
     );
   }
 }
+
+class ExtraNutritionBars extends StatefulWidget {
+  ExtraNutritionBars({Key? key,
+    required this.width,
+  }) : super(key: key);
+
+  double width;
+
+  @override
+  State<ExtraNutritionBars> createState() => _ExtraNutritionBarsState();
+}
+
+class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        NutritionProgressBar(
+          title: "Calories",
+          currentProgress: context.watch<UserNutritionData>().calories,
+          goal: context.watch<UserNutritionData>().caloriesGoal,
+          width: widget.width,
+        ),
+        NutritionProgressBar(
+          title: "Protein",
+          currentProgress: context.watch<UserNutritionData>().protein,
+          goal: context.watch<UserNutritionData>().proteinGoal,
+          width: widget.width,
+        ),
+        NutritionProgressBar(
+          title: "Fat",
+          currentProgress: context.watch<UserNutritionData>().fat,
+          goal: context.watch<UserNutritionData>().fatGoal,
+          width: widget.width,
+        ),
+        NutritionProgressBar(
+          title: "Carbohydrates",
+          currentProgress: context.watch<UserNutritionData>().carbohydrates,
+          goal: context.watch<UserNutritionData>().carbohydratesGoal,
+          width: widget.width,
+        ),
+      ],
+    );
+  }
+}
+
