@@ -126,6 +126,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   formKey: servingskey,
                   width: _width,
                   formName: "Servings",
+                  centerForm: true,
                 ),
                 FoodNutritionListFormField(
                   servingSize: true,
@@ -133,6 +134,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   formKey: servingSizekey,
                   width: _width,
                   formName: "Serving Size",
+                  centerForm: true,
                 ),
                 ScreenWidthContainer(
                   minHeight: _smallContainerMin * 0.2,
