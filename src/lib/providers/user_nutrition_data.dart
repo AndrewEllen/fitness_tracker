@@ -129,55 +129,64 @@ class UserNutritionData with ChangeNotifier {
   late double _proteinGoal = 160;
   late double _fatGoal = 85;
   late double _carbohydratesGoal = 286;
-  late double _fiberGoal = 100;
-  late double _sugarGoal = 100;
-  late double _saturatedFatGoal = 100;
-  late double _polyUnsaturatedFatGoal = 100;
-  late double _monoUnsaturatedFatGoal = 100;
-  late double _transFatGoal = 100;
-  late double _cholesterolGoal = 100;
-  late double _calciumGoal = 100;
-  late double _ironGoal = 100;
-  late double _sodiumGoal = 100;
-  late double _zincGoal = 100;
-  late double _magnesiumGoal = 100;
-  late double _potassiumGoal = 100;
-  late double _vitaminAGoal = 100;
-  late double _vitaminB1Goal = 100;
-  late double _vitaminB2Goal = 100;
-  late double _vitaminB3Goal = 100;
-  late double _vitaminB6Goal = 100;
-  late double _vitaminB9Goal = 100;
-  late double _vitaminB12Goal = 100;
-  late double _vitaminCGoal = 100;
-  late double _vitaminDGoal = 100;
-  late double _vitaminEGoal = 100;
-  late double _vitaminKGoal = 100;
-  late double _omega3Goal = 100;
-  late double _omega6Goal = 100;
-  late double _alcoholGoal = 100;
-  late double _biotinGoal = 100;
-  late double _butyricAcidGoal = 100;
-  late double _caffeineGoal = 100;
-  late double _capricAcidGoal = 100;
-  late double _caproicAcidGoal = 100;
-  late double _caprylicAcidGoal = 100;
-  late double _chlorideGoal = 100;
-  late double _chromiumGoal = 100;
-  late double _copperGoal = 100;
-  late double _docosahexaenoicAcidGoal = 100;
-  late double _eicosapentaenoicAcidGoal = 100;
-  late double _erucicAcidGoal = 100;
-  late double _fluorideGoal = 100;
-  late double _iodineGoal = 100;
-  late double _manganeseGoal = 100;
-  late double _molybdenumGoal = 100;
-  late double _myristicAcidGoal = 100;
-  late double _oleicAcidGoal = 100;
-  late double _palmiticAcidGoal = 100;
-  late double _pantothenicAcidGoal = 100;
-  late double _seleniumGoal = 100;
-  late double _stearicAcidGoal = 100;
+
+  //grams
+  late double _fiberGoal = 30; // Recommended fiber intake for adults (general guideline)
+  late double _sugarGoal = 50; // Maximum recommended sugar intake for adults (general guideline)
+  late double _saturatedFatGoal = 20; // Maximum recommended saturated fat intake as a percentage of total calories (general guideline)
+  late double _polyUnsaturatedFatGoal = 12; // Recommended polyunsaturated fat intake as a percentage of total calories (general guideline)
+  late double _monoUnsaturatedFatGoal = 15; // Recommended monounsaturated fat intake as a percentage of total calories (general guideline)
+  late double _transFatGoal = 0; // Maximum recommended trans fat intake (general guideline)
+  late double _cholesterolGoal = 300; // Maximum recommended cholesterol intake in milligrams (general guideline)
+
+  //mg
+  late double _calciumGoal = 1000; // Example: Calcium goal for adults (general guideline)
+  late double _ironGoal = 8; // Example: Iron goal for adults (general guideline)
+  late double _sodiumGoal = 2300; // Example: Sodium goal for adults (general guideline)
+  late double _zincGoal = 11; // Example: Zinc goal for adults (general guideline)
+  late double _magnesiumGoal = 400; // Example: Magnesium goal for adults (general guideline)
+  late double _potassiumGoal = 3500; // Example: Potassium goal
+
+  //mg
+  late double _vitaminAGoal = 0.800; // Example: Vitamin A goal for adults (general guideline)
+  late double _vitaminB1Goal = 1.1; // Example: Thiamine (Vitamin B1) goal for adults (general guideline)
+  late double _vitaminB2Goal = 1.3; // Example: Riboflavin (Vitamin B2) goal for adults (general guideline)
+  late double _vitaminB3Goal = 16; // Example: Niacin (Vitamin B3) goal for adults (general guideline)
+  late double _vitaminB6Goal = 1.3; // Example: Vitamin B6 goal for adults (general guideline)
+  late double _vitaminB9Goal = 0.400; // Example: Folate (Vitamin B9) goal for adults (general guideline)
+  late double _vitaminB12Goal = 2.4; // Example: Vitamin B12 goal for adults (general guideline)
+  late double _vitaminCGoal = 90; // Example: Vitamin C goal for adults (general guideline)
+  late double _vitaminDGoal = 15; // Example: Vitamin D goal for adults (general guideline)
+  late double _vitaminEGoal = 15; // Example: Vitamin E goal for adults (general guideline)
+  late double _vitaminKGoal = 75; // Example: Vitamin K goal for adults (general guideline)
+
+  late double _alcoholGoal = 0;
+  late double _caffeineGoal = 0;
+
+  //mg
+  late double _omega3Goal = 1000; // mg of combined EPA and DHA per day
+  late double _omega6Goal = 12000; // approximate ratio of 4:1 (omega-6 to omega-3)
+  late double _biotinGoal = 0.30; // mcg per day
+  late double _butyricAcidGoal = 150; // no specific recommendation
+  late double _capricAcidGoal = 1000; // no specific recommendation
+  late double _caproicAcidGoal = 0; // no specific recommendation
+  late double _caprylicAcidGoal = 1000; // no specific recommendation
+  late double _chlorideGoal = 2300; // mg per day
+  late double _chromiumGoal = 0.25; // mcg per day
+  late double _copperGoal = 0.900; // mcg per day
+  late double _docosahexaenoicAcidGoal = 250; // mg per day
+  late double _eicosapentaenoicAcidGoal = 250; // mg per day
+  late double _erucicAcidGoal = 400; // no specific recommendation
+  late double _fluorideGoal = 4; // mg per day
+  late double _iodineGoal = 0.150; // mcg per day
+  late double _manganeseGoal = 1.8; // mg per day
+  late double _molybdenumGoal = 0.045; // mcg per day
+  late double _myristicAcidGoal = 0.89; // no specific recommendation
+  late double _oleicAcidGoal = 20000; // no specific recommendation
+  late double _palmiticAcidGoal = 20000; // no specific recommendation
+  late double _pantothenicAcidGoal = 5; // mg per day
+  late double _seleniumGoal = 0.055; // mcg per day
+  late double _stearicAcidGoal = 5700; // no specific recommendation
 
 
   double get calories => _calories;
@@ -354,6 +363,251 @@ class UserNutritionData with ChangeNotifier {
           _carbohydrates += double.parse(foodItem.carbs);
         } catch (exception) {
           _carbohydrates += 0;
+        }
+        try {
+          _fiber += double.parse(foodItem.fiber);
+        } catch (exception) {
+          _fiber += 0;
+        }
+        try {
+          _sugar += double.parse(foodItem.sugars);
+        } catch (exception) {
+          _sugar += 0;
+        }
+        try {
+          _saturatedFat += double.parse(foodItem.saturatedFat);
+        } catch (exception) {
+          _saturatedFat += 0;
+        }
+        try {
+          _polyUnsaturatedFat += double.parse(foodItem.polyunsaturatedFat);
+        } catch (exception) {
+          _polyUnsaturatedFat += 0;
+        }
+        try {
+          _monoUnsaturatedFat += double.parse(foodItem.monounsaturatedFat);
+        } catch (exception) {
+          _monoUnsaturatedFat += 0;
+        }
+        try {
+          _transFat += double.parse(foodItem.transFat);
+        } catch (exception) {
+          _transFat += 0;
+        }
+        try {
+          _cholesterol += double.parse(foodItem.cholesterol);
+        } catch (exception) {
+          _cholesterol += 0;
+        }
+        try {
+          _calcium += double.parse(foodItem.calcium);
+        } catch (exception) {
+          _calcium += 0;
+        }
+        try {
+          _iron += double.parse(foodItem.iron);
+        } catch (exception) {
+          _iron += 0;
+        }
+        try {
+          _sodium += double.parse(foodItem.sodium);
+        } catch (exception) {
+          _sodium += 0;
+        }
+        try {
+          _zinc += double.parse(foodItem.zinc);
+        } catch (exception) {
+          _zinc += 0;
+        }
+        try {
+          _magnesium += double.parse(foodItem.magnesium);
+        } catch (exception) {
+          _magnesium += 0;
+        }
+        try {
+          _potassium += double.parse(foodItem.potassium);
+        } catch (exception) {
+          _potassium += 0;
+        }
+        try {
+          _vitaminA += double.parse(foodItem.vitaminA);
+        } catch (exception) {
+          _vitaminA += 0;
+        }
+        try {
+          _vitaminB1 += double.parse(foodItem.vitaminB1);
+        } catch (exception) {
+          _vitaminB1 += 0;
+        }
+        try {
+          _vitaminB2 += double.parse(foodItem.vitaminB2);
+        } catch (exception) {
+          _vitaminB2 += 0;
+        }
+        try {
+          _vitaminB3 += double.parse(foodItem.vitaminB3);
+        } catch (exception) {
+          _vitaminB3 += 0;
+        }
+        try {
+          _vitaminB6 += double.parse(foodItem.vitaminB6);
+        } catch (exception) {
+          _vitaminB6 += 0;
+        }
+        try {
+          _vitaminB9 += double.parse(foodItem.vitaminB9);
+        } catch (exception) {
+          _vitaminB9 += 0;
+        }
+        try {
+          _vitaminB12 += double.parse(foodItem.vitaminB12);
+        } catch (exception) {
+          _vitaminB12 += 0;
+        }
+        try {
+          _vitaminC += double.parse(foodItem.vitaminC);
+        } catch (exception) {
+          _vitaminC += 0;
+        }
+        try {
+          _vitaminD += double.parse(foodItem.vitaminD);
+        } catch (exception) {
+          _vitaminD += 0;
+        }
+        try {
+          _vitaminE += double.parse(foodItem.vitaminE);
+        } catch (exception) {
+          _vitaminE += 0;
+        }
+        try {
+          _vitaminK += double.parse(foodItem.vitaminK);
+        } catch (exception) {
+          _vitaminK += 0;
+        }
+        try {
+          _omega3 += double.parse(foodItem.omega3);
+        } catch (exception) {
+          _omega3 += 0;
+        }
+        try {
+          _omega6 += double.parse(foodItem.omega6);
+        } catch (exception) {
+          _omega6 += 0;
+        }
+        try {
+          _alcohol += double.parse(foodItem.alcohol);
+        } catch (exception) {
+          _alcohol += 0;
+        }
+        try {
+          _biotin += double.parse(foodItem.biotin);
+        } catch (exception) {
+          _biotin += 0;
+        }
+        try {
+          _butyricAcid += double.parse(foodItem.butyricAcid);
+        } catch (exception) {
+          _butyricAcid += 0;
+        }
+        try {
+          _caffeine += double.parse(foodItem.caffeine);
+        } catch (exception) {
+          _caffeine += 0;
+        }
+        try {
+          _capricAcid += double.parse(foodItem.capricAcid);
+        } catch (exception) {
+          _capricAcid += 0;
+        }
+        try {
+          _caproicAcid += double.parse(foodItem.caproicAcid);
+        } catch (exception) {
+          _caproicAcid += 0;
+        }
+        try {
+          _caprylicAcid += double.parse(foodItem.caprylicAcid);
+        } catch (exception) {
+          _caprylicAcid += 0;
+        }
+        try {
+          _chloride += double.parse(foodItem.chloride);
+        } catch (exception) {
+          _chloride += 0;
+        }
+        try {
+          _chromium += double.parse(foodItem.chromium);
+        } catch (exception) {
+          _chromium += 0;
+        }
+        try {
+          _copper += double.parse(foodItem.copper);
+        } catch (exception) {
+          _copper += 0;
+        }
+        try {
+          _docosahexaenoicAcid += double.parse(foodItem.docosahexaenoicAcid);
+        } catch (exception) {
+          _docosahexaenoicAcid += 0;
+        }
+        try {
+          _eicosapentaenoicAcid += double.parse(foodItem.eicosapentaenoicAcid);
+        } catch (exception) {
+          _eicosapentaenoicAcid += 0;
+        }
+        try {
+          _erucicAcid += double.parse(foodItem.erucicAcid);
+        } catch (exception) {
+          _erucicAcid += 0;
+        }
+        try {
+          _fluoride += double.parse(foodItem.fluoride);
+        } catch (exception) {
+          _fluoride += 0;
+        }
+        try {
+          _iodine += double.parse(foodItem.iodine);
+        } catch (exception) {
+          _iodine += 0;
+        }
+        try {
+          _manganese += double.parse(foodItem.manganese);
+        } catch (exception) {
+          _manganese += 0;
+        }
+        try {
+          _molybdenum += double.parse(foodItem.molybdenum);
+        } catch (exception) {
+          _molybdenum += 0;
+        }
+        try {
+          _myristicAcid += double.parse(foodItem.myristicAcid);
+        } catch (exception) {
+          _myristicAcid += 0;
+        }
+        try {
+          _oleicAcid += double.parse(foodItem.oleicAcid);
+        } catch (exception) {
+          _oleicAcid += 0;
+        }
+        try {
+          _palmiticAcid += double.parse(foodItem.palmiticAcid);
+        } catch (exception) {
+          _palmiticAcid += 0;
+        }
+        try {
+          _pantothenicAcid += double.parse(foodItem.pantothenicAcid);
+        } catch (exception) {
+          _pantothenicAcid += 0;
+        }
+        try {
+          _selenium += double.parse(foodItem.selenium);
+        } catch (exception) {
+          _selenium += 0;
+        }
+        try {
+          _stearicAcid += double.parse(foodItem.stearicAcid);
+        } catch (exception) {
+          _stearicAcid += 0;
         }
       });
     }
