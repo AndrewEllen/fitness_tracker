@@ -87,6 +87,7 @@ class _DietHomePageState extends State<DietHomePage> {
       return true;
     },
           child: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
             child: Column(
               children: [
                 NutritionHomeStats(

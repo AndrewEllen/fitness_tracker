@@ -44,12 +44,18 @@ class _NutritionProgressBarState extends State<NutritionProgressBar> with Single
             Align(
               alignment: Alignment.topLeft,
               child: Container(
+                constraints: BoxConstraints(
+                  maxWidth: _width/3.25,
+                ),
+                height: 16,
                 margin: const EdgeInsets.only(left:10),
-                child: Text(
-                  widget.title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
+                child: FittedBox(
+                  child: Text(
+                    widget.title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      //fontSize: 16,
+                    ),
                   ),
                 ),
               ),

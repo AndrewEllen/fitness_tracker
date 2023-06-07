@@ -123,8 +123,8 @@ class _MainPageState extends State<MainPage> {
               backgroundColor: appPrimaryColour,
               bottomNavigationBar: CurvedNavigationBar(
                   key: _NavigationBarKey,
-                  backgroundColor: Colors.transparent,
-                  buttonBackgroundColor: appTertiaryColour,
+                  backgroundColor: appTertiaryColour.withAlpha(100),
+                  buttonBackgroundColor: Colors.transparent,
                   color: appTertiaryColour,
                   index: _currentNavigatorIndex,
                   height: 46,
