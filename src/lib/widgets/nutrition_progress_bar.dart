@@ -7,11 +7,11 @@ class NutritionProgressBar extends StatefulWidget {
   NutritionProgressBar({
     required this.title, required this.currentProgress,
     required this.goal, required this.width,
-    this.barColour = appSecondaryColour
+    this.barColour = appSecondaryColour,
+    this.units = "mg"
   });
-  late String title;
+  late String title, units;
   late double currentProgress, goal;
-  late double progressDistance = currentProgress/goal;
   late double width;
   late Color barColour;
 
@@ -21,7 +21,16 @@ class NutritionProgressBar extends StatefulWidget {
 
 class _NutritionProgressBarState extends State<NutritionProgressBar> with SingleTickerProviderStateMixin {
 
-  ProgressDistanceValidation(double progressDistance) {
+  ProgressDistanceValidation(double currentProgress, double goal) {
+
+    double progressDistance;
+
+    if (goal == 0) {
+      progressDistance = currentProgress;
+    } else {
+      progressDistance = currentProgress/goal;
+    }
+
     if (progressDistance > 1) {
       progressDistance = 1;
       return progressDistance;
@@ -34,11 +43,14 @@ class _NutritionProgressBarState extends State<NutritionProgressBar> with Single
 
   @override
   Widget build(BuildContext context) {
+
+    print(widget.currentProgress);
+
     double _width = MediaQuery.of(context).size.width;
     return Center(
       child: Container(
         width: (_width / 100) * 90,
-        margin: const EdgeInsets.only(top:6,bottom:6),
+        margin: const EdgeInsets.only(top:8,bottom:12),
         child: Stack(
           children: [
             Align(
@@ -63,7 +75,7 @@ class _NutritionProgressBarState extends State<NutritionProgressBar> with Single
             Align(
               alignment: Alignment.topCenter,
               child: Text(
-                "${widget.currentProgress}/${widget.goal}",
+                "${widget.currentProgress}/${widget.goal} ${widget.units}",
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -76,7 +88,7 @@ class _NutritionProgressBarState extends State<NutritionProgressBar> with Single
                 child: LinearPercentIndicator(
                   backgroundColor: appQuarternaryColour,
                   progressColor: widget.barColour,
-                  percent: ProgressDistanceValidation(widget.progressDistance),
+                  percent: ProgressDistanceValidation(widget.currentProgress, widget.goal),
                   width: (widget.width / 100) * 90,
                   barRadius: const Radius.circular(10),
                   animation: true,

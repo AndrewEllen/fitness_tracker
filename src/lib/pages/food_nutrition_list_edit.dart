@@ -379,7 +379,7 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
                         ),
                         DietListHeaderBox(
                           width: _width,
-                          title: "Carbohydrates and Fats",
+                          title: "Carbohydrates and Fats (g)",
                         ),
                         FoodNutritionListFormField(
                           controller: fiberController,
@@ -441,7 +441,7 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
                         ),
                         DietListHeaderBox(
                           width: _width,
-                          title: "Minerals (g)",
+                          title: "Minerals (mg)",
                         ),
                         FoodNutritionListFormField(
                           controller: sodiumController,

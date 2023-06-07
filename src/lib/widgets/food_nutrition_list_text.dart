@@ -1,3 +1,4 @@
+import 'package:fitness_tracker/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -36,47 +37,54 @@ class _FoodNutritionListTextState extends State<FoodNutritionListText> {
   @override
   Widget build(BuildContext context) {
 
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Text(
-            "${widget.title}:",
-            style: const TextStyle(
-              color: Colors.white,
-            ),
-          ),
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(width: 1.0, color: appPrimaryColour),
         ),
-       Center(
-           child: Padding(
-             padding: const EdgeInsets.all(5.0),
-             child: Text(
-               widget.value.isEmpty ? "-" : widget.value,
-               style: const TextStyle(
-                 color: Colors.white,
-               ),
-             ),
-           ),
-       ),
-        Padding(
-          padding: const EdgeInsets.only(
-            top: 5,
-            bottom: 5,
-            left: 5,
-            right: 45,
-          ),
-          child: Align(
-            alignment: Alignment.centerRight,
+      ),
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(5.0),
             child: Text(
-              widget.value.isEmpty ? "-" :
-              "${ServingSizeCalculator(widget.value, widget.servingSize, widget.servings, 1)}",
+              "${widget.title}:",
               style: const TextStyle(
                 color: Colors.white,
               ),
             ),
           ),
-        ),
-      ],
+         Center(
+             child: Padding(
+               padding: const EdgeInsets.all(5.0),
+               child: Text(
+                 widget.value.isEmpty ? "-" : widget.value,
+                 style: const TextStyle(
+                   color: Colors.white,
+                 ),
+               ),
+             ),
+         ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 5,
+              bottom: 5,
+              left: 5,
+              right: 45,
+            ),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                widget.value.isEmpty ? "-" :
+                "${ServingSizeCalculator(widget.value, widget.servingSize, widget.servings, 1)}",
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
