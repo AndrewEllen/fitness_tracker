@@ -1,5 +1,6 @@
 import 'package:fitness_tracker/models/user_nutrition_history_model.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +13,7 @@ import '../providers/user_nutrition_data.dart';
 import '../widgets/food_history_list_item_box.dart';
 import '../widgets/food_list_item_box.dart';
 import '../widgets/food_list_search_display_box.dart';
+import 'diet_barcode_scanner.dart';
 import 'diet_food_display_page.dart';
 
 class FoodSearchPage extends StatefulWidget {
@@ -36,6 +38,8 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
   late List<FoodItem> foodItemsFromSearch = [];
 
+  late bool _searching = false;
+
   @override
   void initState() {
 
@@ -47,10 +51,15 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
   void SearchOFFbyString(String value) async {
 
+    setState(() {
+      _searching = true;
+    });
+
     foodItemsFromSearch = await SearchOFF(value);
 
     setState(() {
       foodItemsFromSearch;
+      _searching = false;
     });
 
   }
@@ -220,6 +229,55 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Container(
+                height: height/10,
+                color: appTertiaryColour,
+                child: Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: appSecondaryColour, width: 1),
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () => context.read<PageChange>().changePageCache(BarcodeScannerPage(category: widget.category)),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.only(
+                                top: 5,
+                                bottom: 8,
+                                left: 18.0,
+                                right: 18.0,
+                              ),
+                              width: width/3,
+                              height: height/18,
+                              child: Icon(
+                                  MdiIcons.barcodeScan,
+                                  size: height/26,
+                                ),
+                            ),
+                            const FittedBox(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  bottom: 4,
+                                ),
+                                child: Text(
+                                  "Scan Barcode",
+                                  style: TextStyle(
+                                    color: appSecondaryColour,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: foodHistory.foodListItemNames.length,
@@ -240,7 +298,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                     );
                   }),
 
-              ListView.builder(
+              !_searching ? ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: foodItemsFromSearch.length,
                   shrinkWrap: true,
@@ -257,7 +315,12 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                         context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
                       },
                     );
-                  }),
+                  }) : const Align(
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator(
+                  color: appSecondaryColour,
+                ),
+              ),
             ],
           ),
         ),
