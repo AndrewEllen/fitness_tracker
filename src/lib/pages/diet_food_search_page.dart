@@ -1,12 +1,18 @@
 import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:fitness_tracker/models/user_nutrition_history_model.dart';
 import 'package:flutter/material.dart';
+import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
+import '../helpers/nutrition_tracker.dart';
+import '../models/food_item.dart';
+import '../providers/database_get.dart';
+import '../providers/page_change_provider.dart';
 import '../providers/user_nutrition_data.dart';
 import '../widgets/food_history_list_item_box.dart';
 import '../widgets/food_list_item_box.dart';
+import 'diet_food_display_page.dart';
 
 class FoodSearchPage extends StatefulWidget {
   FoodSearchPage({
@@ -27,7 +33,31 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
   late final searchKey = GlobalKey<FormState>();
 
 
-  void AddFoodItem(String barcode, String servings, String servingSize) {
+  Future<void> AddFoodItem(String barcode, String servings, String servingSize) async {
+
+    try {
+
+      print("Firebase");
+      FoodItem newFoodItem = await GetFoodDataFromFirebase(barcode);
+
+      context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
+
+      context.read<UserNutritionData>().updateCurrentFoodItemServings(servings);
+      context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSize);
+
+    } catch (error){
+
+      print("OpenFF");
+      ProductResultV3 product = await checkFoodBarcodeOpenFF(barcode);
+
+      context.read<UserNutritionData>().setCurrentFoodItemFromOpenFF(product, barcode);
+
+      context.read<UserNutritionData>().updateCurrentFoodItemServings(servings);
+      context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSize);
+
+    }
+
+    context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
 
   }
 

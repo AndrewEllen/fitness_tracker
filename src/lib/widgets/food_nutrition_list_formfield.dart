@@ -9,12 +9,14 @@ class FoodNutritionListFormField extends StatefulWidget {
   FoodNutritionListFormField({Key? key, required this.controller,
     required this.formKey, required this.width,
     required this.formName, this.numbersOnly = true,
+    this.secondaryController = false,
     this.servings = false,
     this.servingSize = false,
     this.centerForm = false,
   }) : super(key: key);
 
   late TextEditingController controller;
+  late dynamic secondaryController;
   late GlobalKey<FormState> formKey;
   late double width;
   late String formName;
@@ -35,9 +37,11 @@ class _FoodNutritionListFormFieldState extends State<FoodNutritionListFormField>
   void SaveServings () {
     if (widget.servings) {
       context.read<UserNutritionData>().updateCurrentFoodItemServings(widget.controller.text);
+      context.read<UserNutritionData>().updateCurrentFoodItemServingSize(widget.secondaryController.text);
     }
     if (widget.servingSize) {
       context.read<UserNutritionData>().updateCurrentFoodItemServingSize(widget.controller.text);
+      context.read<UserNutritionData>().updateCurrentFoodItemServings(widget.secondaryController.text);
     }
     FocusManager.instance.primaryFocus?.unfocus();
   }
