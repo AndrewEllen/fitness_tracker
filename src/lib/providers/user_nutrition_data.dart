@@ -353,7 +353,7 @@ class UserNutritionData with ChangeNotifier {
 
       _userNutritionHistory.barcodes = _userNutritionHistory.barcodes.reversed.toList();
       _userNutritionHistory.foodListItemNames = _userNutritionHistory.foodListItemNames.reversed.toList();
-      _userNutritionHistory.foodServings = _userNutritionHistory.foodServings..reversed.toList();
+      _userNutritionHistory.foodServings = _userNutritionHistory.foodServings.reversed.toList();
       _userNutritionHistory.foodServingSize = _userNutritionHistory.foodServingSize.reversed.toList();
 
       UpdateUserNutritionHistoryData(userNutritionHistory);
@@ -373,6 +373,10 @@ class UserNutritionData with ChangeNotifier {
       _userNutritionHistory.foodListItemNames.insert(0, foodName);
       _userNutritionHistory.foodServings.insert(0, servings);
       _userNutritionHistory.foodServingSize.insert(0, servingSize);
+
+      UpdateUserNutritionHistoryData(userNutritionHistory);
+
+      notifyListeners();
 
     }
 
