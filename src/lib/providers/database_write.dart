@@ -8,6 +8,7 @@ import 'package:fitness_tracker/models/user_nutrition_model.dart';
 
 import '../models/food_data_list_item.dart';
 import '../models/food_item.dart';
+import '../models/user_nutrition_history_model.dart';
 
 void UpdateUserDocumentCategories(List<String> categories) async {
 
@@ -182,4 +183,16 @@ void UpdateUserNutritionalData(UserNutritionModel userNutrition) async {
       .doc(userNutrition.date)
       .set({"nutrition-data": nutritionMapped});
 
+}
+
+void UpdateUserNutritionHistoryData(UserNutritionHistoryModel userNutritionHistory) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .collection("nutrition-history-data")
+      .doc("history")
+      .set({"history": userNutritionHistory.toMap()});
 }

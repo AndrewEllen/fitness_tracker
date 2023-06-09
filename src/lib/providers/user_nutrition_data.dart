@@ -1,4 +1,5 @@
 import 'package:fitness_tracker/exports.dart';
+import 'package:fitness_tracker/models/user_nutrition_history_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
@@ -324,6 +325,57 @@ class UserNutritionData with ChangeNotifier {
 
   String get formattedNutritionDate => FormatDate(_nutritionDate);
 
+
+  late UserNutritionHistoryModel _userNutritionHistory = UserNutritionHistoryModel(
+      barcodes: [], foodListItemNames: [], foodServings: [], foodServingSize: []);
+
+  UserNutritionHistoryModel get userNutritionHistory => _userNutritionHistory;
+
+  void setFoodHistory(UserNutritionHistoryModel userHistory) {
+    _userNutritionHistory = userHistory;
+
+  }
+
+  void updateFoodHistory(String barcode, String foodName, String servings, String servingSize) {
+
+    if (!_userNutritionHistory.barcodes.contains(barcode)) {
+      _userNutritionHistory.barcodes.add(barcode);
+      _userNutritionHistory.foodListItemNames.add(foodName);
+      _userNutritionHistory.foodServings.add(servings);
+      _userNutritionHistory.foodServingSize.add(servingSize);
+
+      if (_userNutritionHistory.barcodes.length > 20) {
+        _userNutritionHistory.barcodes.removeAt(0);
+        _userNutritionHistory.foodListItemNames.removeAt(0);
+        _userNutritionHistory.foodServings.removeAt(0);
+        _userNutritionHistory.foodServingSize.removeAt(0);
+      };
+
+      UpdateUserNutritionHistoryData(userNutritionHistory);
+
+      notifyListeners();
+
+    } else if (_userNutritionHistory.barcodes.contains(barcode)) {
+
+      int index = _userNutritionHistory.barcodes.indexOf(barcode);
+
+      _userNutritionHistory.barcodes.removeAt(index);
+      _userNutritionHistory.foodListItemNames.removeAt(index);
+      _userNutritionHistory.foodServings.removeAt(index);
+      _userNutritionHistory.foodServingSize.removeAt(index);
+
+      _userNutritionHistory.barcodes.add(barcode);
+      _userNutritionHistory.foodListItemNames.add(foodName);
+      _userNutritionHistory.foodServings.add(servings);
+      _userNutritionHistory.foodServingSize.add(servingSize);
+
+      UpdateUserNutritionHistoryData(userNutritionHistory);
+
+      notifyListeners();
+
+    }
+
+  }
 
   String convertToUsableData(dynamic valueToConvert) {
     if (valueToConvert != null) {

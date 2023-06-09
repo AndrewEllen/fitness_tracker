@@ -65,6 +65,13 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         servingSizeController.text,
       );
 
+      context.read<UserNutritionData>().updateFoodHistory(
+        currentFoodItem.barcode,
+        currentFoodItem.foodName,
+        servingsController.text,
+        servingSizeController.text,
+      );
+
       context.read<PageChange>().backPage();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

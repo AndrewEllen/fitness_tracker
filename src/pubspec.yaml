@@ -51,7 +51,6 @@ dependencies:
   mobile_scanner: ^3.2.0
   firebase_crashlytics: ^3.3.2
   firebase_analytics: ^10.4.2
-  easy_search_bar: ^2.5.0
 
 dev_dependencies:
 
