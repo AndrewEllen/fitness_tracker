@@ -61,8 +61,6 @@ class _DietHomePageState extends State<DietHomePage> {
 
     context.watch<UserNutritionData>().isCurrentFoodItemLoaded;
 
-    context.watch<UserNutritionData>().calculateMacros();
-
     double _margin = 15;
     double _bigContainerMin = 230;
     double _smallContainerMin = 95;

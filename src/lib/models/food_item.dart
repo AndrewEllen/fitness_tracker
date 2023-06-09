@@ -2,6 +2,7 @@
 //Food item model/construct
 
 class FoodItem {
+
   Map<String, dynamic> toMap() {
     return {
       'barcode': barcode,

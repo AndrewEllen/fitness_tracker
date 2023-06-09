@@ -156,7 +156,7 @@ CheckFoodBarcode(String barcodeDisplayValue) async {
     print("OpenFF");
     ProductResultV3 product = await CheckFoodBarcodeOpenFF(barcodeDisplayValue);
 
-    return ConvertToFoodItem(product);
+    return ConvertToFoodItem(product.product);
 
   }
 }

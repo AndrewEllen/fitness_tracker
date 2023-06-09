@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitness_tracker/helpers/nutrition_tracker.dart';
 import 'package:fitness_tracker/models/exercise_model.dart';
 import 'package:fitness_tracker/models/routines_model.dart';
 import 'package:fitness_tracker/models/training_plan_model.dart';
 import 'package:fitness_tracker/models/user_nutrition_model.dart';
+import 'package:fitness_tracker/providers/user_nutrition_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
@@ -350,76 +352,29 @@ GetUserNutritionData(String date) async {
     print("returning nutrition");
 
 
-    List<ListFoodItem> ToListFoodItem (_data) {
-      print("mapping");
-
+    Future<List<ListFoodItem>> ToListFoodItem (_data) async {
       try {
 
-        final List<ListFoodItem> foodList = List<ListFoodItem>.generate(_data.length, (int index) {
+        final List<ListFoodItem> generateFoodList = List<ListFoodItem>.generate(_data.length, (int index) {
+
           return ListFoodItem(
             category: _data[index]["category"] ?? "",
             barcode: _data[index]["barcode"] ?? "",
-            foodName: _data[index]["foodName"] ?? "",
             foodServingSize: _data[index]["foodServingSize"] ?? "",
             foodServings: _data[index]["foodServings"] ?? "",
-            foodCalories: _data[index]["foodCalories"] ?? "",
-            kiloJoules: _data[index]["kiloJoules"] ?? "",
-            proteins: _data[index]["proteins"] ?? "",
-            carbs: _data[index]["carbs"] ?? "",
-            fiber: _data[index]["fiber"] ?? "",
-            sugars: _data[index]["sugars"] ?? "",
-            fat: _data[index]["fat"] ?? "",
-            saturatedFat: _data[index]["saturatedFat"] ?? "",
-            polyUnsaturatedFat: _data[index]["polyUnsaturatedFat"] ?? "",
-            monoUnsaturatedFat: _data[index]["monoUnsaturatedFat"] ?? "",
-            transFat: _data[index]["transFat"] ?? "",
-            cholesterol: _data[index]["cholesterol"] ?? "",
-            calcium: _data[index]["calcium"] ?? "",
-            iron: _data[index]["iron"] ?? "",
-            sodium: _data[index]["sodium"] ?? "",
-            zinc: _data[index]["zinc"] ?? "",
-            magnesium: _data[index]["magnesium"] ?? "",
-            potassium: _data[index]["potassium"] ?? "",
-            vitaminA: _data[index]["vitaminA"] ?? "",
-            vitaminB1: _data[index]["vitaminB1"] ?? "",
-            vitaminB2: _data[index]["vitaminB2"] ?? "",
-            vitaminB3: _data[index]["vitaminB3"] ?? "",
-            vitaminB6: _data[index]["vitaminB6"] ?? "",
-            vitaminB9: _data[index]["vitaminB9"] ?? "",
-            vitaminB12: _data[index]["vitaminB12"] ?? "",
-            vitaminC: _data[index]["vitaminC"] ?? "",
-            vitaminD: _data[index]["vitaminD"] ?? "",
-            vitaminE: _data[index]["vitaminE"] ?? "",
-            vitaminK: _data[index]["vitaminK"] ?? "",
-            omega3: _data[index]["omega3"] ?? "",
-            omega6: _data[index]["omega6"] ?? "",
-            alcohol: _data[index]["alcohol"] ?? "",
-            biotin: _data[index]["biotin"] ?? "",
-            butyricAcid: _data[index]["butyricAcid"] ?? "",
-            caffeine: _data[index]["caffeine"] ?? "",
-            capricAcid: _data[index]["capricAcid"] ?? "",
-            caproicAcid: _data[index]["caproicAcid"] ?? "",
-            caprylicAcid: _data[index]["caprylicAcid"] ?? "",
-            chloride: _data[index]["chloride"] ?? "",
-            chromium: _data[index]["chromium"] ?? "",
-            copper: _data[index]["copper"] ?? "",
-            docosahexaenoicAcid: _data[index]["docosahexaenoicAcid"] ?? "",
-            eicosapentaenoicAcid: _data[index]["eicosapentaenoicAcid"] ?? "",
-            erucicAcid: _data[index]["erucicAcid"] ?? "",
-            fluoride: _data[index]["fluoride"] ?? "",
-            iodine: _data[index]["iodine"] ?? "",
-            manganese: _data[index]["manganese"] ?? "",
-            molybdenum: _data[index]["molybdenum"] ?? "",
-            myristicAcid: _data[index]["myristicAcid"] ?? "",
-            oleicAcid: _data[index]["oleicAcid"] ?? "",
-            palmiticAcid: _data[index]["palmiticAcid"] ?? "",
-            pantothenicAcid: _data[index]["pantothenicAcid"] ?? "",
-            selenium: _data[index]["selenium"] ?? "",
-            stearicAcid: _data[index]["stearicAcid"] ?? "",
+            foodItemData: FoodDefaultData(),
           );
         });
 
-        return foodList;
+        List<ListFoodItem> foodList = generateFoodList;
+
+        for (int i = 0; i < foodList.length; i++) {
+
+          foodList[i].foodItemData = await CheckFoodBarcode( foodList[i].barcode);
+
+        }
+
+        return generateFoodList;
 
       } catch (exception) {
         print(exception);
@@ -430,10 +385,10 @@ GetUserNutritionData(String date) async {
 
     return UserNutritionModel(
         date: _data["date"] ?? "",
-        foodListItemsBreakfast: ToListFoodItem(_data["foodListItemsBreakfast"]),
-        foodListItemsLunch: ToListFoodItem(_data["foodListItemsLunch"]),
-        foodListItemsDinner: ToListFoodItem(_data["foodListItemsDinner"]),
-        foodListItemsSnacks: ToListFoodItem(_data["foodListItemsSnacks"]),
+        foodListItemsBreakfast: await ToListFoodItem(_data["foodListItemsBreakfast"]),
+        foodListItemsLunch: await ToListFoodItem(_data["foodListItemsLunch"]),
+        foodListItemsDinner: await ToListFoodItem(_data["foodListItemsDinner"]),
+        foodListItemsSnacks: await ToListFoodItem(_data["foodListItemsSnacks"]),
     );
 
   } catch (exception) {

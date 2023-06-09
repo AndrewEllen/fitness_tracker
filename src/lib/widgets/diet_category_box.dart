@@ -22,6 +22,7 @@ class DietCategoryBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return ScreenWidthExpandingContainer(
       minHeight: bigContainerMin/2,
       margin: margin,
@@ -35,7 +36,7 @@ class DietCategoryBox extends StatelessWidget {
               largeTitle: true,
             ),
           ),
-          ListView.builder(
+          context.read<UserNutritionData>().isCurrentFoodItemLoaded ? ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
             itemCount: foodList.length,
             shrinkWrap: true,
@@ -48,7 +49,7 @@ class DietCategoryBox extends StatelessWidget {
                 onTapIcon: () => context.read<UserNutritionData>().deleteFoodFromDiary(index, title),
               );
               },
-          ),
+          ) : const SizedBox.shrink(),
           Stack(
             children: [
               DietCategoryAddBar(

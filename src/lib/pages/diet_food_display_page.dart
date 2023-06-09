@@ -92,8 +92,6 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
   @override
   Widget build(BuildContext context) {
 
-    context.watch<UserNutritionData>().isCurrentFoodItemLoaded;
-
     InitializeControllers();
 
     double _margin = 15;
