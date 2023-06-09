@@ -36,7 +36,7 @@ SearchOFF(String value) async {
   ProductSearchQueryConfiguration(
     parametersList: <Parameter>[
       SearchTerms(terms: [value]),
-    ], version: ProductQueryVersion.v3,
+    ], version: ProductQueryVersion.v3, language: OpenFoodFactsLanguage.ENGLISH, country: OpenFoodFactsCountry.UNITED_KINGDOM
   );
 
   SearchResult result = await OpenFoodAPIClient.searchProducts(

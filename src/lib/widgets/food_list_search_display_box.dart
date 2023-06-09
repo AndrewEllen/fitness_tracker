@@ -146,6 +146,19 @@ class _FoodListSearchDisplayBoxState extends State<FoodListSearchDisplayBox> {
             ),
           ),
         ),
+        subtitle: Padding(
+          padding: EdgeInsets.only(
+            left: widget.width/8,
+            bottom: 10,
+          ),
+          child: const Text(
+            "Per 100g",
+            style: TextStyle(
+                color: Colors.white70,
+                fontSize: 14
+            ),
+          ),
+        ),
         trailing: widget.icon != null && widget.icon2 != null ?
         Padding(
           padding: const EdgeInsets.all(8.0),
