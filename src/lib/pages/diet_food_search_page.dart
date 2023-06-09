@@ -100,27 +100,12 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
   Future<void> AddFoodItem(String barcode, String servings, String servingSize) async {
 
-    try {
+    FoodItem newFoodItem = CheckFoodBarcode(barcode);
 
-      print("Firebase");
-      FoodItem newFoodItem = await GetFoodDataFromFirebase(barcode);
+    context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
 
-      context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
-
-      context.read<UserNutritionData>().updateCurrentFoodItemServings(servings);
-      context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSize);
-
-    } catch (error){
-
-      print("OpenFF");
-      ProductResultV3 product = await checkFoodBarcodeOpenFF(barcode);
-
-      context.read<UserNutritionData>().setCurrentFoodItemFromOpenFF(product, barcode);
-
-      context.read<UserNutritionData>().updateCurrentFoodItemServings(servings);
-      context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSize);
-
-    }
+    context.read<UserNutritionData>().updateCurrentFoodItemServings(servings);
+    context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSize);
 
     searchController.text = "";
 

@@ -99,19 +99,8 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
               //Commented out to avoid spam on the API calls.
             if (barcodeDisplayValue != null && !_isScanned) {
 
-              try {
-
-                print("Firebase");
-                FoodItem newFoodItem = await GetFoodDataFromFirebase(barcodeDisplayValue);
-                context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
-
-              } catch (error){
-
-                print("OpenFF");
-                ProductResultV3 product = await checkFoodBarcodeOpenFF(barcodeDisplayValue);
-                context.read<UserNutritionData>().setCurrentFoodItemFromOpenFF(product, barcodeDisplayValue);
-
-              }
+              FoodItem newFoodItem = CheckFoodBarcode(barcodeDisplayValue);
+              context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
 
               _isScanned = true;
               print(context.read<UserNutritionData>().currentFoodItem.foodName);
