@@ -4,6 +4,7 @@ import 'package:fitness_tracker/models/exercise_model.dart';
 import 'package:fitness_tracker/models/routines_model.dart';
 import 'package:fitness_tracker/models/stats_model.dart';
 import 'package:fitness_tracker/models/training_plan_model.dart';
+import 'package:fitness_tracker/models/user_custom_foods.dart';
 import 'package:fitness_tracker/models/user_nutrition_model.dart';
 
 import '../models/food_data_list_item.dart';
@@ -195,4 +196,16 @@ void UpdateUserNutritionHistoryData(UserNutritionHistoryModel userNutritionHisto
       .collection("nutrition-history-data")
       .doc("history")
       .set({"history": userNutritionHistory.toMap()});
+}
+
+void UpdateUserCustomFoodData(UserNutritionCustomFoodModel userNutritionCustomFood) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .collection("nutrition-custom-food-data")
+      .doc("food")
+      .set({"food": userNutritionCustomFood.toMap()});
 }

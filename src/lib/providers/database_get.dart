@@ -3,6 +3,7 @@ import 'package:fitness_tracker/helpers/nutrition_tracker.dart';
 import 'package:fitness_tracker/models/exercise_model.dart';
 import 'package:fitness_tracker/models/routines_model.dart';
 import 'package:fitness_tracker/models/training_plan_model.dart';
+import 'package:fitness_tracker/models/user_custom_foods.dart';
 import 'package:fitness_tracker/models/user_nutrition_model.dart';
 import 'package:fitness_tracker/providers/user_nutrition_data.dart';
 import 'package:flutter/cupertino.dart';
@@ -421,6 +422,32 @@ GetUserNutritionHistory() async {
     final _data = snapshot.get("history");
 
     return UserNutritionHistoryModel(
+      barcodes: List<String>.from(_data["barcodes"] as List),
+      foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
+      foodServings: List<String>.from(_data["foodServings"] as List),
+      foodServingSize: List<String>.from(_data["foodServingSize"] as List),
+    );
+
+  } catch (exception) {
+    print(exception);
+  }
+}
+
+GetUserCustomFood() async {
+  try {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc("${firebaseAuth.currentUser?.uid.toString()}")
+        .collection("nutrition-custom-food-data")
+        .doc("food")
+        .get();
+
+    final _data = snapshot.get("food");
+
+    return UserNutritionCustomFoodModel(
       barcodes: List<String>.from(_data["barcodes"] as List),
       foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
       foodServings: List<String>.from(_data["foodServings"] as List),

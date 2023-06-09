@@ -1,4 +1,5 @@
 import 'package:fitness_tracker/exports.dart';
+import 'package:fitness_tracker/models/user_custom_foods.dart';
 import 'package:fitness_tracker/models/user_nutrition_history_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -399,6 +400,31 @@ class UserNutritionData with ChangeNotifier {
       barcodes: [], foodListItemNames: [], foodServings: [], foodServingSize: []);
 
   UserNutritionHistoryModel get userNutritionHistory => _userNutritionHistory;
+
+  late UserNutritionCustomFoodModel _userNutritionCustomFood = UserNutritionCustomFoodModel(
+      barcodes: [], foodListItemNames: [], foodServings: [], foodServingSize: []);
+
+  UserNutritionCustomFoodModel get userNutritionCustomFood => _userNutritionCustomFood;
+
+  void setCustomFood(UserNutritionCustomFoodModel userCustomFood) {
+    _userNutritionCustomFood = userCustomFood;
+
+  }
+
+  void updateCustomFoodList(String barcode, String foodName, String servings, String servingSize) {
+
+    _userNutritionCustomFood.barcodes.add(barcode);
+    _userNutritionCustomFood.foodListItemNames.add(foodName);
+    _userNutritionCustomFood.foodServings.add(servings);
+    _userNutritionCustomFood.foodServingSize.add(servingSize);
+
+    print(_userNutritionCustomFood.barcodes.length);
+
+    UpdateUserCustomFoodData(userNutritionCustomFood);
+
+    notifyListeners();
+
+  }
 
   void setFoodHistory(UserNutritionHistoryModel userHistory) {
     _userNutritionHistory = userHistory;

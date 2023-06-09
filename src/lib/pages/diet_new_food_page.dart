@@ -224,6 +224,17 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
   }
 
   void SaveFoodItem() {
+
+    context.read<UserNutritionData>().updateCustomFoodList(
+      barcodeController.text,
+      foodNameController.text,
+      servingsController.text,
+      servingSizeController.text,
+    );
+
+    context.read<UserNutritionData>().updateCurrentFoodItemServings(servingsController.text);
+    context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSizeController.text);
+
     context.read<UserNutritionData>().updateCurrentFoodItem(
       barcodeController.text,
       foodNameController.text,
@@ -337,6 +348,22 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     width: _width,
                     formName: "Name",
                     numbersOnly: false,
+                    centerForm: true,
+                  ),
+                  FoodNutritionListFormField(
+                    controller: servingsController,
+                    formKey: servingskey,
+                    width: _width,
+                    formName: "Servings",
+                    numbersOnly: true,
+                    centerForm: true,
+                  ),
+                  FoodNutritionListFormField(
+                    controller: servingSizeController,
+                    formKey: servingSizekey,
+                    width: _width,
+                    formName: "Serving Size",
+                    numbersOnly: true,
                     centerForm: true,
                   ),
                   SizedBox(

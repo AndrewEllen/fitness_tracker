@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
+import 'package:fitness_tracker/models/user_custom_foods.dart';
 import 'package:fitness_tracker/models/user_nutrition_history_model.dart';
 import 'package:fitness_tracker/models/user_nutrition_model.dart';
 import 'package:fitness_tracker/providers/user_exercises.dart';
@@ -35,6 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
   late Map userData;
   late UserNutritionModel userNutrition;
   late UserNutritionHistoryModel userNutritionHistory;
+  late UserNutritionCustomFoodModel userCustomFood;
 
   void fetchData() async {
     categories = await GetPreDefinedCategories();
@@ -52,6 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
     try {userNutrition = await GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString());} catch (exception) {print(exception);}
 
     try {userNutritionHistory = await GetUserNutritionHistory();} catch (exception) {print(exception);}
+    try {userCustomFood = await GetUserCustomFood();} catch (exception) {print(exception);}
 
     try {context.read<UserExercisesList>().inititateExerciseList(exercises);} catch (exception) {print(exception);}
     try {context.read<ExerciseList>().setCategoriesInititial(categories);} catch (exception) {print(exception);}
@@ -62,6 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
     try {context.read<UserNutritionData>().setCurrentFoodDiary(userNutrition);} catch (exception) {print(exception);}
 
     try {context.read<UserNutritionData>().setFoodHistory(userNutritionHistory);} catch (exception) {print(exception);}
+    try {context.read<UserNutritionData>().setCustomFood(userCustomFood);} catch (exception) {print(exception);}
 
     try {
       context.read<TrainingPlanProvider>().selectTrainingPlan(userData["selected-training-plan"]);
