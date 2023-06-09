@@ -230,52 +230,166 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
           child: Column(
             children: [
               Container(
-                height: height/10,
-                color: appTertiaryColour,
-                child: Center(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: appSecondaryColour, width: 1),
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () => context.read<PageChange>().changePageCache(BarcodeScannerPage(category: widget.category)),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.only(
-                                top: 5,
-                                bottom: 8,
-                                left: 18.0,
-                                right: 18.0,
+                decoration: BoxDecoration(
+                  color: appTertiaryColour.withAlpha(180),
+                ),
+                child: Row(
+                  children: [
+                    const Spacer(),
+                    Container(
+                      margin: const EdgeInsets.only(
+                        top: 8,
+                        bottom: 5,
+                      ),
+                      width: width/4,
+                      decoration: BoxDecoration(
+                        color: appTertiaryColour,
+                        border: Border.all(color: appSecondaryColour, width: 1),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => context.read<PageChange>().changePageCache(BarcodeScannerPage(category: widget.category)),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(
+                                  top: 5,
+                                  bottom: 8,
+                                  left: 18.0,
+                                  right: 18.0,
+                                ),
+                                child: Icon(
+                                    MdiIcons.tagTextOutline,
+                                    size: height/26,
+                                  ),
                               ),
-                              width: width/3,
-                              height: height/18,
-                              child: Icon(
-                                  MdiIcons.barcodeScan,
-                                  size: height/26,
-                                ),
-                            ),
-                            const FittedBox(
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  bottom: 4,
-                                ),
-                                child: Text(
-                                  "Scan Barcode",
-                                  style: TextStyle(
-                                    color: appSecondaryColour,
+                              const FittedBox(
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: 4,
+                                  ),
+                                  child: FittedBox(
+                                    fit: BoxFit.fitWidth,
+                                    child: Text(
+                                      "From Code",
+                                      style: TextStyle(
+                                        color: appSecondaryColour,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                    const Spacer(),
+                    Container(
+                      margin: const EdgeInsets.only(
+                        top: 8,
+                        bottom: 5,
+                      ),
+                      width: width/4,
+                      decoration: BoxDecoration(
+                        color: appTertiaryColour,
+                        border: Border.all(color: appSecondaryColour, width: 1),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => context.read<PageChange>().changePageCache(BarcodeScannerPage(category: widget.category)),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(
+                                  top: 5,
+                                  bottom: 8,
+                                  left: 18.0,
+                                  right: 18.0,
+                                ),
+                                child: Icon(
+                                  MdiIcons.foodForkDrink,
+                                  size: height/26,
+                                ),
+                              ),
+                              const FittedBox(
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: 4,
+                                  ),
+                                  child: FittedBox(
+                                    fit: BoxFit.fitWidth,
+                                    child: Text(
+                                      "Add New",
+                                      style: TextStyle(
+                                        color: appSecondaryColour,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    Container(
+                      margin: const EdgeInsets.only(
+                        top: 8,
+                        bottom: 5,
+                      ),
+                      width: width/4,
+                      decoration: BoxDecoration(
+                        color: appTertiaryColour,
+                        border: Border.all(color: appSecondaryColour, width: 1),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => context.read<PageChange>().changePageCache(BarcodeScannerPage(category: widget.category)),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(
+                                  top: 5,
+                                  bottom: 8,
+                                  left: 18.0,
+                                  right: 18.0,
+                                ),
+                                child: Icon(
+                                  MdiIcons.barcodeScan,
+                                  size: height/26,
+                                ),
+                              ),
+                              const FittedBox(
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: 4,
+                                  ),
+                                  child: FittedBox(
+                                    fit: BoxFit.fitWidth,
+                                    child: Text(
+                                      "Scan Barcode",
+                                      style: TextStyle(
+                                        color: appSecondaryColour,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                  ],
                 ),
               ),
               ListView.builder(

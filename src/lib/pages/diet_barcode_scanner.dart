@@ -99,7 +99,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
               //Commented out to avoid spam on the API calls.
             if (barcodeDisplayValue != null && !_isScanned) {
 
-              FoodItem newFoodItem = CheckFoodBarcode(barcodeDisplayValue);
+              FoodItem newFoodItem = await CheckFoodBarcode(barcodeDisplayValue);
               context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
 
               _isScanned = true;
