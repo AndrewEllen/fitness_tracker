@@ -11,6 +11,7 @@ import '../providers/page_change_provider.dart';
 import '../providers/user_nutrition_data.dart';
 import '../widgets/food_history_list_item_box.dart';
 import '../widgets/food_list_item_box.dart';
+import '../widgets/food_list_search_display_box.dart';
 import 'diet_food_display_page.dart';
 
 class FoodSearchPage extends StatefulWidget {
@@ -33,12 +34,25 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
   late UserNutritionHistoryModel foodHistory;
 
+  late List<FoodItem> foodItemsFromSearch = [];
+
   @override
   void initState() {
 
     foodHistory = context.read<UserNutritionData>().userNutritionHistory;
 
     super.initState();
+  }
+
+
+  void SearchOFFbyString(String value) async {
+
+    foodItemsFromSearch = await SearchOFF(value);
+
+    setState(() {
+      foodItemsFromSearch;
+    });
+
   }
 
 
@@ -109,6 +123,10 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
     }
 
     searchController.text = "";
+
+    setState(() {
+      foodHistory = context.read<UserNutritionData>().userNutritionHistory;
+    });
 
     context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
 
@@ -201,6 +219,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                   ),
                   onChanged: (value) => SearchFoodHistory(value),
                   onTapOutside: (value) => FocusManager.instance.primaryFocus?.unfocus(),
+                  onFieldSubmitted: (value) => SearchOFFbyString(value),
                 ),
               ),
             ),
@@ -233,6 +252,25 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                           foodHistory.foodServings[index],
                           foodHistory.foodServingSize[index],
                       ),
+                    );
+                  }),
+
+              ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: foodItemsFromSearch.length,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    return FoodListSearchDisplayBox(
+                      width: width,
+                      foodObject: foodItemsFromSearch[index],
+                      icon: Icons.add_box,
+                      iconColour: appSecondaryColour,
+                      onTapIcon: () {
+
+                        context.read<UserNutritionData>().setCurrentFoodItem(foodItemsFromSearch[index]);
+
+                        context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
+                      },
                     );
                   }),
             ],
