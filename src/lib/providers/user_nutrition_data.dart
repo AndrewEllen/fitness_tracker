@@ -344,12 +344,17 @@ class UserNutritionData with ChangeNotifier {
       _userNutritionHistory.foodServings.add(servings);
       _userNutritionHistory.foodServingSize.add(servingSize);
 
-      if (_userNutritionHistory.barcodes.length > 30) {
+      if (_userNutritionHistory.barcodes.length > 50) {
         _userNutritionHistory.barcodes.removeAt(0);
         _userNutritionHistory.foodListItemNames.removeAt(0);
         _userNutritionHistory.foodServings.removeAt(0);
         _userNutritionHistory.foodServingSize.removeAt(0);
       };
+
+      _userNutritionHistory.barcodes = _userNutritionHistory.barcodes.reversed.toList();
+      _userNutritionHistory.foodListItemNames = _userNutritionHistory.foodListItemNames.reversed.toList();
+      _userNutritionHistory.foodServings = _userNutritionHistory.foodServings..reversed.toList();
+      _userNutritionHistory.foodServingSize = _userNutritionHistory.foodServingSize.reversed.toList();
 
       UpdateUserNutritionHistoryData(userNutritionHistory);
 
@@ -364,14 +369,10 @@ class UserNutritionData with ChangeNotifier {
       _userNutritionHistory.foodServings.removeAt(index);
       _userNutritionHistory.foodServingSize.removeAt(index);
 
-      _userNutritionHistory.barcodes.add(barcode);
-      _userNutritionHistory.foodListItemNames.add(foodName);
-      _userNutritionHistory.foodServings.add(servings);
-      _userNutritionHistory.foodServingSize.add(servingSize);
-
-      UpdateUserNutritionHistoryData(userNutritionHistory);
-
-      notifyListeners();
+      _userNutritionHistory.barcodes.insert(0, barcode);
+      _userNutritionHistory.foodListItemNames.insert(0, foodName);
+      _userNutritionHistory.foodServings.insert(0, servings);
+      _userNutritionHistory.foodServingSize.insert(0, servingSize);
 
     }
 
