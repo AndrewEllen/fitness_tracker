@@ -1,5 +1,6 @@
 import 'package:fitness_tracker/widgets/screen_width_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
@@ -92,6 +93,8 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
   @override
   Widget build(BuildContext context) {
 
+    context.watch<UserNutritionData>().currentFoodItem;
+
     InitializeControllers();
 
     double _margin = 15;
@@ -116,7 +119,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
             minHeight: _bigContainerMin,
             maxHeight: _bigContainerMin*4,
             height: _height/3,
-            margin: _margin,
+            margin: 0,
             child: ListView(
               children: [
                 DietListHeaderBox(
@@ -154,6 +157,42 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                     child: AppButton(
                       buttonText: "Add to Diary",
                       onTap: AddToDiary,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      width: 1,
+                      color: appSecondaryColour,
+                    ),
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Clipboard.setData(ClipboardData(text: currentFoodItem.barcode));
+                    },
+                    child: Column(
+                      children: [
+                        const Center(
+                          child: Text(
+                            "Tap to Copy Code:",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            currentFoodItem.barcode,
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
