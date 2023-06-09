@@ -31,6 +31,58 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
   late final searchKey = GlobalKey<FormState>();
 
+  late UserNutritionHistoryModel foodHistory;
+
+  @override
+  void initState() {
+
+    foodHistory = context.read<UserNutritionData>().userNutritionHistory;
+
+    super.initState();
+  }
+
+
+  void SearchFoodHistory(String value) {
+
+    print("searching");
+
+    foodHistory = context.read<UserNutritionData>().userNutritionHistory;
+
+    UserNutritionHistoryModel foodHistorySearch = UserNutritionHistoryModel(
+        barcodes: [],
+        foodListItemNames: [],
+        foodServings: [],
+        foodServingSize: [],
+    );
+
+    if (value.isNotEmpty) {
+
+      foodHistory.foodListItemNames.asMap().forEach((index, item) {
+
+        if (item.toLowerCase().contains(value.toLowerCase())) {
+
+          print(item);
+
+          foodHistorySearch.foodListItemNames.add(foodHistory.foodListItemNames[index]);
+          foodHistorySearch.barcodes.add(foodHistory.barcodes[index]);
+          foodHistorySearch.foodServings.add(foodHistory.foodServings[index]);
+          foodHistorySearch.foodServingSize.add(foodHistory.foodServingSize[index]);
+
+        }
+
+      });
+
+      setState(() {
+        foodHistory = foodHistorySearch;
+      });
+
+    } else {
+      setState(() {
+        foodHistory;
+      });
+    }
+
+  }
 
   Future<void> AddFoodItem(String barcode, String servings, String servingSize) async {
 
@@ -56,15 +108,16 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
     }
 
+    searchController.text = "";
+
     context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
 
   }
 
-
   @override
   Widget build(BuildContext context) {
 
-    UserNutritionHistoryModel foodHistory = context.watch<UserNutritionData>().userNutritionHistory;
+    context.watch<UserNutritionData>().userNutritionHistory;
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
@@ -146,6 +199,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
+                  onChanged: (value) => SearchFoodHistory(value),
                   onTapOutside: (value) => FocusManager.instance.primaryFocus?.unfocus(),
                 ),
               ),
