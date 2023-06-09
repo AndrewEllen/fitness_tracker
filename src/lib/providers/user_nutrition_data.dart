@@ -344,7 +344,7 @@ class UserNutritionData with ChangeNotifier {
       _userNutritionHistory.foodServings.add(servings);
       _userNutritionHistory.foodServingSize.add(servingSize);
 
-      if (_userNutritionHistory.barcodes.length > 20) {
+      if (_userNutritionHistory.barcodes.length > 30) {
         _userNutritionHistory.barcodes.removeAt(0);
         _userNutritionHistory.foodListItemNames.removeAt(0);
         _userNutritionHistory.foodServings.removeAt(0);
