@@ -98,9 +98,9 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
   }
 
-  Future<void> AddFoodItem(String barcode, String servings, String servingSize) async {
+  void AddFoodItem(String barcode, String servings, String servingSize) async {
 
-    FoodItem newFoodItem = CheckFoodBarcode(barcode);
+    FoodItem newFoodItem = await CheckFoodBarcode(barcode);
 
     context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
 

@@ -517,270 +517,270 @@ class UserNutritionData with ChangeNotifier {
     _selenium = 0.0;
     _stearicAcid = 0.0;
 
-    void calculateTotal(listOfFood) {
+    void calculateTotal(List<ListFoodItem> listOfFood) {
       listOfFood.forEach((foodItem) {
         try {
-          _calories += double.parse(foodItem.foodCalories);
+          _calories += double.parse(foodItem.foodItemData.calories);
         } catch (exception) {
           _calories += 0;
         }
         try {
-          _protein += double.parse(foodItem.proteins);
+          _protein += double.parse(foodItem.foodItemData.proteins);
         } catch (exception) {
           _protein += 0;
         }
         try {
-          _fat += double.parse(foodItem.fat);
+          _fat += double.parse(foodItem.foodItemData.fat);
         } catch (exception) {
           _fat += 0;
         }
         try {
-          _carbohydrates += double.parse(foodItem.carbs);
+          _carbohydrates += double.parse(foodItem.foodItemData.carbs);
         } catch (exception) {
           _carbohydrates += 0;
         }
         try {
-          _fiber += double.parse(foodItem.fiber);
+          _fiber += double.parse(foodItem.foodItemData.fiber);
         } catch (exception) {
           _fiber += 0;
         }
         try {
-          _sugar += double.parse(foodItem.sugars);
+          _sugar += double.parse(foodItem.foodItemData.sugars);
         } catch (exception) {
           _sugar += 0;
         }
         try {
-          _saturatedFat += double.parse(foodItem.saturatedFat);
+          _saturatedFat += double.parse(foodItem.foodItemData.saturatedFat);
         } catch (exception) {
           _saturatedFat += 0;
         }
         try {
-          _polyUnsaturatedFat += double.parse(foodItem.polyunsaturatedFat);
+          _polyUnsaturatedFat += double.parse(foodItem.foodItemData.polyUnsaturatedFat);
         } catch (exception) {
           _polyUnsaturatedFat += 0;
         }
         try {
-          _monoUnsaturatedFat += double.parse(foodItem.monounsaturatedFat);
+          _monoUnsaturatedFat += double.parse(foodItem.foodItemData.monoUnsaturatedFat);
         } catch (exception) {
           _monoUnsaturatedFat += 0;
         }
         try {
-          _transFat += double.parse(foodItem.transFat);
+          _transFat += double.parse(foodItem.foodItemData.transFat);
         } catch (exception) {
           _transFat += 0;
         }
         try {
-          _cholesterol += double.parse(foodItem.cholesterol);
+          _cholesterol += double.parse(foodItem.foodItemData.cholesterol);
         } catch (exception) {
           _cholesterol += 0;
         }
         try {
-          _calcium += double.parse(foodItem.calcium);
+          _calcium += double.parse(foodItem.foodItemData.calcium);
         } catch (exception) {
           _calcium += 0;
         }
         try {
-          _iron += double.parse(foodItem.iron);
+          _iron += double.parse(foodItem.foodItemData.iron);
         } catch (exception) {
           _iron += 0;
         }
         try {
-          _sodium += double.parse(foodItem.sodium);
+          _sodium += double.parse(foodItem.foodItemData.sodium);
         } catch (exception) {
           _sodium += 0;
         }
         try {
-          _zinc += double.parse(foodItem.zinc);
+          _zinc += double.parse(foodItem.foodItemData.zinc);
         } catch (exception) {
           _zinc += 0;
         }
         try {
-          _magnesium += double.parse(foodItem.magnesium);
+          _magnesium += double.parse(foodItem.foodItemData.magnesium);
         } catch (exception) {
           _magnesium += 0;
         }
         try {
-          _potassium += double.parse(foodItem.potassium);
+          _potassium += double.parse(foodItem.foodItemData.potassium);
         } catch (exception) {
           _potassium += 0;
         }
         try {
-          _vitaminA += double.parse(foodItem.vitaminA);
+          _vitaminA += double.parse(foodItem.foodItemData.vitaminA);
         } catch (exception) {
           _vitaminA += 0;
         }
         try {
-          _vitaminB1 += double.parse(foodItem.vitaminB1);
+          _vitaminB1 += double.parse(foodItem.foodItemData.vitaminB1);
         } catch (exception) {
           _vitaminB1 += 0;
         }
         try {
-          _vitaminB2 += double.parse(foodItem.vitaminB2);
+          _vitaminB2 += double.parse(foodItem.foodItemData.vitaminB2);
         } catch (exception) {
           _vitaminB2 += 0;
         }
         try {
-          _vitaminB3 += double.parse(foodItem.vitaminB3);
+          _vitaminB3 += double.parse(foodItem.foodItemData.vitaminB3);
         } catch (exception) {
           _vitaminB3 += 0;
         }
         try {
-          _vitaminB6 += double.parse(foodItem.vitaminB6);
+          _vitaminB6 += double.parse(foodItem.foodItemData.vitaminB6);
         } catch (exception) {
           _vitaminB6 += 0;
         }
         try {
-          _vitaminB9 += double.parse(foodItem.vitaminB9);
+          _vitaminB9 += double.parse(foodItem.foodItemData.vitaminB9);
         } catch (exception) {
           _vitaminB9 += 0;
         }
         try {
-          _vitaminB12 += double.parse(foodItem.vitaminB12);
+          _vitaminB12 += double.parse(foodItem.foodItemData.vitaminB12);
         } catch (exception) {
           _vitaminB12 += 0;
         }
         try {
-          _vitaminC += double.parse(foodItem.vitaminC);
+          _vitaminC += double.parse(foodItem.foodItemData.vitaminC);
         } catch (exception) {
           _vitaminC += 0;
         }
         try {
-          _vitaminD += double.parse(foodItem.vitaminD);
+          _vitaminD += double.parse(foodItem.foodItemData.vitaminD);
         } catch (exception) {
           _vitaminD += 0;
         }
         try {
-          _vitaminE += double.parse(foodItem.vitaminE);
+          _vitaminE += double.parse(foodItem.foodItemData.vitaminE);
         } catch (exception) {
           _vitaminE += 0;
         }
         try {
-          _vitaminK += double.parse(foodItem.vitaminK);
+          _vitaminK += double.parse(foodItem.foodItemData.vitaminK);
         } catch (exception) {
           _vitaminK += 0;
         }
         try {
-          _omega3 += double.parse(foodItem.omega3);
+          _omega3 += double.parse(foodItem.foodItemData.omega3);
         } catch (exception) {
           _omega3 += 0;
         }
         try {
-          _omega6 += double.parse(foodItem.omega6);
+          _omega6 += double.parse(foodItem.foodItemData.omega6);
         } catch (exception) {
           _omega6 += 0;
         }
         try {
-          _alcohol += double.parse(foodItem.alcohol);
+          _alcohol += double.parse(foodItem.foodItemData.alcohol);
         } catch (exception) {
           _alcohol += 0;
         }
         try {
-          _biotin += double.parse(foodItem.biotin);
+          _biotin += double.parse(foodItem.foodItemData.biotin);
         } catch (exception) {
           _biotin += 0;
         }
         try {
-          _butyricAcid += double.parse(foodItem.butyricAcid);
+          _butyricAcid += double.parse(foodItem.foodItemData.butyricAcid);
         } catch (exception) {
           _butyricAcid += 0;
         }
         try {
-          _caffeine += double.parse(foodItem.caffeine);
+          _caffeine += double.parse(foodItem.foodItemData.caffeine);
         } catch (exception) {
           _caffeine += 0;
         }
         try {
-          _capricAcid += double.parse(foodItem.capricAcid);
+          _capricAcid += double.parse(foodItem.foodItemData.capricAcid);
         } catch (exception) {
           _capricAcid += 0;
         }
         try {
-          _caproicAcid += double.parse(foodItem.caproicAcid);
+          _caproicAcid += double.parse(foodItem.foodItemData.caproicAcid);
         } catch (exception) {
           _caproicAcid += 0;
         }
         try {
-          _caprylicAcid += double.parse(foodItem.caprylicAcid);
+          _caprylicAcid += double.parse(foodItem.foodItemData.caprylicAcid);
         } catch (exception) {
           _caprylicAcid += 0;
         }
         try {
-          _chloride += double.parse(foodItem.chloride);
+          _chloride += double.parse(foodItem.foodItemData.chloride);
         } catch (exception) {
           _chloride += 0;
         }
         try {
-          _chromium += double.parse(foodItem.chromium);
+          _chromium += double.parse(foodItem.foodItemData.chromium);
         } catch (exception) {
           _chromium += 0;
         }
         try {
-          _copper += double.parse(foodItem.copper);
+          _copper += double.parse(foodItem.foodItemData.copper);
         } catch (exception) {
           _copper += 0;
         }
         try {
-          _docosahexaenoicAcid += double.parse(foodItem.docosahexaenoicAcid);
+          _docosahexaenoicAcid += double.parse(foodItem.foodItemData.docosahexaenoicAcid);
         } catch (exception) {
           _docosahexaenoicAcid += 0;
         }
         try {
-          _eicosapentaenoicAcid += double.parse(foodItem.eicosapentaenoicAcid);
+          _eicosapentaenoicAcid += double.parse(foodItem.foodItemData.eicosapentaenoicAcid);
         } catch (exception) {
           _eicosapentaenoicAcid += 0;
         }
         try {
-          _erucicAcid += double.parse(foodItem.erucicAcid);
+          _erucicAcid += double.parse(foodItem.foodItemData.erucicAcid);
         } catch (exception) {
           _erucicAcid += 0;
         }
         try {
-          _fluoride += double.parse(foodItem.fluoride);
+          _fluoride += double.parse(foodItem.foodItemData.fluoride);
         } catch (exception) {
           _fluoride += 0;
         }
         try {
-          _iodine += double.parse(foodItem.iodine);
+          _iodine += double.parse(foodItem.foodItemData.iodine);
         } catch (exception) {
           _iodine += 0;
         }
         try {
-          _manganese += double.parse(foodItem.manganese);
+          _manganese += double.parse(foodItem.foodItemData.manganese);
         } catch (exception) {
           _manganese += 0;
         }
         try {
-          _molybdenum += double.parse(foodItem.molybdenum);
+          _molybdenum += double.parse(foodItem.foodItemData.molybdenum);
         } catch (exception) {
           _molybdenum += 0;
         }
         try {
-          _myristicAcid += double.parse(foodItem.myristicAcid);
+          _myristicAcid += double.parse(foodItem.foodItemData.myristicAcid);
         } catch (exception) {
           _myristicAcid += 0;
         }
         try {
-          _oleicAcid += double.parse(foodItem.oleicAcid);
+          _oleicAcid += double.parse(foodItem.foodItemData.oleicAcid);
         } catch (exception) {
           _oleicAcid += 0;
         }
         try {
-          _palmiticAcid += double.parse(foodItem.palmiticAcid);
+          _palmiticAcid += double.parse(foodItem.foodItemData.palmiticAcid);
         } catch (exception) {
           _palmiticAcid += 0;
         }
         try {
-          _pantothenicAcid += double.parse(foodItem.pantothenicAcid);
+          _pantothenicAcid += double.parse(foodItem.foodItemData.pantothenicAcid);
         } catch (exception) {
           _pantothenicAcid += 0;
         }
         try {
-          _selenium += double.parse(foodItem.selenium);
+          _selenium += double.parse(foodItem.foodItemData.selenium);
         } catch (exception) {
           _selenium += 0;
         }
         try {
-          _stearicAcid += double.parse(foodItem.stearicAcid);
+          _stearicAcid += double.parse(foodItem.foodItemData.stearicAcid);
         } catch (exception) {
           _stearicAcid += 0;
         }
@@ -792,7 +792,7 @@ class UserNutritionData with ChangeNotifier {
     calculateTotal(_userDailyNutrition.foodListItemsDinner);
     calculateTotal(_userDailyNutrition.foodListItemsSnacks);
 
-    //notifyListeners();
+    notifyListeners();
 
   }
 
@@ -804,9 +804,9 @@ class UserNutritionData with ChangeNotifier {
     print("LOADED ITEMS");
     _isCurrentFoodItemLoaded = true;
 
-    notifyListeners();
-
     calculateMacros();
+
+    notifyListeners();
 
   }
 
@@ -822,6 +822,8 @@ class UserNutritionData with ChangeNotifier {
     }
 
     UpdateUserNutritionalData(_userDailyNutrition);
+
+    calculateMacros();
 
     notifyListeners();
   }
@@ -873,6 +875,8 @@ class UserNutritionData with ChangeNotifier {
     }
 
     UpdateUserNutritionalData(_userDailyNutrition);
+
+    calculateMacros();
 
     notifyListeners();
   }
