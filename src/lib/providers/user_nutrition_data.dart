@@ -1,4 +1,5 @@
 import 'package:fitness_tracker/exports.dart';
+import 'package:fitness_tracker/models/user_nutrition_history_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
@@ -324,6 +325,62 @@ class UserNutritionData with ChangeNotifier {
 
   String get formattedNutritionDate => FormatDate(_nutritionDate);
 
+
+  late UserNutritionHistoryModel _userNutritionHistory = UserNutritionHistoryModel(
+      barcodes: [], foodListItemNames: [], foodServings: [], foodServingSize: []);
+
+  UserNutritionHistoryModel get userNutritionHistory => _userNutritionHistory;
+
+  void setFoodHistory(UserNutritionHistoryModel userHistory) {
+    _userNutritionHistory = userHistory;
+
+  }
+
+  void updateFoodHistory(String barcode, String foodName, String servings, String servingSize) {
+
+    if (!_userNutritionHistory.barcodes.contains(barcode)) {
+      _userNutritionHistory.barcodes.add(barcode);
+      _userNutritionHistory.foodListItemNames.add(foodName);
+      _userNutritionHistory.foodServings.add(servings);
+      _userNutritionHistory.foodServingSize.add(servingSize);
+
+      if (_userNutritionHistory.barcodes.length > 50) {
+        _userNutritionHistory.barcodes.removeAt(0);
+        _userNutritionHistory.foodListItemNames.removeAt(0);
+        _userNutritionHistory.foodServings.removeAt(0);
+        _userNutritionHistory.foodServingSize.removeAt(0);
+      };
+
+      _userNutritionHistory.barcodes = _userNutritionHistory.barcodes.reversed.toList();
+      _userNutritionHistory.foodListItemNames = _userNutritionHistory.foodListItemNames.reversed.toList();
+      _userNutritionHistory.foodServings = _userNutritionHistory.foodServings.reversed.toList();
+      _userNutritionHistory.foodServingSize = _userNutritionHistory.foodServingSize.reversed.toList();
+
+      UpdateUserNutritionHistoryData(userNutritionHistory);
+
+      notifyListeners();
+
+    } else if (_userNutritionHistory.barcodes.contains(barcode)) {
+
+      int index = _userNutritionHistory.barcodes.indexOf(barcode);
+
+      _userNutritionHistory.barcodes.removeAt(index);
+      _userNutritionHistory.foodListItemNames.removeAt(index);
+      _userNutritionHistory.foodServings.removeAt(index);
+      _userNutritionHistory.foodServingSize.removeAt(index);
+
+      _userNutritionHistory.barcodes.insert(0, barcode);
+      _userNutritionHistory.foodListItemNames.insert(0, foodName);
+      _userNutritionHistory.foodServings.insert(0, servings);
+      _userNutritionHistory.foodServingSize.insert(0, servingSize);
+
+      UpdateUserNutritionHistoryData(userNutritionHistory);
+
+      notifyListeners();
+
+    }
+
+  }
 
   String convertToUsableData(dynamic valueToConvert) {
     if (valueToConvert != null) {
@@ -1387,137 +1444,6 @@ class UserNutritionData with ChangeNotifier {
       pantothenicAcid: currentFoodItem.pantothenicAcid,
       selenium: currentFoodItem.selenium,
       stearicAcid: currentFoodItem.stearicAcid,
-    );
-    changeCurrentFoodItemLoadingStatus(true);
-  }
-
-  void setCurrentFoodItemFromOpenFF(ProductResultV3 product,
-      String barcodeDisplayValue) {
-    changeCurrentFoodItemLoadingStatus(false);
-
-    _currentFoodItem = FoodItem(
-        barcode: barcodeDisplayValue,
-        foodName: convertToUsableData(product.product?.productName),
-        quantity: convertToUsableData(
-            product.product?.quantity?.replaceAll(RegExp("[a-zA-Z:\s]"), "") ??
-                "1"),
-        servingSize: convertToUsableData(
-            product.product?.servingSize?.replaceAll(
-                RegExp("[a-zA-Z:\s]"), "") ?? "100"),
-        servings: "1",
-        calories: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.energyKCal, PerSize.oneHundredGrams)),
-        kiloJoules: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.energyKJ, PerSize.oneHundredGrams)),
-        proteins: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.proteins, PerSize.oneHundredGrams)),
-        carbs: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.carbohydrates, PerSize.oneHundredGrams)),
-        fiber: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.fiber, PerSize.oneHundredGrams)),
-        sugars: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.sugars, PerSize.oneHundredGrams)),
-        fat: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.fat, PerSize.oneHundredGrams)),
-        saturatedFat: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.saturatedFat, PerSize.oneHundredGrams)),
-        polyUnsaturatedFat: convertToUsableData(
-            product.product?.nutriments?.getValue(
-                Nutrient.polyunsaturatedFat, PerSize.oneHundredGrams)),
-        monoUnsaturatedFat: convertToUsableData(
-            product.product?.nutriments?.getValue(
-                Nutrient.monounsaturatedFat, PerSize.oneHundredGrams)),
-        transFat: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.transFat, PerSize.oneHundredGrams)),
-        cholesterol: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.cholesterol, PerSize.oneHundredGrams)),
-        calcium: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.calcium, PerSize.oneHundredGrams)),
-        iron: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.iron, PerSize.oneHundredGrams)),
-        sodium: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.sodium, PerSize.oneHundredGrams)),
-        zinc: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.zinc, PerSize.oneHundredGrams)),
-        magnesium: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.magnesium, PerSize.oneHundredGrams)),
-        potassium: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.potassium, PerSize.oneHundredGrams)),
-        vitaminA: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.vitaminA, PerSize.oneHundredGrams)),
-        vitaminB1: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.vitaminB1, PerSize.oneHundredGrams)),
-        vitaminB2: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.vitaminB2, PerSize.oneHundredGrams)),
-        vitaminB3: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.vitaminPP, PerSize.oneHundredGrams)),
-        vitaminB6: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.vitaminB6, PerSize.oneHundredGrams)),
-        vitaminB9: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.vitaminB9, PerSize.oneHundredGrams)),
-        vitaminB12: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.vitaminB12, PerSize.oneHundredGrams)),
-        vitaminC: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.vitaminC, PerSize.oneHundredGrams)),
-        vitaminD: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.vitaminD, PerSize.oneHundredGrams)),
-        vitaminE: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.vitaminE, PerSize.oneHundredGrams)),
-        vitaminK: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.vitaminK, PerSize.oneHundredGrams)),
-        omega3: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.omega3, PerSize.oneHundredGrams)),
-        omega6: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.omega6, PerSize.oneHundredGrams)),
-        alcohol: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.alcohol, PerSize.oneHundredGrams)),
-        biotin: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.biotin, PerSize.oneHundredGrams)),
-        butyricAcid: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.butyricAcid, PerSize.oneHundredGrams)),
-        caffeine: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.caffeine, PerSize.oneHundredGrams)),
-        capricAcid: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.capricAcid, PerSize.oneHundredGrams)),
-        caproicAcid: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.caproicAcid, PerSize.oneHundredGrams)),
-        caprylicAcid: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.caprylicAcid, PerSize.oneHundredGrams)),
-        chloride: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.chloride, PerSize.oneHundredGrams)),
-        chromium: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.chromium, PerSize.oneHundredGrams)),
-        copper: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.copper, PerSize.oneHundredGrams)),
-        docosahexaenoicAcid: convertToUsableData(
-            product.product?.nutriments?.getValue(
-                Nutrient.docosahexaenoicAcid, PerSize.oneHundredGrams)),
-        eicosapentaenoicAcid: convertToUsableData(
-            product.product?.nutriments?.getValue(
-                Nutrient.eicosapentaenoicAcid, PerSize.oneHundredGrams)),
-        erucicAcid: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.erucicAcid, PerSize.oneHundredGrams)),
-        fluoride: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.fluoride, PerSize.oneHundredGrams)),
-        iodine: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.iodine, PerSize.oneHundredGrams)),
-        manganese: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.manganese, PerSize.oneHundredGrams)),
-        molybdenum: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.molybdenum, PerSize.oneHundredGrams)),
-        myristicAcid: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.myristicAcid, PerSize.oneHundredGrams)),
-        oleicAcid: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.oleicAcid, PerSize.oneHundredGrams)),
-        palmiticAcid: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.palmiticAcid, PerSize.oneHundredGrams)),
-        pantothenicAcid: convertToUsableData(
-            product.product?.nutriments?.getValue(
-                Nutrient.pantothenicAcid, PerSize.oneHundredGrams)),
-        selenium: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.selenium, PerSize.oneHundredGrams)),
-        stearicAcid: convertToUsableData(product.product?.nutriments?.getValue(
-            Nutrient.stearicAcid, PerSize.oneHundredGrams))
     );
     changeCurrentFoodItemLoadingStatus(true);
   }

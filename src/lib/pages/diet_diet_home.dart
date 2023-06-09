@@ -42,19 +42,10 @@ class _DietHomePageState extends State<DietHomePage> {
 
     if (barcodeDisplayValue != null) {
 
-      try {
+      print("Firebase");
+      FoodItem newFoodItem = CheckFoodBarcode(barcodeDisplayValue);
+      context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
 
-        print("Firebase");
-        FoodItem newFoodItem = await GetFoodDataFromFirebase(barcodeDisplayValue);
-        context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
-
-      } catch (error){
-
-        print("OpenFF");
-        ProductResultV3 product = await checkFoodBarcodeOpenFF(barcodeDisplayValue);
-        context.read<UserNutritionData>().setCurrentFoodItemFromOpenFF(product, barcodeDisplayValue);
-
-      }
 
       print(context.read<UserNutritionData>().currentFoodItem.foodName);
 

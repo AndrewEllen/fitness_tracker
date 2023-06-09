@@ -1,4 +1,5 @@
 import 'package:fitness_tracker/exports.dart';
+import 'package:fitness_tracker/models/food_item.dart';
 import 'package:fitness_tracker/widgets/screen_width_container.dart';
 import 'package:fitness_tracker/widgets/screen_width_expanding_container.dart';
 import 'package:flutter/material.dart';

@@ -65,6 +65,13 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         servingSizeController.text,
       );
 
+      context.read<UserNutritionData>().updateFoodHistory(
+        currentFoodItem.barcode,
+        currentFoodItem.foodName,
+        servingsController.text,
+        servingSizeController.text,
+      );
+
       context.read<PageChange>().backPage();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -123,6 +130,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                 FoodNutritionListFormField(
                   servings: true,
                   controller: servingsController,
+                  secondaryController: servingSizeController,
                   formKey: servingskey,
                   width: _width,
                   formName: "Servings",
@@ -131,6 +139,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                 FoodNutritionListFormField(
                   servingSize: true,
                   controller: servingSizeController,
+                  secondaryController: servingsController,
                   formKey: servingSizekey,
                   width: _width,
                   formName: "Serving Size",

@@ -11,6 +11,7 @@ import 'package:uuid/uuid.dart';
 import '../models/food_data_list_item.dart';
 import '../models/food_item.dart';
 import '../models/stats_model.dart';
+import '../models/user_nutrition_history_model.dart';
 
 GetPreDefinedCategories() async {
 
@@ -448,4 +449,30 @@ GetUserNutritionData(String date) async {
     );
   }
 
+}
+
+GetUserNutritionHistory() async {
+  try {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc("${firebaseAuth.currentUser?.uid.toString()}")
+        .collection("nutrition-history-data")
+        .doc("history")
+        .get();
+
+    final _data = snapshot.get("history");
+
+    return UserNutritionHistoryModel(
+      barcodes: List<String>.from(_data["barcodes"] as List),
+      foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
+      foodServings: List<String>.from(_data["foodServings"] as List),
+      foodServingSize: List<String>.from(_data["foodServingSize"] as List),
+    );
+
+  } catch (exception) {
+    print(exception);
+  }
 }

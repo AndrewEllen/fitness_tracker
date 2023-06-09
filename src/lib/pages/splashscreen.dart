@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
+import 'package:fitness_tracker/models/user_nutrition_history_model.dart';
 import 'package:fitness_tracker/models/user_nutrition_model.dart';
 import 'package:fitness_tracker/providers/user_exercises.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
   late List<StatsMeasurement> measurements;
   late Map userData;
   late UserNutritionModel userNutrition;
+  late UserNutritionHistoryModel userNutritionHistory;
 
   void fetchData() async {
     categories = await GetPreDefinedCategories();
@@ -49,6 +51,8 @@ class _SplashScreenState extends State<SplashScreen> {
     print("Fetching nutrition");
     try {userNutrition = await GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString());} catch (exception) {print(exception);}
 
+    try {userNutritionHistory = await GetUserNutritionHistory();} catch (exception) {print(exception);}
+
     try {context.read<UserExercisesList>().inititateExerciseList(exercises);} catch (exception) {print(exception);}
     try {context.read<ExerciseList>().setCategoriesInititial(categories);} catch (exception) {print(exception);}
     try {context.read<ExerciseList>().setExerciseInititial(exercises);} catch (exception) {print(exception);}
@@ -56,6 +60,8 @@ class _SplashScreenState extends State<SplashScreen> {
     try {context.read<TrainingPlanProvider>().setTrainingPlanInititial(trainingPlans);} catch (exception) {print(exception);}
     try {context.read<UserStatsMeasurements>().initialiseStatsMeasurements(measurements);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCurrentFoodDiary(userNutrition);} catch (exception) {print(exception);}
+
+    try {context.read<UserNutritionData>().setFoodHistory(userNutritionHistory);} catch (exception) {print(exception);}
 
     try {
       context.read<TrainingPlanProvider>().selectTrainingPlan(userData["selected-training-plan"]);

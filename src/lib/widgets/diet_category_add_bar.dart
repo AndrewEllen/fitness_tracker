@@ -5,6 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 
 import '../pages/diet_barcode_scanner.dart';
+import '../pages/diet_food_search_page.dart';
 import '../providers/page_change_provider.dart';
 
 class DietCategoryAddBar extends StatelessWidget {
@@ -32,7 +33,7 @@ class DietCategoryAddBar extends StatelessWidget {
               child: AppButton(
                 buttonText: "Add Food",
                 fontSize: 18,
-                onTap: () {},
+                onTap: () => context.read<PageChange>().changePageCache(FoodSearchPage(category: category)),
               ),
             ),
           ),
