@@ -1,3 +1,4 @@
+import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/widgets/screen_width_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,8 +16,10 @@ import 'food_nutrition_list_edit.dart';
 import '../widgets/food_nutrition_list_text.dart';
 
 class FoodDisplayPage extends StatefulWidget {
-  FoodDisplayPage({Key? key, required this.category}) : super(key: key);
+  FoodDisplayPage({Key? key, required this.category, this.editDiary = false, this.index = 0}) : super(key: key);
   String category;
+  bool editDiary;
+  int index;
 
   @override
   State<FoodDisplayPage> createState() => _FoodDisplayPageState();
@@ -53,7 +56,30 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
 
   void AddToDiary() {
 
-    if (currentFoodItem.foodName.length > 0 &&
+      if (widget.editDiary && currentFoodItem.foodName.length > 0 &&
+          currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
+          (servingsController.text != "-" || servingsController.text.isNotEmpty) &&
+          (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
+      ) {
+
+        context.read<UserNutritionData>().editFoodItemInDiary(
+          currentFoodItem,
+          widget.category,
+          servingsController.text,
+          servingSizeController.text,
+          widget.index,
+        );
+
+        context.read<UserNutritionData>().updateFoodHistory(
+          currentFoodItem.barcode,
+          currentFoodItem.foodName,
+          servingsController.text,
+          servingSizeController.text,
+        );
+
+        context.read<PageChange>().changePageClearCache(DietHomePage());
+
+      } else if (currentFoodItem.foodName.length > 0 &&
         currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
         (servingsController.text != "-" || servingsController.text.isNotEmpty) &&
         (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
@@ -73,7 +99,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         servingSizeController.text,
       );
 
-      context.read<PageChange>().backPage();
+      context.read<PageChange>().changePageClearCache(DietHomePage());
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text(

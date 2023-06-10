@@ -75,8 +75,8 @@ class _NutritionProgressBarState extends State<NutritionProgressBar> with Single
             Align(
               alignment: Alignment.topCenter,
               child: Text(
-                "${widget.currentProgress}/${widget.goal} ${widget.units}",
-                style: TextStyle(
+                "${widget.currentProgress.toStringAsFixed(1)}/${widget.goal} ${widget.units}",
+                style: const TextStyle(
                   color: Colors.white,
                 ),
               ),

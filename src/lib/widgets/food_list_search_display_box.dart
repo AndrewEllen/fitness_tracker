@@ -102,7 +102,7 @@ class _FoodListSearchDisplayBoxState extends State<FoodListSearchDisplayBox> {
                 child: FittedBox(
                   clipBehavior: Clip.antiAlias,
                   child: Text(
-                    widget.foodObject.calories + "\n Kcal",
+                    double.parse(widget.foodObject.calories).toStringAsFixed(0) + "\n Kcal",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.white,

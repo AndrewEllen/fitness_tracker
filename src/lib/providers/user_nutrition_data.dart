@@ -434,22 +434,22 @@ class UserNutritionData with ChangeNotifier {
   void updateFoodHistory(String barcode, String foodName, String servings, String servingSize) {
 
     if (!_userNutritionHistory.barcodes.contains(barcode)) {
-      _userNutritionHistory.barcodes.add(barcode);
-      _userNutritionHistory.foodListItemNames.add(foodName);
-      _userNutritionHistory.foodServings.add(servings);
-      _userNutritionHistory.foodServingSize.add(servingSize);
+      _userNutritionHistory.barcodes.insert(0, barcode);
+      _userNutritionHistory.foodListItemNames.insert(0, foodName);
+      _userNutritionHistory.foodServings.insert(0, servings);
+      _userNutritionHistory.foodServingSize.insert(0, servingSize);
 
       if (_userNutritionHistory.barcodes.length > 50) {
-        _userNutritionHistory.barcodes.removeAt(0);
-        _userNutritionHistory.foodListItemNames.removeAt(0);
-        _userNutritionHistory.foodServings.removeAt(0);
-        _userNutritionHistory.foodServingSize.removeAt(0);
+        _userNutritionHistory.barcodes.removeLast();
+        _userNutritionHistory.foodListItemNames.removeLast();
+        _userNutritionHistory.foodServings.removeLast();
+        _userNutritionHistory.foodServingSize.removeLast();
       };
 
-      _userNutritionHistory.barcodes = _userNutritionHistory.barcodes.reversed.toList();
-      _userNutritionHistory.foodListItemNames = _userNutritionHistory.foodListItemNames.reversed.toList();
-      _userNutritionHistory.foodServings = _userNutritionHistory.foodServings.reversed.toList();
-      _userNutritionHistory.foodServingSize = _userNutritionHistory.foodServingSize.reversed.toList();
+      //_userNutritionHistory.barcodes = _userNutritionHistory.barcodes.reversed.toList();
+      //_userNutritionHistory.foodListItemNames = _userNutritionHistory.foodListItemNames.reversed.toList();
+      //_userNutritionHistory.foodServings = _userNutritionHistory.foodServings.reversed.toList();
+      //_userNutritionHistory.foodServingSize = _userNutritionHistory.foodServingSize.reversed.toList();
 
       UpdateUserNutritionHistoryData(userNutritionHistory);
 
@@ -546,267 +546,267 @@ class UserNutritionData with ChangeNotifier {
     void calculateTotal(List<ListFoodItem> listOfFood) {
       listOfFood.forEach((foodItem) {
         try {
-          _calories += double.parse(foodItem.foodItemData.calories);
+          _calories += (double.parse(foodItem.foodItemData.calories)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _calories += 0;
         }
         try {
-          _protein += double.parse(foodItem.foodItemData.proteins);
+          _protein += (double.parse(foodItem.foodItemData.proteins)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _protein += 0;
         }
         try {
-          _fat += double.parse(foodItem.foodItemData.fat);
+          _fat += (double.parse(foodItem.foodItemData.fat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _fat += 0;
         }
         try {
-          _carbohydrates += double.parse(foodItem.foodItemData.carbs);
+          _carbohydrates += (double.parse(foodItem.foodItemData.carbs)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _carbohydrates += 0;
         }
         try {
-          _fiber += double.parse(foodItem.foodItemData.fiber);
+          _fiber += (double.parse(foodItem.foodItemData.fiber)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _fiber += 0;
         }
         try {
-          _sugar += double.parse(foodItem.foodItemData.sugars);
+          _sugar += (double.parse(foodItem.foodItemData.sugars)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _sugar += 0;
         }
         try {
-          _saturatedFat += double.parse(foodItem.foodItemData.saturatedFat);
+          _saturatedFat += (double.parse(foodItem.foodItemData.saturatedFat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _saturatedFat += 0;
         }
         try {
-          _polyUnsaturatedFat += double.parse(foodItem.foodItemData.polyUnsaturatedFat);
+          _polyUnsaturatedFat += (double.parse(foodItem.foodItemData.polyUnsaturatedFat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _polyUnsaturatedFat += 0;
         }
         try {
-          _monoUnsaturatedFat += double.parse(foodItem.foodItemData.monoUnsaturatedFat);
+          _monoUnsaturatedFat += (double.parse(foodItem.foodItemData.monoUnsaturatedFat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _monoUnsaturatedFat += 0;
         }
         try {
-          _transFat += double.parse(foodItem.foodItemData.transFat);
+          _transFat += (double.parse(foodItem.foodItemData.transFat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _transFat += 0;
         }
         try {
-          _cholesterol += double.parse(foodItem.foodItemData.cholesterol);
+          _cholesterol += (double.parse(foodItem.foodItemData.cholesterol)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _cholesterol += 0;
         }
         try {
-          _calcium += double.parse(foodItem.foodItemData.calcium);
+          _calcium += (double.parse(foodItem.foodItemData.calcium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _calcium += 0;
         }
         try {
-          _iron += double.parse(foodItem.foodItemData.iron);
+          _iron += (double.parse(foodItem.foodItemData.iron)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _iron += 0;
         }
         try {
-          _sodium += double.parse(foodItem.foodItemData.sodium);
+          _sodium += (double.parse(foodItem.foodItemData.sodium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _sodium += 0;
         }
         try {
-          _zinc += double.parse(foodItem.foodItemData.zinc);
+          _zinc += (double.parse(foodItem.foodItemData.zinc)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _zinc += 0;
         }
         try {
-          _magnesium += double.parse(foodItem.foodItemData.magnesium);
+          _magnesium += (double.parse(foodItem.foodItemData.magnesium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _magnesium += 0;
         }
         try {
-          _potassium += double.parse(foodItem.foodItemData.potassium);
+          _potassium += (double.parse(foodItem.foodItemData.potassium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _potassium += 0;
         }
         try {
-          _vitaminA += double.parse(foodItem.foodItemData.vitaminA);
+          _vitaminA += (double.parse(foodItem.foodItemData.vitaminA)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminA += 0;
         }
         try {
-          _vitaminB1 += double.parse(foodItem.foodItemData.vitaminB1);
+          _vitaminB1 += (double.parse(foodItem.foodItemData.vitaminB1)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminB1 += 0;
         }
         try {
-          _vitaminB2 += double.parse(foodItem.foodItemData.vitaminB2);
+          _vitaminB2 += (double.parse(foodItem.foodItemData.vitaminB2)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminB2 += 0;
         }
         try {
-          _vitaminB3 += double.parse(foodItem.foodItemData.vitaminB3);
+          _vitaminB3 += (double.parse(foodItem.foodItemData.vitaminB3)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminB3 += 0;
         }
         try {
-          _vitaminB6 += double.parse(foodItem.foodItemData.vitaminB6);
+          _vitaminB6 += (double.parse(foodItem.foodItemData.vitaminB6)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminB6 += 0;
         }
         try {
-          _vitaminB9 += double.parse(foodItem.foodItemData.vitaminB9);
+          _vitaminB9 += (double.parse(foodItem.foodItemData.vitaminB9)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminB9 += 0;
         }
         try {
-          _vitaminB12 += double.parse(foodItem.foodItemData.vitaminB12);
+          _vitaminB12 += (double.parse(foodItem.foodItemData.vitaminB12)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminB12 += 0;
         }
         try {
-          _vitaminC += double.parse(foodItem.foodItemData.vitaminC);
+          _vitaminC += (double.parse(foodItem.foodItemData.vitaminC)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminC += 0;
         }
         try {
-          _vitaminD += double.parse(foodItem.foodItemData.vitaminD);
+          _vitaminD += (double.parse(foodItem.foodItemData.vitaminD)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminD += 0;
         }
         try {
-          _vitaminE += double.parse(foodItem.foodItemData.vitaminE);
+          _vitaminE += (double.parse(foodItem.foodItemData.vitaminE)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminE += 0;
         }
         try {
-          _vitaminK += double.parse(foodItem.foodItemData.vitaminK);
+          _vitaminK += (double.parse(foodItem.foodItemData.vitaminK)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminK += 0;
         }
         try {
-          _omega3 += double.parse(foodItem.foodItemData.omega3);
+          _omega3 += (double.parse(foodItem.foodItemData.omega3)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _omega3 += 0;
         }
         try {
-          _omega6 += double.parse(foodItem.foodItemData.omega6);
+          _omega6 += (double.parse(foodItem.foodItemData.omega6)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _omega6 += 0;
         }
         try {
-          _alcohol += double.parse(foodItem.foodItemData.alcohol);
+          _alcohol += (double.parse(foodItem.foodItemData.alcohol)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _alcohol += 0;
         }
         try {
-          _biotin += double.parse(foodItem.foodItemData.biotin);
+          _biotin += (double.parse(foodItem.foodItemData.biotin)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _biotin += 0;
         }
         try {
-          _butyricAcid += double.parse(foodItem.foodItemData.butyricAcid);
+          _butyricAcid += (double.parse(foodItem.foodItemData.butyricAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _butyricAcid += 0;
         }
         try {
-          _caffeine += double.parse(foodItem.foodItemData.caffeine);
+          _caffeine += (double.parse(foodItem.foodItemData.caffeine)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _caffeine += 0;
         }
         try {
-          _capricAcid += double.parse(foodItem.foodItemData.capricAcid);
+          _capricAcid += (double.parse(foodItem.foodItemData.capricAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _capricAcid += 0;
         }
         try {
-          _caproicAcid += double.parse(foodItem.foodItemData.caproicAcid);
+          _caproicAcid += (double.parse(foodItem.foodItemData.caproicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _caproicAcid += 0;
         }
         try {
-          _caprylicAcid += double.parse(foodItem.foodItemData.caprylicAcid);
+          _caprylicAcid += (double.parse(foodItem.foodItemData.caprylicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _caprylicAcid += 0;
         }
         try {
-          _chloride += double.parse(foodItem.foodItemData.chloride);
+          _chloride += (double.parse(foodItem.foodItemData.chloride)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _chloride += 0;
         }
         try {
-          _chromium += double.parse(foodItem.foodItemData.chromium);
+          _chromium += (double.parse(foodItem.foodItemData.chromium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _chromium += 0;
         }
         try {
-          _copper += double.parse(foodItem.foodItemData.copper);
+          _copper += (double.parse(foodItem.foodItemData.copper)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _copper += 0;
         }
         try {
-          _docosahexaenoicAcid += double.parse(foodItem.foodItemData.docosahexaenoicAcid);
+          _docosahexaenoicAcid += (double.parse(foodItem.foodItemData.docosahexaenoicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _docosahexaenoicAcid += 0;
         }
         try {
-          _eicosapentaenoicAcid += double.parse(foodItem.foodItemData.eicosapentaenoicAcid);
+          _eicosapentaenoicAcid += (double.parse(foodItem.foodItemData.eicosapentaenoicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _eicosapentaenoicAcid += 0;
         }
         try {
-          _erucicAcid += double.parse(foodItem.foodItemData.erucicAcid);
+          _erucicAcid += (double.parse(foodItem.foodItemData.erucicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _erucicAcid += 0;
         }
         try {
-          _fluoride += double.parse(foodItem.foodItemData.fluoride);
+          _fluoride += (double.parse(foodItem.foodItemData.fluoride)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _fluoride += 0;
         }
         try {
-          _iodine += double.parse(foodItem.foodItemData.iodine);
+          _iodine += (double.parse(foodItem.foodItemData.iodine)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _iodine += 0;
         }
         try {
-          _manganese += double.parse(foodItem.foodItemData.manganese);
+          _manganese += (double.parse(foodItem.foodItemData.manganese)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _manganese += 0;
         }
         try {
-          _molybdenum += double.parse(foodItem.foodItemData.molybdenum);
+          _molybdenum += (double.parse(foodItem.foodItemData.molybdenum)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _molybdenum += 0;
         }
         try {
-          _myristicAcid += double.parse(foodItem.foodItemData.myristicAcid);
+          _myristicAcid += (double.parse(foodItem.foodItemData.myristicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _myristicAcid += 0;
         }
         try {
-          _oleicAcid += double.parse(foodItem.foodItemData.oleicAcid);
+          _oleicAcid += (double.parse(foodItem.foodItemData.oleicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _oleicAcid += 0;
         }
         try {
-          _palmiticAcid += double.parse(foodItem.foodItemData.palmiticAcid);
+          _palmiticAcid += (double.parse(foodItem.foodItemData.palmiticAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _palmiticAcid += 0;
         }
         try {
-          _pantothenicAcid += double.parse(foodItem.foodItemData.pantothenicAcid);
+          _pantothenicAcid += (double.parse(foodItem.foodItemData.pantothenicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _pantothenicAcid += 0;
         }
         try {
-          _selenium += double.parse(foodItem.foodItemData.selenium);
+          _selenium += (double.parse(foodItem.foodItemData.selenium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _selenium += 0;
         }
         try {
-          _stearicAcid += double.parse(foodItem.foodItemData.stearicAcid);
+          _stearicAcid += (double.parse(foodItem.foodItemData.stearicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _stearicAcid += 0;
         }
@@ -845,6 +845,59 @@ class UserNutritionData with ChangeNotifier {
       _userDailyNutrition.foodListItemsDinner.removeAt(index);
     } else if (category.toLowerCase() == "snacks") {
       _userDailyNutrition.foodListItemsSnacks.removeAt(index);
+    }
+
+    UpdateUserNutritionalData(_userDailyNutrition);
+
+    calculateMacros();
+
+    notifyListeners();
+  }
+
+  void editFoodItemInDiary(FoodItem item, String category, String servings,
+      String servingSize, index) {
+    _userDailyNutrition.date = _nutritionDate.toString();
+
+    if (category.toLowerCase() == "breakfast") {
+      _userDailyNutrition.foodListItemsBreakfast[index] = (ListFoodItem(
+        barcode: item.barcode,
+        category: category,
+        foodServings: servings,
+        foodServingSize: servingSize,
+        foodItemData: item,
+      ));
+
+      //_userDailyNutrition.foodListItemsDinner += _foodListItemsDinner;
+    } else if (category.toLowerCase() == "lunch") {
+      _userDailyNutrition.foodListItemsLunch[index] = (ListFoodItem(
+        barcode: item.barcode,
+        category: category,
+        foodServings: servings,
+        foodServingSize: servingSize,
+        foodItemData: item,
+      ));
+
+      //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
+    } else if (category.toLowerCase() == "dinner") {
+      _userDailyNutrition.foodListItemsDinner[index] = (ListFoodItem(
+        barcode: item.barcode,
+        category: category,
+        foodServings: servings,
+        foodServingSize: servingSize,
+        foodItemData: item,
+      ));
+
+      //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
+    } else if (category.toLowerCase() == "snacks") {
+      _userDailyNutrition.foodListItemsSnacks[index] = (ListFoodItem(
+        barcode: item.barcode,
+        category: category,
+        foodServings: servings,
+        foodServingSize: servingSize,
+        foodItemData: item,
+      ));
+
+      //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
     }
 
     UpdateUserNutritionalData(_userDailyNutrition);

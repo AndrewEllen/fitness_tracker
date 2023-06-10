@@ -89,6 +89,7 @@ class _DietHomePageState extends State<DietHomePage> {
                 Container(
                   height: _height/1.8,
                   child: ListView(
+                    shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     controller: ScrollController(),
                     children: [
@@ -127,35 +128,7 @@ class _DietHomePageState extends State<DietHomePage> {
                         title: "Snacks",
                         foodList: context.read<UserNutritionData>().foodListItemsSnacks,
                       ),
-
-                      ScreenWidthContainer(
-                        minHeight: _smallContainerMin * 0.2,
-                        maxHeight: _smallContainerMin * 1.5,
-                        height: (_height / 100) * 6,
-                        margin: _margin / 1.5,
-                        child: FractionallySizedBox(
-                          heightFactor: 1,
-                          widthFactor: 1,
-                          child: AppButton(
-                          buttonText: "Barcode Test",
-                          onTap: () => scanBarcode("assets/barcode1.jpg"),
-                          ),
-                        ),
-                      ),
-                      ScreenWidthContainer(
-                        minHeight: _smallContainerMin * 0.2,
-                        maxHeight: _smallContainerMin * 1.5,
-                        height: (_height / 100) * 6,
-                        margin: _margin / 1.5,
-                        child: FractionallySizedBox(
-                          heightFactor: 1,
-                          widthFactor: 1,
-                          child: AppButton(
-                            buttonText: "Barcode Scanner",
-                            onTap: () => context.read<PageChange>().changePageCache(BarcodeScannerPage(category: "Breakfast")),
-                          ),
-                        ),
-                      ),
+                      SizedBox(height: _height/14),
                     ],
                   ),
                 ),

@@ -165,9 +165,9 @@ class _FoodListDisplayBoxState extends State<FoodListDisplayBox> {
         ),
         trailing: widget.icon != null && widget.icon2 != null ?
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
+          padding: const EdgeInsets.only(bottom:10.0),
+          child: Stack(
+            //mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
                 onPressed: widget.onTapIcon,
