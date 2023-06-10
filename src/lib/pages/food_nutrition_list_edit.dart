@@ -699,7 +699,7 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
                       heightFactor: 1,
                       widthFactor: 1,
                       child: AppButton(
-                        buttonText: "Save Food Date",
+                        buttonText: "Save Food Data",
                         onTap: SaveFoodItem,
                       ),
                     ),

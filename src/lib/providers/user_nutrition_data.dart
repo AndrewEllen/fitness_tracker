@@ -124,7 +124,7 @@ class UserNutritionData with ChangeNotifier {
     foodListItemsSnacks: [],
   );
 
-  late FoodItem _currentFoodItem;
+  late FoodItem _currentFoodItem = FoodDefaultData();
   late ListFoodItem _currentFoodListItem = ListFoodItem(
     barcode: "",
     category: "",
