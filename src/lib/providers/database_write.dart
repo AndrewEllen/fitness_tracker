@@ -146,22 +146,24 @@ void UpdateUserDocumentMeasurements(StatsMeasurement measurements) async {
 //writes food data to my database
 void UpdateFoodItemData(FoodItem foodItem) async {
 
-  Map ConvertToMap({required FoodItem foodItemData}) {
-    Map foodItemMap = foodItemData.toMap();
-    return foodItemMap;
+  if (foodItem.foodName.isNotEmpty && foodItem.barcode.isNotEmpty) {
+    Map ConvertToMap({required FoodItem foodItemData}) {
+      Map foodItemMap = foodItemData.toMap();
+      return foodItemMap;
+    }
+
+    Map mappedFoodItem = await ConvertToMap(foodItemData: foodItem);
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    print(firebaseAuth.currentUser?.uid);
+
+    await FirebaseFirestore.instance
+        .collection('food-data')
+        .doc("${foodItem.barcode}")
+        .set({"food-data": mappedFoodItem });
+
   }
-
-  Map mappedFoodItem = await ConvertToMap(foodItemData: foodItem);
-
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  print(firebaseAuth.currentUser?.uid);
-
-  await FirebaseFirestore.instance
-      .collection('food-data')
-      .doc("${foodItem.barcode}")
-      .set({"food-data": mappedFoodItem });
-
 }
 
 

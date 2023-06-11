@@ -42,6 +42,8 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
   late UserNutritionHistoryModel foodHistory;
 
   late List<FoodItem> foodItemsFromSearch = [];
+  late List<FoodItem> foodItemsFromSearchFirebase = [];
+  late List<FoodItem> foodItemsFromSearchOpenFF = [];
 
   late bool _searching = false;
 
@@ -58,16 +60,32 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
   void SearchOFFbyString(String value) async {
 
-    setState(() {
-      _searching = true;
-    });
+    if (searchController.text.isNotEmpty && searchController.text != "") {
+      setState(() {
+        _searching = true;
+      });
 
-    foodItemsFromSearch = await SearchByName(value);
+      foodItemsFromSearchFirebase = await SearchByNameFirebase(value);
 
-    setState(() {
-      foodItemsFromSearch;
-      _searching = false;
-    });
+      setState(() {
+        foodItemsFromSearch = foodItemsFromSearchFirebase;
+
+        if (foodItemsFromSearch.isNotEmpty) {
+          _searching = false;
+        }
+
+      });
+
+      foodItemsFromSearchOpenFF = await SearchByNameOpenff(value);
+
+      setState(() {
+
+        foodItemsFromSearch = foodItemsFromSearchFirebase + foodItemsFromSearchOpenFF;
+
+        _searching = false;
+      });
+
+    }
 
   }
 

@@ -225,81 +225,93 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
 
   void SaveFoodItem() {
 
-    context.read<UserNutritionData>().updateCustomFoodList(
-      barcodeController.text,
-      foodNameController.text,
-      servingsController.text,
-      servingSizeController.text,
-    );
+    if (foodNameController.text.isNotEmpty && caloriesController.text.isNotEmpty && servingSizeController.text.isNotEmpty
+    && servingsController.text.isNotEmpty) {
+      context.read<UserNutritionData>().updateCustomFoodList(
+        barcodeController.text,
+        foodNameController.text,
+        servingsController.text,
+        servingSizeController.text,
+      );
 
-    context.read<UserNutritionData>().updateCurrentFoodItemServings(servingsController.text);
-    context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSizeController.text);
+      context.read<UserNutritionData>().updateCurrentFoodItemServings(servingsController.text);
+      context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSizeController.text);
 
-    context.read<UserNutritionData>().updateCurrentFoodItem(
-      barcodeController.text,
-      foodNameController.text,
-      quantityController.text,
-      servingSizeController.text,
-      servingsController.text,
-      caloriesController.text,
-      kiloJoulesController.text,
-      proteinsController.text,
-      carbsController.text,
-      fiberController.text,
-      sugarsController.text,
-      fatController.text,
-      saturatedFatController.text,
-      polyUnsaturatedFatController.text,
-      monoUnsaturatedFatController.text,
-      transFatController.text,
-      cholesterolController.text,
-      calciumController.text,
-      ironController.text,
-      sodiumController.text,
-      zincController.text,
-      magnesiumController.text,
-      potassiumController.text,
-      vitaminAController.text,
-      vitaminB1Controller.text,
-      vitaminB2Controller.text,
-      vitaminB3Controller.text,
-      vitaminB6Controller.text,
-      vitaminB9Controller.text,
-      vitaminB12Controller.text,
-      vitaminCController.text,
-      vitaminDController.text,
-      vitaminEController.text,
-      vitaminKController.text,
-      omega3Controller.text,
-      omega6Controller.text,
-      alcoholController.text,
-      biotinController.text,
-      butyricAcidController.text,
-      caffeineController.text,
-      capricAcidController.text,
-      caproicAcidController.text,
-      caprylicAcidController.text,
-      chlorideController.text,
-      chromiumController.text,
-      copperController.text,
-      docosahexaenoicAcidController.text,
-      eicosapentaenoicAcidController.text,
-      erucicAcidController.text,
-      fluorideController.text,
-      iodineController.text,
-      manganeseController.text,
-      molybdenumController.text,
-      myristicAcidController.text,
-      oleicAcidController.text,
-      palmiticAcidController.text,
-      pantothenicAcidController.text,
-      seleniumController.text,
-      stearicAcidController.text,
-    );
+      context.read<UserNutritionData>().updateCurrentFoodItem(
+        barcodeController.text,
+        foodNameController.text,
+        quantityController.text,
+        servingSizeController.text,
+        servingsController.text,
+        caloriesController.text,
+        kiloJoulesController.text,
+        proteinsController.text,
+        carbsController.text,
+        fiberController.text,
+        sugarsController.text,
+        fatController.text,
+        saturatedFatController.text,
+        polyUnsaturatedFatController.text,
+        monoUnsaturatedFatController.text,
+        transFatController.text,
+        cholesterolController.text,
+        calciumController.text,
+        ironController.text,
+        sodiumController.text,
+        zincController.text,
+        magnesiumController.text,
+        potassiumController.text,
+        vitaminAController.text,
+        vitaminB1Controller.text,
+        vitaminB2Controller.text,
+        vitaminB3Controller.text,
+        vitaminB6Controller.text,
+        vitaminB9Controller.text,
+        vitaminB12Controller.text,
+        vitaminCController.text,
+        vitaminDController.text,
+        vitaminEController.text,
+        vitaminKController.text,
+        omega3Controller.text,
+        omega6Controller.text,
+        alcoholController.text,
+        biotinController.text,
+        butyricAcidController.text,
+        caffeineController.text,
+        capricAcidController.text,
+        caproicAcidController.text,
+        caprylicAcidController.text,
+        chlorideController.text,
+        chromiumController.text,
+        copperController.text,
+        docosahexaenoicAcidController.text,
+        eicosapentaenoicAcidController.text,
+        erucicAcidController.text,
+        fluorideController.text,
+        iodineController.text,
+        manganeseController.text,
+        molybdenumController.text,
+        myristicAcidController.text,
+        oleicAcidController.text,
+        palmiticAcidController.text,
+        pantothenicAcidController.text,
+        seleniumController.text,
+        stearicAcidController.text,
+      );
 
-    UpdateFoodItemData(context.read<UserNutritionData>().currentFoodItem);
+      UpdateFoodItemData(context.read<UserNutritionData>().currentFoodItem);
 
-    context.read<PageChange>().changePageRemovePreviousCache(FoodDisplayPage(category: widget.category));
+      context.read<PageChange>().changePageRemovePreviousCache(FoodDisplayPage(category: widget.category));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+          "Missing Food Name, Servings or Calories",
+          style: TextStyle(
+            color: Colors.red,
+          ),
+        ),
+      ));
+    }
   }
 
   String ServingSizeCalculator(String valuePerOneHundred, String servingSize,

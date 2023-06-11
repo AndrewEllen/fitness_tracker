@@ -18,6 +18,7 @@ import '../providers/database_get.dart';
 import 'package:provider/provider.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 
+import '../providers/database_write.dart';
 import '../widgets/app_default_button.dart';
 import '../widgets/diet_category_box.dart';
 import '../widgets/diet_home_macro_nutrition_display.dart';
@@ -82,6 +83,7 @@ class _DietHomePageState extends State<DietHomePage> {
             physics: const NeverScrollableScrollPhysics(),
             child: Column(
               children: [
+
                 NutritionHomeStats(
                   bigContainerMin: _bigContainerMin,
                   height: _height,

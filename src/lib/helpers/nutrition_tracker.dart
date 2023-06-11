@@ -74,7 +74,11 @@ FoodItem ConvertToFoodItem(product, {bool firebase = false}) {
       stearicAcid: product["stearicAcid"] ?? "",
     );
 
-    foodItem.foodName = foodItem.foodName.capitalize();
+    try {
+      foodItem.foodName = foodItem.foodName.capitalize();
+    } catch (error) {
+      print(error);
+    }
 
     return foodItem;
   }
@@ -252,7 +256,7 @@ CheckFoodBarcodeOpenFF(barcodeDisplayValue) async {
 
 }
 
-SearchByName(String value) async {
+SearchByNameFirebase(String value) async {
 
   List<FoodItem> foodItems = [];
 
@@ -271,13 +275,21 @@ SearchByName(String value) async {
 
       useableResult.firebaseItem = true;
 
-      print(useableResult.foodName);
+      //print(useableResult.foodName);
 
       foodItems.add(useableResult);
 
     }));
 
   } catch (error) { print(error); }
+
+  return foodItems;
+
+}
+
+SearchByNameOpenff(String value) async {
+
+  List<FoodItem> foodItems = [];
 
   try {
 
