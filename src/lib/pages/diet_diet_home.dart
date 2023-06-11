@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/pages/food_nutrition_list_edit.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:openfoodfacts/openfoodfacts.dart';
@@ -79,6 +81,27 @@ class _DietHomePageState extends State<DietHomePage> {
             physics: const NeverScrollableScrollPhysics(),
             child: Column(
               children: [
+                FloatingActionButton(
+                  backgroundColor: Colors.red,
+                  onPressed: () async {
+
+                    String value = "cran";
+
+                    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+                    final snapshot = await FirebaseFirestore.instance
+                        .collection("food-data")
+                        .where("food-data.foodName", isGreaterThanOrEqualTo: value)
+                        .where("food-data.foodName", isLessThanOrEqualTo: value + "~")
+                        .get();
+
+                    //print(snapshot.docs);
+
+                    print(snapshot.docs.map((document) => document.get("food-data")["foodName"]));
+                    //print(snapshot.docs.map((doc) => doc.data()));
+
+                  },
+                ),
                 NutritionHomeStats(
                   bigContainerMin: _bigContainerMin,
                   height: _height,

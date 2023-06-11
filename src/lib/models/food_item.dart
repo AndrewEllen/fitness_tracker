@@ -6,7 +6,7 @@ class FoodItem {
   Map<String, dynamic> toMap() {
     return {
       'barcode': barcode,
-      'foodName': foodName,
+      'foodName': foodName.toLowerCase(),
       'quantity': quantity,
       'servingSize': servingSize,
       'servings': servings,

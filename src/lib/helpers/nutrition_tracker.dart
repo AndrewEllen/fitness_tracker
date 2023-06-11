@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:fitness_tracker/providers/user_nutrition_data.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import '../models/food_item.dart';
@@ -6,7 +8,72 @@ import '../providers/database_get.dart';
 //[LO3.7.3.5]
 //Checks public food database
 
-FoodItem ConvertToFoodItem(product) {
+FoodItem ConvertToFoodItem(product, {bool firebase = false}) {
+
+  if (firebase) {
+    return FoodItem(
+      barcode: product["barcode"] ?? "",
+      foodName: product["foodName"] ?? "",
+      quantity: product["quantity"] ?? "",
+      servingSize: product["servingSize"] ?? "",
+      servings: product["servings"] ?? "",
+      calories: product["calories"] ?? "",
+      kiloJoules: product["kiloJoules"] ?? "",
+      proteins: product["proteins"] ?? "",
+      carbs: product["carbs"] ?? "",
+      fiber: product["fiber"] ?? "",
+      sugars: product["sugars"] ?? "",
+      fat: product["fat"] ?? "",
+      saturatedFat: product["saturatedFat"] ?? "",
+      polyUnsaturatedFat: product["polyUnsaturatedFat"] ?? "",
+      monoUnsaturatedFat: product["monoUnsaturatedFat"] ?? "",
+      transFat: product["transFat"] ?? "",
+      cholesterol: product["cholesterol"] ?? "",
+      calcium: product["calcium"] ?? "",
+      iron: product["iron"] ?? "",
+      sodium: product["sodium"] ?? "",
+      zinc: product["zinc"] ?? "",
+      magnesium: product["magnesium"] ?? "",
+      potassium: product["potassium"] ?? "",
+      vitaminA: product["vitaminA"] ?? "",
+      vitaminB1: product["vitaminB1"] ?? "",
+      vitaminB2: product["vitaminB2"] ?? "",
+      vitaminB3: product["vitaminB3"] ?? "",
+      vitaminB6: product["vitaminB6"] ?? "",
+      vitaminB9: product["vitaminB9"] ?? "",
+      vitaminB12: product["vitaminB12"] ?? "",
+      vitaminC: product["vitaminC"] ?? "",
+      vitaminD: product["vitaminD"] ?? "",
+      vitaminE: product["vitaminE"] ?? "",
+      vitaminK: product["vitaminK"] ?? "",
+      omega3: product["omega3"] ?? "",
+      omega6: product["omega6"] ?? "",
+      alcohol: product["alcohol"] ?? "",
+      biotin: product["biotin"] ?? "",
+      butyricAcid: product["butyricAcid"] ?? "",
+      caffeine: product["caffeine"] ?? "",
+      capricAcid: product["capricAcid"] ?? "",
+      caproicAcid: product["caproicAcid"] ?? "",
+      caprylicAcid: product["caprylicAcid"] ?? "",
+      chloride: product["chloride"] ?? "",
+      chromium: product["chromium"] ?? "",
+      copper: product["copper"] ?? "",
+      docosahexaenoicAcid: product["docosahexaenoicAcid"] ?? "",
+      eicosapentaenoicAcid: product["eicosapentaenoicAcid"] ?? "",
+      erucicAcid: product["erucicAcid"] ?? "",
+      fluoride: product["fluoride"] ?? "",
+      iodine: product["iodine"] ?? "",
+      manganese: product["manganese"] ?? "",
+      molybdenum: product["molybdenum"] ?? "",
+      myristicAcid: product["myristicAcid"] ?? "",
+      oleicAcid: product["oleicAcid"] ?? "",
+      palmiticAcid: product["palmiticAcid"] ?? "",
+      pantothenicAcid: product["pantothenicAcid"] ?? "",
+      selenium: product["selenium"] ?? "",
+      stearicAcid: product["stearicAcid"] ?? "",
+    );
+  }
+
   return FoodItem(
       barcode: ConvertToUsableData(product.barcode),
       foodName: ConvertToUsableData(product.productName),
@@ -18,7 +85,7 @@ FoodItem ConvertToFoodItem(product) {
               RegExp("[a-zA-Z:\s]"), "") ?? "100"),
       servings: "1",
       calories: ConvertToUsableData(product.nutriments?.getValue(
-          Nutrient.energyKCal, PerSize.oneHundredGrams)),
+          Nutrient.energyKCal, PerSize.oneHundredGrams), defaultValue: "0"),
       kiloJoules: ConvertToUsableData(product.nutriments?.getValue(
           Nutrient.energyKJ, PerSize.oneHundredGrams)),
       proteins: ConvertToUsableData(product.nutriments?.getValue(
@@ -133,11 +200,11 @@ FoodItem ConvertToFoodItem(product) {
   );
 }
 
-String ConvertToUsableData(dynamic valueToConvert) {
+String ConvertToUsableData(dynamic valueToConvert, {String defaultValue = ""}) {
   if (valueToConvert != null) {
     valueToConvert = valueToConvert.toString();
   } else {
-    valueToConvert = "";
+    valueToConvert = defaultValue;
   }
 
   return valueToConvert;
@@ -177,6 +244,21 @@ CheckFoodBarcodeOpenFF(barcodeDisplayValue) async {
 SearchOFF(String value) async {
 
   List<FoodItem> foodItems = [];
+
+  final auth.FirebaseAuth firebaseAuth = auth.FirebaseAuth.instance;
+
+  final snapshot = await FirebaseFirestore.instance
+      .collection("food-data")
+      .where("food-data.foodName", isGreaterThanOrEqualTo: value)
+      .where("food-data.foodName", isLessThanOrEqualTo: value + "~")
+      .get();
+
+  print(snapshot.docs.map((document) {
+    FoodItem useableResult = ConvertToFoodItem(document.get("food-data"), firebase: true);
+
+    foodItems.add(useableResult);
+
+  }));
 
   ProductSearchQueryConfiguration configuration =
   ProductSearchQueryConfiguration(
