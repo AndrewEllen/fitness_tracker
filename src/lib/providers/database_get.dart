@@ -329,6 +329,7 @@ GetFoodDataFromFirebase(String barcode) async {
       pantothenicAcid: _data["pantothenicAcid"] ?? "",
       selenium: _data["selenium"] ?? "",
       stearicAcid: _data["stearicAcid"] ?? "",
+      firebaseItem: true,
     );
 
   } catch (exception) {

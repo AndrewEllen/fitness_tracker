@@ -127,6 +127,7 @@ class FoodItem {
     required this.pantothenicAcid,
     required this.selenium,
     required this.stearicAcid,
+    this.firebaseItem = false,
   });
 
   String barcode;
@@ -188,5 +189,5 @@ class FoodItem {
   String pantothenicAcid;
   String selenium;
   String stearicAcid;
-
+  bool firebaseItem;
 }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:fitness_tracker/helpers/string_capitalize.dart';
 import 'package:fitness_tracker/providers/user_nutrition_data.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import '../models/food_item.dart';
@@ -11,7 +12,7 @@ import '../providers/database_get.dart';
 FoodItem ConvertToFoodItem(product, {bool firebase = false}) {
 
   if (firebase) {
-    return FoodItem(
+    FoodItem foodItem = FoodItem(
       barcode: product["barcode"] ?? "",
       foodName: product["foodName"] ?? "",
       quantity: product["quantity"] ?? "",
@@ -72,11 +73,15 @@ FoodItem ConvertToFoodItem(product, {bool firebase = false}) {
       selenium: product["selenium"] ?? "",
       stearicAcid: product["stearicAcid"] ?? "",
     );
+
+    foodItem.foodName = foodItem.foodName.capitalize();
+
+    return foodItem;
   }
 
   return FoodItem(
       barcode: ConvertToUsableData(product.barcode),
-      foodName: ConvertToUsableData(product.productName),
+      foodName: ConvertToUsableData(product.productName).capitalize(),
       quantity: ConvertToUsableData(
           product.quantity?.replaceAll(RegExp("[a-zA-Z:\s]"), "") ??
               "1"),
@@ -216,6 +221,8 @@ CheckFoodBarcode(String barcodeDisplayValue) async {
     print("Firebase");
     FoodItem newFoodItem = await GetFoodDataFromFirebase(barcodeDisplayValue);
 
+    newFoodItem.foodName = newFoodItem.foodName.capitalize();
+
     return newFoodItem;
 
   } catch (error){
@@ -223,7 +230,11 @@ CheckFoodBarcode(String barcodeDisplayValue) async {
     print("OpenFF");
     ProductResultV3 product = await CheckFoodBarcodeOpenFF(barcodeDisplayValue);
 
-    return ConvertToFoodItem(product.product);
+    FoodItem newFoodItem = ConvertToFoodItem(product.product);
+
+    newFoodItem.foodName = newFoodItem.foodName.capitalize();
+
+    return newFoodItem;
 
   }
 }
@@ -241,50 +252,62 @@ CheckFoodBarcodeOpenFF(barcodeDisplayValue) async {
 
 }
 
-SearchOFF(String value) async {
+SearchByName(String value) async {
 
   List<FoodItem> foodItems = [];
 
-  final auth.FirebaseAuth firebaseAuth = auth.FirebaseAuth.instance;
+  try {
 
-  final snapshot = await FirebaseFirestore.instance
-      .collection("food-data")
-      .where("food-data.foodName", isGreaterThanOrEqualTo: value)
-      .where("food-data.foodName", isLessThanOrEqualTo: value + "~")
-      .get();
+    final auth.FirebaseAuth firebaseAuth = auth.FirebaseAuth.instance;
 
-  print(snapshot.docs.map((document) {
-    FoodItem useableResult = ConvertToFoodItem(document.get("food-data"), firebase: true);
+    final snapshot = await FirebaseFirestore.instance
+        .collection("food-data")
+        .where("food-data.foodName", isGreaterThanOrEqualTo: value)
+        .where("food-data.foodName", isLessThanOrEqualTo: value + "~")
+        .get();
 
-    foodItems.add(useableResult);
+    print(snapshot.docs.map((document) {
+      FoodItem useableResult = ConvertToFoodItem(document.get("food-data"), firebase: true);
 
-  }));
+      useableResult.firebaseItem = true;
 
-  ProductSearchQueryConfiguration configuration =
-  ProductSearchQueryConfiguration(
-    parametersList: <Parameter>[
-      SearchTerms(terms: [value]),
-    ], version: ProductQueryVersion.v3, language: OpenFoodFactsLanguage.ENGLISH, country: OpenFoodFactsCountry.UNITED_KINGDOM
-  );
-
-  SearchResult result = await OpenFoodAPIClient.searchProducts(
-    const User(userId: '', password: ''),
-    configuration,
-  );
-
-  result.products?.forEach((product) {
-
-    if (product.productName?.isNotEmpty ?? false) {
-
-      FoodItem useableResult = ConvertToFoodItem(product);
+      print(useableResult.foodName);
 
       foodItems.add(useableResult);
 
-    }
+    }));
 
-  });
+  } catch (error) { print(error); }
 
-  foodItems.forEach((product) => print(product.foodName));
+  try {
+
+    ProductSearchQueryConfiguration configuration =
+    ProductSearchQueryConfiguration(
+        parametersList: <Parameter>[
+          SearchTerms(terms: [value]),
+        ], version: ProductQueryVersion.v3, language: OpenFoodFactsLanguage.ENGLISH, country: OpenFoodFactsCountry.UNITED_KINGDOM
+    );
+
+    SearchResult result = await OpenFoodAPIClient.searchProducts(
+      const User(userId: '', password: ''),
+      configuration,
+    );
+
+    result.products?.forEach((product) {
+
+      if (product.productName?.isNotEmpty ?? false) {
+
+        FoodItem useableResult = ConvertToFoodItem(product);
+
+        foodItems.add(useableResult);
+
+      }
+
+    });
+
+    foodItems.forEach((product) => print(product.foodName));
+
+  } catch (error) { print(error); }
 
   return foodItems;
 

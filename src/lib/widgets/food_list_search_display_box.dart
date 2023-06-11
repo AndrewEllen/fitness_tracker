@@ -16,6 +16,7 @@ class FoodListSearchDisplayBox extends StatefulWidget {
     this.icon2,
     this.iconColour,
     this.icon2Colour,
+    this.verifiedFood = false,
   }) : super(key: key);
 
   late FoodItem foodObject;
@@ -23,6 +24,7 @@ class FoodListSearchDisplayBox extends StatefulWidget {
   late Color? iconColour, icon2Colour;
   final VoidCallback? onTap, onTapIcon, onTapIcon2;
   late double width;
+  late bool verifiedFood;
 
   @override
   State<FoodListSearchDisplayBox> createState() => _FoodListSearchDisplayBoxState();
@@ -151,11 +153,28 @@ class _FoodListSearchDisplayBoxState extends State<FoodListSearchDisplayBox> {
             left: widget.width/8,
             bottom: 10,
           ),
-          child: const Text(
-            "Per 100g",
+          child: widget.foodObject.firebaseItem ? RichText(
+            text: const TextSpan(
+                text: "Kcal Per 100g. ",
+                style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 12
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: "Verified Food.",
+                    style: TextStyle(
+                        color: appSecondaryColour,
+                        fontSize: 12
+                    ),
+                  )
+                ]
+            ),
+          ) : const Text(
+            "Kcal Per 100g",
             style: TextStyle(
                 color: Colors.white70,
-                fontSize: 14
+                fontSize: 12
             ),
           ),
         ),

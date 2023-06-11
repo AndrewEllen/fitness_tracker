@@ -10,6 +10,7 @@ import '../models/food_item.dart';
 import '../providers/database_get.dart';
 import '../providers/page_change_provider.dart';
 import '../providers/user_nutrition_data.dart';
+import '../widgets/app_container_header.dart';
 import '../widgets/app_default_button.dart';
 import '../widgets/food_history_list_item_box.dart';
 import '../widgets/food_list_item_box.dart';
@@ -61,7 +62,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
       _searching = true;
     });
 
-    foodItemsFromSearch = await SearchOFF(value);
+    foodItemsFromSearch = await SearchByName(value);
 
     setState(() {
       foodItemsFromSearch;
@@ -404,6 +405,11 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                       ],
                     ),
                   ),
+                  AppHeaderBox(
+                    title: "History",
+                    width: width,
+                    largeTitle: true,
+                  ),
                   ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: foodHistory.foodListItemNames.length,
@@ -424,24 +430,52 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                         );
                       }),
 
-                  !_searching ? ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: foodItemsFromSearch.length,
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int index) {
-                        return FoodListSearchDisplayBox(
-                          width: width,
-                          foodObject: foodItemsFromSearch[index],
-                          icon: Icons.add_box,
-                          iconColour: appSecondaryColour,
-                          onTapIcon: () {
+                  !_searching ? Column(
+                    children: [
+                      ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: foodItemsFromSearch.length,
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            if (index == 0) {
+                              return Column(
+                                children: [
+                                  AppHeaderBox(
+                                    title: "Search Data",
+                                    width: width,
+                                    largeTitle: true,
+                                  ),
+                                  FoodListSearchDisplayBox(
+                                    width: width,
+                                    foodObject: foodItemsFromSearch[index],
+                                    icon: Icons.add_box,
+                                    iconColour: appSecondaryColour,
+                                    onTapIcon: () {
 
-                            context.read<UserNutritionData>().setCurrentFoodItem(foodItemsFromSearch[index]);
+                                    context.read<UserNutritionData>().setCurrentFoodItem(foodItemsFromSearch[index]);
 
-                            context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
-                          },
-                        );
-                      }) : const Align(
+                                    context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
+                                  },
+                            ),
+                                ],
+                              );
+                            }
+
+                            return FoodListSearchDisplayBox(
+                              width: width,
+                              foodObject: foodItemsFromSearch[index],
+                              icon: Icons.add_box,
+                              iconColour: appSecondaryColour,
+                              onTapIcon: () {
+
+                                context.read<UserNutritionData>().setCurrentFoodItem(foodItemsFromSearch[index]);
+
+                                context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
+                              },
+                            );
+                          }),
+                    ],
+                  ) : const Align(
                         alignment: Alignment.center,
                         child: CircularProgressIndicator(
                       color: appSecondaryColour,
