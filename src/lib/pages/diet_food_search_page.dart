@@ -43,6 +43,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
   late List<FoodItem> foodItemsFromSearch = [];
   late List<FoodItem> foodItemsFromSearchFirebase = [];
+  late List<FoodItem> foodItemsFromSearchTriGramFirebase = [];
   late List<FoodItem> foodItemsFromSearchOpenFF = [];
 
   late bool _searching = false;
@@ -76,11 +77,27 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
       });
 
+      foodItemsFromSearchTriGramFirebase = await SearchByNameTriGramFirebase(value);
+
+      setState(() {
+
+        for (int i = 0; i < foodItemsFromSearch.length; i++) {
+          foodItemsFromSearchTriGramFirebase.removeWhere((item) => item.barcode == foodItemsFromSearch[i].barcode);
+        }
+
+        foodItemsFromSearch = foodItemsFromSearchFirebase + foodItemsFromSearchTriGramFirebase;
+
+        if (foodItemsFromSearchTriGramFirebase.isNotEmpty) {
+          _searching = false;
+        }
+
+      });
+
       foodItemsFromSearchOpenFF = await SearchByNameOpenff(value);
 
       setState(() {
 
-        foodItemsFromSearch = foodItemsFromSearchFirebase + foodItemsFromSearchOpenFF;
+        foodItemsFromSearch += foodItemsFromSearchOpenFF;
 
         _searching = false;
       });

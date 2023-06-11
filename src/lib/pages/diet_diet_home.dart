@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitness_tracker/helpers/string_capitalize.dart';
+import 'package:fitness_tracker/helpers/string_extensions.dart';
 import 'package:fitness_tracker/pages/food_nutrition_list_edit.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:openfoodfacts/openfoodfacts.dart';

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/helpers/nutrition_tracker.dart';
-import 'package:fitness_tracker/helpers/string_capitalize.dart';
+import 'package:fitness_tracker/helpers/string_extensions.dart';
 import 'package:fitness_tracker/models/exercise_model.dart';
 import 'package:fitness_tracker/models/routines_model.dart';
 import 'package:fitness_tracker/models/training_plan_model.dart';

@@ -1,6 +1,8 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:fitness_tracker/helpers/string_capitalize.dart';
+import 'package:fitness_tracker/helpers/string_extensions.dart';
 import 'package:fitness_tracker/providers/user_nutrition_data.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import '../models/food_item.dart';
@@ -12,6 +14,7 @@ import '../providers/database_get.dart';
 FoodItem ConvertToFoodItem(product, {bool firebase = false}) {
 
   if (firebase) {
+
     FoodItem foodItem = FoodItem(
       barcode: product["barcode"] ?? "",
       foodName: product["foodName"] ?? "",
@@ -222,7 +225,6 @@ String ConvertToUsableData(dynamic valueToConvert, {String defaultValue = ""}) {
 CheckFoodBarcode(String barcodeDisplayValue) async {
   try {
 
-    print("Firebase");
     FoodItem newFoodItem = await GetFoodDataFromFirebase(barcodeDisplayValue);
 
     newFoodItem.foodName = newFoodItem.foodName.capitalize();
@@ -231,7 +233,6 @@ CheckFoodBarcode(String barcodeDisplayValue) async {
 
   } catch (error){
 
-    print("OpenFF");
     ProductResultV3 product = await CheckFoodBarcodeOpenFF(barcodeDisplayValue);
 
     FoodItem newFoodItem = ConvertToFoodItem(product.product);
@@ -267,21 +268,51 @@ SearchByNameFirebase(String value) async {
     final snapshot = await FirebaseFirestore.instance
         .collection("food-data")
         .where("food-data.foodName", isGreaterThanOrEqualTo: value)
-        .where("food-data.foodName", isLessThanOrEqualTo: value + "~")
+        .where("food-data.foodName", isLessThanOrEqualTo: value + "\uf8ff")
+        .limit(20)
         .get();
 
-    print(snapshot.docs.map((document) {
-      FoodItem useableResult = ConvertToFoodItem(document.get("food-data"), firebase: true);
-
-      useableResult.firebaseItem = true;
-
-      //print(useableResult.foodName);
-
-      foodItems.add(useableResult);
-
-    }));
+    foodItems = [
+      for (QueryDocumentSnapshot document in snapshot.docs)
+        ConvertToFoodItem(document.get("food-data"), firebase: true)
+          ..firebaseItem = true,
+    ];
 
   } catch (error) { print(error); }
+
+  return foodItems;
+
+}
+
+SearchByNameTriGramFirebase(String value) async {
+
+  List<FoodItem> foodItems = [];
+  List<String> searchValues = value.triGram();
+
+  print(searchValues);
+
+  try {
+
+    final auth.FirebaseAuth firebaseAuth = auth.FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection("food-data")
+        .where("foodNameSearch", arrayContainsAny: searchValues)
+        .limit(20)
+        .get();
+
+    foodItems = [
+      for (QueryDocumentSnapshot document in snapshot.docs)
+        ConvertToFoodItem(document.get("food-data"), firebase: true)
+          ..firebaseItem = true,
+    ];
+
+  } catch (error) { print(error); }
+
+  List<String> splitSearchValues = value.split(" ");
+  List<double> similarities = [];
+
+  foodItems.removeWhere((item) => item.foodName.split(" ").highestListSimilarity(splitSearchValues) < 0.5);
 
   return foodItems;
 
@@ -316,8 +347,6 @@ SearchByNameOpenff(String value) async {
       }
 
     });
-
-    foodItems.forEach((product) => print(product.foodName));
 
   } catch (error) { print(error); }
 

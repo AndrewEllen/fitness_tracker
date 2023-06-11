@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitness_tracker/helpers/string_extensions.dart';
 import 'package:fitness_tracker/models/exercise_model.dart';
 import 'package:fitness_tracker/models/routines_model.dart';
 import 'package:fitness_tracker/models/stats_model.dart';
@@ -161,7 +162,10 @@ void UpdateFoodItemData(FoodItem foodItem) async {
     await FirebaseFirestore.instance
         .collection('food-data')
         .doc("${foodItem.barcode}")
-        .set({"food-data": mappedFoodItem });
+        .set({
+            "food-data": mappedFoodItem,
+            "foodNameSearch" : foodItem.foodName.triGram(),
+        });
 
   }
 }
