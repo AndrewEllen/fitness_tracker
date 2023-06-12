@@ -124,7 +124,67 @@ class UserNutritionData with ChangeNotifier {
     foodListItemsSnacks: [],
   );
 
-  late FoodItem _currentFoodItem = FoodDefaultData();
+  late FoodItem _currentFoodItem = FoodItem(
+    barcode: "",
+    foodName: "",
+    quantity: "",
+    servingSize: "",
+    servings: "",
+    calories: "",
+    kiloJoules: "",
+    proteins: "",
+    carbs: "",
+    fiber: "",
+    sugars: "",
+    fat: "",
+    saturatedFat: "",
+    polyUnsaturatedFat: "",
+    monoUnsaturatedFat: "",
+    transFat: "",
+    cholesterol: "",
+    calcium: "",
+    iron: "",
+    sodium: "",
+    zinc: "",
+    magnesium: "",
+    potassium: "",
+    vitaminA: "",
+    vitaminB1: "",
+    vitaminB2: "",
+    vitaminB3: "",
+    vitaminB6: "",
+    vitaminB9: "",
+    vitaminB12: "",
+    vitaminC: "",
+    vitaminD: "",
+    vitaminE: "",
+    vitaminK: "",
+    omega3: "",
+    omega6: "",
+    alcohol: "",
+    biotin: "",
+    butyricAcid: "",
+    caffeine: "",
+    capricAcid: "",
+    caproicAcid: "",
+    caprylicAcid: "",
+    chloride: "",
+    chromium: "",
+    copper: "",
+    docosahexaenoicAcid: "",
+    eicosapentaenoicAcid: "",
+    erucicAcid: "",
+    fluoride: "",
+    iodine: "",
+    manganese: "",
+    molybdenum: "",
+    myristicAcid: "",
+    oleicAcid: "",
+    palmiticAcid: "",
+    pantothenicAcid: "",
+    selenium: "",
+    stearicAcid: "",
+  );
   late ListFoodItem _currentFoodListItem = ListFoodItem(
     barcode: "",
     category: "",
@@ -856,6 +916,9 @@ class UserNutritionData with ChangeNotifier {
 
   void editFoodItemInDiary(FoodItem item, String category, String servings,
       String servingSize, index) {
+
+    print("EDITING DATA");
+
     _userDailyNutrition.date = _nutritionDate.toString();
 
     if (category.toLowerCase() == "breakfast") {
@@ -909,9 +972,18 @@ class UserNutritionData with ChangeNotifier {
 
   void addFoodItemToDiary(FoodItem newItem, String category, String servings,
       String servingSize) {
+
+    print("ADDING DATA");
+
+    _isCurrentFoodItemLoaded = false;
+
     _userDailyNutrition.date = _nutritionDate.toString();
 
     if (category.toLowerCase() == "breakfast") {
+
+      print(_userDailyNutrition.foodListItemsBreakfast.last.foodItemData.foodName);
+      print(_userDailyNutrition.foodListItemsBreakfast.length);
+
       _userDailyNutrition.foodListItemsBreakfast.add(ListFoodItem(
         barcode: newItem.barcode,
         category: category,
@@ -919,6 +991,11 @@ class UserNutritionData with ChangeNotifier {
         foodServingSize: servingSize,
         foodItemData: newItem,
       ));
+
+      print(_userDailyNutrition.foodListItemsBreakfast[_userDailyNutrition.foodListItemsBreakfast.length-2].foodItemData.foodName);
+      print("second last");
+      print(_userDailyNutrition.foodListItemsBreakfast.last.foodItemData.foodName);
+      print(_userDailyNutrition.foodListItemsBreakfast.length);
 
       //_userDailyNutrition.foodListItemsDinner += _foodListItemsDinner;
     } else if (category.toLowerCase() == "lunch") {
@@ -956,6 +1033,10 @@ class UserNutritionData with ChangeNotifier {
     UpdateUserNutritionalData(_userDailyNutrition);
 
     calculateMacros();
+
+    _currentFoodItem = FoodDefaultData();
+
+    _isCurrentFoodItemLoaded = true;
 
     notifyListeners();
   }
@@ -1101,10 +1182,10 @@ class UserNutritionData with ChangeNotifier {
   void setCurrentFoodItem(FoodItem newFoodItem) {
     _currentFoodItem = newFoodItem;
     _currentFoodListItem = ListFoodItem(
-      barcode: currentFoodItem.barcode,
+      barcode: _currentFoodItem.barcode,
       category: "",
-      foodServings: currentFoodItem.servings,
-      foodServingSize: currentFoodItem.servingSize,
+      foodServings: _currentFoodItem.servings,
+      foodServingSize: _currentFoodItem.servingSize,
       foodItemData: newFoodItem,
     );
   }

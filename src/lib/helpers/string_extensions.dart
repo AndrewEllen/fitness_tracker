@@ -36,9 +36,9 @@ extension StringExtension on String {
   String capitalize() {
 
     if (isNotEmpty) {
-      return replaceAll(RegExp(' +'), ' ').split(' ')
-          .map((str) => str.capitalizeFirst())
-          .join(' ');
+
+      return trim().split(" ").map((element) => element.capitalizeFirst()).toList().join(" ");
+
     }
 
     return this;

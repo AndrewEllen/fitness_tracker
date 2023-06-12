@@ -110,6 +110,8 @@ class _DietCategoryBoxState extends State<DietCategoryBox> {
   @override
   Widget build(BuildContext context) {
 
+
+
     return ScreenWidthExpandingContainer(
       minHeight: widget.bigContainerMin/2,
       margin: widget.margin,
@@ -128,7 +130,9 @@ class _DietCategoryBoxState extends State<DietCategoryBox> {
             itemCount: widget.foodList.length,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
+
               return FoodListDisplayBox(
+                key: UniqueKey(),
                 width: widget.width,
                 foodObject: widget.foodList[index],
                 icon: MdiIcons.squareEditOutline,

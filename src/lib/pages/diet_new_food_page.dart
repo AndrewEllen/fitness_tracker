@@ -15,8 +15,9 @@ import '../widgets/food_nutrition_list_formfield.dart';
 import 'diet_food_display_page.dart';
 
 class FoodNewNutritionEdit extends StatefulWidget {
-  FoodNewNutritionEdit({Key? key, required this.category}) : super(key: key);
+  FoodNewNutritionEdit({Key? key, required this.category, this.fromBarcode = false}) : super(key: key);
   String category;
+  bool fromBarcode;
 
   @override
   State<FoodNewNutritionEdit> createState() => _FoodNewNutritionEditState();
@@ -162,7 +163,14 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
   }
 
   void SetControllerValues() {
-    barcodeController.text = Uuid().v4();
+
+    if (widget.fromBarcode) {
+      barcodeController.text = currentFoodItem.barcode;
+    } else {
+      barcodeController.text = Uuid().v4();
+    }
+
+
     foodNameController.text = currentFoodItem.foodName;
     quantityController.text = currentFoodItem.quantity;
     servingSizeController.text = currentFoodItem.servingSize;
@@ -224,6 +232,8 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
   }
 
   void SaveFoodItem() {
+
+    print(context.read<UserNutritionData>().foodListItemsBreakfast.last.foodItemData.foodName);
 
     if (foodNameController.text.isNotEmpty && caloriesController.text.isNotEmpty && servingSizeController.text.isNotEmpty
     && servingsController.text.isNotEmpty) {
@@ -298,6 +308,8 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
         seleniumController.text,
         stearicAcidController.text,
       );
+
+      print(context.read<UserNutritionData>().foodListItemsBreakfast.last.foodItemData.foodName);
 
       UpdateFoodItemData(context.read<UserNutritionData>().currentFoodItem);
 

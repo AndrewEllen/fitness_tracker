@@ -68,6 +68,7 @@ class _FoodListDisplayBoxState extends State<FoodListDisplayBox> {
     }
 
     return widget.foodObject.foodItemData.foodName.isNotEmpty ? Container(
+      key: UniqueKey(),
       margin: const EdgeInsets.all(4),
       height: 60,
       decoration: const BoxDecoration(

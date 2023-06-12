@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:fitness_tracker/constants.dart';
+import 'package:fitness_tracker/pages/food_nutrition_list_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
@@ -13,6 +14,7 @@ import '../providers/database_get.dart';
 import '../providers/page_change_provider.dart';
 import '../providers/user_nutrition_data.dart';
 import 'diet_food_display_page.dart';
+import 'diet_new_food_page.dart';
 
 class BarcodeScannerPage extends StatefulWidget {
   BarcodeScannerPage({Key? key, required this.category}) : super(key: key);
@@ -87,12 +89,6 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
           final List<Barcode> barcodes = capture.barcodes;
 
             debugPrint('Barcode found! ${barcodes[0].displayValue}');
-            try {
-              analyseBarcode(capture.image);
-            }
-            catch (error) {
-              print(error);
-            }
 
             String? barcodeDisplayValue = barcodes[0].displayValue;
 
@@ -100,15 +96,26 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
             if (barcodeDisplayValue != null && !_isScanned) {
 
               FoodItem newFoodItem = await CheckFoodBarcode(barcodeDisplayValue);
+
+              print(newFoodItem.foodName);
+
               context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
 
               _isScanned = true;
               print(context.read<UserNutritionData>().currentFoodItem.foodName);
 
-            }
 
-            scannerController.stop();
-            context.read<PageChange>().changePageRemovePreviousCache(FoodDisplayPage(category: widget.category));
+              if (newFoodItem.newItem) {
+                scannerController.stop();
+
+                context.read<PageChange>().changePageRemovePreviousCache(FoodNewNutritionEdit(category: widget.category, fromBarcode: true,));
+              } else {
+                scannerController.stop();
+
+                context.read<PageChange>().changePageRemovePreviousCache(FoodDisplayPage(category: widget.category));
+              }
+
+            }
 
           }
       ),

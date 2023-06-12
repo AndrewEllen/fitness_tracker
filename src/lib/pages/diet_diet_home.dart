@@ -104,7 +104,7 @@ class _DietHomePageState extends State<DietHomePage> {
                         margin: _margin,
                         width: _width,
                         title: "Breakfast",
-                        foodList: context.read<UserNutritionData>().foodListItemsBreakfast,
+                        foodList: context.watch<UserNutritionData>().foodListItemsBreakfast,
                       ),
 
                       DietCategoryBox(
@@ -113,7 +113,7 @@ class _DietHomePageState extends State<DietHomePage> {
                         margin: _margin,
                         width: _width,
                         title: "Lunch",
-                        foodList: context.read<UserNutritionData>().foodListItemsLunch,
+                        foodList: context.watch<UserNutritionData>().foodListItemsLunch,
                       ),
 
                       DietCategoryBox(
@@ -122,7 +122,7 @@ class _DietHomePageState extends State<DietHomePage> {
                         margin: _margin,
                         width: _width,
                         title: "Dinner",
-                        foodList: context.read<UserNutritionData>().foodListItemsDinner,
+                        foodList: context.watch<UserNutritionData>().foodListItemsDinner,
                       ),
 
                       DietCategoryBox(
@@ -131,7 +131,7 @@ class _DietHomePageState extends State<DietHomePage> {
                         margin: _margin,
                         width: _width,
                         title: "Snacks",
-                        foodList: context.read<UserNutritionData>().foodListItemsSnacks,
+                        foodList: context.watch<UserNutritionData>().foodListItemsSnacks,
                       ),
                       SizedBox(height: _height/14),
                     ],

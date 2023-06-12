@@ -258,6 +258,9 @@ GetUserExercises() async {
 //Gets the food data from my firebase database
 
 GetFoodDataFromFirebase(String barcode) async {
+
+  print("firebase get");
+
   try {
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -268,6 +271,8 @@ GetFoodDataFromFirebase(String barcode) async {
         .get();
 
     final _data = snapshot.get("food-data");
+
+    print(_data["foodName"]);
 
     return FoodItem(
       barcode: _data["barcode"] ?? "",

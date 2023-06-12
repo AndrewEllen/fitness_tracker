@@ -3,6 +3,8 @@ import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart
 import '../models/food_item.dart';
 import 'extract_image_byte_data.dart';
 
+///TODO Remove this later
+
 Future<String?> analyseBarcode(imageFile) async {
   //[LO3.7.3.5]
   //Code used from pub.dev package page

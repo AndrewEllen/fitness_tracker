@@ -62,6 +62,8 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
           (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
       ) {
 
+        print("editing");
+
         context.read<UserNutritionData>().editFoodItemInDiary(
           currentFoodItem,
           widget.category,

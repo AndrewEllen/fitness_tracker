@@ -128,6 +128,7 @@ class FoodItem {
     required this.selenium,
     required this.stearicAcid,
     this.firebaseItem = false,
+    this.newItem = false,
   });
 
   String barcode;
@@ -190,4 +191,5 @@ class FoodItem {
   String selenium;
   String stearicAcid;
   bool firebaseItem;
+  bool newItem;
 }
