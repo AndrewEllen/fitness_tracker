@@ -97,13 +97,11 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
 
               FoodItem newFoodItem = await CheckFoodBarcode(barcodeDisplayValue);
 
-              print(newFoodItem.foodName);
+              //print(newFoodItem.foodName);
 
               context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
 
               _isScanned = true;
-              print(context.read<UserNutritionData>().currentFoodItem.foodName);
-
 
               if (newFoodItem.newItem) {
                 scannerController.stop();

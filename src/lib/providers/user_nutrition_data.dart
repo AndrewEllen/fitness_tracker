@@ -537,9 +537,23 @@ class UserNutritionData with ChangeNotifier {
 
   }
 
-  String convertToUsableData(dynamic valueToConvert) {
+  String convertToUsableData(dynamic valueToConvert, {bool convertToNumber = true}) {
+
     if (valueToConvert != null) {
       valueToConvert = valueToConvert.toString();
+      if (convertToNumber) {
+
+        valueToConvert = valueToConvert.replaceAll(RegExp(r'[^0-9]'),' ');
+        List valueToConvertList = valueToConvert.split(" ");
+        valueToConvert = valueToConvertList[0];
+
+        try {
+          double.parse(valueToConvert);
+        } catch (error) {
+          valueToConvert = 0;
+        }
+
+      }
     } else {
       valueToConvert = "";
     }
@@ -981,9 +995,6 @@ class UserNutritionData with ChangeNotifier {
 
     if (category.toLowerCase() == "breakfast") {
 
-      print(_userDailyNutrition.foodListItemsBreakfast.last.foodItemData.foodName);
-      print(_userDailyNutrition.foodListItemsBreakfast.length);
-
       _userDailyNutrition.foodListItemsBreakfast.add(ListFoodItem(
         barcode: newItem.barcode,
         category: category,
@@ -991,11 +1002,6 @@ class UserNutritionData with ChangeNotifier {
         foodServingSize: servingSize,
         foodItemData: newItem,
       ));
-
-      print(_userDailyNutrition.foodListItemsBreakfast[_userDailyNutrition.foodListItemsBreakfast.length-2].foodItemData.foodName);
-      print("second last");
-      print(_userDailyNutrition.foodListItemsBreakfast.last.foodItemData.foodName);
-      print(_userDailyNutrition.foodListItemsBreakfast.length);
 
       //_userDailyNutrition.foodListItemsDinner += _foodListItemsDinner;
     } else if (category.toLowerCase() == "lunch") {
@@ -1184,8 +1190,8 @@ class UserNutritionData with ChangeNotifier {
     _currentFoodListItem = ListFoodItem(
       barcode: _currentFoodItem.barcode,
       category: "",
-      foodServings: _currentFoodItem.servings,
-      foodServingSize: _currentFoodItem.servingSize,
+      foodServings: convertToUsableData(_currentFoodItem.servings),
+      foodServingSize: convertToUsableData(_currentFoodItem.servingSize),
       foodItemData: newFoodItem,
     );
   }
