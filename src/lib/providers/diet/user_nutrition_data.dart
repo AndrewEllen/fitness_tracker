@@ -1,6 +1,7 @@
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/diet/user_custom_foods.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_history_model.dart';
+import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
@@ -123,6 +124,78 @@ class UserNutritionData with ChangeNotifier {
     foodListItemsDinner: [],
     foodListItemsSnacks: [],
   );
+
+  late List<UserRecipesModel> _userRecipesList = [];
+
+  List<UserRecipesModel> get userRecipesList => _userRecipesList;
+
+  late UserRecipesModel _currentRecipe = UserRecipesModel(
+      barcode: "",
+      recipeFoodList: [],
+      foodData: FoodItem(
+    barcode: "",
+    foodName: "",
+    quantity: "",
+    servingSize: "",
+    servings: "",
+    calories: "",
+    kiloJoules: "",
+    proteins: "",
+    carbs: "",
+    fiber: "",
+    sugars: "",
+    fat: "",
+    saturatedFat: "",
+    polyUnsaturatedFat: "",
+    monoUnsaturatedFat: "",
+    transFat: "",
+    cholesterol: "",
+    calcium: "",
+    iron: "",
+    sodium: "",
+    zinc: "",
+    magnesium: "",
+    potassium: "",
+    vitaminA: "",
+    vitaminB1: "",
+    vitaminB2: "",
+    vitaminB3: "",
+    vitaminB6: "",
+    vitaminB9: "",
+    vitaminB12: "",
+    vitaminC: "",
+    vitaminD: "",
+    vitaminE: "",
+    vitaminK: "",
+    omega3: "",
+    omega6: "",
+    alcohol: "",
+    biotin: "",
+    butyricAcid: "",
+    caffeine: "",
+    capricAcid: "",
+    caproicAcid: "",
+    caprylicAcid: "",
+    chloride: "",
+    chromium: "",
+    copper: "",
+    docosahexaenoicAcid: "",
+    eicosapentaenoicAcid: "",
+    erucicAcid: "",
+    fluoride: "",
+    iodine: "",
+    manganese: "",
+    molybdenum: "",
+    myristicAcid: "",
+    oleicAcid: "",
+    palmiticAcid: "",
+    pantothenicAcid: "",
+    selenium: "",
+    stearicAcid: "",
+  ),
+  );
+
+  UserRecipesModel get currentRecipe => _currentRecipe;
 
   late FoodItem _currentFoodItem = FoodItem(
     barcode: "",

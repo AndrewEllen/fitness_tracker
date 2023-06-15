@@ -1,5 +1,6 @@
 import 'package:fitness_tracker/models/diet/user_custom_foods.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_history_model.dart';
+import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
@@ -42,6 +43,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
   late UserNutritionHistoryModel foodHistory;
   late UserNutritionCustomFoodModel customFood;
+  late List<UserRecipesModel> customRecipes;
 
   late List<FoodItem> foodItemsFromSearch = [];
   late List<FoodItem> foodItemsFromSearchFirebase = [];
@@ -57,6 +59,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
     foodHistory = context.read<UserNutritionData>().userNutritionHistory;
     customFood = context.read<UserNutritionData>().userNutritionCustomFood;
+    customRecipes = context.read<UserNutritionData>().userRecipesList;
 
     super.initState();
   }
@@ -829,27 +832,32 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                             ],
                           ),
                         ),
-                        AppHeaderBox(
-                          title: "History",
+                        customRecipes.isNotEmpty ? AppHeaderBox(
+                          title: "Recipes",
+                          width: width,
+                          largeTitle: true,
+                        ) : AppHeaderBox(
+                          titleColor: Colors.white70,
+                          title: "Recipes will display here...",
                           width: width,
                           largeTitle: true,
                         ),
                         ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: foodHistory.foodListItemNames.length,
+                            itemCount: customRecipes.length,
                             shrinkWrap: true,
                             itemBuilder: (BuildContext context, int index) {
                               return FoodHistoryListDisplayBox(
                                 width: width,
-                                foodHistoryName: foodHistory.foodListItemNames[index],
-                                foodHistoryServings: foodHistory.foodServings[index],
-                                foodHistoryServingSize: foodHistory.foodServingSize[index],
+                                foodHistoryName: customRecipes[index].foodData.foodName,
+                                foodHistoryServings: customRecipes[index].foodData.servings[index],
+                                foodHistoryServingSize: customRecipes[index].foodData.servingSize[index],
                                 icon: Icons.add_box,
                                 iconColour: appSecondaryColour,
                                 onTapIcon: () => AddFoodItem(
-                                  foodHistory.barcodes[index],
-                                  foodHistory.foodServings[index],
-                                  foodHistory.foodServingSize[index],
+                                  customRecipes[index].barcode,
+                                  customRecipes[index].foodData.servings[index],
+                                  customRecipes[index].foodData.servingSize[index],
                                 ),
                               );
                             }),
