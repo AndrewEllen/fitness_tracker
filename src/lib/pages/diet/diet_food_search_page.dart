@@ -1,3 +1,4 @@
+import 'package:fitness_tracker/models/diet/user_custom_foods.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_history_model.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -40,6 +41,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
   late final newCodeKey = GlobalKey<FormState>();
 
   late UserNutritionHistoryModel foodHistory;
+  late UserNutritionCustomFoodModel customFood;
 
   late List<FoodItem> foodItemsFromSearch = [];
   late List<FoodItem> foodItemsFromSearchFirebase = [];
@@ -54,6 +56,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
   void initState() {
 
     foodHistory = context.read<UserNutritionData>().userNutritionHistory;
+    customFood = context.read<UserNutritionData>().userNutritionCustomFood;
 
     super.initState();
   }
@@ -276,407 +279,984 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
             ],
           ),
         ),
-        body: NotificationListener<OverscrollIndicatorNotification>(
-          onNotification: (overscroll) {
-            overscroll.disallowIndicator();
-            return true;
-          },
-          child: SingleChildScrollView(
-            child: Stack(
-              children: [
-                Column(
+        body: TabBarView(
+          children: [
+            ///
+            ///
+            /// Food All Page
+            ///
+            ///
+            NotificationListener<OverscrollIndicatorNotification>(
+              onNotification: (overscroll) {
+                overscroll.disallowIndicator();
+                return true;
+              },
+              ///Search Page All
+              child: SingleChildScrollView(
+                child: Stack(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: appTertiaryColour.withAlpha(180),
-                      ),
-                      child: Row(
-                        children: [
-                          const Spacer(),
-                          Container(
-                            margin: const EdgeInsets.only(
-                              top: 8,
-                              bottom: 5,
-                            ),
-                            width: width/4,
-                            decoration: BoxDecoration(
-                              color: appTertiaryColour,
-                              border: Border.all(color: appSecondaryColour, width: 1),
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _displayDropDown = true;
-                                  });
-                                },
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.only(
-                                        top: 5,
-                                        bottom: 8,
-                                        left: 18.0,
-                                        right: 18.0,
-                                      ),
-                                      child: Icon(
-                                          MdiIcons.tagTextOutline,
-                                          size: height/26,
-                                        ),
-                                    ),
-                                    const FittedBox(
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          bottom: 4,
-                                        ),
-                                        child: FittedBox(
-                                          fit: BoxFit.fitWidth,
-                                          child: Text(
-                                            "From Code",
-                                            style: TextStyle(
-                                              color: appSecondaryColour,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Spacer(),
-                          Container(
-                            margin: const EdgeInsets.only(
-                              top: 8,
-                              bottom: 5,
-                            ),
-                            width: width/4,
-                            decoration: BoxDecoration(
-                              color: appTertiaryColour,
-                              border: Border.all(color: appSecondaryColour, width: 1),
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () => context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category)),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.only(
-                                        top: 5,
-                                        bottom: 8,
-                                        left: 18.0,
-                                        right: 18.0,
-                                      ),
-                                      child: Icon(
-                                        MdiIcons.foodForkDrink,
-                                        size: height/26,
-                                      ),
-                                    ),
-                                    const FittedBox(
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          bottom: 4,
-                                        ),
-                                        child: FittedBox(
-                                          fit: BoxFit.fitWidth,
-                                          child: Text(
-                                            "Add New",
-                                            style: TextStyle(
-                                              color: appSecondaryColour,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Spacer(),
-                          Container(
-                            margin: const EdgeInsets.only(
-                              top: 8,
-                              bottom: 5,
-                            ),
-                            width: width/4,
-                            decoration: BoxDecoration(
-                              color: appTertiaryColour,
-                              border: Border.all(color: appSecondaryColour, width: 1),
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () => context.read<PageChange>().changePageCache(BarcodeScannerPage(category: widget.category)),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.only(
-                                        top: 5,
-                                        bottom: 8,
-                                        left: 18.0,
-                                        right: 18.0,
-                                      ),
-                                      child: Icon(
-                                        MdiIcons.barcodeScan,
-                                        size: height/26,
-                                      ),
-                                    ),
-                                    const FittedBox(
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          bottom: 4,
-                                        ),
-                                        child: FittedBox(
-                                          fit: BoxFit.fitWidth,
-                                          child: Text(
-                                            "Scan Barcode",
-                                            style: TextStyle(
-                                              color: appSecondaryColour,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Spacer(),
-                        ],
-                      ),
-                    ),
-                    AppHeaderBox(
-                      title: "History",
-                      width: width,
-                      largeTitle: true,
-                    ),
-                    ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: foodHistory.foodListItemNames.length,
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          return FoodHistoryListDisplayBox(
-                            width: width,
-                            foodHistoryName: foodHistory.foodListItemNames[index],
-                            foodHistoryServings: foodHistory.foodServings[index],
-                            foodHistoryServingSize: foodHistory.foodServingSize[index],
-                            icon: Icons.add_box,
-                            iconColour: appSecondaryColour,
-                            onTapIcon: () => AddFoodItem(
-                                foodHistory.barcodes[index],
-                                foodHistory.foodServings[index],
-                                foodHistory.foodServingSize[index],
-                            ),
-                          );
-                        }),
-
-                    !_searching ? Column(
+                    Column(
                       children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: appTertiaryColour.withAlpha(180),
+                          ),
+                          child: Row(
+                            children: [
+                              const Spacer(),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                  top: 8,
+                                  bottom: 8,
+                                ),
+                                width: width/4,
+                                decoration: BoxDecoration(
+                                  color: appTertiaryColour,
+                                  border: Border.all(color: appSecondaryColour, width: 1),
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _displayDropDown = true;
+                                      });
+                                    },
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.only(
+                                            top: 5,
+                                            bottom: 8,
+                                            left: 18.0,
+                                            right: 18.0,
+                                          ),
+                                          child: Icon(
+                                              MdiIcons.tagTextOutline,
+                                              size: height/26,
+                                            ),
+                                        ),
+                                        const FittedBox(
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              bottom: 4,
+                                            ),
+                                            child: FittedBox(
+                                              fit: BoxFit.fitWidth,
+                                              child: Text(
+                                                "From Code",
+                                                style: TextStyle(
+                                                  color: appSecondaryColour,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const Spacer(),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                  top: 8,
+                                  bottom: 8,
+                                ),
+                                width: width/4,
+                                decoration: BoxDecoration(
+                                  color: appTertiaryColour,
+                                  border: Border.all(color: appSecondaryColour, width: 1),
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () => context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category)),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.only(
+                                            top: 5,
+                                            bottom: 8,
+                                            left: 18.0,
+                                            right: 18.0,
+                                          ),
+                                          child: Icon(
+                                            MdiIcons.foodForkDrink,
+                                            size: height/26,
+                                          ),
+                                        ),
+                                        const FittedBox(
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              bottom: 4,
+                                            ),
+                                            child: FittedBox(
+                                              fit: BoxFit.fitWidth,
+                                              child: Text(
+                                                "Add New",
+                                                style: TextStyle(
+                                                  color: appSecondaryColour,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const Spacer(),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                  top: 8,
+                                  bottom: 8,
+                                ),
+                                width: width/4,
+                                decoration: BoxDecoration(
+                                  color: appTertiaryColour,
+                                  border: Border.all(color: appSecondaryColour, width: 1),
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () => context.read<PageChange>().changePageCache(BarcodeScannerPage(category: widget.category)),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.only(
+                                            top: 5,
+                                            bottom: 8,
+                                            left: 18.0,
+                                            right: 18.0,
+                                          ),
+                                          child: Icon(
+                                            MdiIcons.barcodeScan,
+                                            size: height/26,
+                                          ),
+                                        ),
+                                        const FittedBox(
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              bottom: 4,
+                                            ),
+                                            child: FittedBox(
+                                              fit: BoxFit.fitWidth,
+                                              child: Text(
+                                                "Scan Barcode",
+                                                style: TextStyle(
+                                                  color: appSecondaryColour,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const Spacer(),
+                            ],
+                          ),
+                        ),
+                        foodHistory.foodListItemNames.isNotEmpty ? AppHeaderBox(
+                          title: "History",
+                          width: width,
+                          largeTitle: true,
+                        ) : AppHeaderBox(
+                          titleColor: Colors.white70,
+                          title: "Items will appear here...",
+                          width: width,
+                          largeTitle: false,
+                        ),
                         ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: foodItemsFromSearch.length,
+                            itemCount: foodHistory.foodListItemNames.length,
                             shrinkWrap: true,
                             itemBuilder: (BuildContext context, int index) {
-                              if (index == 0) {
-                                return Column(
-                                  children: [
-                                    AppHeaderBox(
-                                      title: "Search Data",
-                                      width: width,
-                                      largeTitle: true,
-                                    ),
-                                    FoodListSearchDisplayBox(
-                                      width: width,
-                                      foodObject: foodItemsFromSearch[index],
-                                      icon: Icons.add_box,
-                                      iconColour: appSecondaryColour,
-                                      onTapIcon: () {
+                              return FoodHistoryListDisplayBox(
+                                width: width,
+                                foodHistoryName: foodHistory.foodListItemNames[index],
+                                foodHistoryServings: foodHistory.foodServings[index],
+                                foodHistoryServingSize: foodHistory.foodServingSize[index],
+                                icon: Icons.add_box,
+                                iconColour: appSecondaryColour,
+                                onTapIcon: () => AddFoodItem(
+                                    foodHistory.barcodes[index],
+                                    foodHistory.foodServings[index],
+                                    foodHistory.foodServingSize[index],
+                                ),
+                              );
+                            }),
+
+                        !_searching ? Column(
+                          children: [
+                            ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: foodItemsFromSearch.length,
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index) {
+                                  if (index == 0) {
+                                    return Column(
+                                      children: [
+                                        AppHeaderBox(
+                                          title: "Search Data",
+                                          width: width,
+                                          largeTitle: true,
+                                        ),
+                                        FoodListSearchDisplayBox(
+                                          width: width,
+                                          foodObject: foodItemsFromSearch[index],
+                                          icon: Icons.add_box,
+                                          iconColour: appSecondaryColour,
+                                          onTapIcon: () {
+
+                                          context.read<UserNutritionData>().setCurrentFoodItem(foodItemsFromSearch[index]);
+
+                                          context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
+                                        },
+                                  ),
+                                      ],
+                                    );
+                                  }
+
+                                  return FoodListSearchDisplayBox(
+                                    width: width,
+                                    foodObject: foodItemsFromSearch[index],
+                                    icon: Icons.add_box,
+                                    iconColour: appSecondaryColour,
+                                    onTapIcon: () {
 
                                       context.read<UserNutritionData>().setCurrentFoodItem(foodItemsFromSearch[index]);
 
                                       context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
                                     },
-                              ),
-                                  ],
-                                );
-                              }
-
-                              return FoodListSearchDisplayBox(
-                                width: width,
-                                foodObject: foodItemsFromSearch[index],
-                                icon: Icons.add_box,
-                                iconColour: appSecondaryColour,
-                                onTapIcon: () {
-
-                                  context.read<UserNutritionData>().setCurrentFoodItem(foodItemsFromSearch[index]);
-
-                                  context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
-                                },
-                              );
-                            }),
-                      ],
-                    ) : const Align(
-                          alignment: Alignment.center,
-                          child: CircularProgressIndicator(
-                        color: appSecondaryColour,
-                      ),
-                    ),
-                  ],
-                ),
-                _displayDropDown
-                    ? Container(
-                  height: height,
-                  width: width,
-                  color: appPrimaryColour.withOpacity(0.5),
-                  child: GestureDetector(
-                    onTap: (() {
-                      setState(() {
-                        _displayDropDown = false;
-                      });
-                    }),
-                  ),
-                )
-                    : const SizedBox.shrink(),
-                _displayDropDown ? Positioned(
-                  top: height/4,
-                  left: width/10,
-                  right: width/10,
-                  child: Container(
-                    height: height/5,
-                    width: width/1.5,
-                    margin: EdgeInsets.all(15),
-                    decoration: const BoxDecoration(
-                      color: appTertiaryColour,
-                      borderRadius: BorderRadius.all(Radius.circular(4)),
-                    ),
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: 32,
-                          width: double.infinity,
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(width: 2, color: appQuinaryColour),
-                            ),
-                          ),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              height: 24,
-                              child: const Text(
-                                "Add Food",
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
+                                  );
+                                }),
+                          ],
+                        ) : const Align(
+                              alignment: Alignment.center,
+                              child: CircularProgressIndicator(
+                            color: appSecondaryColour,
                           ),
                         ),
-                        Positioned(
-                          bottom: width/5.5,
-                          left: width/30,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: appTertiaryColour,
-                              borderRadius: const BorderRadius.all(Radius.circular(4)),
-                              border: Border.all(
-                                color: appQuarternaryColour,
-                              ),
-                            ),
-                            width: width/1.5,
-                            height: width/12,
-                            child: Form(
-                              key: newCodeKey,
-                              child: TextFormField(
-                                controller: newCodeController,
-                                cursorColor: Colors.white,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (20),
+                      ],
+                    ),
+                    _displayDropDown
+                        ? Container(
+                      height: height,
+                      width: width,
+                      color: appPrimaryColour.withOpacity(0.5),
+                      child: GestureDetector(
+                        onTap: (() {
+                          setState(() {
+                            _displayDropDown = false;
+                          });
+                        }),
+                      ),
+                    )
+                        : const SizedBox.shrink(),
+                    _displayDropDown ? Positioned(
+                      top: height/4,
+                      left: width/10,
+                      right: width/10,
+                      child: Container(
+                        height: height/5,
+                        width: width/1.5,
+                        margin: EdgeInsets.all(15),
+                        decoration: const BoxDecoration(
+                          color: appTertiaryColour,
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                        ),
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: 32,
+                              width: double.infinity,
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(width: 2, color: appQuinaryColour),
                                 ),
-                                textAlign: TextAlign.center,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(bottom: (width/12)/2.5, left: 5, right: 5,),
-                                  hintText: 'Food Code...',
-                                  hintStyle: const TextStyle(
-                                    color: Colors.white54,
-                                    fontSize: (18),
-                                  ),
-                                  errorStyle: const TextStyle(
-                                    height: 0,
-                                  ),
-                                  focusedBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: appSecondaryColour,
+                              ),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                  height: 24,
+                                  child: const Text(
+                                    "Add Food",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
                                     ),
                                   ),
                                 ),
-                                validator: (String? value) {
-                                  if (value!.isNotEmpty) {
-                                    return null;
-                                  }
-                                  return "";
-                                },
                               ),
                             ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: width/42,
-                          right: width/4.33,
-                          child: Container(
-                            height: 30,
-                            child: AppButton(
-                              buttonText: "Cancel",
-                              onTap: () {
-                                setState(() {
-                                  _displayDropDown = false;
-                                });
-                              },
+                            Positioned(
+                              bottom: width/5.5,
+                              left: width/30,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: appTertiaryColour,
+                                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                                  border: Border.all(
+                                    color: appQuarternaryColour,
+                                  ),
+                                ),
+                                width: width/1.5,
+                                height: width/12,
+                                child: Form(
+                                  key: newCodeKey,
+                                  child: TextFormField(
+                                    controller: newCodeController,
+                                    cursorColor: Colors.white,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: (20),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(bottom: (width/12)/2.5, left: 5, right: 5,),
+                                      hintText: 'Food Code...',
+                                      hintStyle: const TextStyle(
+                                        color: Colors.white54,
+                                        fontSize: (18),
+                                      ),
+                                      errorStyle: const TextStyle(
+                                        height: 0,
+                                      ),
+                                      focusedBorder: const UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: appSecondaryColour,
+                                        ),
+                                      ),
+                                    ),
+                                    validator: (String? value) {
+                                      if (value!.isNotEmpty) {
+                                        return null;
+                                      }
+                                      return "";
+                                    },
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                            Positioned(
+                              bottom: width/42,
+                              right: width/4.33,
+                              child: Container(
+                                height: 30,
+                                child: AppButton(
+                                  buttonText: "Cancel",
+                                  onTap: () {
+                                    setState(() {
+                                      _displayDropDown = false;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: width/42,
+                              right: width/33,
+                              child: Container(
+                                height: 30,
+                                child: AppButton(
+                                  buttonText: "Add",
+                                  onTap: () async {
+                                      if (newCodeKey.currentState!.validate()) {
+
+                                        FoodItem newFoodItem = await CheckFoodBarcode(newCodeController.text);
+
+                                        if (newFoodItem.barcode.isNotEmpty) {
+                                          setState(() {
+                                            newCodeController.text = "";
+                                            _displayDropDown = false;
+                                          });
+                                          context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
+                                          context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
+                                        }
+                                      }
+                                    }),
+                                ),
+                              ),
+                          ],
                         ),
-                        Positioned(
-                          bottom: width/42,
-                          right: width/33,
-                          child: Container(
-                            height: 30,
-                            child: AppButton(
-                              buttonText: "Add",
-                              onTap: () async {
-                                  if (newCodeKey.currentState!.validate()) {
-
-                                    FoodItem newFoodItem = await CheckFoodBarcode(newCodeController.text);
-
-                                    if (newFoodItem.barcode.isNotEmpty) {
+                      ),
+                    ) : const SizedBox.shrink(),
+                  ],
+                ),
+              ),
+            ),
+            ///
+            ///
+            /// Food Recipes Page
+            ///
+            ///
+            NotificationListener<OverscrollIndicatorNotification>(
+              onNotification: (overscroll) {
+                overscroll.disallowIndicator();
+                return true;
+              },
+              child: SingleChildScrollView(
+                child: Stack(
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: appTertiaryColour.withAlpha(180),
+                          ),
+                          child: Row(
+                            children: [
+                              const Spacer(),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                  top: 8,
+                                  bottom: 8,
+                                ),
+                                width: width/2.5,
+                                decoration: BoxDecoration(
+                                  color: appTertiaryColour,
+                                  border: Border.all(color: appSecondaryColour, width: 1),
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () {
                                       setState(() {
-                                        newCodeController.text = "";
-                                        _displayDropDown = false;
+                                        _displayDropDown = true;
                                       });
-                                      context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
-                                      context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
-                                    }
-                                  }
-                                }),
-                            ),
+                                    },
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.only(
+                                            top: 5,
+                                            bottom: 8,
+                                            left: 18.0,
+                                            right: 18.0,
+                                          ),
+                                          child: Icon(
+                                            MdiIcons.tagTextOutline,
+                                            size: height/26,
+                                          ),
+                                        ),
+                                        const FittedBox(
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              bottom: 4,
+                                              left: 4,
+                                              right: 4,
+                                            ),
+                                            child: FittedBox(
+                                              fit: BoxFit.fitWidth,
+                                              child: Text(
+                                                "Import Recipe From Code",
+                                                style: TextStyle(
+                                                  color: appSecondaryColour,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const Spacer(),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                  top: 8,
+                                  bottom: 8,
+                                ),
+                                width: width/2.5,
+                                decoration: BoxDecoration(
+                                  color: appTertiaryColour,
+                                  border: Border.all(color: appSecondaryColour, width: 1),
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () => context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category)),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.only(
+                                            top: 5,
+                                            bottom: 8,
+                                            left: 18.0,
+                                            right: 18.0,
+                                          ),
+                                          child: Icon(
+                                            MdiIcons.foodForkDrink,
+                                            size: height/26,
+                                          ),
+                                        ),
+                                        const FittedBox(
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              bottom: 4,
+                                              left: 4,
+                                              right: 4,
+                                            ),
+                                            child: FittedBox(
+                                              fit: BoxFit.fitWidth,
+                                              child: Text(
+                                                "Create New Recipe",
+                                                style: TextStyle(
+                                                  color: appSecondaryColour,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const Spacer(),
+                            ],
                           ),
+                        ),
+                        AppHeaderBox(
+                          title: "History",
+                          width: width,
+                          largeTitle: true,
+                        ),
+                        ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: foodHistory.foodListItemNames.length,
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              return FoodHistoryListDisplayBox(
+                                width: width,
+                                foodHistoryName: foodHistory.foodListItemNames[index],
+                                foodHistoryServings: foodHistory.foodServings[index],
+                                foodHistoryServingSize: foodHistory.foodServingSize[index],
+                                icon: Icons.add_box,
+                                iconColour: appSecondaryColour,
+                                onTapIcon: () => AddFoodItem(
+                                  foodHistory.barcodes[index],
+                                  foodHistory.foodServings[index],
+                                  foodHistory.foodServingSize[index],
+                                ),
+                              );
+                            }),
                       ],
                     ),
-                  ),
-                ) : const SizedBox.shrink(),
-              ],
+                    _displayDropDown
+                        ? Container(
+                      height: height,
+                      width: width,
+                      color: appPrimaryColour.withOpacity(0.5),
+                      child: GestureDetector(
+                        onTap: (() {
+                          setState(() {
+                            _displayDropDown = false;
+                          });
+                        }),
+                      ),
+                    )
+                        : const SizedBox.shrink(),
+                    _displayDropDown ? Positioned(
+                      top: height/4,
+                      left: width/10,
+                      right: width/10,
+                      child: Container(
+                        height: height/5,
+                        width: width/1.5,
+                        margin: EdgeInsets.all(15),
+                        decoration: const BoxDecoration(
+                          color: appTertiaryColour,
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                        ),
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: 32,
+                              width: double.infinity,
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(width: 2, color: appQuinaryColour),
+                                ),
+                              ),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                  height: 24,
+                                  child: const Text(
+                                    "Add Food",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: width/5.5,
+                              left: width/30,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: appTertiaryColour,
+                                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                                  border: Border.all(
+                                    color: appQuarternaryColour,
+                                  ),
+                                ),
+                                width: width/1.5,
+                                height: width/12,
+                                child: Form(
+                                  key: newCodeKey,
+                                  child: TextFormField(
+                                    controller: newCodeController,
+                                    cursorColor: Colors.white,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: (20),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(bottom: (width/12)/2.5, left: 5, right: 5,),
+                                      hintText: 'Food Code...',
+                                      hintStyle: const TextStyle(
+                                        color: Colors.white54,
+                                        fontSize: (18),
+                                      ),
+                                      errorStyle: const TextStyle(
+                                        height: 0,
+                                      ),
+                                      focusedBorder: const UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: appSecondaryColour,
+                                        ),
+                                      ),
+                                    ),
+                                    validator: (String? value) {
+                                      if (value!.isNotEmpty) {
+                                        return null;
+                                      }
+                                      return "";
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: width/42,
+                              right: width/4.33,
+                              child: Container(
+                                height: 30,
+                                child: AppButton(
+                                  buttonText: "Cancel",
+                                  onTap: () {
+                                    setState(() {
+                                      _displayDropDown = false;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: width/42,
+                              right: width/33,
+                              child: Container(
+                                height: 30,
+                                child: AppButton(
+                                    buttonText: "Add",
+                                    onTap: () async {
+                                      if (newCodeKey.currentState!.validate()) {
+
+                                        FoodItem newFoodItem = await CheckFoodBarcode(newCodeController.text);
+
+                                        if (newFoodItem.barcode.isNotEmpty) {
+                                          setState(() {
+                                            newCodeController.text = "";
+                                            _displayDropDown = false;
+                                          });
+                                          context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
+                                          context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
+                                        }
+                                      }
+                                    }),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ) : const SizedBox.shrink(),
+                  ],
+                ),
+              ),
             ),
-          ),
+            ///
+            ///
+            /// Food Custom Page
+            ///
+            ///
+            NotificationListener<OverscrollIndicatorNotification>(
+              onNotification: (overscroll) {
+                overscroll.disallowIndicator();
+                return true;
+              },
+              child: SingleChildScrollView(
+                child: Stack(
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: appTertiaryColour.withAlpha(180),
+                          ),
+                          child: Row(
+                            children: [
+                              const Spacer(),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                  top: 8,
+                                  bottom: 8,
+                                ),
+                                width: width/1.04,
+                                decoration: BoxDecoration(
+                                  color: appTertiaryColour,
+                                  border: Border.all(color: appSecondaryColour, width: 1),
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () => context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category)),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.only(
+                                            top: 5,
+                                            bottom: 8,
+                                            left: 18.0,
+                                            right: 18.0,
+                                          ),
+                                          child: Icon(
+                                            MdiIcons.foodForkDrink,
+                                            size: height/26,
+                                          ),
+                                        ),
+                                        const FittedBox(
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              bottom: 4,
+                                            ),
+                                            child: FittedBox(
+                                              fit: BoxFit.fitWidth,
+                                              child: Text(
+                                                "Add New",
+                                                style: TextStyle(
+                                                  color: appSecondaryColour,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const Spacer(),
+                            ],
+                          ),
+                        ),
+                        customFood.foodListItemNames.isNotEmpty ? AppHeaderBox(
+                          title: "Custom Food",
+                          width: width,
+                          largeTitle: true,
+                        ) : AppHeaderBox(
+                          titleColor: Colors.white70,
+                          title: "Items will appear here...",
+                          width: width,
+                          largeTitle: false,
+                        ),
+                        ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: customFood.foodListItemNames.length,
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              return FoodHistoryListDisplayBox(
+                                width: width,
+                                foodHistoryName: customFood.foodListItemNames[index],
+                                foodHistoryServings: customFood.foodServings[index],
+                                foodHistoryServingSize: customFood.foodServingSize[index],
+                                icon: Icons.add_box,
+                                iconColour: appSecondaryColour,
+                                onTapIcon: () => AddFoodItem(
+                                  customFood.barcodes[index],
+                                  customFood.foodServings[index],
+                                  customFood.foodServingSize[index],
+                                ),
+                              );
+                            }),
+                      ],
+                    ),
+                    _displayDropDown
+                        ? Container(
+                      height: height,
+                      width: width,
+                      color: appPrimaryColour.withOpacity(0.5),
+                      child: GestureDetector(
+                        onTap: (() {
+                          setState(() {
+                            _displayDropDown = false;
+                          });
+                        }),
+                      ),
+                    )
+                        : const SizedBox.shrink(),
+                    _displayDropDown ? Positioned(
+                      top: height/4,
+                      left: width/10,
+                      right: width/10,
+                      child: Container(
+                        height: height/5,
+                        width: width/1.5,
+                        margin: EdgeInsets.all(15),
+                        decoration: const BoxDecoration(
+                          color: appTertiaryColour,
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                        ),
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: 32,
+                              width: double.infinity,
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(width: 2, color: appQuinaryColour),
+                                ),
+                              ),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                  height: 24,
+                                  child: const Text(
+                                    "Add Food",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: width/5.5,
+                              left: width/30,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: appTertiaryColour,
+                                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                                  border: Border.all(
+                                    color: appQuarternaryColour,
+                                  ),
+                                ),
+                                width: width/1.5,
+                                height: width/12,
+                                child: Form(
+                                  key: newCodeKey,
+                                  child: TextFormField(
+                                    controller: newCodeController,
+                                    cursorColor: Colors.white,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: (20),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(bottom: (width/12)/2.5, left: 5, right: 5,),
+                                      hintText: 'Food Code...',
+                                      hintStyle: const TextStyle(
+                                        color: Colors.white54,
+                                        fontSize: (18),
+                                      ),
+                                      errorStyle: const TextStyle(
+                                        height: 0,
+                                      ),
+                                      focusedBorder: const UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: appSecondaryColour,
+                                        ),
+                                      ),
+                                    ),
+                                    validator: (String? value) {
+                                      if (value!.isNotEmpty) {
+                                        return null;
+                                      }
+                                      return "";
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: width/42,
+                              right: width/4.33,
+                              child: Container(
+                                height: 30,
+                                child: AppButton(
+                                  buttonText: "Cancel",
+                                  onTap: () {
+                                    setState(() {
+                                      _displayDropDown = false;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: width/42,
+                              right: width/33,
+                              child: Container(
+                                height: 30,
+                                child: AppButton(
+                                    buttonText: "Add",
+                                    onTap: () async {
+                                      if (newCodeKey.currentState!.validate()) {
+
+                                        FoodItem newFoodItem = await CheckFoodBarcode(newCodeController.text);
+
+                                        if (newFoodItem.barcode.isNotEmpty) {
+                                          setState(() {
+                                            newCodeController.text = "";
+                                            _displayDropDown = false;
+                                          });
+                                          context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
+                                          context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
+                                        }
+                                      }
+                                    }),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ) : const SizedBox.shrink(),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

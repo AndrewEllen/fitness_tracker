@@ -233,7 +233,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
 
   void SaveFoodItem() {
 
-    print(context.read<UserNutritionData>().foodListItemsBreakfast.last.foodItemData.foodName);
+    //print(context.read<UserNutritionData>().foodListItemsBreakfast.last.foodItemData.foodName);
 
     if (foodNameController.text.isNotEmpty && caloriesController.text.isNotEmpty && servingSizeController.text.isNotEmpty
     && servingsController.text.isNotEmpty) {
@@ -308,8 +308,6 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
         seleniumController.text,
         stearicAcidController.text,
       );
-
-      print(context.read<UserNutritionData>().foodListItemsBreakfast.last.foodItemData.foodName);
 
       UpdateFoodItemData(context.read<UserNutritionData>().currentFoodItem);
 
