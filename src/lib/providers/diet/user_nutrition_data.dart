@@ -550,7 +550,7 @@ class UserNutritionData with ChangeNotifier {
         try {
           double.parse(valueToConvert);
         } catch (error) {
-          valueToConvert = 0;
+          valueToConvert = "0";
         }
 
       }
