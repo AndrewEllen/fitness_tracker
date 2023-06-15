@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitness_tracker/helpers/string_extensions.dart';
 import 'package:fitness_tracker/pages/food_nutrition_list_edit.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:openfoodfacts/openfoodfacts.dart';
@@ -15,6 +18,7 @@ import '../providers/database_get.dart';
 import 'package:provider/provider.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 
+import '../providers/database_write.dart';
 import '../widgets/app_default_button.dart';
 import '../widgets/diet_category_box.dart';
 import '../widgets/diet_home_macro_nutrition_display.dart';
@@ -61,8 +65,6 @@ class _DietHomePageState extends State<DietHomePage> {
 
     context.watch<UserNutritionData>().isCurrentFoodItemLoaded;
 
-    context.watch<UserNutritionData>().calculateMacros();
-
     double _margin = 15;
     double _bigContainerMin = 230;
     double _smallContainerMin = 95;
@@ -81,6 +83,7 @@ class _DietHomePageState extends State<DietHomePage> {
             physics: const NeverScrollableScrollPhysics(),
             child: Column(
               children: [
+
                 NutritionHomeStats(
                   bigContainerMin: _bigContainerMin,
                   height: _height,
@@ -91,6 +94,7 @@ class _DietHomePageState extends State<DietHomePage> {
                 Container(
                   height: _height/1.8,
                   child: ListView(
+                    shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     controller: ScrollController(),
                     children: [
@@ -100,7 +104,7 @@ class _DietHomePageState extends State<DietHomePage> {
                         margin: _margin,
                         width: _width,
                         title: "Breakfast",
-                        foodList: context.read<UserNutritionData>().foodListItemsBreakfast,
+                        foodList: context.watch<UserNutritionData>().foodListItemsBreakfast,
                       ),
 
                       DietCategoryBox(
@@ -109,7 +113,7 @@ class _DietHomePageState extends State<DietHomePage> {
                         margin: _margin,
                         width: _width,
                         title: "Lunch",
-                        foodList: context.read<UserNutritionData>().foodListItemsLunch,
+                        foodList: context.watch<UserNutritionData>().foodListItemsLunch,
                       ),
 
                       DietCategoryBox(
@@ -118,7 +122,7 @@ class _DietHomePageState extends State<DietHomePage> {
                         margin: _margin,
                         width: _width,
                         title: "Dinner",
-                        foodList: context.read<UserNutritionData>().foodListItemsDinner,
+                        foodList: context.watch<UserNutritionData>().foodListItemsDinner,
                       ),
 
                       DietCategoryBox(
@@ -127,37 +131,9 @@ class _DietHomePageState extends State<DietHomePage> {
                         margin: _margin,
                         width: _width,
                         title: "Snacks",
-                        foodList: context.read<UserNutritionData>().foodListItemsSnacks,
+                        foodList: context.watch<UserNutritionData>().foodListItemsSnacks,
                       ),
-
-                      ScreenWidthContainer(
-                        minHeight: _smallContainerMin * 0.2,
-                        maxHeight: _smallContainerMin * 1.5,
-                        height: (_height / 100) * 6,
-                        margin: _margin / 1.5,
-                        child: FractionallySizedBox(
-                          heightFactor: 1,
-                          widthFactor: 1,
-                          child: AppButton(
-                          buttonText: "Barcode Test",
-                          onTap: () => scanBarcode("assets/barcode1.jpg"),
-                          ),
-                        ),
-                      ),
-                      ScreenWidthContainer(
-                        minHeight: _smallContainerMin * 0.2,
-                        maxHeight: _smallContainerMin * 1.5,
-                        height: (_height / 100) * 6,
-                        margin: _margin / 1.5,
-                        child: FractionallySizedBox(
-                          heightFactor: 1,
-                          widthFactor: 1,
-                          child: AppButton(
-                            buttonText: "Barcode Scanner",
-                            onTap: () => context.read<PageChange>().changePageCache(BarcodeScannerPage(category: "Breakfast")),
-                          ),
-                        ),
-                      ),
+                      SizedBox(height: _height/14),
                     ],
                   ),
                 ),

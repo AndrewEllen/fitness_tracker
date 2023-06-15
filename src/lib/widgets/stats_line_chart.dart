@@ -29,7 +29,7 @@ class _StatsLineChartState extends State<StatsLineChart> {
     chartDisplayPoints = data[widget.index].measurementValues.asMap().entries.map((e) => FlSpot(e.key.toDouble(), e.value)).toList();
 
     xAxisMax = data[widget.index].measurementValues.length.toDouble()-1;
-    xAxisMin = xAxisMax - 11;
+    xAxisMin = 0; //xAxisMax - 11;
     if (xAxisMin < 0) {
       xAxisMin = 0;
     };

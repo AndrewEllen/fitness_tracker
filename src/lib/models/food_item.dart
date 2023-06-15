@@ -2,10 +2,11 @@
 //Food item model/construct
 
 class FoodItem {
+
   Map<String, dynamic> toMap() {
     return {
       'barcode': barcode,
-      'foodName': foodName,
+      'foodName': foodName.toLowerCase(),
       'quantity': quantity,
       'servingSize': servingSize,
       'servings': servings,
@@ -126,6 +127,8 @@ class FoodItem {
     required this.pantothenicAcid,
     required this.selenium,
     required this.stearicAcid,
+    this.firebaseItem = false,
+    this.newItem = false,
   });
 
   String barcode;
@@ -187,5 +190,6 @@ class FoodItem {
   String pantothenicAcid;
   String selenium;
   String stearicAcid;
-
+  bool firebaseItem;
+  bool newItem;
 }

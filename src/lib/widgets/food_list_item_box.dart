@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
+import 'package:provider/provider.dart';
 
 import '../models/food_data_list_item.dart';
+import '../models/food_item.dart';
 
 class FoodListDisplayBox extends StatefulWidget {
   FoodListDisplayBox({Key? key,
@@ -51,12 +53,13 @@ class _FoodListDisplayBoxState extends State<FoodListDisplayBox> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => ScrollToEnd());
+    //WidgetsBinding.instance
+    //    .addPostFrameCallback((_) => ScrollToEnd());
   }
 
   @override
   Widget build(BuildContext context) {
+
     if (widget.iconColour?.value == null) {
       widget.iconColour = Colors.white;
     }
@@ -64,7 +67,8 @@ class _FoodListDisplayBoxState extends State<FoodListDisplayBox> {
       widget.icon2Colour = Colors.white;
     }
 
-    return Container(
+    return widget.foodObject.foodItemData.foodName.isNotEmpty ? Container(
+      key: UniqueKey(),
       margin: const EdgeInsets.all(4),
       height: 60,
       decoration: const BoxDecoration(
@@ -101,7 +105,7 @@ class _FoodListDisplayBoxState extends State<FoodListDisplayBox> {
                 child: FittedBox(
                   clipBehavior: Clip.antiAlias,
                   child: Text(
-                    widget.foodObject.foodCalories + "\n Kcal",
+                      ((double.parse(widget.foodObject.foodItemData.calories)/100)*(double.parse(widget.foodObject.foodServingSize) * double.parse(widget.foodObject.foodServings))).toStringAsFixed(0) + "\n Kcal",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.white,
@@ -134,7 +138,7 @@ class _FoodListDisplayBoxState extends State<FoodListDisplayBox> {
                   clipBehavior: Clip.hardEdge,
                   scrollDirection: Axis.horizontal,
                   child: Text(
-                    widget.foodObject.foodName,
+                    widget.foodObject.foodItemData.foodName,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                         color: Colors.white,
@@ -162,9 +166,9 @@ class _FoodListDisplayBoxState extends State<FoodListDisplayBox> {
         ),
         trailing: widget.icon != null && widget.icon2 != null ?
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
+          padding: const EdgeInsets.only(bottom:10.0),
+          child: Stack(
+            //mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
                 onPressed: widget.onTapIcon,
@@ -192,7 +196,7 @@ class _FoodListDisplayBoxState extends State<FoodListDisplayBox> {
         ) :
         null,
       ),
-    );
+    ) : const SizedBox.shrink();
 
   }
 }

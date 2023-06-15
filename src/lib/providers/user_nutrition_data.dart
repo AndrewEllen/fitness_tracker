@@ -1,4 +1,5 @@
 import 'package:fitness_tracker/exports.dart';
+import 'package:fitness_tracker/models/user_custom_foods.dart';
 import 'package:fitness_tracker/models/user_nutrition_history_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -38,6 +39,70 @@ String ServingSizeCalculator(String valuePerOneHundred, String servingSize, Stri
 
 }
 
+FoodItem FoodDefaultData() {
+  return FoodItem(
+    barcode: "",
+    foodName: "",
+    quantity: "",
+    servingSize: "",
+    servings: "",
+    calories: "",
+    kiloJoules: "",
+    proteins: "",
+    carbs: "",
+    fiber: "",
+    sugars: "",
+    fat: "",
+    saturatedFat: "",
+    polyUnsaturatedFat: "",
+    monoUnsaturatedFat: "",
+    transFat: "",
+    cholesterol: "",
+    calcium: "",
+    iron: "",
+    sodium: "",
+    zinc: "",
+    magnesium: "",
+    potassium: "",
+    vitaminA: "",
+    vitaminB1: "",
+    vitaminB2: "",
+    vitaminB3: "",
+    vitaminB6: "",
+    vitaminB9: "",
+    vitaminB12: "",
+    vitaminC: "",
+    vitaminD: "",
+    vitaminE: "",
+    vitaminK: "",
+    omega3: "",
+    omega6: "",
+    alcohol: "",
+    biotin: "",
+    butyricAcid: "",
+    caffeine: "",
+    capricAcid: "",
+    caproicAcid: "",
+    caprylicAcid: "",
+    chloride: "",
+    chromium: "",
+    copper: "",
+    docosahexaenoicAcid: "",
+    eicosapentaenoicAcid: "",
+    erucicAcid: "",
+    fluoride: "",
+    iodine: "",
+    manganese: "",
+    molybdenum: "",
+    myristicAcid: "",
+    oleicAcid: "",
+    palmiticAcid: "",
+    pantothenicAcid: "",
+    selenium: "",
+    stearicAcid: "",
+  );
+}
+
 class UserNutritionData with ChangeNotifier {
 
   //late List<ListFoodItem> _foodListItemsBreakfast = [];
@@ -59,9 +124,74 @@ class UserNutritionData with ChangeNotifier {
     foodListItemsSnacks: [],
   );
 
-
-  late FoodItem _currentFoodItem;
-  late ListFoodItem _currentFoodListItem = ListFoodItem(barcode: "", category: "", foodName: "N/A", foodServings: "1", foodServingSize: "100", foodCalories: "", kiloJoules: "", proteins: "", carbs: "", fiber: "", sugars: "", fat: "", saturatedFat: "", polyUnsaturatedFat: "", monoUnsaturatedFat: "", transFat: "", cholesterol: "", calcium: "", iron: "", sodium: "", zinc: "", magnesium: "", potassium: "", vitaminA: "", vitaminB1: "", vitaminB2: "", vitaminB3: "", vitaminB6: "", vitaminB9: "", vitaminB12: "", vitaminC: "", vitaminD: "", vitaminE: "", vitaminK: "", omega3: "", omega6: "", alcohol: "", biotin: "", butyricAcid: "", caffeine: "", capricAcid: "", caproicAcid: "", caprylicAcid: "", chloride: "", chromium: "", copper: "", docosahexaenoicAcid: "", eicosapentaenoicAcid: "", erucicAcid: "", fluoride: "", iodine: "", manganese: "", molybdenum: "", myristicAcid: "", oleicAcid: "", palmiticAcid: "", pantothenicAcid: "", selenium: "", stearicAcid: "");
+  late FoodItem _currentFoodItem = FoodItem(
+    barcode: "",
+    foodName: "",
+    quantity: "",
+    servingSize: "",
+    servings: "",
+    calories: "",
+    kiloJoules: "",
+    proteins: "",
+    carbs: "",
+    fiber: "",
+    sugars: "",
+    fat: "",
+    saturatedFat: "",
+    polyUnsaturatedFat: "",
+    monoUnsaturatedFat: "",
+    transFat: "",
+    cholesterol: "",
+    calcium: "",
+    iron: "",
+    sodium: "",
+    zinc: "",
+    magnesium: "",
+    potassium: "",
+    vitaminA: "",
+    vitaminB1: "",
+    vitaminB2: "",
+    vitaminB3: "",
+    vitaminB6: "",
+    vitaminB9: "",
+    vitaminB12: "",
+    vitaminC: "",
+    vitaminD: "",
+    vitaminE: "",
+    vitaminK: "",
+    omega3: "",
+    omega6: "",
+    alcohol: "",
+    biotin: "",
+    butyricAcid: "",
+    caffeine: "",
+    capricAcid: "",
+    caproicAcid: "",
+    caprylicAcid: "",
+    chloride: "",
+    chromium: "",
+    copper: "",
+    docosahexaenoicAcid: "",
+    eicosapentaenoicAcid: "",
+    erucicAcid: "",
+    fluoride: "",
+    iodine: "",
+    manganese: "",
+    molybdenum: "",
+    myristicAcid: "",
+    oleicAcid: "",
+    palmiticAcid: "",
+    pantothenicAcid: "",
+    selenium: "",
+    stearicAcid: "",
+  );
+  late ListFoodItem _currentFoodListItem = ListFoodItem(
+    barcode: "",
+    category: "",
+    foodServingSize: "100",
+    foodServings: "1",
+    foodItemData: FoodDefaultData(),
+  );
   late bool _isCurrentFoodItemLoaded = false;
   late DateTime _nutritionDate = DateTime(DateTime
       .now()
@@ -331,6 +461,31 @@ class UserNutritionData with ChangeNotifier {
 
   UserNutritionHistoryModel get userNutritionHistory => _userNutritionHistory;
 
+  late UserNutritionCustomFoodModel _userNutritionCustomFood = UserNutritionCustomFoodModel(
+      barcodes: [], foodListItemNames: [], foodServings: [], foodServingSize: []);
+
+  UserNutritionCustomFoodModel get userNutritionCustomFood => _userNutritionCustomFood;
+
+  void setCustomFood(UserNutritionCustomFoodModel userCustomFood) {
+    _userNutritionCustomFood = userCustomFood;
+
+  }
+
+  void updateCustomFoodList(String barcode, String foodName, String servings, String servingSize) {
+
+    _userNutritionCustomFood.barcodes.add(barcode);
+    _userNutritionCustomFood.foodListItemNames.add(foodName);
+    _userNutritionCustomFood.foodServings.add(servings);
+    _userNutritionCustomFood.foodServingSize.add(servingSize);
+
+    print(_userNutritionCustomFood.barcodes.length);
+
+    UpdateUserCustomFoodData(userNutritionCustomFood);
+
+    notifyListeners();
+
+  }
+
   void setFoodHistory(UserNutritionHistoryModel userHistory) {
     _userNutritionHistory = userHistory;
 
@@ -339,22 +494,22 @@ class UserNutritionData with ChangeNotifier {
   void updateFoodHistory(String barcode, String foodName, String servings, String servingSize) {
 
     if (!_userNutritionHistory.barcodes.contains(barcode)) {
-      _userNutritionHistory.barcodes.add(barcode);
-      _userNutritionHistory.foodListItemNames.add(foodName);
-      _userNutritionHistory.foodServings.add(servings);
-      _userNutritionHistory.foodServingSize.add(servingSize);
+      _userNutritionHistory.barcodes.insert(0, barcode);
+      _userNutritionHistory.foodListItemNames.insert(0, foodName);
+      _userNutritionHistory.foodServings.insert(0, servings);
+      _userNutritionHistory.foodServingSize.insert(0, servingSize);
 
       if (_userNutritionHistory.barcodes.length > 50) {
-        _userNutritionHistory.barcodes.removeAt(0);
-        _userNutritionHistory.foodListItemNames.removeAt(0);
-        _userNutritionHistory.foodServings.removeAt(0);
-        _userNutritionHistory.foodServingSize.removeAt(0);
+        _userNutritionHistory.barcodes.removeLast();
+        _userNutritionHistory.foodListItemNames.removeLast();
+        _userNutritionHistory.foodServings.removeLast();
+        _userNutritionHistory.foodServingSize.removeLast();
       };
 
-      _userNutritionHistory.barcodes = _userNutritionHistory.barcodes.reversed.toList();
-      _userNutritionHistory.foodListItemNames = _userNutritionHistory.foodListItemNames.reversed.toList();
-      _userNutritionHistory.foodServings = _userNutritionHistory.foodServings.reversed.toList();
-      _userNutritionHistory.foodServingSize = _userNutritionHistory.foodServingSize.reversed.toList();
+      //_userNutritionHistory.barcodes = _userNutritionHistory.barcodes.reversed.toList();
+      //_userNutritionHistory.foodListItemNames = _userNutritionHistory.foodListItemNames.reversed.toList();
+      //_userNutritionHistory.foodServings = _userNutritionHistory.foodServings.reversed.toList();
+      //_userNutritionHistory.foodServingSize = _userNutritionHistory.foodServingSize.reversed.toList();
 
       UpdateUserNutritionHistoryData(userNutritionHistory);
 
@@ -382,9 +537,23 @@ class UserNutritionData with ChangeNotifier {
 
   }
 
-  String convertToUsableData(dynamic valueToConvert) {
+  String convertToUsableData(dynamic valueToConvert, {bool convertToNumber = true}) {
+
     if (valueToConvert != null) {
       valueToConvert = valueToConvert.toString();
+      if (convertToNumber) {
+
+        valueToConvert = valueToConvert.replaceAll(RegExp(r'[^0-9]'),' ');
+        List valueToConvertList = valueToConvert.split(" ");
+        valueToConvert = valueToConvertList[0];
+
+        try {
+          double.parse(valueToConvert);
+        } catch (error) {
+          valueToConvert = 0;
+        }
+
+      }
     } else {
       valueToConvert = "";
     }
@@ -448,270 +617,270 @@ class UserNutritionData with ChangeNotifier {
     _selenium = 0.0;
     _stearicAcid = 0.0;
 
-    void calculateTotal(listOfFood) {
+    void calculateTotal(List<ListFoodItem> listOfFood) {
       listOfFood.forEach((foodItem) {
         try {
-          _calories += double.parse(foodItem.foodCalories);
+          _calories += (double.parse(foodItem.foodItemData.calories)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _calories += 0;
         }
         try {
-          _protein += double.parse(foodItem.proteins);
+          _protein += (double.parse(foodItem.foodItemData.proteins)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _protein += 0;
         }
         try {
-          _fat += double.parse(foodItem.fat);
+          _fat += (double.parse(foodItem.foodItemData.fat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _fat += 0;
         }
         try {
-          _carbohydrates += double.parse(foodItem.carbs);
+          _carbohydrates += (double.parse(foodItem.foodItemData.carbs)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _carbohydrates += 0;
         }
         try {
-          _fiber += double.parse(foodItem.fiber);
+          _fiber += (double.parse(foodItem.foodItemData.fiber)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _fiber += 0;
         }
         try {
-          _sugar += double.parse(foodItem.sugars);
+          _sugar += (double.parse(foodItem.foodItemData.sugars)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _sugar += 0;
         }
         try {
-          _saturatedFat += double.parse(foodItem.saturatedFat);
+          _saturatedFat += (double.parse(foodItem.foodItemData.saturatedFat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _saturatedFat += 0;
         }
         try {
-          _polyUnsaturatedFat += double.parse(foodItem.polyunsaturatedFat);
+          _polyUnsaturatedFat += (double.parse(foodItem.foodItemData.polyUnsaturatedFat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _polyUnsaturatedFat += 0;
         }
         try {
-          _monoUnsaturatedFat += double.parse(foodItem.monounsaturatedFat);
+          _monoUnsaturatedFat += (double.parse(foodItem.foodItemData.monoUnsaturatedFat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _monoUnsaturatedFat += 0;
         }
         try {
-          _transFat += double.parse(foodItem.transFat);
+          _transFat += (double.parse(foodItem.foodItemData.transFat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _transFat += 0;
         }
         try {
-          _cholesterol += double.parse(foodItem.cholesterol);
+          _cholesterol += (double.parse(foodItem.foodItemData.cholesterol)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _cholesterol += 0;
         }
         try {
-          _calcium += double.parse(foodItem.calcium);
+          _calcium += (double.parse(foodItem.foodItemData.calcium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _calcium += 0;
         }
         try {
-          _iron += double.parse(foodItem.iron);
+          _iron += (double.parse(foodItem.foodItemData.iron)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _iron += 0;
         }
         try {
-          _sodium += double.parse(foodItem.sodium);
+          _sodium += (double.parse(foodItem.foodItemData.sodium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _sodium += 0;
         }
         try {
-          _zinc += double.parse(foodItem.zinc);
+          _zinc += (double.parse(foodItem.foodItemData.zinc)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _zinc += 0;
         }
         try {
-          _magnesium += double.parse(foodItem.magnesium);
+          _magnesium += (double.parse(foodItem.foodItemData.magnesium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _magnesium += 0;
         }
         try {
-          _potassium += double.parse(foodItem.potassium);
+          _potassium += (double.parse(foodItem.foodItemData.potassium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _potassium += 0;
         }
         try {
-          _vitaminA += double.parse(foodItem.vitaminA);
+          _vitaminA += (double.parse(foodItem.foodItemData.vitaminA)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminA += 0;
         }
         try {
-          _vitaminB1 += double.parse(foodItem.vitaminB1);
+          _vitaminB1 += (double.parse(foodItem.foodItemData.vitaminB1)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminB1 += 0;
         }
         try {
-          _vitaminB2 += double.parse(foodItem.vitaminB2);
+          _vitaminB2 += (double.parse(foodItem.foodItemData.vitaminB2)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminB2 += 0;
         }
         try {
-          _vitaminB3 += double.parse(foodItem.vitaminB3);
+          _vitaminB3 += (double.parse(foodItem.foodItemData.vitaminB3)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminB3 += 0;
         }
         try {
-          _vitaminB6 += double.parse(foodItem.vitaminB6);
+          _vitaminB6 += (double.parse(foodItem.foodItemData.vitaminB6)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminB6 += 0;
         }
         try {
-          _vitaminB9 += double.parse(foodItem.vitaminB9);
+          _vitaminB9 += (double.parse(foodItem.foodItemData.vitaminB9)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminB9 += 0;
         }
         try {
-          _vitaminB12 += double.parse(foodItem.vitaminB12);
+          _vitaminB12 += (double.parse(foodItem.foodItemData.vitaminB12)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminB12 += 0;
         }
         try {
-          _vitaminC += double.parse(foodItem.vitaminC);
+          _vitaminC += (double.parse(foodItem.foodItemData.vitaminC)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminC += 0;
         }
         try {
-          _vitaminD += double.parse(foodItem.vitaminD);
+          _vitaminD += (double.parse(foodItem.foodItemData.vitaminD)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminD += 0;
         }
         try {
-          _vitaminE += double.parse(foodItem.vitaminE);
+          _vitaminE += (double.parse(foodItem.foodItemData.vitaminE)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminE += 0;
         }
         try {
-          _vitaminK += double.parse(foodItem.vitaminK);
+          _vitaminK += (double.parse(foodItem.foodItemData.vitaminK)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _vitaminK += 0;
         }
         try {
-          _omega3 += double.parse(foodItem.omega3);
+          _omega3 += (double.parse(foodItem.foodItemData.omega3)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _omega3 += 0;
         }
         try {
-          _omega6 += double.parse(foodItem.omega6);
+          _omega6 += (double.parse(foodItem.foodItemData.omega6)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _omega6 += 0;
         }
         try {
-          _alcohol += double.parse(foodItem.alcohol);
+          _alcohol += (double.parse(foodItem.foodItemData.alcohol)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _alcohol += 0;
         }
         try {
-          _biotin += double.parse(foodItem.biotin);
+          _biotin += (double.parse(foodItem.foodItemData.biotin)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _biotin += 0;
         }
         try {
-          _butyricAcid += double.parse(foodItem.butyricAcid);
+          _butyricAcid += (double.parse(foodItem.foodItemData.butyricAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _butyricAcid += 0;
         }
         try {
-          _caffeine += double.parse(foodItem.caffeine);
+          _caffeine += (double.parse(foodItem.foodItemData.caffeine)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _caffeine += 0;
         }
         try {
-          _capricAcid += double.parse(foodItem.capricAcid);
+          _capricAcid += (double.parse(foodItem.foodItemData.capricAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _capricAcid += 0;
         }
         try {
-          _caproicAcid += double.parse(foodItem.caproicAcid);
+          _caproicAcid += (double.parse(foodItem.foodItemData.caproicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _caproicAcid += 0;
         }
         try {
-          _caprylicAcid += double.parse(foodItem.caprylicAcid);
+          _caprylicAcid += (double.parse(foodItem.foodItemData.caprylicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _caprylicAcid += 0;
         }
         try {
-          _chloride += double.parse(foodItem.chloride);
+          _chloride += (double.parse(foodItem.foodItemData.chloride)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _chloride += 0;
         }
         try {
-          _chromium += double.parse(foodItem.chromium);
+          _chromium += (double.parse(foodItem.foodItemData.chromium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _chromium += 0;
         }
         try {
-          _copper += double.parse(foodItem.copper);
+          _copper += (double.parse(foodItem.foodItemData.copper)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _copper += 0;
         }
         try {
-          _docosahexaenoicAcid += double.parse(foodItem.docosahexaenoicAcid);
+          _docosahexaenoicAcid += (double.parse(foodItem.foodItemData.docosahexaenoicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _docosahexaenoicAcid += 0;
         }
         try {
-          _eicosapentaenoicAcid += double.parse(foodItem.eicosapentaenoicAcid);
+          _eicosapentaenoicAcid += (double.parse(foodItem.foodItemData.eicosapentaenoicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _eicosapentaenoicAcid += 0;
         }
         try {
-          _erucicAcid += double.parse(foodItem.erucicAcid);
+          _erucicAcid += (double.parse(foodItem.foodItemData.erucicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _erucicAcid += 0;
         }
         try {
-          _fluoride += double.parse(foodItem.fluoride);
+          _fluoride += (double.parse(foodItem.foodItemData.fluoride)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _fluoride += 0;
         }
         try {
-          _iodine += double.parse(foodItem.iodine);
+          _iodine += (double.parse(foodItem.foodItemData.iodine)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _iodine += 0;
         }
         try {
-          _manganese += double.parse(foodItem.manganese);
+          _manganese += (double.parse(foodItem.foodItemData.manganese)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _manganese += 0;
         }
         try {
-          _molybdenum += double.parse(foodItem.molybdenum);
+          _molybdenum += (double.parse(foodItem.foodItemData.molybdenum)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _molybdenum += 0;
         }
         try {
-          _myristicAcid += double.parse(foodItem.myristicAcid);
+          _myristicAcid += (double.parse(foodItem.foodItemData.myristicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _myristicAcid += 0;
         }
         try {
-          _oleicAcid += double.parse(foodItem.oleicAcid);
+          _oleicAcid += (double.parse(foodItem.foodItemData.oleicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _oleicAcid += 0;
         }
         try {
-          _palmiticAcid += double.parse(foodItem.palmiticAcid);
+          _palmiticAcid += (double.parse(foodItem.foodItemData.palmiticAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _palmiticAcid += 0;
         }
         try {
-          _pantothenicAcid += double.parse(foodItem.pantothenicAcid);
+          _pantothenicAcid += (double.parse(foodItem.foodItemData.pantothenicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _pantothenicAcid += 0;
         }
         try {
-          _selenium += double.parse(foodItem.selenium);
+          _selenium += (double.parse(foodItem.foodItemData.selenium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _selenium += 0;
         }
         try {
-          _stearicAcid += double.parse(foodItem.stearicAcid);
+          _stearicAcid += (double.parse(foodItem.foodItemData.stearicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _stearicAcid += 0;
         }
@@ -723,17 +892,21 @@ class UserNutritionData with ChangeNotifier {
     calculateTotal(_userDailyNutrition.foodListItemsDinner);
     calculateTotal(_userDailyNutrition.foodListItemsSnacks);
 
-    //notifyListeners();
+    notifyListeners();
 
   }
 
-
   void setCurrentFoodDiary(UserNutritionModel diary) {
+    _isCurrentFoodItemLoaded = false;
+
     _userDailyNutrition = diary;
 
-    notifyListeners();
+    print("LOADED ITEMS");
+    _isCurrentFoodItemLoaded = true;
 
     calculateMacros();
+
+    notifyListeners();
 
   }
 
@@ -750,484 +923,55 @@ class UserNutritionData with ChangeNotifier {
 
     UpdateUserNutritionalData(_userDailyNutrition);
 
+    calculateMacros();
+
     notifyListeners();
   }
 
-  void addFoodItemToDiary(FoodItem newItem, String category, String servings,
-      String servingSize) {
+  void editFoodItemInDiary(FoodItem item, String category, String servings,
+      String servingSize, index) {
+
+    print("EDITING DATA");
+
     _userDailyNutrition.date = _nutritionDate.toString();
 
-    print("ADding food");
-
     if (category.toLowerCase() == "breakfast") {
-      _userDailyNutrition.foodListItemsBreakfast.add(ListFoodItem(
-        barcode: newItem.barcode,
+      _userDailyNutrition.foodListItemsBreakfast[index] = (ListFoodItem(
+        barcode: item.barcode,
         category: category,
-        foodName: newItem.foodName,
         foodServings: servings,
         foodServingSize: servingSize,
-        foodCalories: ServingSizeCalculator(
-          newItem.calories, servingSize, servings, 0,),
-        kiloJoules: ServingSizeCalculator(
-          currentFoodItem.kiloJoules, servingSize, servings, 0,),
-        proteins: ServingSizeCalculator(
-          currentFoodItem.proteins, servingSize, servings, 0,),
-        carbs: ServingSizeCalculator(
-          currentFoodItem.carbs, servingSize, servings, 0,),
-        fiber: ServingSizeCalculator(
-          currentFoodItem.fiber, servingSize, servings, 0,),
-        sugars: ServingSizeCalculator(
-          currentFoodItem.sugars, servingSize, servings, 0,),
-        fat: ServingSizeCalculator(
-          currentFoodItem.fat, servingSize, servings, 0,),
-        saturatedFat: ServingSizeCalculator(
-          currentFoodItem.saturatedFat, servingSize, servings, 0,),
-        polyUnsaturatedFat: ServingSizeCalculator(
-          currentFoodItem.polyUnsaturatedFat, servingSize, servings, 0,),
-        monoUnsaturatedFat: ServingSizeCalculator(
-          currentFoodItem.monoUnsaturatedFat, servingSize, servings, 0,),
-        transFat: ServingSizeCalculator(
-          currentFoodItem.transFat, servingSize, servings, 0,),
-        cholesterol: ServingSizeCalculator(
-          currentFoodItem.cholesterol, servingSize, servings, 0,),
-        calcium: ServingSizeCalculator(
-          currentFoodItem.calcium, servingSize, servings, 0,),
-        iron: ServingSizeCalculator(
-          currentFoodItem.iron, servingSize, servings, 0,),
-        sodium: ServingSizeCalculator(
-          currentFoodItem.sodium, servingSize, servings, 0,),
-        zinc: ServingSizeCalculator(
-          currentFoodItem.zinc, servingSize, servings, 0,),
-        magnesium: ServingSizeCalculator(
-          currentFoodItem.magnesium, servingSize, servings, 0,),
-        potassium: ServingSizeCalculator(
-          currentFoodItem.potassium, servingSize, servings, 0,),
-        vitaminA: ServingSizeCalculator(
-          currentFoodItem.vitaminA, servingSize, servings, 0,),
-        vitaminB1: ServingSizeCalculator(
-          currentFoodItem.vitaminB1, servingSize, servings, 0,),
-        vitaminB2: ServingSizeCalculator(
-          currentFoodItem.vitaminB2, servingSize, servings, 0,),
-        vitaminB3: ServingSizeCalculator(
-          currentFoodItem.vitaminB3, servingSize, servings, 0,),
-        vitaminB6: ServingSizeCalculator(
-          currentFoodItem.vitaminB6, servingSize, servings, 0,),
-        vitaminB9: ServingSizeCalculator(
-          currentFoodItem.vitaminB9, servingSize, servings, 0,),
-        vitaminB12: ServingSizeCalculator(
-          currentFoodItem.vitaminB12, servingSize, servings, 0,),
-        vitaminC: ServingSizeCalculator(
-          currentFoodItem.vitaminC, servingSize, servings, 0,),
-        vitaminD: ServingSizeCalculator(
-          currentFoodItem.vitaminD, servingSize, servings, 0,),
-        vitaminE: ServingSizeCalculator(
-          currentFoodItem.vitaminE, servingSize, servings, 0,),
-        vitaminK: ServingSizeCalculator(
-          currentFoodItem.vitaminK, servingSize, servings, 0,),
-        omega3: ServingSizeCalculator(
-          currentFoodItem.omega3, servingSize, servings, 0,),
-        omega6: ServingSizeCalculator(
-          currentFoodItem.omega6, servingSize, servings, 0,),
-        alcohol: ServingSizeCalculator(
-          currentFoodItem.alcohol, servingSize, servings, 0,),
-        biotin: ServingSizeCalculator(
-          currentFoodItem.biotin, servingSize, servings, 0,),
-        butyricAcid: ServingSizeCalculator(
-          currentFoodItem.butyricAcid, servingSize, servings, 0,),
-        caffeine: ServingSizeCalculator(
-          currentFoodItem.caffeine, servingSize, servings, 0,),
-        capricAcid: ServingSizeCalculator(
-          currentFoodItem.capricAcid, servingSize, servings, 0,),
-        caproicAcid: ServingSizeCalculator(
-          currentFoodItem.caproicAcid, servingSize, servings, 0,),
-        caprylicAcid: ServingSizeCalculator(
-          currentFoodItem.caprylicAcid, servingSize, servings, 0,),
-        chloride: ServingSizeCalculator(
-          currentFoodItem.chloride, servingSize, servings, 0,),
-        chromium: ServingSizeCalculator(
-          currentFoodItem.chromium, servingSize, servings, 0,),
-        copper: ServingSizeCalculator(
-          currentFoodItem.copper, servingSize, servings, 0,),
-        docosahexaenoicAcid: ServingSizeCalculator(
-          currentFoodItem.docosahexaenoicAcid, servingSize, servings, 0,),
-        eicosapentaenoicAcid: ServingSizeCalculator(
-          currentFoodItem.eicosapentaenoicAcid, servingSize, servings, 0,),
-        erucicAcid: ServingSizeCalculator(
-          currentFoodItem.erucicAcid, servingSize, servings, 0,),
-        fluoride: ServingSizeCalculator(
-          currentFoodItem.fluoride, servingSize, servings, 0,),
-        iodine: ServingSizeCalculator(
-          currentFoodItem.iodine, servingSize, servings, 0,),
-        manganese: ServingSizeCalculator(
-          currentFoodItem.manganese, servingSize, servings, 0,),
-        molybdenum: ServingSizeCalculator(
-          currentFoodItem.molybdenum, servingSize, servings, 0,),
-        myristicAcid: ServingSizeCalculator(
-          currentFoodItem.myristicAcid, servingSize, servings, 0,),
-        oleicAcid: ServingSizeCalculator(
-          currentFoodItem.oleicAcid, servingSize, servings, 0,),
-        palmiticAcid: ServingSizeCalculator(
-          currentFoodItem.palmiticAcid, servingSize, servings, 0,),
-        pantothenicAcid: ServingSizeCalculator(
-          currentFoodItem.pantothenicAcid, servingSize, servings, 0,),
-        selenium: ServingSizeCalculator(
-          currentFoodItem.selenium, servingSize, servings, 0,),
-        stearicAcid: ServingSizeCalculator(
-          currentFoodItem.stearicAcid, servingSize, servings, 0,),
-      ));
-
-      //_userDailyNutrition.foodListItemsBreakfast += _foodListItemsBreakfast;
-    } else if (category.toLowerCase() == "lunch") {
-      _userDailyNutrition.foodListItemsLunch.add(ListFoodItem(
-        barcode: newItem.barcode,
-        category: category,
-        foodName: newItem.foodName,
-        foodServings: servings,
-        foodServingSize: servingSize,
-        foodCalories: ServingSizeCalculator(
-          newItem.calories, servingSize, servings, 0,),
-        kiloJoules: ServingSizeCalculator(
-          currentFoodItem.kiloJoules, servingSize, servings, 0,),
-        proteins: ServingSizeCalculator(
-          currentFoodItem.proteins, servingSize, servings, 0,),
-        carbs: ServingSizeCalculator(
-          currentFoodItem.carbs, servingSize, servings, 0,),
-        fiber: ServingSizeCalculator(
-          currentFoodItem.fiber, servingSize, servings, 0,),
-        sugars: ServingSizeCalculator(
-          currentFoodItem.sugars, servingSize, servings, 0,),
-        fat: ServingSizeCalculator(
-          currentFoodItem.fat, servingSize, servings, 0,),
-        saturatedFat: ServingSizeCalculator(
-          currentFoodItem.saturatedFat, servingSize, servings, 0,),
-        polyUnsaturatedFat: ServingSizeCalculator(
-          currentFoodItem.polyUnsaturatedFat, servingSize, servings, 0,),
-        monoUnsaturatedFat: ServingSizeCalculator(
-          currentFoodItem.monoUnsaturatedFat, servingSize, servings, 0,),
-        transFat: ServingSizeCalculator(
-          currentFoodItem.transFat, servingSize, servings, 0,),
-        cholesterol: ServingSizeCalculator(
-          currentFoodItem.cholesterol, servingSize, servings, 0,),
-        calcium: ServingSizeCalculator(
-          currentFoodItem.calcium, servingSize, servings, 0,),
-        iron: ServingSizeCalculator(
-          currentFoodItem.iron, servingSize, servings, 0,),
-        sodium: ServingSizeCalculator(
-          currentFoodItem.sodium, servingSize, servings, 0,),
-        zinc: ServingSizeCalculator(
-          currentFoodItem.zinc, servingSize, servings, 0,),
-        magnesium: ServingSizeCalculator(
-          currentFoodItem.magnesium, servingSize, servings, 0,),
-        potassium: ServingSizeCalculator(
-          currentFoodItem.potassium, servingSize, servings, 0,),
-        vitaminA: ServingSizeCalculator(
-          currentFoodItem.vitaminA, servingSize, servings, 0,),
-        vitaminB1: ServingSizeCalculator(
-          currentFoodItem.vitaminB1, servingSize, servings, 0,),
-        vitaminB2: ServingSizeCalculator(
-          currentFoodItem.vitaminB2, servingSize, servings, 0,),
-        vitaminB3: ServingSizeCalculator(
-          currentFoodItem.vitaminB3, servingSize, servings, 0,),
-        vitaminB6: ServingSizeCalculator(
-          currentFoodItem.vitaminB6, servingSize, servings, 0,),
-        vitaminB9: ServingSizeCalculator(
-          currentFoodItem.vitaminB9, servingSize, servings, 0,),
-        vitaminB12: ServingSizeCalculator(
-          currentFoodItem.vitaminB12, servingSize, servings, 0,),
-        vitaminC: ServingSizeCalculator(
-          currentFoodItem.vitaminC, servingSize, servings, 0,),
-        vitaminD: ServingSizeCalculator(
-          currentFoodItem.vitaminD, servingSize, servings, 0,),
-        vitaminE: ServingSizeCalculator(
-          currentFoodItem.vitaminE, servingSize, servings, 0,),
-        vitaminK: ServingSizeCalculator(
-          currentFoodItem.vitaminK, servingSize, servings, 0,),
-        omega3: ServingSizeCalculator(
-          currentFoodItem.omega3, servingSize, servings, 0,),
-        omega6: ServingSizeCalculator(
-          currentFoodItem.omega6, servingSize, servings, 0,),
-        alcohol: ServingSizeCalculator(
-          currentFoodItem.alcohol, servingSize, servings, 0,),
-        biotin: ServingSizeCalculator(
-          currentFoodItem.biotin, servingSize, servings, 0,),
-        butyricAcid: ServingSizeCalculator(
-          currentFoodItem.butyricAcid, servingSize, servings, 0,),
-        caffeine: ServingSizeCalculator(
-          currentFoodItem.caffeine, servingSize, servings, 0,),
-        capricAcid: ServingSizeCalculator(
-          currentFoodItem.capricAcid, servingSize, servings, 0,),
-        caproicAcid: ServingSizeCalculator(
-          currentFoodItem.caproicAcid, servingSize, servings, 0,),
-        caprylicAcid: ServingSizeCalculator(
-          currentFoodItem.caprylicAcid, servingSize, servings, 0,),
-        chloride: ServingSizeCalculator(
-          currentFoodItem.chloride, servingSize, servings, 0,),
-        chromium: ServingSizeCalculator(
-          currentFoodItem.chromium, servingSize, servings, 0,),
-        copper: ServingSizeCalculator(
-          currentFoodItem.copper, servingSize, servings, 0,),
-        docosahexaenoicAcid: ServingSizeCalculator(
-          currentFoodItem.docosahexaenoicAcid, servingSize, servings, 0,),
-        eicosapentaenoicAcid: ServingSizeCalculator(
-          currentFoodItem.eicosapentaenoicAcid, servingSize, servings, 0,),
-        erucicAcid: ServingSizeCalculator(
-          currentFoodItem.erucicAcid, servingSize, servings, 0,),
-        fluoride: ServingSizeCalculator(
-          currentFoodItem.fluoride, servingSize, servings, 0,),
-        iodine: ServingSizeCalculator(
-          currentFoodItem.iodine, servingSize, servings, 0,),
-        manganese: ServingSizeCalculator(
-          currentFoodItem.manganese, servingSize, servings, 0,),
-        molybdenum: ServingSizeCalculator(
-          currentFoodItem.molybdenum, servingSize, servings, 0,),
-        myristicAcid: ServingSizeCalculator(
-          currentFoodItem.myristicAcid, servingSize, servings, 0,),
-        oleicAcid: ServingSizeCalculator(
-          currentFoodItem.oleicAcid, servingSize, servings, 0,),
-        palmiticAcid: ServingSizeCalculator(
-          currentFoodItem.palmiticAcid, servingSize, servings, 0,),
-        pantothenicAcid: ServingSizeCalculator(
-          currentFoodItem.pantothenicAcid, servingSize, servings, 0,),
-        selenium: ServingSizeCalculator(
-          currentFoodItem.selenium, servingSize, servings, 0,),
-        stearicAcid: ServingSizeCalculator(
-          currentFoodItem.stearicAcid, servingSize, servings, 0,),
-      ));
-
-      //_userDailyNutrition.foodListItemsLunch += _foodListItemsLunch;
-    } else if (category.toLowerCase() == "dinner") {
-      _userDailyNutrition.foodListItemsDinner.add(ListFoodItem(
-        barcode: newItem.barcode,
-        category: category,
-        foodName: newItem.foodName,
-        foodServings: servings,
-        foodServingSize: servingSize,
-        foodCalories: ServingSizeCalculator(
-          newItem.calories, servingSize, servings, 0,),
-        kiloJoules: ServingSizeCalculator(
-          currentFoodItem.kiloJoules, servingSize, servings, 0,),
-        proteins: ServingSizeCalculator(
-          currentFoodItem.proteins, servingSize, servings, 0,),
-        carbs: ServingSizeCalculator(
-          currentFoodItem.carbs, servingSize, servings, 0,),
-        fiber: ServingSizeCalculator(
-          currentFoodItem.fiber, servingSize, servings, 0,),
-        sugars: ServingSizeCalculator(
-          currentFoodItem.sugars, servingSize, servings, 0,),
-        fat: ServingSizeCalculator(
-          currentFoodItem.fat, servingSize, servings, 0,),
-        saturatedFat: ServingSizeCalculator(
-          currentFoodItem.saturatedFat, servingSize, servings, 0,),
-        polyUnsaturatedFat: ServingSizeCalculator(
-          currentFoodItem.polyUnsaturatedFat, servingSize, servings, 0,),
-        monoUnsaturatedFat: ServingSizeCalculator(
-          currentFoodItem.monoUnsaturatedFat, servingSize, servings, 0,),
-        transFat: ServingSizeCalculator(
-          currentFoodItem.transFat, servingSize, servings, 0,),
-        cholesterol: ServingSizeCalculator(
-          currentFoodItem.cholesterol, servingSize, servings, 0,),
-        calcium: ServingSizeCalculator(
-          currentFoodItem.calcium, servingSize, servings, 0,),
-        iron: ServingSizeCalculator(
-          currentFoodItem.iron, servingSize, servings, 0,),
-        sodium: ServingSizeCalculator(
-          currentFoodItem.sodium, servingSize, servings, 0,),
-        zinc: ServingSizeCalculator(
-          currentFoodItem.zinc, servingSize, servings, 0,),
-        magnesium: ServingSizeCalculator(
-          currentFoodItem.magnesium, servingSize, servings, 0,),
-        potassium: ServingSizeCalculator(
-          currentFoodItem.potassium, servingSize, servings, 0,),
-        vitaminA: ServingSizeCalculator(
-          currentFoodItem.vitaminA, servingSize, servings, 0,),
-        vitaminB1: ServingSizeCalculator(
-          currentFoodItem.vitaminB1, servingSize, servings, 0,),
-        vitaminB2: ServingSizeCalculator(
-          currentFoodItem.vitaminB2, servingSize, servings, 0,),
-        vitaminB3: ServingSizeCalculator(
-          currentFoodItem.vitaminB3, servingSize, servings, 0,),
-        vitaminB6: ServingSizeCalculator(
-          currentFoodItem.vitaminB6, servingSize, servings, 0,),
-        vitaminB9: ServingSizeCalculator(
-          currentFoodItem.vitaminB9, servingSize, servings, 0,),
-        vitaminB12: ServingSizeCalculator(
-          currentFoodItem.vitaminB12, servingSize, servings, 0,),
-        vitaminC: ServingSizeCalculator(
-          currentFoodItem.vitaminC, servingSize, servings, 0,),
-        vitaminD: ServingSizeCalculator(
-          currentFoodItem.vitaminD, servingSize, servings, 0,),
-        vitaminE: ServingSizeCalculator(
-          currentFoodItem.vitaminE, servingSize, servings, 0,),
-        vitaminK: ServingSizeCalculator(
-          currentFoodItem.vitaminK, servingSize, servings, 0,),
-        omega3: ServingSizeCalculator(
-          currentFoodItem.omega3, servingSize, servings, 0,),
-        omega6: ServingSizeCalculator(
-          currentFoodItem.omega6, servingSize, servings, 0,),
-        alcohol: ServingSizeCalculator(
-          currentFoodItem.alcohol, servingSize, servings, 0,),
-        biotin: ServingSizeCalculator(
-          currentFoodItem.biotin, servingSize, servings, 0,),
-        butyricAcid: ServingSizeCalculator(
-          currentFoodItem.butyricAcid, servingSize, servings, 0,),
-        caffeine: ServingSizeCalculator(
-          currentFoodItem.caffeine, servingSize, servings, 0,),
-        capricAcid: ServingSizeCalculator(
-          currentFoodItem.capricAcid, servingSize, servings, 0,),
-        caproicAcid: ServingSizeCalculator(
-          currentFoodItem.caproicAcid, servingSize, servings, 0,),
-        caprylicAcid: ServingSizeCalculator(
-          currentFoodItem.caprylicAcid, servingSize, servings, 0,),
-        chloride: ServingSizeCalculator(
-          currentFoodItem.chloride, servingSize, servings, 0,),
-        chromium: ServingSizeCalculator(
-          currentFoodItem.chromium, servingSize, servings, 0,),
-        copper: ServingSizeCalculator(
-          currentFoodItem.copper, servingSize, servings, 0,),
-        docosahexaenoicAcid: ServingSizeCalculator(
-          currentFoodItem.docosahexaenoicAcid, servingSize, servings, 0,),
-        eicosapentaenoicAcid: ServingSizeCalculator(
-          currentFoodItem.eicosapentaenoicAcid, servingSize, servings, 0,),
-        erucicAcid: ServingSizeCalculator(
-          currentFoodItem.erucicAcid, servingSize, servings, 0,),
-        fluoride: ServingSizeCalculator(
-          currentFoodItem.fluoride, servingSize, servings, 0,),
-        iodine: ServingSizeCalculator(
-          currentFoodItem.iodine, servingSize, servings, 0,),
-        manganese: ServingSizeCalculator(
-          currentFoodItem.manganese, servingSize, servings, 0,),
-        molybdenum: ServingSizeCalculator(
-          currentFoodItem.molybdenum, servingSize, servings, 0,),
-        myristicAcid: ServingSizeCalculator(
-          currentFoodItem.myristicAcid, servingSize, servings, 0,),
-        oleicAcid: ServingSizeCalculator(
-          currentFoodItem.oleicAcid, servingSize, servings, 0,),
-        palmiticAcid: ServingSizeCalculator(
-          currentFoodItem.palmiticAcid, servingSize, servings, 0,),
-        pantothenicAcid: ServingSizeCalculator(
-          currentFoodItem.pantothenicAcid, servingSize, servings, 0,),
-        selenium: ServingSizeCalculator(
-          currentFoodItem.selenium, servingSize, servings, 0,),
-        stearicAcid: ServingSizeCalculator(
-          currentFoodItem.stearicAcid, servingSize, servings, 0,),
+        foodItemData: item,
       ));
 
       //_userDailyNutrition.foodListItemsDinner += _foodListItemsDinner;
-    } else if (category.toLowerCase() == "snacks") {
-      _userDailyNutrition.foodListItemsSnacks.add(ListFoodItem(
-        barcode: newItem.barcode,
+    } else if (category.toLowerCase() == "lunch") {
+      _userDailyNutrition.foodListItemsLunch[index] = (ListFoodItem(
+        barcode: item.barcode,
         category: category,
-        foodName: newItem.foodName,
         foodServings: servings,
         foodServingSize: servingSize,
-        foodCalories: ServingSizeCalculator(
-          newItem.calories, servingSize, servings, 0,),
-        kiloJoules: ServingSizeCalculator(
-          currentFoodItem.kiloJoules, servingSize, servings, 0,),
-        proteins: ServingSizeCalculator(
-          currentFoodItem.proteins, servingSize, servings, 0,),
-        carbs: ServingSizeCalculator(
-          currentFoodItem.carbs, servingSize, servings, 0,),
-        fiber: ServingSizeCalculator(
-          currentFoodItem.fiber, servingSize, servings, 0,),
-        sugars: ServingSizeCalculator(
-          currentFoodItem.sugars, servingSize, servings, 0,),
-        fat: ServingSizeCalculator(
-          currentFoodItem.fat, servingSize, servings, 0,),
-        saturatedFat: ServingSizeCalculator(
-          currentFoodItem.saturatedFat, servingSize, servings, 0,),
-        polyUnsaturatedFat: ServingSizeCalculator(
-          currentFoodItem.polyUnsaturatedFat, servingSize, servings, 0,),
-        monoUnsaturatedFat: ServingSizeCalculator(
-          currentFoodItem.monoUnsaturatedFat, servingSize, servings, 0,),
-        transFat: ServingSizeCalculator(
-          currentFoodItem.transFat, servingSize, servings, 0,),
-        cholesterol: ServingSizeCalculator(
-          currentFoodItem.cholesterol, servingSize, servings, 0,),
-        calcium: ServingSizeCalculator(
-          currentFoodItem.calcium, servingSize, servings, 0,),
-        iron: ServingSizeCalculator(
-          currentFoodItem.iron, servingSize, servings, 0,),
-        sodium: ServingSizeCalculator(
-          currentFoodItem.sodium, servingSize, servings, 0,),
-        zinc: ServingSizeCalculator(
-          currentFoodItem.zinc, servingSize, servings, 0,),
-        magnesium: ServingSizeCalculator(
-          currentFoodItem.magnesium, servingSize, servings, 0,),
-        potassium: ServingSizeCalculator(
-          currentFoodItem.potassium, servingSize, servings, 0,),
-        vitaminA: ServingSizeCalculator(
-          currentFoodItem.vitaminA, servingSize, servings, 0,),
-        vitaminB1: ServingSizeCalculator(
-          currentFoodItem.vitaminB1, servingSize, servings, 0,),
-        vitaminB2: ServingSizeCalculator(
-          currentFoodItem.vitaminB2, servingSize, servings, 0,),
-        vitaminB3: ServingSizeCalculator(
-          currentFoodItem.vitaminB3, servingSize, servings, 0,),
-        vitaminB6: ServingSizeCalculator(
-          currentFoodItem.vitaminB6, servingSize, servings, 0,),
-        vitaminB9: ServingSizeCalculator(
-          currentFoodItem.vitaminB9, servingSize, servings, 0,),
-        vitaminB12: ServingSizeCalculator(
-          currentFoodItem.vitaminB12, servingSize, servings, 0,),
-        vitaminC: ServingSizeCalculator(
-          currentFoodItem.vitaminC, servingSize, servings, 0,),
-        vitaminD: ServingSizeCalculator(
-          currentFoodItem.vitaminD, servingSize, servings, 0,),
-        vitaminE: ServingSizeCalculator(
-          currentFoodItem.vitaminE, servingSize, servings, 0,),
-        vitaminK: ServingSizeCalculator(
-          currentFoodItem.vitaminK, servingSize, servings, 0,),
-        omega3: ServingSizeCalculator(
-          currentFoodItem.omega3, servingSize, servings, 0,),
-        omega6: ServingSizeCalculator(
-          currentFoodItem.omega6, servingSize, servings, 0,),
-        alcohol: ServingSizeCalculator(
-          currentFoodItem.alcohol, servingSize, servings, 0,),
-        biotin: ServingSizeCalculator(
-          currentFoodItem.biotin, servingSize, servings, 0,),
-        butyricAcid: ServingSizeCalculator(
-          currentFoodItem.butyricAcid, servingSize, servings, 0,),
-        caffeine: ServingSizeCalculator(
-          currentFoodItem.caffeine, servingSize, servings, 0,),
-        capricAcid: ServingSizeCalculator(
-          currentFoodItem.capricAcid, servingSize, servings, 0,),
-        caproicAcid: ServingSizeCalculator(
-          currentFoodItem.caproicAcid, servingSize, servings, 0,),
-        caprylicAcid: ServingSizeCalculator(
-          currentFoodItem.caprylicAcid, servingSize, servings, 0,),
-        chloride: ServingSizeCalculator(
-          currentFoodItem.chloride, servingSize, servings, 0,),
-        chromium: ServingSizeCalculator(
-          currentFoodItem.chromium, servingSize, servings, 0,),
-        copper: ServingSizeCalculator(
-          currentFoodItem.copper, servingSize, servings, 0,),
-        docosahexaenoicAcid: ServingSizeCalculator(
-          currentFoodItem.docosahexaenoicAcid, servingSize, servings, 0,),
-        eicosapentaenoicAcid: ServingSizeCalculator(
-          currentFoodItem.eicosapentaenoicAcid, servingSize, servings, 0,),
-        erucicAcid: ServingSizeCalculator(
-          currentFoodItem.erucicAcid, servingSize, servings, 0,),
-        fluoride: ServingSizeCalculator(
-          currentFoodItem.fluoride, servingSize, servings, 0,),
-        iodine: ServingSizeCalculator(
-          currentFoodItem.iodine, servingSize, servings, 0,),
-        manganese: ServingSizeCalculator(
-          currentFoodItem.manganese, servingSize, servings, 0,),
-        molybdenum: ServingSizeCalculator(
-          currentFoodItem.molybdenum, servingSize, servings, 0,),
-        myristicAcid: ServingSizeCalculator(
-          currentFoodItem.myristicAcid, servingSize, servings, 0,),
-        oleicAcid: ServingSizeCalculator(
-          currentFoodItem.oleicAcid, servingSize, servings, 0,),
-        palmiticAcid: ServingSizeCalculator(
-          currentFoodItem.palmiticAcid, servingSize, servings, 0,),
-        pantothenicAcid: ServingSizeCalculator(
-          currentFoodItem.pantothenicAcid, servingSize, servings, 0,),
-        selenium: ServingSizeCalculator(
-          currentFoodItem.selenium, servingSize, servings, 0,),
-        stearicAcid: ServingSizeCalculator(
-          currentFoodItem.stearicAcid, servingSize, servings, 0,),
+        foodItemData: item,
+      ));
+
+      //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
+    } else if (category.toLowerCase() == "dinner") {
+      _userDailyNutrition.foodListItemsDinner[index] = (ListFoodItem(
+        barcode: item.barcode,
+        category: category,
+        foodServings: servings,
+        foodServingSize: servingSize,
+        foodItemData: item,
+      ));
+
+      //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
+    } else if (category.toLowerCase() == "snacks") {
+      _userDailyNutrition.foodListItemsSnacks[index] = (ListFoodItem(
+        barcode: item.barcode,
+        category: category,
+        foodServings: servings,
+        foodServingSize: servingSize,
+        foodItemData: item,
       ));
 
       //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
@@ -1235,16 +979,76 @@ class UserNutritionData with ChangeNotifier {
 
     UpdateUserNutritionalData(_userDailyNutrition);
 
+    calculateMacros();
+
+    notifyListeners();
+  }
+
+  void addFoodItemToDiary(FoodItem newItem, String category, String servings,
+      String servingSize) {
+
+    print("ADDING DATA");
+
+    _isCurrentFoodItemLoaded = false;
+
+    _userDailyNutrition.date = _nutritionDate.toString();
+
+    if (category.toLowerCase() == "breakfast") {
+
+      _userDailyNutrition.foodListItemsBreakfast.add(ListFoodItem(
+        barcode: newItem.barcode,
+        category: category,
+        foodServings: servings,
+        foodServingSize: servingSize,
+        foodItemData: newItem,
+      ));
+
+      //_userDailyNutrition.foodListItemsDinner += _foodListItemsDinner;
+    } else if (category.toLowerCase() == "lunch") {
+      _userDailyNutrition.foodListItemsLunch.add(ListFoodItem(
+        barcode: newItem.barcode,
+        category: category,
+        foodServings: servings,
+        foodServingSize: servingSize,
+        foodItemData: newItem,
+      ));
+
+      //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
+    } else if (category.toLowerCase() == "dinner") {
+      _userDailyNutrition.foodListItemsDinner.add(ListFoodItem(
+        barcode: newItem.barcode,
+        category: category,
+        foodServings: servings,
+        foodServingSize: servingSize,
+        foodItemData: newItem,
+      ));
+
+      //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
+    } else if (category.toLowerCase() == "snacks") {
+      _userDailyNutrition.foodListItemsSnacks.add(ListFoodItem(
+        barcode: newItem.barcode,
+        category: category,
+        foodServings: servings,
+        foodServingSize: servingSize,
+        foodItemData: newItem,
+      ));
+
+      //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
+    }
+
+    UpdateUserNutritionalData(_userDailyNutrition);
+
+    calculateMacros();
+
+    _currentFoodItem = FoodDefaultData();
+
+    _isCurrentFoodItemLoaded = true;
+
     notifyListeners();
   }
 
   void updateCurrentFoodListItem(ListFoodItem newItem) {
     _currentFoodListItem = newItem;
-  }
-
-  void changeCurrentFoodItemLoadingStatus(bool newBool) {
-    _isCurrentFoodItemLoaded = newBool;
-    notifyListeners();
   }
 
   void updateCurrentFoodItemServings(String servings) {
@@ -1382,70 +1186,14 @@ class UserNutritionData with ChangeNotifier {
   }
 
   void setCurrentFoodItem(FoodItem newFoodItem) {
-    changeCurrentFoodItemLoadingStatus(false);
     _currentFoodItem = newFoodItem;
     _currentFoodListItem = ListFoodItem(
-      barcode: currentFoodItem.barcode,
+      barcode: _currentFoodItem.barcode,
       category: "",
-      foodName: currentFoodItem.foodName,
-      foodServings: currentFoodItem.servings,
-      foodServingSize: currentFoodItem.servingSize,
-      foodCalories: currentFoodItem.calories,
-      kiloJoules: currentFoodItem.kiloJoules,
-      proteins: currentFoodItem.proteins,
-      carbs: currentFoodItem.carbs,
-      fiber: currentFoodItem.fiber,
-      sugars: currentFoodItem.sugars,
-      fat: currentFoodItem.fat,
-      saturatedFat: currentFoodItem.saturatedFat,
-      polyUnsaturatedFat: currentFoodItem.polyUnsaturatedFat,
-      monoUnsaturatedFat: currentFoodItem.monoUnsaturatedFat,
-      transFat: currentFoodItem.transFat,
-      cholesterol: currentFoodItem.cholesterol,
-      calcium: currentFoodItem.calcium,
-      iron: currentFoodItem.iron,
-      sodium: currentFoodItem.sodium,
-      zinc: currentFoodItem.zinc,
-      magnesium: currentFoodItem.magnesium,
-      potassium: currentFoodItem.potassium,
-      vitaminA: currentFoodItem.vitaminA,
-      vitaminB1: currentFoodItem.vitaminB1,
-      vitaminB2: currentFoodItem.vitaminB2,
-      vitaminB3: currentFoodItem.vitaminB3,
-      vitaminB6: currentFoodItem.vitaminB6,
-      vitaminB9: currentFoodItem.vitaminB9,
-      vitaminB12: currentFoodItem.vitaminB12,
-      vitaminC: currentFoodItem.vitaminC,
-      vitaminD: currentFoodItem.vitaminD,
-      vitaminE: currentFoodItem.vitaminE,
-      vitaminK: currentFoodItem.vitaminK,
-      omega3: currentFoodItem.omega3,
-      omega6: currentFoodItem.omega6,
-      alcohol: currentFoodItem.alcohol,
-      biotin: currentFoodItem.biotin,
-      butyricAcid: currentFoodItem.butyricAcid,
-      caffeine: currentFoodItem.caffeine,
-      capricAcid: currentFoodItem.capricAcid,
-      caproicAcid: currentFoodItem.caproicAcid,
-      caprylicAcid: currentFoodItem.caprylicAcid,
-      chloride: currentFoodItem.chloride,
-      chromium: currentFoodItem.chromium,
-      copper: currentFoodItem.copper,
-      docosahexaenoicAcid: currentFoodItem.docosahexaenoicAcid,
-      eicosapentaenoicAcid: currentFoodItem.eicosapentaenoicAcid,
-      erucicAcid: currentFoodItem.erucicAcid,
-      fluoride: currentFoodItem.fluoride,
-      iodine: currentFoodItem.iodine,
-      manganese: currentFoodItem.manganese,
-      molybdenum: currentFoodItem.molybdenum,
-      myristicAcid: currentFoodItem.myristicAcid,
-      oleicAcid: currentFoodItem.oleicAcid,
-      palmiticAcid: currentFoodItem.palmiticAcid,
-      pantothenicAcid: currentFoodItem.pantothenicAcid,
-      selenium: currentFoodItem.selenium,
-      stearicAcid: currentFoodItem.stearicAcid,
+      foodServings: convertToUsableData(_currentFoodItem.servings),
+      foodServingSize: convertToUsableData(_currentFoodItem.servingSize),
+      foodItemData: newFoodItem,
     );
-    changeCurrentFoodItemLoadingStatus(true);
   }
 
   void updateNutritionDate(DateTime date) {

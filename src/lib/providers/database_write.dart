@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitness_tracker/helpers/string_extensions.dart';
 import 'package:fitness_tracker/models/exercise_model.dart';
 import 'package:fitness_tracker/models/routines_model.dart';
 import 'package:fitness_tracker/models/stats_model.dart';
 import 'package:fitness_tracker/models/training_plan_model.dart';
+import 'package:fitness_tracker/models/user_custom_foods.dart';
 import 'package:fitness_tracker/models/user_nutrition_model.dart';
 
 import '../models/food_data_list_item.dart';
@@ -145,22 +147,27 @@ void UpdateUserDocumentMeasurements(StatsMeasurement measurements) async {
 //writes food data to my database
 void UpdateFoodItemData(FoodItem foodItem) async {
 
-  Map ConvertToMap({required FoodItem foodItemData}) {
-    Map foodItemMap = foodItemData.toMap();
-    return foodItemMap;
+  if (foodItem.foodName.isNotEmpty && foodItem.barcode.isNotEmpty) {
+    Map ConvertToMap({required FoodItem foodItemData}) {
+      Map foodItemMap = foodItemData.toMap();
+      return foodItemMap;
+    }
+
+    Map mappedFoodItem = await ConvertToMap(foodItemData: foodItem);
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    print(firebaseAuth.currentUser?.uid);
+
+    await FirebaseFirestore.instance
+        .collection('food-data')
+        .doc("${foodItem.barcode}")
+        .set({
+            "food-data": mappedFoodItem,
+            "foodNameSearch" : foodItem.foodName.triGram(),
+        });
+
   }
-
-  Map mappedFoodItem = await ConvertToMap(foodItemData: foodItem);
-
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  print(firebaseAuth.currentUser?.uid);
-
-  await FirebaseFirestore.instance
-      .collection('food-data')
-      .doc("${foodItem.barcode}")
-      .set({"food-data": mappedFoodItem });
-
 }
 
 
@@ -195,4 +202,16 @@ void UpdateUserNutritionHistoryData(UserNutritionHistoryModel userNutritionHisto
       .collection("nutrition-history-data")
       .doc("history")
       .set({"history": userNutritionHistory.toMap()});
+}
+
+void UpdateUserCustomFoodData(UserNutritionCustomFoodModel userNutritionCustomFood) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .collection("nutrition-custom-food-data")
+      .doc("food")
+      .set({"food": userNutritionCustomFood.toMap()});
 }

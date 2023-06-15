@@ -36,6 +36,9 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
 
   @override
   Widget build(BuildContext context) {
+
+    context.watch<UserNutritionData>().isCurrentFoodItemLoaded;
+
     return Container(
       margin: EdgeInsets.only(top: widget.margin),
       width: (widget.width / 100) * 97,
@@ -48,7 +51,7 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
               children: [
                 AppHeaderBox(
                   title:
-                      context.watch<UserNutritionData>().formattedNutritionDate,
+                      context.read<UserNutritionData>().formattedNutritionDate,
                   width: widget.width,
                   largeTitle: true,
                 ),

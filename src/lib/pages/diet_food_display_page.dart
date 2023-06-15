@@ -1,5 +1,7 @@
+import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/widgets/screen_width_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
@@ -14,8 +16,10 @@ import 'food_nutrition_list_edit.dart';
 import '../widgets/food_nutrition_list_text.dart';
 
 class FoodDisplayPage extends StatefulWidget {
-  FoodDisplayPage({Key? key, required this.category}) : super(key: key);
+  FoodDisplayPage({Key? key, required this.category, this.editDiary = false, this.index = 0}) : super(key: key);
   String category;
+  bool editDiary;
+  int index;
 
   @override
   State<FoodDisplayPage> createState() => _FoodDisplayPageState();
@@ -52,7 +56,32 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
 
   void AddToDiary() {
 
-    if (currentFoodItem.foodName.length > 0 &&
+      if (widget.editDiary && currentFoodItem.foodName.length > 0 &&
+          currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
+          (servingsController.text != "-" || servingsController.text.isNotEmpty) &&
+          (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
+      ) {
+
+        print("editing");
+
+        context.read<UserNutritionData>().editFoodItemInDiary(
+          currentFoodItem,
+          widget.category,
+          servingsController.text,
+          servingSizeController.text,
+          widget.index,
+        );
+
+        context.read<UserNutritionData>().updateFoodHistory(
+          currentFoodItem.barcode,
+          currentFoodItem.foodName,
+          servingsController.text,
+          servingSizeController.text,
+        );
+
+        context.read<PageChange>().changePageClearCache(DietHomePage());
+
+      } else if (currentFoodItem.foodName.length > 0 &&
         currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
         (servingsController.text != "-" || servingsController.text.isNotEmpty) &&
         (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
@@ -72,7 +101,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         servingSizeController.text,
       );
 
-      context.read<PageChange>().backPage();
+      context.read<PageChange>().changePageClearCache(DietHomePage());
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text(
@@ -92,7 +121,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
   @override
   Widget build(BuildContext context) {
 
-    context.watch<UserNutritionData>().isCurrentFoodItemLoaded;
+    context.watch<UserNutritionData>().currentFoodItem;
 
     InitializeControllers();
 
@@ -118,7 +147,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
             minHeight: _bigContainerMin,
             maxHeight: _bigContainerMin*4,
             height: _height/3,
-            margin: _margin,
+            margin: 0,
             child: ListView(
               children: [
                 DietListHeaderBox(
@@ -159,6 +188,42 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                     ),
                   ),
                 ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      width: 1,
+                      color: appSecondaryColour,
+                    ),
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Clipboard.setData(ClipboardData(text: currentFoodItem.barcode));
+                    },
+                    child: Column(
+                      children: [
+                        const Center(
+                          child: Text(
+                            "Tap to Copy Code:",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            currentFoodItem.barcode,
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -176,7 +241,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                     children: [
                       DietListHeaderBox(
                         width: _width,
-                        title: "Values per 100g ${servingSizeController.text.isEmpty ? "" : "/ " + (double.parse(servingSizeController.text) * double.parse(servingsController.text)).toStringAsFixed(0) + "g"}",
+                        title: "Values per 100g ${servingSizeController.text.isEmpty || servingsController.text.isEmpty ? "" : "/ " + (double.parse(servingSizeController.text) * double.parse(servingsController.text)).toStringAsFixed(0) + "g"}",
                         largeTitle: true,
                         color: Colors.white,
                       ),

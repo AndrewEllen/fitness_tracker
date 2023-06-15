@@ -22,6 +22,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+
+
   setOpenFoodFactsAPISettings;
 
   runApp(

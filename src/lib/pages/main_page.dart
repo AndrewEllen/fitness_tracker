@@ -39,11 +39,11 @@ class _MainPageState extends State<MainPage> {
   ];
 
   static final List<Widget> itemsSelected = [
-    const Icon(Icons.fitness_center, size: 40, color: appSecondaryColour,),
-    const Icon(MdiIcons.foodApple, size: 40, color: appSecondaryColour,),
-    const Icon(Icons.home, size: 40, color: appSecondaryColour,),
-    const Icon(MdiIcons.ruler, size: 40, color: appSecondaryColour,),
-    const Icon(MdiIcons.informationOutline, size: 40, color: appSecondaryColour,),
+    const Icon(Icons.fitness_center, size: 40, color: Colors.white,),
+    const Icon(MdiIcons.foodApple, size: 40, color: Colors.white,),
+    const Icon(Icons.home, size: 40, color: Colors.white,),
+    const Icon(MdiIcons.ruler, size: 40, color: Colors.white,),
+    const Icon(MdiIcons.informationOutline, size: 40, color: Colors.white,),
   ];
 
   late List<Widget> items;
@@ -124,11 +124,12 @@ class _MainPageState extends State<MainPage> {
               bottomNavigationBar: CurvedNavigationBar(
                   key: _NavigationBarKey,
                   backgroundColor: appTertiaryColour.withAlpha(100),
-                  buttonBackgroundColor: Colors.transparent,
+                  buttonBackgroundColor: appSecondaryColour,
+                  //buttonBackgroundColor: Colors.transparent,
                   color: appTertiaryColour,
                   index: _currentNavigatorIndex,
                   height: 46,
-                  animationDuration: const Duration(milliseconds: 150),
+                  animationDuration: const Duration(milliseconds: 300),
                   items: items,
                   onTap: (index) {
                     navBarColor(index);
