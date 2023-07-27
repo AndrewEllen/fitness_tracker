@@ -119,12 +119,20 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
     print("searching");
 
     foodHistory = context.read<UserNutritionData>().userNutritionHistory;
+    customFood = context.read<UserNutritionData>().userNutritionCustomFood;
 
     UserNutritionHistoryModel foodHistorySearch = UserNutritionHistoryModel(
         barcodes: [],
         foodListItemNames: [],
         foodServings: [],
         foodServingSize: [],
+    );
+
+    UserNutritionCustomFoodModel customFoodSearch = UserNutritionCustomFoodModel(
+      barcodes: [],
+      foodListItemNames: [],
+      foodServings: [],
+      foodServingSize: [],
     );
 
     if (value.isNotEmpty) {
@@ -144,13 +152,30 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
       });
 
+      customFood.foodListItemNames.asMap().forEach((index, item) {
+
+        if (item.toLowerCase().contains(value.toLowerCase())) {
+
+          print(item);
+
+          customFoodSearch.foodListItemNames.add(foodHistory.foodListItemNames[index]);
+          customFoodSearch.barcodes.add(foodHistory.barcodes[index]);
+          customFoodSearch.foodServings.add(foodHistory.foodServings[index]);
+          customFoodSearch.foodServingSize.add(foodHistory.foodServingSize[index]);
+
+        }
+
+      });
+
       setState(() {
         foodHistory = foodHistorySearch;
+        customFood = customFoodSearch;
       });
 
     } else {
       setState(() {
         foodHistory;
+        customFood;
       });
     }
 
@@ -735,7 +760,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                   child: InkWell(
                                     onTap: () {
                                       setState(() {
-                                        _displayDropDown = true;
+                                        //_displayDropDown = true;
                                       });
                                     },
                                     child: Column(
@@ -790,7 +815,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                 child: Material(
                                   color: Colors.transparent,
                                   child: InkWell(
-                                    onTap: () => context.read<PageChange>().changePageCache(FoodRecipeEdit(category: widget.category, newRecipe: true,)),
+                                    //onTap: () => context.read<PageChange>().changePageCache(FoodRecipeEdit(category: widget.category, newRecipe: true,)),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
