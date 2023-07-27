@@ -1,10 +1,9 @@
 import 'package:fitness_tracker/exports.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 
 class PageChange with ChangeNotifier {
-  Widget _pageWidget = HomePage();
-  List<Widget> _pageWidgetCache = [HomePage()];
+  Widget _pageWidget = const HomePage();
+  List<Widget> _pageWidgetCache = [const HomePage()];
   int _pageWidgetCacheIndex = 0;
 
   Widget get pageWidget => _pageWidget;
@@ -57,8 +56,8 @@ class PageChange with ChangeNotifier {
     _pageWidgetCache.removeLast();
     _pageWidgetCacheIndex = _pageWidgetCache.length-1;
 
-    if (_pageWidgetCache.length == 0) {
-      _pageWidgetCache.add(HomePage());
+    if (_pageWidgetCache.isEmpty) {
+      _pageWidgetCache.add(const HomePage());
       _pageWidgetCacheIndex = _pageWidgetCache.length-1;
     }
 

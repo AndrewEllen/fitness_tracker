@@ -9,10 +9,10 @@ import '../../pages/diet/diet_food_search_page.dart';
 import '../../providers/general/page_change_provider.dart';
 
 class DietCategoryAddBar extends StatelessWidget {
-  DietCategoryAddBar({Key? key, required this.width, required this.category
+  const DietCategoryAddBar({Key? key, required this.width, required this.category
   }) : super(key: key);
-  double width;
-  String category;
+  final double width;
+  final String category;
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +38,12 @@ class DietCategoryAddBar extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(),
+            padding: const EdgeInsets.only(),
             child: Align(
               alignment: Alignment.centerRight,
               child: Material(
                 type: MaterialType.transparency,
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 clipBehavior: Clip.antiAlias,
                 child: IconButton(
                   icon: const Icon(

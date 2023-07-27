@@ -9,8 +9,8 @@ import '../../models/stats/stats_model.dart';
 import '../../providers/stats/user_measurements.dart';
 
 class StatsLineChart extends StatefulWidget {
-  StatsLineChart({Key? key, required this.index}) : super(key: key);
-  late int index;
+  const StatsLineChart({Key? key, required this.index}) : super(key: key);
+  final int index;
   @override
   _StatsLineChartState createState() => _StatsLineChartState();
 }
@@ -32,7 +32,7 @@ class _StatsLineChartState extends State<StatsLineChart> {
     xAxisMin = 0; //xAxisMax - 11;
     if (xAxisMin < 0) {
       xAxisMin = 0;
-    };
+    }
 
     listDisplayRange = data[widget.index].measurementValues.sublist(xAxisMin.toInt(),xAxisMax.toInt()+1);
     intervalY = (listDisplayRange.reduce(max) / 3).roundToDouble();

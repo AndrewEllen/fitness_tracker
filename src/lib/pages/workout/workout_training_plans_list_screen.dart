@@ -1,6 +1,3 @@
-import 'package:fitness_tracker/pages/workout/workout_create_training_plan_screen.dart';
-import 'package:fitness_tracker/providers/general/page_change_provider.dart';
-import 'package:fitness_tracker/providers/workout/user_routines_data.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
 import 'package:fitness_tracker/widgets/workout/exercise_display_box.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
@@ -21,7 +18,6 @@ class _TrainingPlansScreenState extends State<TrainingPlansScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     double _margin = 15;
     double _bigContainerMin = 470;
@@ -57,7 +53,7 @@ class _TrainingPlansScreenState extends State<TrainingPlansScreen> {
                         onTap: () => context.read<PageChange>().changePageCache(
                           ShowTrainingPlanScreen(
                             trainingPlanIndex: index,
-                            returnScreen: TrainingPlansScreen(),
+                            returnScreen: const TrainingPlansScreen(),
                           ),
                         ),
                         onTapIcon: () => context.read<PageChange>().changePageCache(
@@ -65,7 +61,7 @@ class _TrainingPlansScreenState extends State<TrainingPlansScreen> {
                             trainingPlan: context
                                 .read<TrainingPlanProvider>()
                                 .trainingPlans[index],
-                            returnScreen: TrainingPlansScreen(
+                            returnScreen: const TrainingPlansScreen(
                             ),
                           ),
                         ),

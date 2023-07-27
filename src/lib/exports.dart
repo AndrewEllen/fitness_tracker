@@ -9,7 +9,6 @@ export 'pages/stats/stats_tracking_page.dart';
 export 'pages/info/info_information_home.dart';
 export 'pages/workout/workout_create_routines_screen.dart';
 export 'pages/workout/workout_routines_screen.dart';
-export 'pages/workout/workout_create_routines_screen.dart';
 export 'pages/workout/workout_create_training_plan_screen.dart';
 export 'pages/workout/workout_show_routine_screen.dart';
 export 'pages/workout/workout_show_training_plan_screen.dart';

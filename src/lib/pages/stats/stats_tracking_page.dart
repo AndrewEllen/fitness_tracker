@@ -1,13 +1,9 @@
 import 'package:fitness_tracker/exports.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'dart:math';
-import 'package:flutter/services.dart';
 import '../../constants.dart';
 import '../../models/stats/stats_model.dart';
 import '../../providers/general/database_write.dart';
-import '../../providers/stats/user_measurements.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/general/screen_width_container.dart';
 import '../../widgets/stats/stats_add_data.dart';
@@ -15,8 +11,8 @@ import '../../widgets/stats/stats_edit_data.dart';
 import '../../widgets/stats/stats_line_chart.dart';
 
 class MeasurementTrackingPage extends StatefulWidget {
-  MeasurementTrackingPage({Key? key, required this.index}) : super(key: key);
-  late int index;
+  const MeasurementTrackingPage({Key? key, required this.index}) : super(key: key);
+  final int index;
   @override
   State<MeasurementTrackingPage> createState() => _MeasurementTrackingPageState();
 }
@@ -26,6 +22,7 @@ class _MeasurementTrackingPageState extends State<MeasurementTrackingPage> {
   late final measurementNameKey = GlobalKey<FormState>();
   late List<StatsMeasurement> data;
 
+  @override
   void initState() {
     data = context.read<UserStatsMeasurements>().statsMeasurement;
     measurementNameController.text = data[widget.index].measurementName;
@@ -52,7 +49,7 @@ class _MeasurementTrackingPageState extends State<MeasurementTrackingPage> {
                 fontSize: 16,
               ),
               children: <TextSpan>[
-                TextSpan(text: '$value',
+                TextSpan(text: value,
                   style: const TextStyle(
                     color: Colors.red,
                     fontWeight: FontWeight.bold,
@@ -63,7 +60,7 @@ class _MeasurementTrackingPageState extends State<MeasurementTrackingPage> {
             ),
           ),
           actions: [
-            Container(
+            SizedBox(
                 height: 30,
                 child: AppButton(
                   buttonText: "Cancel",
@@ -72,7 +69,7 @@ class _MeasurementTrackingPageState extends State<MeasurementTrackingPage> {
                   },
                 )
             ),
-            Container(
+            SizedBox(
               height: 30,
               child: AppButton(
                 primaryColor: Colors.red,
@@ -85,7 +82,7 @@ class _MeasurementTrackingPageState extends State<MeasurementTrackingPage> {
 
                   Navigator.pop(context);
                   context.read<PageChange>().changePageClearCache(
-                    MeasurementsHomePage(),
+                    const MeasurementsHomePage(),
                   );
                 },
               )
@@ -144,7 +141,7 @@ class _MeasurementTrackingPageState extends State<MeasurementTrackingPage> {
                         ),
                         child: Align(
                           alignment: Alignment.center,
-                          child: Container(
+                          child: SizedBox(
                             height: 24,
                             child: Form(
                               key: measurementNameKey,
@@ -192,7 +189,7 @@ class _MeasurementTrackingPageState extends State<MeasurementTrackingPage> {
                       Positioned(
                         right: 0,
                         bottom: -(_width/12)/12,
-                        child: Container(
+                        child: SizedBox(
                           width: _width/10,
                           height: _width/10,
                           child: IconButton(

@@ -8,10 +8,10 @@ class UserRecipesModel {
 
     List<Map> ConvertToMapList({required List<ListFoodItem> foodList}) {
       List<Map> foodListMap = [];
-      foodList.forEach((ListFoodItem foodListItem) {
+      for (var foodListItem in foodList) {
         Map food = foodListItem.toMap();
         foodListMap.add(food);
-      });
+      }
       return foodListMap;
     }
 

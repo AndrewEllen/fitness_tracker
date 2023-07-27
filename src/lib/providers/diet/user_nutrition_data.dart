@@ -1,15 +1,12 @@
-import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/diet/user_custom_foods.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_history_model.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
-import 'package:openfoodfacts/openfoodfacts.dart';
 import '../../models/diet/food_data_list_item.dart';
 import '../../models/diet/food_item.dart';
 import '../../models/diet/user_nutrition_model.dart';
-import '../general/database_get.dart';
 import '../general/database_write.dart';
 
 //[LO3.7.3.5]
@@ -125,11 +122,11 @@ class UserNutritionData with ChangeNotifier {
     foodListItemsSnacks: [],
   );
 
-  late List<UserRecipesModel> _userRecipesList = [];
+  late final List<UserRecipesModel> _userRecipesList = [];
 
   List<UserRecipesModel> get userRecipesList => _userRecipesList;
 
-  late UserRecipesModel _currentRecipe = UserRecipesModel(
+  late final UserRecipesModel _currentRecipe = UserRecipesModel(
       barcode: "",
       recipeFoodList: [],
       foodData: FoodItem(
@@ -329,68 +326,68 @@ class UserNutritionData with ChangeNotifier {
   late double _selenium = 0.0;
   late double _stearicAcid = 0.0;
 
-  late double _caloriesGoal = 2424;
-  late double _proteinGoal = 160;
-  late double _fatGoal = 85;
-  late double _carbohydratesGoal = 286;
+  late final double _caloriesGoal = 2424;
+  late final double _proteinGoal = 160;
+  late final double _fatGoal = 85;
+  late final double _carbohydratesGoal = 286;
 
   //grams
-  late double _fiberGoal = 30; // Recommended fiber intake for adults (general guideline)
-  late double _sugarGoal = 50; // Maximum recommended sugar intake for adults (general guideline)
-  late double _saturatedFatGoal = 20; // Maximum recommended saturated fat intake as a percentage of total calories (general guideline)
-  late double _polyUnsaturatedFatGoal = 12; // Recommended polyunsaturated fat intake as a percentage of total calories (general guideline)
-  late double _monoUnsaturatedFatGoal = 15; // Recommended monounsaturated fat intake as a percentage of total calories (general guideline)
-  late double _transFatGoal = 0; // Maximum recommended trans fat intake (general guideline)
-  late double _cholesterolGoal = 300; // Maximum recommended cholesterol intake in milligrams (general guideline)
+  late final double _fiberGoal = 30; // Recommended fiber intake for adults (general guideline)
+  late final double _sugarGoal = 50; // Maximum recommended sugar intake for adults (general guideline)
+  late final double _saturatedFatGoal = 20; // Maximum recommended saturated fat intake as a percentage of total calories (general guideline)
+  late final double _polyUnsaturatedFatGoal = 12; // Recommended polyunsaturated fat intake as a percentage of total calories (general guideline)
+  late final double _monoUnsaturatedFatGoal = 15; // Recommended monounsaturated fat intake as a percentage of total calories (general guideline)
+  late final double _transFatGoal = 0; // Maximum recommended trans fat intake (general guideline)
+  late final double _cholesterolGoal = 300; // Maximum recommended cholesterol intake in milligrams (general guideline)
 
   //mg
-  late double _calciumGoal = 1000; // Example: Calcium goal for adults (general guideline)
-  late double _ironGoal = 8; // Example: Iron goal for adults (general guideline)
-  late double _sodiumGoal = 2300; // Example: Sodium goal for adults (general guideline)
-  late double _zincGoal = 11; // Example: Zinc goal for adults (general guideline)
-  late double _magnesiumGoal = 400; // Example: Magnesium goal for adults (general guideline)
-  late double _potassiumGoal = 3500; // Example: Potassium goal
+  late final double _calciumGoal = 1000; // Example: Calcium goal for adults (general guideline)
+  late final double _ironGoal = 8; // Example: Iron goal for adults (general guideline)
+  late final double _sodiumGoal = 2300; // Example: Sodium goal for adults (general guideline)
+  late final double _zincGoal = 11; // Example: Zinc goal for adults (general guideline)
+  late final double _magnesiumGoal = 400; // Example: Magnesium goal for adults (general guideline)
+  late final double _potassiumGoal = 3500; // Example: Potassium goal
 
   //mg
-  late double _vitaminAGoal = 0.800; // Example: Vitamin A goal for adults (general guideline)
-  late double _vitaminB1Goal = 1.1; // Example: Thiamine (Vitamin B1) goal for adults (general guideline)
-  late double _vitaminB2Goal = 1.3; // Example: Riboflavin (Vitamin B2) goal for adults (general guideline)
-  late double _vitaminB3Goal = 16; // Example: Niacin (Vitamin B3) goal for adults (general guideline)
-  late double _vitaminB6Goal = 1.3; // Example: Vitamin B6 goal for adults (general guideline)
-  late double _vitaminB9Goal = 0.400; // Example: Folate (Vitamin B9) goal for adults (general guideline)
-  late double _vitaminB12Goal = 2.4; // Example: Vitamin B12 goal for adults (general guideline)
-  late double _vitaminCGoal = 90; // Example: Vitamin C goal for adults (general guideline)
-  late double _vitaminDGoal = 15; // Example: Vitamin D goal for adults (general guideline)
-  late double _vitaminEGoal = 15; // Example: Vitamin E goal for adults (general guideline)
-  late double _vitaminKGoal = 75; // Example: Vitamin K goal for adults (general guideline)
+  late final double _vitaminAGoal = 0.800; // Example: Vitamin A goal for adults (general guideline)
+  late final double _vitaminB1Goal = 1.1; // Example: Thiamine (Vitamin B1) goal for adults (general guideline)
+  late final double _vitaminB2Goal = 1.3; // Example: Riboflavin (Vitamin B2) goal for adults (general guideline)
+  late final double _vitaminB3Goal = 16; // Example: Niacin (Vitamin B3) goal for adults (general guideline)
+  late final double _vitaminB6Goal = 1.3; // Example: Vitamin B6 goal for adults (general guideline)
+  late final double _vitaminB9Goal = 0.400; // Example: Folate (Vitamin B9) goal for adults (general guideline)
+  late final double _vitaminB12Goal = 2.4; // Example: Vitamin B12 goal for adults (general guideline)
+  late final double _vitaminCGoal = 90; // Example: Vitamin C goal for adults (general guideline)
+  late final double _vitaminDGoal = 15; // Example: Vitamin D goal for adults (general guideline)
+  late final double _vitaminEGoal = 15; // Example: Vitamin E goal for adults (general guideline)
+  late final double _vitaminKGoal = 75; // Example: Vitamin K goal for adults (general guideline)
 
-  late double _alcoholGoal = 0;
-  late double _caffeineGoal = 0;
+  late final double _alcoholGoal = 0;
+  late final double _caffeineGoal = 0;
 
   //mg
-  late double _omega3Goal = 1000; // mg of combined EPA and DHA per day
-  late double _omega6Goal = 12000; // approximate ratio of 4:1 (omega-6 to omega-3)
-  late double _biotinGoal = 0.30; // mcg per day
-  late double _butyricAcidGoal = 150; // no specific recommendation
-  late double _capricAcidGoal = 1000; // no specific recommendation
-  late double _caproicAcidGoal = 0; // no specific recommendation
-  late double _caprylicAcidGoal = 1000; // no specific recommendation
-  late double _chlorideGoal = 2300; // mg per day
-  late double _chromiumGoal = 0.25; // mcg per day
-  late double _copperGoal = 0.900; // mcg per day
-  late double _docosahexaenoicAcidGoal = 250; // mg per day
-  late double _eicosapentaenoicAcidGoal = 250; // mg per day
-  late double _erucicAcidGoal = 400; // no specific recommendation
-  late double _fluorideGoal = 4; // mg per day
-  late double _iodineGoal = 0.150; // mcg per day
-  late double _manganeseGoal = 1.8; // mg per day
-  late double _molybdenumGoal = 0.045; // mcg per day
-  late double _myristicAcidGoal = 0.89; // no specific recommendation
-  late double _oleicAcidGoal = 20000; // no specific recommendation
-  late double _palmiticAcidGoal = 20000; // no specific recommendation
-  late double _pantothenicAcidGoal = 5; // mg per day
-  late double _seleniumGoal = 0.055; // mcg per day
-  late double _stearicAcidGoal = 5700; // no specific recommendation
+  late final double _omega3Goal = 1000; // mg of combined EPA and DHA per day
+  late final double _omega6Goal = 12000; // approximate ratio of 4:1 (omega-6 to omega-3)
+  late final double _biotinGoal = 0.30; // mcg per day
+  late final double _butyricAcidGoal = 150; // no specific recommendation
+  late final double _capricAcidGoal = 1000; // no specific recommendation
+  late final double _caproicAcidGoal = 0; // no specific recommendation
+  late final double _caprylicAcidGoal = 1000; // no specific recommendation
+  late final double _chlorideGoal = 2300; // mg per day
+  late final double _chromiumGoal = 0.25; // mcg per day
+  late final double _copperGoal = 0.900; // mcg per day
+  late final double _docosahexaenoicAcidGoal = 250; // mg per day
+  late final double _eicosapentaenoicAcidGoal = 250; // mg per day
+  late final double _erucicAcidGoal = 400; // no specific recommendation
+  late final double _fluorideGoal = 4; // mg per day
+  late final double _iodineGoal = 0.150; // mcg per day
+  late final double _manganeseGoal = 1.8; // mg per day
+  late final double _molybdenumGoal = 0.045; // mcg per day
+  late final double _myristicAcidGoal = 0.89; // no specific recommendation
+  late final double _oleicAcidGoal = 20000; // no specific recommendation
+  late final double _palmiticAcidGoal = 20000; // no specific recommendation
+  late final double _pantothenicAcidGoal = 5; // mg per day
+  late final double _seleniumGoal = 0.055; // mcg per day
+  late final double _stearicAcidGoal = 5700; // no specific recommendation
 
 
   double get calories => _calories;
@@ -577,7 +574,7 @@ class UserNutritionData with ChangeNotifier {
         _userNutritionHistory.foodListItemNames.removeLast();
         _userNutritionHistory.foodServings.removeLast();
         _userNutritionHistory.foodServingSize.removeLast();
-      };
+      }
 
       //_userNutritionHistory.barcodes = _userNutritionHistory.barcodes.reversed.toList();
       //_userNutritionHistory.foodListItemNames = _userNutritionHistory.foodListItemNames.reversed.toList();
@@ -691,7 +688,7 @@ class UserNutritionData with ChangeNotifier {
     _stearicAcid = 0.0;
 
     void calculateTotal(List<ListFoodItem> listOfFood) {
-      listOfFood.forEach((foodItem) {
+      for (var foodItem in listOfFood) {
         try {
           _calories += (double.parse(foodItem.foodItemData.calories)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
@@ -957,7 +954,7 @@ class UserNutritionData with ChangeNotifier {
         } catch (exception) {
           _stearicAcid += 0;
         }
-      });
+      }
     }
 
     calculateTotal(_userDailyNutrition.foodListItemsBreakfast);

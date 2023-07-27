@@ -1,12 +1,3 @@
-import 'dart:async';
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitness_tracker/helpers/general/string_extensions.dart';
-import 'package:fitness_tracker/pages/diet/food_nutrition_list_edit.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:openfoodfacts/openfoodfacts.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/constants.dart';
@@ -14,20 +5,14 @@ import '../../helpers/diet/analyse_barcode.dart';
 import '../../helpers/diet/extract_image_byte_data.dart';
 import '../../helpers/diet/nutrition_tracker.dart';
 import '../../models/diet/food_item.dart';
-import '../../providers/general/database_get.dart';
 import 'package:provider/provider.dart';
-import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 
-import '../../providers/general/database_write.dart';
 import '../../widgets/diet/diet_home_macro_nutrition_display.dart';
-import '../../widgets/general/app_default_button.dart';
 import '../../widgets/diet/diet_category_box.dart';
-import '../../widgets/general/screen_width_container.dart';
-import 'diet_barcode_scanner.dart';
 import 'diet_food_display_page.dart';
 
 class DietHomePage extends StatefulWidget {
-  DietHomePage({Key? key}) : super(key: key);
+  const DietHomePage({Key? key}) : super(key: key);
 
   @override
   State<DietHomePage> createState() => _DietHomePageState();
@@ -44,7 +29,7 @@ class _DietHomePageState extends State<DietHomePage> {
 
     print("Checking Food");
 
-    if (barcodeDisplayValue != null) {
+    if (barcodeDisplayValue.isNotEmpty) {
 
       print("Firebase");
       FoodItem newFoodItem = CheckFoodBarcode(barcodeDisplayValue);
@@ -55,7 +40,7 @@ class _DietHomePageState extends State<DietHomePage> {
 
     }
 
-    context.read<PageChange>().changePageCache(FoodDisplayPage(category: 'Breakfast',));
+    context.read<PageChange>().changePageCache(const FoodDisplayPage(category: 'Breakfast',));
 
   }
 
@@ -91,7 +76,7 @@ class _DietHomePageState extends State<DietHomePage> {
                   width: _width,
                 ),
 
-                Container(
+                SizedBox(
                   height: _height/1.8,
                   child: ListView(
                     shrinkWrap: true,

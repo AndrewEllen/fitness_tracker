@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/constants.dart';
-import 'package:fitness_tracker/exports.dart';
-import 'package:provider/provider.dart';
 
 import '../../models/diet/food_data_list_item.dart';
-import '../../models/diet/food_item.dart';
 
 class FoodListDisplayBox extends StatefulWidget {
-  FoodListDisplayBox({Key? key,
+  const FoodListDisplayBox({Key? key,
     required this.foodObject,
     required this.width,
     this.onTap,
@@ -15,15 +12,15 @@ class FoodListDisplayBox extends StatefulWidget {
     this.onTapIcon2,
     this.icon,
     this.icon2,
-    this.iconColour,
-    this.icon2Colour,
+    this.iconColour = Colors.white,
+    this.icon2Colour = Colors.white,
   }) : super(key: key);
 
-  late ListFoodItem foodObject;
+  final ListFoodItem foodObject;
   final IconData? icon, icon2;
-  late Color? iconColour, icon2Colour;
+  final Color? iconColour, icon2Colour;
   final VoidCallback? onTap, onTapIcon, onTapIcon2;
-  late double width;
+  final double width;
 
   @override
   State<FoodListDisplayBox> createState() => _FoodListDisplayBoxState();
@@ -60,13 +57,6 @@ class _FoodListDisplayBoxState extends State<FoodListDisplayBox> {
   @override
   Widget build(BuildContext context) {
 
-    if (widget.iconColour?.value == null) {
-      widget.iconColour = Colors.white;
-    }
-    if (widget.icon2Colour?.value == null) {
-      widget.icon2Colour = Colors.white;
-    }
-
     return widget.foodObject.foodItemData.foodName.isNotEmpty ? Container(
       key: UniqueKey(),
       margin: const EdgeInsets.all(4),
@@ -85,7 +75,7 @@ class _FoodListDisplayBoxState extends State<FoodListDisplayBox> {
           child: Container(
             width: 55,
             height: 55,
-            padding: EdgeInsets.all(2),
+            padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
               border: Border.all(
                   color: appSecondaryColour,

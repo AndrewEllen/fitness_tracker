@@ -8,7 +8,6 @@ import 'package:fitness_tracker/models/workout/training_plan_model.dart';
 import 'package:fitness_tracker/models/diet/user_custom_foods.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
 
-import '../../models/diet/food_data_list_item.dart';
 import '../../models/diet/food_item.dart';
 import '../../models/diet/user_nutrition_history_model.dart';
 
@@ -28,14 +27,14 @@ void UpdateUserDocumentExercises(List<Exercises> exercisesList) async {
 
   List<Map> ConvertToMap({required List<Exercises> exercisesList}) {
     List<Map> exercises = [];
-    exercisesList.forEach((Exercises exerciseModel) {
+    for (var exerciseModel in exercisesList) {
       Map exercise = exerciseModel.toMap();
       exercises.add(exercise);
-    });
+    }
     return exercises;
   }
 
-  List<Map> exercises = await ConvertToMap(exercisesList: exercisesList);
+  List<Map> exercises = ConvertToMap(exercisesList: exercisesList);
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -52,14 +51,14 @@ void UpdateUserDocumentRoutines(List<WorkoutRoutine> workoutRoutinesList) async 
 
   List<Map> ConvertToMap({required List<WorkoutRoutine> workoutRoutinesList}) {
     List<Map> routines = [];
-    workoutRoutinesList.forEach((WorkoutRoutine workoutRoutine) {
+    for (var workoutRoutine in workoutRoutinesList) {
       Map routine = workoutRoutine.toMap();
       routines.add(routine);
-    });
+    }
     return routines;
   }
 
-  List<Map> routines = await ConvertToMap(workoutRoutinesList: workoutRoutinesList);
+  List<Map> routines = ConvertToMap(workoutRoutinesList: workoutRoutinesList);
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -75,14 +74,14 @@ void UpdateUserDocumentTrainingPlans(List<TrainingPlan> trainingPlansList) async
 
   List<Map> ConvertToMap({required List<TrainingPlan> trainingPlansList}) {
     List<Map> trainingPlans = [];
-    trainingPlansList.forEach((TrainingPlan trainingPlan) {
+    for (var trainingPlan in trainingPlansList) {
       Map plan = trainingPlan.toMap();
       trainingPlans.add(plan);
-    });
+    }
     return trainingPlans;
   }
 
-  List<Map> trainingPlans = await ConvertToMap(trainingPlansList: trainingPlansList);
+  List<Map> trainingPlans = ConvertToMap(trainingPlansList: trainingPlansList);
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -130,7 +129,7 @@ void UpdateUserDocumentMeasurements(StatsMeasurement measurements) async {
     return measurementsMap;
   }
 
-  Map measurementsMapped = await ConvertToMap(measurements: measurements);
+  Map measurementsMapped = ConvertToMap(measurements: measurements);
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -153,7 +152,7 @@ void UpdateFoodItemData(FoodItem foodItem) async {
       return foodItemMap;
     }
 
-    Map mappedFoodItem = await ConvertToMap(foodItemData: foodItem);
+    Map mappedFoodItem = ConvertToMap(foodItemData: foodItem);
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -161,7 +160,7 @@ void UpdateFoodItemData(FoodItem foodItem) async {
 
     await FirebaseFirestore.instance
         .collection('food-data')
-        .doc("${foodItem.barcode}")
+        .doc(foodItem.barcode)
         .set({
             "food-data": mappedFoodItem,
             "foodNameSearch" : foodItem.foodName.triGram(),
@@ -179,7 +178,7 @@ void UpdateUserNutritionalData(UserNutritionModel userNutrition) async {
     return nutritionMap;
   }
 
-  Map nutritionMapped = await ConvertToMap(nutrition: userNutrition);
+  Map nutritionMapped = ConvertToMap(nutrition: userNutrition);
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 

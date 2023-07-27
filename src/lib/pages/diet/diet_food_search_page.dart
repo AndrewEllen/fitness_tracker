@@ -3,32 +3,28 @@ import 'package:fitness_tracker/models/diet/user_nutrition_history_model.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../helpers/diet/nutrition_tracker.dart';
 import '../../models/diet/food_item.dart';
-import '../../providers/general/database_get.dart';
 import '../../providers/general/page_change_provider.dart';
 import '../../providers/diet/user_nutrition_data.dart';
 import '../../widgets/general/app_container_header.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/diet/food_history_list_item_box.dart';
-import '../../widgets/diet/food_list_item_box.dart';
 import '../../widgets/diet/food_list_search_display_box.dart';
 import 'diet_barcode_scanner.dart';
 import 'diet_food_display_page.dart';
 import 'diet_new_food_page.dart';
-import 'diet_recipe_edit.dart';
 
 class FoodSearchPage extends StatefulWidget {
-  FoodSearchPage({
+  const FoodSearchPage({
     Key? key,
     required this.category,
   }) : super(key: key);
 
-  String category;
+  final String category;
 
   @override
   State<FoodSearchPage> createState() => _FoodSearchPageState();
@@ -597,7 +593,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                       child: Container(
                         height: height/5,
                         width: width/1.5,
-                        margin: EdgeInsets.all(15),
+                        margin: const EdgeInsets.all(15),
                         decoration: const BoxDecoration(
                           color: appTertiaryColour,
                           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -612,11 +608,11 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                   bottom: BorderSide(width: 2, color: appQuinaryColour),
                                 ),
                               ),
-                              child: Align(
+                              child: const Align(
                                 alignment: Alignment.center,
-                                child: Container(
+                                child: SizedBox(
                                   height: 24,
-                                  child: const Text(
+                                  child: Text(
                                     "Add Food",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
@@ -679,7 +675,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                             Positioned(
                               bottom: width/42,
                               right: width/4.33,
-                              child: Container(
+                              child: SizedBox(
                                 height: 30,
                                 child: AppButton(
                                   buttonText: "Cancel",
@@ -694,7 +690,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                             Positioned(
                               bottom: width/42,
                               right: width/33,
-                              child: Container(
+                              child: SizedBox(
                                 height: 30,
                                 child: AppButton(
                                   buttonText: "Add",
@@ -910,7 +906,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                       child: Container(
                         height: height/5,
                         width: width/1.5,
-                        margin: EdgeInsets.all(15),
+                        margin: const EdgeInsets.all(15),
                         decoration: const BoxDecoration(
                           color: appTertiaryColour,
                           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -925,11 +921,11 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                   bottom: BorderSide(width: 2, color: appQuinaryColour),
                                 ),
                               ),
-                              child: Align(
+                              child: const Align(
                                 alignment: Alignment.center,
-                                child: Container(
+                                child: SizedBox(
                                   height: 24,
-                                  child: const Text(
+                                  child: Text(
                                     "Add Food",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
@@ -992,7 +988,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                             Positioned(
                               bottom: width/42,
                               right: width/4.33,
-                              child: Container(
+                              child: SizedBox(
                                 height: 30,
                                 child: AppButton(
                                   buttonText: "Cancel",
@@ -1007,7 +1003,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                             Positioned(
                               bottom: width/42,
                               right: width/33,
-                              child: Container(
+                              child: SizedBox(
                                 height: 30,
                                 child: AppButton(
                                     buttonText: "Add",
@@ -1164,7 +1160,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                       child: Container(
                         height: height/5,
                         width: width/1.5,
-                        margin: EdgeInsets.all(15),
+                        margin: const EdgeInsets.all(15),
                         decoration: const BoxDecoration(
                           color: appTertiaryColour,
                           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -1179,11 +1175,11 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                   bottom: BorderSide(width: 2, color: appQuinaryColour),
                                 ),
                               ),
-                              child: Align(
+                              child: const Align(
                                 alignment: Alignment.center,
-                                child: Container(
+                                child: SizedBox(
                                   height: 24,
-                                  child: const Text(
+                                  child: Text(
                                     "Add Food",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
@@ -1246,7 +1242,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                             Positioned(
                               bottom: width/42,
                               right: width/4.33,
-                              child: Container(
+                              child: SizedBox(
                                 height: 30,
                                 child: AppButton(
                                   buttonText: "Cancel",
@@ -1261,7 +1257,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                             Positioned(
                               bottom: width/42,
                               right: width/33,
-                              child: Container(
+                              child: SizedBox(
                                 height: 30,
                                 child: AppButton(
                                     buttonText: "Add",

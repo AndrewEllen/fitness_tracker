@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/constants.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
-import '../../models/stats/stats_model.dart';
 import '../../providers/general/database_write.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/general/screen_width_container.dart';
-import '../../widgets/stats/stats_add_data.dart';
 import '../../widgets/stats/stats_container_widget.dart';
 
 class MeasurementsHomePage extends StatefulWidget {
-  MeasurementsHomePage({Key? key}) : super(key: key);
+  const MeasurementsHomePage({Key? key}) : super(key: key);
 
   @override
   State<MeasurementsHomePage> createState() => _MeasurementsHomePageState();
@@ -126,11 +122,11 @@ class _MeasurementsHomePageState extends State<MeasurementsHomePage> {
                           bottom: BorderSide(width: 2, color: appQuinaryColour),
                         ),
                       ),
-                      child: Align(
+                      child: const Align(
                         alignment: Alignment.center,
-                        child: Container(
+                        child: SizedBox(
                           height: 24,
-                          child: const Text(
+                          child: Text(
                             "New Measurement",
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -193,7 +189,7 @@ class _MeasurementsHomePageState extends State<MeasurementsHomePage> {
                     Positioned(
                       bottom: _width/42,
                       right: _width/4.33,
-                      child: Container(
+                      child: SizedBox(
                         height: 30,
                         child: AppButton(
                           buttonText: "Cancel",
@@ -208,14 +204,14 @@ class _MeasurementsHomePageState extends State<MeasurementsHomePage> {
                     Positioned(
                       bottom: _width/42,
                       right: _width/33,
-                      child: Container(
+                      child: SizedBox(
                         height: 30,
                         child: AppButton(
                           buttonText: "Save",
                           onTap: () {
                             setState(() {
                               if (newMeasurementNameKey.currentState!.validate()) {
-                                context.read<UserStatsMeasurements>().addNewMeasurement(newMeasurementNameController.text, Uuid().v4());
+                                context.read<UserStatsMeasurements>().addNewMeasurement(newMeasurementNameController.text, const Uuid().v4());
                                 UpdateUserDocumentMeasurements(context.read<UserStatsMeasurements>().statsMeasurement[context.read<UserStatsMeasurements>().statsMeasurement.length-1]);
                                 newMeasurementNameController.text = "";
                                 _displayDropDown = false;

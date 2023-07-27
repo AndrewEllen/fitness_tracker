@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../constants.dart';
 
 class ScreenWidthExpandingContainer extends StatelessWidget {
-  ScreenWidthExpandingContainer({Key? key,
+  const ScreenWidthExpandingContainer({Key? key,
     required this.minHeight,
     required this.child,
     this.customMargin = false,
@@ -13,15 +13,15 @@ class ScreenWidthExpandingContainer extends StatelessWidget {
     this.right = 0,
   }) : super(key: key);
 
-  late final double
+  final double
   minHeight,
       margin,
       top,
       bottom,
       left,
       right;
-  late Widget child;
-  late final customMargin;
+  final Widget child;
+  final bool customMargin;
 
   @override
   Widget build(BuildContext context) {

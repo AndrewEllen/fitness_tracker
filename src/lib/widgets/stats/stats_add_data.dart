@@ -1,6 +1,4 @@
 import 'package:fitness_tracker/constants.dart';
-import 'package:fitness_tracker/models/stats/stats_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -10,8 +8,8 @@ import '../../providers/general/database_write.dart';
 import '../../providers/stats/user_measurements.dart';
 
 class StatsAddMeasurement extends StatefulWidget {
-  StatsAddMeasurement({Key? key, required this.index}) : super(key: key);
-  late int index;
+  const StatsAddMeasurement({Key? key, required this.index}) : super(key: key);
+  final int index;
 
   @override
   State<StatsAddMeasurement> createState() => _StatsAddMeasurementState();
@@ -193,7 +191,7 @@ class _StatsAddMeasurementState extends State<StatsAddMeasurement> {
               ),
               onPressed: () {
                 if (measurementValueKey.currentState!.validate()) {
-                  FocusScope.of(context).requestFocus(new FocusNode());
+                  FocusScope.of(context).requestFocus(FocusNode());
                   context.read<UserStatsMeasurements>().addStatsMeasurement(
                     double.parse(measurementValueController.text),
                     dateUnformatted.add(

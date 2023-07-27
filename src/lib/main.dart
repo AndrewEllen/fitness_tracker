@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/pages/general/auth_choose_login_signup.dart';
@@ -74,9 +73,9 @@ class FireBaseAuthenticationCheck extends StatelessWidget {
     final currentUser = context.watch<User?>();
 
     if (currentUser != null) {
-      return SplashScreen();
+      return const SplashScreen();
     }
-    return ChooseLoginSignUp();
+    return const ChooseLoginSignUp();
   }
 }
 
@@ -108,8 +107,7 @@ class _AppMainState extends State<AppMain> {
             side: const BorderSide(
               width: 3,
               color: Colors.transparent,
-            ),
-            primary: appSecondaryColour,
+            ), backgroundColor: appSecondaryColour,
             shadowColor: Colors.transparent,
             elevation: 0,
             shape: RoundedRectangleBorder(

@@ -7,8 +7,6 @@ import 'package:provider/provider.dart';
 import '../../constants.dart';
 import '../../models/diet/food_data_list_item.dart';
 import '../../models/diet/food_item.dart';
-import '../../providers/general/page_change_provider.dart';
-import '../../providers/diet/user_nutrition_data.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/diet/diet_list_header_box.dart';
 import '../../widgets/diet/food_nutrition_list_formfield.dart';
@@ -16,10 +14,10 @@ import 'food_nutrition_list_edit.dart';
 import '../../widgets/diet/food_nutrition_list_text.dart';
 
 class FoodDisplayPage extends StatefulWidget {
-  FoodDisplayPage({Key? key, required this.category, this.editDiary = false, this.index = 0}) : super(key: key);
-  String category;
-  bool editDiary;
-  int index;
+  const FoodDisplayPage({Key? key, required this.category, this.editDiary = false, this.index = 0}) : super(key: key);
+  final String category;
+  final bool editDiary;
+  final int index;
 
   @override
   State<FoodDisplayPage> createState() => _FoodDisplayPageState();
@@ -56,7 +54,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
 
   void AddToDiary() {
 
-      if (widget.editDiary && currentFoodItem.foodName.length > 0 &&
+      if (widget.editDiary && currentFoodItem.foodName.isNotEmpty &&
           currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
           (servingsController.text != "-" || servingsController.text.isNotEmpty) &&
           (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
@@ -79,9 +77,9 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
           servingSizeController.text,
         );
 
-        context.read<PageChange>().changePageClearCache(DietHomePage());
+        context.read<PageChange>().changePageClearCache(const DietHomePage());
 
-      } else if (currentFoodItem.foodName.length > 0 &&
+      } else if (currentFoodItem.foodName.isNotEmpty &&
         currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
         (servingsController.text != "-" || servingsController.text.isNotEmpty) &&
         (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
@@ -101,7 +99,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         servingSizeController.text,
       );
 
-      context.read<PageChange>().changePageClearCache(DietHomePage());
+      context.read<PageChange>().changePageClearCache(const DietHomePage());
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text(
@@ -246,12 +244,12 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                         color: Colors.white,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(),
+                        padding: const EdgeInsets.only(),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Material(
                             type: MaterialType.transparency,
-                            shape: CircleBorder(),
+                            shape: const CircleBorder(),
                             clipBehavior: Clip.antiAlias,
                             child: IconButton(
                               icon: const Icon(

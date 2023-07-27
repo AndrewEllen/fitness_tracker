@@ -6,8 +6,6 @@ import 'package:fitness_tracker/exports.dart';
 import 'package:provider/provider.dart';
 import '../../constants.dart';
 import '../../models/stats/stats_model.dart';
-import '../../providers/general/page_change_provider.dart';
-import 'package:charts_flutter/flutter.dart' as chartColour;
 
 class StatsWidget extends StatelessWidget {
   const StatsWidget({

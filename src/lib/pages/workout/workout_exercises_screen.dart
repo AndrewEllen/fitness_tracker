@@ -1,4 +1,3 @@
-import 'package:fitness_tracker/exports.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../constants.dart';
@@ -9,7 +8,7 @@ import '../../widgets/workout/exercises_add.dart';
 import '../../widgets/workout/exercises_edit.dart';
 
 class ExercisesScreen extends StatefulWidget {
-  ExercisesScreen({Key? key}) : super(key: key);
+  const ExercisesScreen({Key? key}) : super(key: key);
 
   @override
   State<ExercisesScreen> createState() => _ExercisesScreenState();
@@ -18,6 +17,7 @@ class ExercisesScreen extends StatefulWidget {
 class _ExercisesScreenState extends State<ExercisesScreen> {
   late List<Exercises> data;
 
+  @override
   void initState() {
     data = context.read<UserExercisesList>().exerciseList;
     super.initState();
@@ -31,7 +31,6 @@ class _ExercisesScreenState extends State<ExercisesScreen> {
     double _height = MediaQuery.of(context).size.height/1.03;
     double _width = MediaQuery.of(context).size.width;
     double _margin = 15;
-    double fontSize = 21;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -79,7 +78,7 @@ class _ExercisesScreenState extends State<ExercisesScreen> {
                     margin: EdgeInsets.only(top:_margin/1.8),
                     child: Column(
                       children: [
-                        ExercisesAdd(
+                        const ExercisesAdd(
                         ),
                         Expanded(
                           child: ListView.builder(

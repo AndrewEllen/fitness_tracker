@@ -1,21 +1,15 @@
 import 'package:fitness_tracker/constants.dart';
-import 'package:fitness_tracker/models/stats/stats_model.dart';
 import 'package:fitness_tracker/providers/workout/user_exercises.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/general/database_write.dart';
-import '../../providers/general/page_change_provider.dart';
-import '../../providers/stats/user_measurements.dart';
 import '../general/app_default_button.dart';
 
 class ExercisesEdit extends StatefulWidget {
-  ExercisesEdit({Key? key, required this.index, required this.category, required this.exerciseName}) : super(key: key);
-  late int index;
-  late String category, exerciseName;
+  const ExercisesEdit({Key? key, required this.index, required this.category, required this.exerciseName}) : super(key: key);
+  final int index;
+  final String category, exerciseName;
 
   @override
   State<ExercisesEdit> createState() => _ExercisesEditState();
@@ -56,7 +50,7 @@ class _ExercisesEditState extends State<ExercisesEdit> {
                 fontSize: 16,
               ),
               children: <TextSpan>[
-                TextSpan(text: '$value',
+                TextSpan(text: value,
                   style: const TextStyle(
                     color: Colors.red,
                     fontWeight: FontWeight.bold,
@@ -67,7 +61,7 @@ class _ExercisesEditState extends State<ExercisesEdit> {
             ),
           ),
           actions: [
-            Container(
+            SizedBox(
                 height: 30,
                 child: AppButton(
                   buttonText: "Cancel",
@@ -76,7 +70,7 @@ class _ExercisesEditState extends State<ExercisesEdit> {
                   },
                 )
             ),
-            Container(
+            SizedBox(
                 height: 30,
                 child: AppButton(
                   primaryColor: Colors.red,

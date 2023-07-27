@@ -1,6 +1,4 @@
-import 'package:fitness_tracker/helpers/general/firebase_auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../widgets/general/app_default_button.dart';
@@ -9,14 +7,12 @@ import 'auth_signin.dart';
 import 'auth_signup.dart';
 
 class ChooseLoginSignUp extends StatelessWidget {
-  ChooseLoginSignUp({Key? key}) : super(key: key);
+  const ChooseLoginSignUp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     double _margin = 15;
-    double _bigContainerMin = 450;
     double _smallContainerMin = 95;
     return SafeArea(
       child: Scaffold(
@@ -67,7 +63,7 @@ class ChooseLoginSignUp extends StatelessWidget {
                           buttonText: "Sign up",
                           onTap: () {
                             Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => SignUpScreen(),
+                              MaterialPageRoute(builder: (context) => const SignUpScreen(),
                               ),
                             );
                           },
@@ -86,7 +82,7 @@ class ChooseLoginSignUp extends StatelessWidget {
                           buttonText: "Sign in",
                           onTap: () {
                             Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => SignInScreen(),
+                              MaterialPageRoute(builder: (context) => const SignInScreen(),
                               ),
                             );
                           },

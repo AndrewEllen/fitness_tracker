@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
-import 'package:fitness_tracker/providers/diet/user_nutrition_data.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import '../../models/diet/food_item.dart';
 import '../../providers/general/database_get.dart';
@@ -89,11 +87,11 @@ FoodItem ConvertToFoodItem(product, {String scannedBarcode = "", bool firebase =
         barcode: ConvertToUsableData(product.barcode),
         foodName: ConvertToUsableData(product.productName).capitalize(),
         quantity: ConvertToUsableData(
-            product.quantity?.replaceAll(RegExp("[a-zA-Z:\s]"), "") ??
+            product.quantity?.replaceAll(RegExp("[a-zA-Z:s]"), "") ??
                 "1"),
         servingSize: ConvertToUsableData(
             product.servingSize?.replaceAll(
-                RegExp("[a-zA-Z:\s]"), "") ?? "100"),
+                RegExp("[a-zA-Z:s]"), "") ?? "100"),
         servings: "1",
         calories: ConvertToUsableData(product.nutriments?.getValue(
             Nutrient.energyKCal, PerSize.oneHundredGrams), defaultValue: "0"),
@@ -345,7 +343,6 @@ SearchByNameFirebase(String value) async {
 
   try {
 
-    final auth.FirebaseAuth firebaseAuth = auth.FirebaseAuth.instance;
 
     final snapshot = await FirebaseFirestore.instance
         .collection("food-data")
@@ -375,7 +372,6 @@ SearchByNameTriGramFirebase(String value) async {
 
   try {
 
-    final auth.FirebaseAuth firebaseAuth = auth.FirebaseAuth.instance;
 
     final snapshot = await FirebaseFirestore.instance
         .collection("food-data")
@@ -392,7 +388,6 @@ SearchByNameTriGramFirebase(String value) async {
   } catch (error) { print(error); }
 
   List<String> splitSearchValues = value.split(" ");
-  List<double> similarities = [];
 
   foodItems.removeWhere((item) => item.foodName.split(" ").highestListSimilarity(splitSearchValues) < 0.5);
 

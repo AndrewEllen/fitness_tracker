@@ -1,14 +1,11 @@
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../constants.dart';
 import '../../models/diet/food_item.dart';
-import '../../providers/general/database_write.dart';
 import '../../providers/general/page_change_provider.dart';
-import '../../providers/diet/user_nutrition_data.dart';
 import '../../widgets/diet/food_nutrition_list_text.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/diet/diet_list_header_box.dart';
@@ -16,10 +13,10 @@ import '../../widgets/diet/food_nutrition_list_formfield.dart';
 import 'diet_food_display_page.dart';
 
 class FoodRecipeEdit extends StatefulWidget {
-  FoodRecipeEdit({Key? key, required this.category, this.newRecipe = false})
+  const FoodRecipeEdit({Key? key, required this.category, this.newRecipe = false})
       : super(key: key);
-  String category;
-  bool newRecipe;
+  final String category;
+  final bool newRecipe;
 
   @override
   State<FoodRecipeEdit> createState() => _FoodRecipeEditState();
@@ -226,7 +223,7 @@ class _FoodRecipeEditState extends State<FoodRecipeEdit> {
 
   void SetControllerValues() {
     if (widget.newRecipe) {
-      barcodeController.text = Uuid().v4();
+      barcodeController.text = const Uuid().v4();
     } else {
       barcodeController.text = currentFoodItem.barcode;
     }
@@ -328,7 +325,6 @@ class _FoodRecipeEditState extends State<FoodRecipeEdit> {
     SetControllerValues();
 
     double _margin = 15;
-    double _bigContainerMin = 230;
     double _smallContainerMin = 95;
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
@@ -342,7 +338,7 @@ class _FoodRecipeEditState extends State<FoodRecipeEdit> {
           return true;
         },
         child: _loading
-            ? Text("Place holder")
+            ? const Text("Place holder")
             : ListView(
                 children: [
                   ScreenWidthContainer(
@@ -461,7 +457,7 @@ class _FoodRecipeEditState extends State<FoodRecipeEdit> {
 }
 
 class RecipeMacros extends StatelessWidget {
-  RecipeMacros({
+  const RecipeMacros({
     Key? key,
     required this.width,
     required this.height,
@@ -524,65 +520,65 @@ class RecipeMacros extends StatelessWidget {
     required this.stearicAcidController,
   }) : super(key: key);
 
-  double width;
-  double height;
-  FoodItem currentFoodItem;
-  TextEditingController servingSizeController;
-  TextEditingController servingsController;
-  TextEditingController caloriesController;
-  TextEditingController kiloJoulesController;
-  TextEditingController proteinsController;
-  TextEditingController carbsController;
-  TextEditingController fiberController;
-  TextEditingController sugarsController;
-  TextEditingController fatController;
-  TextEditingController saturatedFatController;
-  TextEditingController polyUnsaturatedFatController;
-  TextEditingController monoUnsaturatedFatController;
-  TextEditingController transFatController;
-  TextEditingController cholesterolController;
-  TextEditingController calciumController;
-  TextEditingController ironController;
-  TextEditingController sodiumController;
-  TextEditingController zincController;
-  TextEditingController magnesiumController;
-  TextEditingController potassiumController;
-  TextEditingController vitaminAController;
-  TextEditingController vitaminB1Controller;
-  TextEditingController vitaminB2Controller;
-  TextEditingController vitaminB3Controller;
-  TextEditingController vitaminB6Controller;
-  TextEditingController vitaminB9Controller;
-  TextEditingController vitaminB12Controller;
-  TextEditingController vitaminCController;
-  TextEditingController vitaminDController;
-  TextEditingController vitaminEController;
-  TextEditingController vitaminKController;
-  TextEditingController omega3Controller;
-  TextEditingController omega6Controller;
-  TextEditingController alcoholController;
-  TextEditingController biotinController;
-  TextEditingController butyricAcidController;
-  TextEditingController caffeineController;
-  TextEditingController capricAcidController;
-  TextEditingController caproicAcidController;
-  TextEditingController caprylicAcidController;
-  TextEditingController chlorideController;
-  TextEditingController chromiumController;
-  TextEditingController copperController;
-  TextEditingController docosahexaenoicAcidController;
-  TextEditingController eicosapentaenoicAcidController;
-  TextEditingController erucicAcidController;
-  TextEditingController fluorideController;
-  TextEditingController iodineController;
-  TextEditingController manganeseController;
-  TextEditingController molybdenumController;
-  TextEditingController myristicAcidController;
-  TextEditingController oleicAcidController;
-  TextEditingController palmiticAcidController;
-  TextEditingController pantothenicAcidController;
-  TextEditingController seleniumController;
-  TextEditingController stearicAcidController;
+  final double width;
+  final double height;
+  final FoodItem currentFoodItem;
+  final TextEditingController servingSizeController;
+  final TextEditingController servingsController;
+  final TextEditingController caloriesController;
+  final TextEditingController kiloJoulesController;
+  final TextEditingController proteinsController;
+  final TextEditingController carbsController;
+  final TextEditingController fiberController;
+  final TextEditingController sugarsController;
+  final TextEditingController fatController;
+  final TextEditingController saturatedFatController;
+  final TextEditingController polyUnsaturatedFatController;
+  final TextEditingController monoUnsaturatedFatController;
+  final TextEditingController transFatController;
+  final TextEditingController cholesterolController;
+  final TextEditingController calciumController;
+  final TextEditingController ironController;
+  final TextEditingController sodiumController;
+  final TextEditingController zincController;
+  final TextEditingController magnesiumController;
+  final TextEditingController potassiumController;
+  final TextEditingController vitaminAController;
+  final TextEditingController vitaminB1Controller;
+  final TextEditingController vitaminB2Controller;
+  final TextEditingController vitaminB3Controller;
+  final TextEditingController vitaminB6Controller;
+  final TextEditingController vitaminB9Controller;
+  final TextEditingController vitaminB12Controller;
+  final TextEditingController vitaminCController;
+  final TextEditingController vitaminDController;
+  final TextEditingController vitaminEController;
+  final TextEditingController vitaminKController;
+  final TextEditingController omega3Controller;
+  final TextEditingController omega6Controller;
+  final TextEditingController alcoholController;
+  final TextEditingController biotinController;
+  final TextEditingController butyricAcidController;
+  final TextEditingController caffeineController;
+  final TextEditingController capricAcidController;
+  final TextEditingController caproicAcidController;
+  final TextEditingController caprylicAcidController;
+  final TextEditingController chlorideController;
+  final TextEditingController chromiumController;
+  final TextEditingController copperController;
+  final TextEditingController docosahexaenoicAcidController;
+  final TextEditingController eicosapentaenoicAcidController;
+  final TextEditingController erucicAcidController;
+  final TextEditingController fluorideController;
+  final TextEditingController iodineController;
+  final TextEditingController manganeseController;
+  final TextEditingController molybdenumController;
+  final TextEditingController myristicAcidController;
+  final TextEditingController oleicAcidController;
+  final TextEditingController palmiticAcidController;
+  final TextEditingController pantothenicAcidController;
+  final TextEditingController seleniumController;
+  final TextEditingController stearicAcidController;
 
   @override
   Widget build(BuildContext context) {

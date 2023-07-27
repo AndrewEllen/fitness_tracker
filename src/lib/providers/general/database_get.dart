@@ -1,16 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/helpers/diet/nutrition_tracker.dart';
-import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/workout/exercise_model.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:fitness_tracker/models/workout/training_plan_model.dart';
 import 'package:fitness_tracker/models/diet/user_custom_foods.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
 import 'package:fitness_tracker/providers/diet/user_nutrition_data.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
-import 'package:uuid/uuid.dart';
 
 import '../../models/diet/food_data_list_item.dart';
 import '../../models/diet/food_item.dart';
@@ -263,11 +260,10 @@ GetFoodDataFromFirebase(String barcode) async {
 
   try {
 
-    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
     final snapshot = await FirebaseFirestore.instance
         .collection('food-data')
-        .doc("${barcode}")
+        .doc(barcode)
         .get();
 
     final _data = snapshot.get("food-data");

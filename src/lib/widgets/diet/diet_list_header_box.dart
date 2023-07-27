@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:fitness_tracker/constants.dart';
 
 class DietListHeaderBox extends StatefulWidget {
-  DietListHeaderBox({Key? key, required this.width, required this.title,
+  const DietListHeaderBox({Key? key, required this.width, required this.title,
     this.largeTitle = false, this.color = appSecondaryColour,
   }) : super(key: key);
-  double width;
-  String title;
-  Color color;
-  bool largeTitle;
+  final double width;
+  final String title;
+  final Color color;
+  final bool largeTitle;
 
   @override
   State<DietListHeaderBox> createState() => _DietListHeaderBoxState();

@@ -16,7 +16,7 @@ class dailyWorkoutVolume {
 }
 
 class HomeBarChart extends StatelessWidget {
-  HomeBarChart({required this.chartWorkoutData, required this.chartHeight, required this.chartWidth});
+  const HomeBarChart({super.key, required this.chartWorkoutData, required this.chartHeight, required this.chartWidth});
   final List<dailyWorkoutVolume> chartWorkoutData;
   final double chartHeight, chartWidth;
 
@@ -50,11 +50,11 @@ class HomeBarChart extends StatelessWidget {
     return Container(
       height: chartHeight,
       width: chartWidth,
-      margin: EdgeInsets.all(2),
+      margin: const EdgeInsets.all(2),
       child: BarChart(
         series,
         animate: true,
-        animationDuration: Duration(milliseconds: 250),
+        animationDuration: const Duration(milliseconds: 250),
         defaultRenderer: BarRendererConfig(
           maxBarWidthPx: 50,
           barRendererDecorator: BarLabelDecorator(
@@ -81,7 +81,7 @@ class HomeBarChart extends StatelessWidget {
         ),
         primaryMeasureAxis: NumericAxisSpec(
           renderSpec: GridlineRendererSpec(
-            labelStyle: TextStyleSpec(
+            labelStyle: const TextStyleSpec(
               fontSize: 0,
             ),
             lineStyle: LineStyleSpec(

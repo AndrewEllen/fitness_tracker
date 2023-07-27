@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:fitness_tracker/constants.dart';
 
 class AppHeaderBox extends StatelessWidget {
-  AppHeaderBox({Key? key, required this.width, required this.title, this.titleColor = appSecondaryColour, this.largeTitle = false
+  const AppHeaderBox({Key? key, required this.width, required this.title, this.titleColor = appSecondaryColour, this.largeTitle = false
   }) : super(key: key);
-  double width;
-  String title;
-  Color titleColor;
-  bool largeTitle;
+  final double width;
+  final String title;
+  final Color titleColor;
+  final bool largeTitle;
 
   @override
   Widget build(BuildContext context) {

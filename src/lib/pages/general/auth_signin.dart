@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../../constants.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/general/screen_width_container.dart';
-import 'auth_signup.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -23,10 +22,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     double _margin = 15;
-    double _bigContainerMin = 450;
     double _smallContainerMin = 95;
     return SafeArea(
       child: Scaffold(

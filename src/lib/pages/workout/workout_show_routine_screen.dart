@@ -1,11 +1,8 @@
 import 'package:fitness_tracker/models/workout/routines_model.dart';
-import 'package:fitness_tracker/providers/workout/exercise_list_data.dart';
-import 'package:fitness_tracker/providers/workout/user_routines_data.dart';
 import 'package:fitness_tracker/widgets/workout/exercise_display_box.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/constants.dart';
-import 'package:provider/provider.dart';
 
 class ShowRoutinesScreen extends StatefulWidget {
   const ShowRoutinesScreen({Key? key,
@@ -20,12 +17,9 @@ class ShowRoutinesScreen extends StatefulWidget {
 }
 
 class _ShowRoutinesScreenState extends State<ShowRoutinesScreen> {
-  bool _displayDropDown = false;
-
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     double _margin = 15;
     double _bigContainerMin = 450;
@@ -74,7 +68,6 @@ class _ShowRoutinesScreenState extends State<ShowRoutinesScreen> {
               ) : ListView.builder(
                   itemCount: widget.routine.exercises.length,
                   itemBuilder: (BuildContext context, int index) {
-                    _displayDropDown = false;
                     return ExerciseDisplayBox(
                       title: widget.routine.exercises[index],
                       subtitle: "Tap to Log Workout",

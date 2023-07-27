@@ -1,6 +1,4 @@
 import 'package:fitness_tracker/exports.dart';
-import 'package:fitness_tracker/models/diet/food_item.dart';
-import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_expanding_container.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,13 +12,13 @@ import 'diet_category_add_bar.dart';
 import 'food_list_item_box.dart';
 
 class DietCategoryBox extends StatefulWidget {
-  DietCategoryBox({Key? key, required this.bigContainerMin,
+  const DietCategoryBox({Key? key, required this.bigContainerMin,
     required this.height, required this.margin, required this.width,
     required this.title, required this.foodList,
   }) : super(key: key);
-  double bigContainerMin, height, margin, width;
-  String title;
-  List<ListFoodItem> foodList;
+  final double bigContainerMin, height, margin, width;
+  final String title;
+  final List<ListFoodItem> foodList;
 
   @override
   State<DietCategoryBox> createState() => _DietCategoryBoxState();
@@ -47,7 +45,7 @@ class _DietCategoryBoxState extends State<DietCategoryBox> {
                 fontSize: 16,
               ),
               children: <TextSpan>[
-                TextSpan(text: '$value',
+                TextSpan(text: value,
                   style: const TextStyle(
                     color: appSecondaryColour,
                     fontWeight: FontWeight.bold,
@@ -58,7 +56,7 @@ class _DietCategoryBoxState extends State<DietCategoryBox> {
             ),
           ),
           actions: [
-            Container(
+            SizedBox(
                 height: 30,
                 child: AppButton(
                   primaryColor: Colors.red,
@@ -71,7 +69,7 @@ class _DietCategoryBoxState extends State<DietCategoryBox> {
                   },
                 )
             ),
-            Container(
+            SizedBox(
                 height: 30,
                 child: AppButton(
                   buttonText: "Cancel",
@@ -80,7 +78,7 @@ class _DietCategoryBoxState extends State<DietCategoryBox> {
                   },
                 )
             ),
-            Container(
+            SizedBox(
                 height: 30,
                 child: AppButton(
                   primaryColor: appSecondaryColour,
@@ -117,7 +115,7 @@ class _DietCategoryBoxState extends State<DietCategoryBox> {
       margin: widget.margin,
       child: Column(
         children: [
-          Container(
+          SizedBox(
             height: 40,
             child: AppHeaderBox(
               title: widget.title,

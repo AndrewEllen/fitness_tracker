@@ -1,12 +1,9 @@
-import 'package:fitness_tracker/models/diet/user_nutrition_history_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/constants.dart';
-import 'package:fitness_tracker/exports.dart';
 
-import '../../models/diet/food_data_list_item.dart';
 
 class FoodHistoryListDisplayBox extends StatefulWidget {
-  FoodHistoryListDisplayBox({Key? key,
+  const FoodHistoryListDisplayBox({Key? key,
     required this.foodHistoryName,
     required this.foodHistoryServings,
     required this.foodHistoryServingSize,
@@ -16,17 +13,17 @@ class FoodHistoryListDisplayBox extends StatefulWidget {
     this.onTapIcon2,
     this.icon,
     this.icon2,
-    this.iconColour,
-    this.icon2Colour,
+    this.iconColour = Colors.white,
+    this.icon2Colour = Colors.white,
   }) : super(key: key);
 
-  late String foodHistoryName;
-  late String foodHistoryServings;
-  late String foodHistoryServingSize;
+  final String foodHistoryName;
+  final String foodHistoryServings;
+  final String foodHistoryServingSize;
   final IconData? icon, icon2;
-  late Color? iconColour, icon2Colour;
+  final Color? iconColour, icon2Colour;
   final VoidCallback? onTap, onTapIcon, onTapIcon2;
-  late double width;
+  final double width;
 
   @override
   State<FoodHistoryListDisplayBox> createState() => _FoodHistoryListDisplayBoxState();
@@ -62,12 +59,6 @@ class _FoodHistoryListDisplayBoxState extends State<FoodHistoryListDisplayBox> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.iconColour?.value == null) {
-      widget.iconColour = Colors.white;
-    }
-    if (widget.icon2Colour?.value == null) {
-      widget.icon2Colour = Colors.white;
-    }
 
     return Container(
       margin: const EdgeInsets.all(4),
@@ -134,7 +125,7 @@ class _FoodHistoryListDisplayBoxState extends State<FoodHistoryListDisplayBox> {
             children: [
               Material(
                 type: MaterialType.transparency,
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 clipBehavior: Clip.antiAlias,
                 child: IconButton(
                   onPressed: widget.onTapIcon,
@@ -146,7 +137,7 @@ class _FoodHistoryListDisplayBoxState extends State<FoodHistoryListDisplayBox> {
               ),
               Material(
                 type: MaterialType.transparency,
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 clipBehavior: Clip.antiAlias,
                 child: IconButton(
                   onPressed: widget.onTapIcon2,
@@ -161,7 +152,7 @@ class _FoodHistoryListDisplayBoxState extends State<FoodHistoryListDisplayBox> {
         ) : widget.icon != null ?
         Material(
           type: MaterialType.transparency,
-          shape: CircleBorder(),
+          shape: const CircleBorder(),
           clipBehavior: Clip.antiAlias,
           child: IconButton(
             onPressed: widget.onTapIcon,

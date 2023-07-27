@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/workout/user_routines_data.dart';
 
 class SearchMenu extends StatefulWidget {
-  SearchMenu({Key? key}) : super(key: key);
+  const SearchMenu({Key? key}) : super(key: key);
 
   @override
   State<SearchMenu> createState() => _SearchMenuState();
@@ -20,7 +19,7 @@ class _SearchMenuState extends State<SearchMenu> {
       color: Colors.white38,
       child: DropdownSearch(
         items: context.read<ExerciseList>().panelTitles,
-        dropdownSearchDecoration: InputDecoration(labelText: "Exercise Name"),
+        dropdownSearchDecoration: const InputDecoration(labelText: "Exercise Name"),
         onChanged: print,
         /*validator: (String? item) {
           if (item == null) {

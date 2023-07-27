@@ -1,5 +1,4 @@
 import 'package:fitness_tracker/pages/workout/workout_exercises_screen.dart';
-import 'package:fitness_tracker/pages/workout/workout_show_routine_screen.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
 import 'package:fitness_tracker/widgets/workout/exercise_training_plan_day_streak_indicator.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
@@ -7,12 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:provider/provider.dart';
-import 'package:fitness_tracker/providers/general/page_change_provider.dart';
 
 import '../../helpers/workout/find_routine_id.dart';
 
 class WorkoutsHomePage extends StatelessWidget {
-  WorkoutsHomePage({Key? key}) : super(key: key);
+  const WorkoutsHomePage({Key? key}) : super(key: key);
 
   final int trainingDaysComplete = 4;
   final Color streakColour = streakColourOrange;
@@ -190,7 +188,7 @@ class WorkoutsHomePage extends StatelessWidget {
                                         .currentlySelectedPlan,
                                     0,
                                   )],
-                                  returnScreen: WorkoutsHomePage(),
+                                  returnScreen: const WorkoutsHomePage(),
                                 ),
                               );
                             } : () {},
@@ -213,7 +211,7 @@ class WorkoutsHomePage extends StatelessWidget {
                   child: AppButton(
                     buttonText: "Exercises",
                     onTap: () {
-                      context.read<PageChange>().changePageCache(ExercisesScreen());
+                      context.read<PageChange>().changePageCache(const ExercisesScreen());
                     },
                   ),
                 ), //ExerciseExpansionPanel(),
@@ -229,7 +227,7 @@ class WorkoutsHomePage extends StatelessWidget {
                   child: AppButton(
                     buttonText: "Routines",
                     onTap: () {
-                      context.read<PageChange>().changePageCache(RoutinesScreen());
+                      context.read<PageChange>().changePageCache(const RoutinesScreen());
                     },
                   ),
                 ), //ExerciseExpansionPanel(),
@@ -245,7 +243,7 @@ class WorkoutsHomePage extends StatelessWidget {
                     child: AppButton(
                       buttonText: "Training Plans",
                       onTap: () {
-                        context.read<PageChange>().changePageCache(TrainingPlansScreen());
+                        context.read<PageChange>().changePageCache(const TrainingPlansScreen());
                       },
                     ),
                 ), //ExerciseExpansionPanel(),

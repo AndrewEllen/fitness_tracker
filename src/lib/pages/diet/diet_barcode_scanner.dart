@@ -1,24 +1,19 @@
-import 'dart:typed_data';
 
 import 'package:fitness_tracker/constants.dart';
-import 'package:fitness_tracker/pages/diet/food_nutrition_list_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:provider/provider.dart';
 
-import '../../helpers/diet/analyse_barcode.dart';
 import '../../helpers/diet/nutrition_tracker.dart';
 import '../../models/diet/food_item.dart';
-import '../../providers/general/database_get.dart';
 import '../../providers/general/page_change_provider.dart';
 import '../../providers/diet/user_nutrition_data.dart';
 import 'diet_food_display_page.dart';
 import 'diet_new_food_page.dart';
 
 class BarcodeScannerPage extends StatefulWidget {
-  BarcodeScannerPage({Key? key, required this.category}) : super(key: key);
-  String category;
+  const BarcodeScannerPage({Key? key, required this.category}) : super(key: key);
+  final String category;
 
   @override
   State<BarcodeScannerPage> createState() => _BarcodeScannerPageState();
@@ -52,7 +47,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
         icon: ValueListenableBuilder(
           valueListenable: scannerController.torchState,
           builder: (context, state, child) {
-            switch (state as TorchState) {
+            switch (state) {
               case TorchState.off:
                 return const Icon(Icons.flash_off, color: Colors.grey);
               case TorchState.on:
@@ -82,7 +77,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
           scannerController.stop();
           scannerController.start();
           print("Scanner Error");
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         },
         controller: scannerController,
         onDetect: (capture) async {

@@ -1,13 +1,12 @@
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/providers/general/database_write.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/workout/user_exercises.dart';
 
 class ExercisesAdd extends StatefulWidget {
-  ExercisesAdd({Key? key}) : super(key: key);
+  const ExercisesAdd({Key? key}) : super(key: key);
 
   @override
   State<ExercisesAdd> createState() => _ExercisesAddState();
@@ -151,7 +150,7 @@ class _ExercisesAddState extends State<ExercisesAdd> {
               ),
               onPressed: () {
                 if (exerciseKey.currentState!.validate() && categoryKey.currentState!.validate()) {
-                  FocusScope.of(context).requestFocus(new FocusNode());
+                  FocusScope.of(context).requestFocus(FocusNode());
                   context.read<UserExercisesList>().addExercise(
                     categoryController.text,
                     exerciseController.text,

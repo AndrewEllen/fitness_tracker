@@ -1,6 +1,3 @@
-import 'package:fitness_tracker/pages/workout/workout_show_routine_screen.dart';
-import 'package:fitness_tracker/providers/general/page_change_provider.dart';
-import 'package:fitness_tracker/providers/workout/user_routines_data.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
 import 'package:fitness_tracker/widgets/workout/exercise_display_box.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
@@ -19,7 +16,6 @@ class RoutinesScreen extends StatefulWidget {
 class _RoutinesScreenState extends State<RoutinesScreen> {
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     double _margin = 15;
     double _bigContainerMin = 470;
@@ -56,7 +52,7 @@ class _RoutinesScreenState extends State<RoutinesScreen> {
                                 routine: context
                                     .read<RoutinesList>()
                                     .workoutRoutines[index],
-                                returnScreen: RoutinesScreen(),
+                                returnScreen: const RoutinesScreen(),
                               ),
                             ),
                         onTapIcon: () =>
@@ -65,7 +61,7 @@ class _RoutinesScreenState extends State<RoutinesScreen> {
                                 routine: context
                                     .read<RoutinesList>()
                                     .workoutRoutines[index],
-                                returnScreen: RoutinesScreen(),
+                                returnScreen: const RoutinesScreen(),
                               ),
                             ),
                       );

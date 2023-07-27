@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../providers/general/database_write.dart';
-import '../../widgets/workout/search_menu_widget.dart';
 
 class CreateRoutinesScreen extends StatefulWidget {
   const CreateRoutinesScreen({
@@ -30,7 +29,7 @@ class CreateRoutinesScreen extends StatefulWidget {
 class _CreateRoutinesScreenState extends State<CreateRoutinesScreen> {
   late final routineNameController = TextEditingController();
   late final routineNameKey = GlobalKey<FormState>();
-  late String routineID = Uuid().v4().toString();
+  late String routineID = const Uuid().v4().toString();
   late List<String> routineExercises =
       context.watch<RoutinesList>().newRoutineExerciseList;
 
@@ -44,7 +43,6 @@ class _CreateRoutinesScreenState extends State<CreateRoutinesScreen> {
           .read<ExerciseList>()
           .editRoutineAndSetupBooleanList(routineExercises);
     }
-    double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     double _margin = 15;
     double _bigContainerMin = 450;
@@ -135,7 +133,7 @@ class _CreateRoutinesScreenState extends State<CreateRoutinesScreen> {
                     child: AppButton(
                       buttonText: "Add Exercises",
                       onTap: () {
-                        context.read<PageChange>().changePageCache(SelectionPage());
+                        context.read<PageChange>().changePageCache(const SelectionPage());
                       },
                     ),
                   ), //ExerciseExpansionPanel(),

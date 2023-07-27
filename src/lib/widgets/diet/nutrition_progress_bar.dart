@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import '../../constants.dart';
-import 'dart:async';
 
 class NutritionProgressBar extends StatefulWidget {
-  NutritionProgressBar({
+  const NutritionProgressBar({super.key,
     required this.title, required this.currentProgress,
     required this.goal, required this.width,
     this.barColour = appSecondaryColour,
     this.units = "mg"
   });
-  late String title, units;
-  late double currentProgress, goal;
-  late double width;
-  late Color barColour;
+  final String title, units;
+  final double currentProgress, goal;
+  final double width;
+  final Color barColour;
 
   @override
   _NutritionProgressBarState createState() => _NutritionProgressBarState();

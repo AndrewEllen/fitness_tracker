@@ -1,4 +1,3 @@
-import 'package:fitness_tracker/constants.dart';
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
@@ -11,13 +10,13 @@ class AppButton extends StatelessWidget {
   final Color? primaryColor;
   final double fontSize;
 
-  late ButtonStyle changeColor;
+  late final ButtonStyle? changeColor;
 
   @override
   Widget build(BuildContext context) {
     if (primaryColor != null) {
       changeColor = ElevatedButton.styleFrom(
-        primary: primaryColor!,
+        backgroundColor: primaryColor!,
       );
     } else {
       changeColor = ElevatedButton.styleFrom(

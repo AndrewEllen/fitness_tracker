@@ -1,21 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitness_tracker/pages/workout/workout_show_routine_screen.dart';
-import 'package:fitness_tracker/providers/general/page_change_provider.dart';
-import 'package:fitness_tracker/providers/diet/user_nutrition_data.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as chartColour;
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/constants.dart';
-import 'package:fitness_tracker/widgets/diet/nutrition_progress_bar.dart';
 import 'package:fitness_tracker/widgets/home/home_bar_chart.dart';
 import 'package:provider/provider.dart';
 
 import '../../helpers/workout/find_routine_id.dart';
 import '../../helpers/general/firebase_auth_service.dart';
 import '../general/auth_choose_login_signup.dart';
-import '../general/auth_signin.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -216,7 +211,7 @@ class _HomePageState extends State<HomePage> {
                                                 .currentlySelectedPlan,
                                             0,
                                           )],
-                                          returnScreen: WorkoutsHomePage(),
+                                          returnScreen: const WorkoutsHomePage(),
                                         ),
                                       );
                                     } : () {},
@@ -244,7 +239,7 @@ class _HomePageState extends State<HomePage> {
                             context.read<FirebaseAuthenticationService>().firebaseSignOut();
                             auth.signOut().then((response) {
                               Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (context) => ChooseLoginSignUp(),
+                                MaterialPageRoute(builder: (context) => const ChooseLoginSignUp(),
                                 ),
                               );
                               }

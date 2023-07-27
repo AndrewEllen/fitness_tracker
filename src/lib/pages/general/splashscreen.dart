@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/diet/user_custom_foods.dart';
@@ -14,10 +12,6 @@ import '../../models/workout/routines_model.dart';
 import '../../models/stats/stats_model.dart';
 import '../../models/workout/training_plan_model.dart';
 import '../../providers/general/database_get.dart';
-import '../../providers/workout/exercise_list_data.dart';
-import '../../providers/workout/user_routines_data.dart';
-import '../../providers/workout/user_training_plan_data.dart';
-import 'main_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -27,7 +21,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  late bool _loading = true;
   late List<String> categories;
   late List<Exercises> exercises;
   late List<WorkoutRoutine> routines;
@@ -72,9 +65,8 @@ class _SplashScreenState extends State<SplashScreen> {
     } catch (exception) {print(exception);}
 
     setState(() {
-      _loading = false;
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => MainPage(),
+        MaterialPageRoute(builder: (context) => const MainPage(),
         ),
       );
     });

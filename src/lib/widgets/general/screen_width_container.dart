@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../constants.dart';
 
 class ScreenWidthContainer extends StatelessWidget {
-  ScreenWidthContainer({Key? key,
+  const ScreenWidthContainer({Key? key,
     required this.minHeight,
     required this.maxHeight,
     required this.height,
@@ -15,7 +15,7 @@ class ScreenWidthContainer extends StatelessWidget {
     this.right = 0,
   }) : super(key: key);
 
-  late final double
+  final double
       minHeight,
       maxHeight,
       margin,
@@ -24,8 +24,8 @@ class ScreenWidthContainer extends StatelessWidget {
       bottom,
       left,
       right;
-  late Widget child;
-  late final customMargin;
+  final Widget child;
+  final bool customMargin;
 
   @override
   Widget build(BuildContext context) {

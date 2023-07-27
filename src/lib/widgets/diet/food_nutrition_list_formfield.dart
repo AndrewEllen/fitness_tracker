@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -6,7 +5,7 @@ import '../../constants.dart';
 import '../../providers/diet/user_nutrition_data.dart';
 
 class FoodNutritionListFormField extends StatefulWidget {
-  FoodNutritionListFormField({Key? key, required this.controller,
+  const FoodNutritionListFormField({Key? key, required this.controller,
     required this.formKey, required this.width,
     required this.formName, this.numbersOnly = true,
     this.secondaryController = false,
@@ -15,13 +14,13 @@ class FoodNutritionListFormField extends StatefulWidget {
     this.centerForm = false,
   }) : super(key: key);
 
-  late TextEditingController controller;
-  late dynamic secondaryController;
-  late GlobalKey<FormState> formKey;
-  late double width;
-  late String formName;
-  late bool numbersOnly, centerForm;
-  late bool servings, servingSize;
+  final  TextEditingController controller;
+  final  dynamic secondaryController;
+  final  GlobalKey<FormState> formKey;
+  final  double width;
+  final  String formName;
+  final  bool numbersOnly, centerForm;
+  final  bool servings, servingSize;
 
 
   @override

@@ -1,6 +1,4 @@
 import 'package:fitness_tracker/widgets/general/app_container_header.dart';
-import 'package:fitness_tracker/widgets/general/app_default_button.dart';
-import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,14 +9,14 @@ import 'diet_list_header_box.dart';
 import 'nutrition_progress_bar.dart';
 
 class NutritionHomeStats extends StatefulWidget {
-  NutritionHomeStats(
+ const NutritionHomeStats(
       {Key? key,
       required this.bigContainerMin,
       required this.height,
       required this.margin,
       required this.width})
       : super(key: key);
-  double bigContainerMin, height, margin, width;
+ final double bigContainerMin, height, margin, width;
 
   @override
   State<NutritionHomeStats> createState() => _NutritionHomeStatsState();
@@ -44,7 +42,7 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
       decoration: homeBoxDecoration,
       child: Column(
         children: [
-          Container(
+          SizedBox(
             height: 40,
             child: Stack(
               children: [
@@ -62,7 +60,7 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
                     alignment: Alignment.centerLeft,
                     child: Material(
                       type: MaterialType.transparency,
-                      shape: CircleBorder(),
+                      shape: const CircleBorder(),
                       clipBehavior: Clip.antiAlias,
                       child: IconButton(
                           icon: const Icon(
@@ -86,7 +84,7 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
                     alignment: Alignment.centerRight,
                     child: Material(
                       type: MaterialType.transparency,
-                      shape: CircleBorder(),
+                      shape: const CircleBorder(),
                       clipBehavior: Clip.antiAlias,
                       child: IconButton(
                           icon: const Icon(
@@ -103,12 +101,12 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(),
+                  padding: const EdgeInsets.only(),
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Material(
                       type: MaterialType.transparency,
-                      shape: CircleBorder(),
+                      shape: const CircleBorder(),
                       clipBehavior: Clip.antiAlias,
                       child: IconButton(
                         icon: const Icon(Icons.calendar_today),
@@ -188,7 +186,7 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
                   title: "Calories and Macro Nutrients",
                 ),
                 Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(width: 1.0, color: appPrimaryColour),
                     ),
@@ -202,7 +200,7 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
                   units: "Kcal",
                 ),
                 Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(width: 1.0, color: appPrimaryColour),
                     ),
@@ -216,7 +214,7 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
                   units: "g",
                 ),
                 Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(width: 1.0, color: appPrimaryColour),
                     ),
@@ -231,7 +229,7 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
                   units: "g",
                 ),
                 Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(width: 1.0, color: appPrimaryColour),
                     ),
@@ -245,7 +243,7 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
                   units: "g",
                 ),
                 Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(width: 1.0, color: appPrimaryColour),
                     ),
@@ -285,12 +283,12 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
 }
 
 class ExtraNutritionBars extends StatefulWidget {
-  ExtraNutritionBars({
+  const ExtraNutritionBars({
     Key? key,
     required this.width,
   }) : super(key: key);
 
-  double width;
+  final double width;
 
   @override
   State<ExtraNutritionBars> createState() => _ExtraNutritionBarsState();
@@ -308,7 +306,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           title: "Carbohydrates and Fats",
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -322,7 +320,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           units: "g",
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -336,7 +334,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           units: "g",
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -350,7 +348,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           units: "g",
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -365,7 +363,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           units: "g",
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -380,7 +378,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           units: "g",
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -394,7 +392,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           units: "g",
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -408,7 +406,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           units: "g",
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -419,7 +417,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           title: "Caffeine and Alcohol",
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -432,7 +430,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -446,7 +444,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           units: "g",
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -457,7 +455,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           title: "Minerals",
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -470,7 +468,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -483,7 +481,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -496,7 +494,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -509,7 +507,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -522,7 +520,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -535,7 +533,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -548,7 +546,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -561,7 +559,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -574,7 +572,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -587,7 +585,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -600,7 +598,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -613,7 +611,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -626,7 +624,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -639,7 +637,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -650,7 +648,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           title: "Vitamins and Amino Acids",
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -663,7 +661,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -676,7 +674,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -689,7 +687,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -702,7 +700,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -715,7 +713,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -728,7 +726,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -741,7 +739,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -754,7 +752,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -767,7 +765,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -780,7 +778,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -793,7 +791,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -806,7 +804,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -819,7 +817,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -832,7 +830,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -845,7 +843,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -858,7 +856,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -871,7 +869,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -884,7 +882,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -898,7 +896,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -912,7 +910,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -925,7 +923,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -938,7 +936,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -951,7 +949,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -964,7 +962,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -977,7 +975,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),
@@ -990,7 +988,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           width: widget.width,
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(width: 1.0, color: appPrimaryColour),
             ),

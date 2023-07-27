@@ -1,6 +1,5 @@
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -15,9 +14,9 @@ import '../../widgets/diet/food_nutrition_list_formfield.dart';
 import 'diet_food_display_page.dart';
 
 class FoodNewNutritionEdit extends StatefulWidget {
-  FoodNewNutritionEdit({Key? key, required this.category, this.fromBarcode = false}) : super(key: key);
-  String category;
-  bool fromBarcode;
+  const FoodNewNutritionEdit({Key? key, required this.category, this.fromBarcode = false}) : super(key: key);
+  final String category;
+  final bool fromBarcode;
 
   @override
   State<FoodNewNutritionEdit> createState() => _FoodNewNutritionEditState();
@@ -167,7 +166,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
     if (widget.fromBarcode) {
       barcodeController.text = currentFoodItem.barcode;
     } else {
-      barcodeController.text = Uuid().v4();
+      barcodeController.text = const Uuid().v4();
     }
 
 
@@ -341,7 +340,6 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
     SetControllerValues();
 
     double _margin = 15;
-    double _bigContainerMin = 230;
     double _smallContainerMin = 95;
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
@@ -355,7 +353,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
           return true;
         },
         child: _loading
-            ? Text("Place holder")
+            ? const Text("Place holder")
             : ListView(
           children: [
             ScreenWidthContainer(

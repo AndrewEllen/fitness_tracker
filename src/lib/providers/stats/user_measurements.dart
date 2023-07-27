@@ -1,7 +1,6 @@
 import 'package:fitness_tracker/models/stats/stats_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
 import 'dart:collection';
 
 List sortByDates(dates, values) {

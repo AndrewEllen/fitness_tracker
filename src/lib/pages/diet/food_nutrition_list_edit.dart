@@ -1,6 +1,5 @@
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -11,11 +10,10 @@ import '../../providers/diet/user_nutrition_data.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/diet/diet_list_header_box.dart';
 import '../../widgets/diet/food_nutrition_list_formfield.dart';
-import 'diet_food_display_page.dart';
 
 class FoodNutritionListEdit extends StatefulWidget {
-  FoodNutritionListEdit({Key? key, required this.category}) : super(key: key);
-  String category;
+  const FoodNutritionListEdit({Key? key, required this.category}) : super(key: key);
+  final String category;
 
   @override
   State<FoodNutritionListEdit> createState() => _FoodNutritionListEditState();
@@ -308,7 +306,6 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
     SetControllerValues();
 
     double _margin = 15;
-    double _bigContainerMin = 230;
     double _smallContainerMin = 95;
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
@@ -322,7 +319,7 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
           return true;
         },
         child: _loading
-            ? Text("Place holder")
+            ? const Text("Place holder")
             : ListView(
                 children: [
                   ScreenWidthContainer(

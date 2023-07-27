@@ -1,12 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:fitness_tracker/providers/diet/user_nutrition_data.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:fitness_tracker/providers/general/page_change_provider.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -20,10 +18,10 @@ class _MainPageState extends State<MainPage> {
   bool _loading = true;
 
   final pages = [
-    WorkoutsHomePage(),
-    DietHomePage(),
+    const WorkoutsHomePage(),
+    const DietHomePage(),
     const HomePage(),
-    MeasurementsHomePage(),
+    const MeasurementsHomePage(),
     const InformationHomePage(),
   ];
 

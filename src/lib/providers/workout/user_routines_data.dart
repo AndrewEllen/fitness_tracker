@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
-import '../general/database_get.dart';
 
 
 FillBooleanListRoutines(List<WorkoutRoutine> numberOfValues) {

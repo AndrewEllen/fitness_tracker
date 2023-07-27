@@ -32,7 +32,7 @@ class CreateTrainingPlanScreen extends StatefulWidget {
 class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
   late final TrainingPlanController = TextEditingController();
   late final planNameKey = GlobalKey<FormState>();
-  late String trainingPlanID = Uuid().v4().toString();
+  late String trainingPlanID = const Uuid().v4().toString();
   late List<String> planRoutineIDs =
       context.watch<TrainingPlanProvider>().newTrainingPlanListIDs;
 
@@ -244,7 +244,7 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
             )
                 : const SizedBox.shrink(),
             _displayDropDown
-                ? SearchMenu()
+                ? const SearchMenu()
                 : const SizedBox.shrink(),
           ],
         ),

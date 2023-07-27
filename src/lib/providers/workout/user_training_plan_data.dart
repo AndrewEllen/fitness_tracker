@@ -2,13 +2,12 @@ import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:fitness_tracker/models/workout/training_plan_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import '../general/database_get.dart';
 
 
 class TrainingPlanProvider with ChangeNotifier {
   late List<TrainingPlan> _trainingPlans = [];
   late List<WorkoutRoutine> _newTrainingPlanList = [];
-  late List<String> _newTrainingPlanListIDs = [];
+  late final List<String> _newTrainingPlanListIDs = [];
   late TrainingPlan _currentlySelectedPlan = TrainingPlan(trainingPlanID: "null", routineIDs: [], trainingPlanName: "");
   late String _currentlySelectedPlanID;
   late int _currentlySelectedPlanIndex = -1;
@@ -58,7 +57,9 @@ class TrainingPlanProvider with ChangeNotifier {
   }
 
   void updateNewTrainingPlan(List<WorkoutRoutine> newPlanList) {
-    newPlanList.forEach((item) => _newTrainingPlanListIDs.add(item.routineID));
+    for (var item in newPlanList) {
+      _newTrainingPlanListIDs.add(item.routineID);
+    }
     _newTrainingPlanList = newPlanList;
     notifyListeners();
   }

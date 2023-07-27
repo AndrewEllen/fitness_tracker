@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/constants.dart';
-import 'package:fitness_tracker/exports.dart';
 
 class ExerciseDisplayBox extends StatelessWidget {
-  ExerciseDisplayBox({Key? key,
+  const ExerciseDisplayBox({Key? key,
     required this.title,
     this.onTap,
     this.onTapIcon,
@@ -11,24 +10,18 @@ class ExerciseDisplayBox extends StatelessWidget {
     this.subtitle,
     this.icon,
     this.icon2,
-    this.iconColour,
-    this.icon2Colour,
+    this.iconColour = Colors.white,
+    this.icon2Colour = Colors.white,
   }) : super(key: key);
 
   final String title;
   final String? subtitle;
   final IconData? icon, icon2;
-  late Color? iconColour, icon2Colour;
+  final Color? iconColour, icon2Colour;
   final VoidCallback? onTap, onTapIcon, onTapIcon2;
 
   @override
   Widget build(BuildContext context) {
-    if (iconColour?.value == null) {
-      iconColour = Colors.white;
-    }
-    if (icon2Colour?.value == null) {
-      icon2Colour = Colors.white;
-    }
     return Container(
       padding: const EdgeInsets.only(top:8,bottom:8),
       margin: const EdgeInsets.all(4),

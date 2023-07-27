@@ -1,9 +1,8 @@
 import 'package:fitness_tracker/constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FoodNutritionListText extends StatefulWidget {
-  FoodNutritionListText({Key? key,
+  const FoodNutritionListText({Key? key,
     required this.value,
     required this.width,
     required this.title,
@@ -12,10 +11,10 @@ class FoodNutritionListText extends StatefulWidget {
 
   }) : super(key: key);
 
-  late double width;
-  late String title, value;
-  late String servingSize;
-  late String servings;
+  final  double width;
+  final  String title, value;
+  final  String servingSize;
+  final  String servings;
 
 
   @override
@@ -76,7 +75,7 @@ class _FoodNutritionListTextState extends State<FoodNutritionListText> {
               alignment: Alignment.centerRight,
               child: Text(
                 widget.value.isEmpty ? "-" :
-                "${ServingSizeCalculator(widget.value, widget.servingSize, widget.servings, 1)}",
+                ServingSizeCalculator(widget.value, widget.servingSize, widget.servings, 1),
                 style: const TextStyle(
                   color: Colors.white,
                 ),

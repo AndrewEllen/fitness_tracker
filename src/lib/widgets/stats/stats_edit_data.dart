@@ -1,20 +1,17 @@
 import 'package:fitness_tracker/constants.dart';
-import 'package:fitness_tracker/models/stats/stats_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/general/database_write.dart';
-import '../../providers/general/page_change_provider.dart';
 import '../../providers/stats/user_measurements.dart';
 import '../general/app_default_button.dart';
 
 class StatsEditMeasurement extends StatefulWidget {
-  StatsEditMeasurement({Key? key, required this.listIndex, required this.index, required this.date, required this.value}) : super(key: key);
-  late int index, listIndex;
-  late String date, value;
+  const StatsEditMeasurement({Key? key, required this.listIndex, required this.index, required this.date, required this.value}) : super(key: key);
+  final int index, listIndex;
+  final String date, value;
 
   @override
   State<StatsEditMeasurement> createState() => _StatsEditMeasurementState();
@@ -51,7 +48,7 @@ class _StatsEditMeasurementState extends State<StatsEditMeasurement> {
                 fontSize: 16,
               ),
               children: <TextSpan>[
-                TextSpan(text: '$value',
+                TextSpan(text: value,
                   style: const TextStyle(
                     color: Colors.red,
                     fontWeight: FontWeight.bold,
@@ -62,7 +59,7 @@ class _StatsEditMeasurementState extends State<StatsEditMeasurement> {
             ),
           ),
           actions: [
-            Container(
+            SizedBox(
                 height: 30,
                 child: AppButton(
                   buttonText: "Cancel",
@@ -71,7 +68,7 @@ class _StatsEditMeasurementState extends State<StatsEditMeasurement> {
                   },
                 )
             ),
-            Container(
+            SizedBox(
                 height: 30,
                 child: AppButton(
                   primaryColor: Colors.red,

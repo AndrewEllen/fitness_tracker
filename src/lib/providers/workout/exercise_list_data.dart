@@ -2,7 +2,6 @@ import 'package:fitness_tracker/models/workout/exercise_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:core';
-import '../general/database_get.dart';
 
 ExerciseCategoryListFiller(List<String> categoryNames, List<Exercises> categoryExercises) {
   List<Exercises> categoryExercisesClone = [...categoryExercises];

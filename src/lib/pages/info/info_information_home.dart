@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/constants.dart';
 
 class InformationHomePage extends StatelessWidget {
@@ -7,7 +6,7 @@ class InformationHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
         backgroundColor: appPrimaryColour,
         body: Text("Info", style: TextStyle(color: Colors.white),),
     );
