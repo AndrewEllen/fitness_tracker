@@ -154,10 +154,10 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
           print(item);
 
-          customFoodSearch.foodListItemNames.add(foodHistory.foodListItemNames[index]);
-          customFoodSearch.barcodes.add(foodHistory.barcodes[index]);
-          customFoodSearch.foodServings.add(foodHistory.foodServings[index]);
-          customFoodSearch.foodServingSize.add(foodHistory.foodServingSize[index]);
+          customFoodSearch.foodListItemNames.add(customFood.foodListItemNames[index]);
+          customFoodSearch.barcodes.add(customFood.barcodes[index]);
+          customFoodSearch.foodServings.add(customFood.foodServings[index]);
+          customFoodSearch.foodServingSize.add(customFood.foodServingSize[index]);
 
         }
 
