@@ -25,8 +25,8 @@ class _MainPageState extends State<MainPage> {
     const InformationHomePage(),
   ];
 
-  int _currentNavigatorIndex = 2;
-  int _previousIndex = 2;
+  int _currentNavigatorIndex = 1;
+  int _previousIndex = 1;
 
   static const List<Widget> itemsUnselected = [
     Icon(Icons.fitness_center, size: 30, color: Colors.white,),

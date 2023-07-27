@@ -2,8 +2,8 @@ import 'package:fitness_tracker/exports.dart';
 import 'package:flutter/cupertino.dart';
 
 class PageChange with ChangeNotifier {
-  Widget _pageWidget = const HomePage();
-  List<Widget> _pageWidgetCache = [const HomePage()];
+  Widget _pageWidget = const DietHomePage();
+  List<Widget> _pageWidgetCache = [const DietHomePage()];
   int _pageWidgetCacheIndex = 0;
 
   Widget get pageWidget => _pageWidget;
