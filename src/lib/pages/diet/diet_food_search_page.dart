@@ -221,11 +221,12 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
               Tab(text: "Custom Food"),
             ],
           ),
-          flexibleSpace: Column(
+          flexibleSpace: Stack(
             children: [
               Container(
                 width: width,
-                padding: const EdgeInsets.all(10),
+                height: height/20,
+                padding: const EdgeInsets.all(5),
                 decoration: const BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
@@ -234,73 +235,78 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                     ),
                   ),
                 ),
-                child: Center(
-                    child:
-                    FittedBox(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
                       child: Text(
                         widget.category,
                         style: const TextStyle(
                           color: appSecondaryColour,
-                          fontSize: 20,
                           fontWeight: FontWeight.bold,
+                          fontSize: 20,
                         ),
                       ),
                     )
                 ),
               ),
-              const Spacer(),
-              Container(
-                margin: const EdgeInsets.only(
-                  bottom: 45,
-                ),
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  right: 20,
-                ),
-                constraints: BoxConstraints(
-                  maxWidth: width,
-                  maxHeight: height/30,
-                ),
-                child: Form(
-                  key: searchKey,
-                  child: TextFormField(
-                    //inputFormatters: textInputFormatter,
-                    keyboardType: TextInputType.text,
-                    controller: searchController,
-                    cursorColor: Colors.white,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: (20),
-                    ),
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: appSecondaryColour.withAlpha(20),
-                      contentPadding: const EdgeInsets.only(left: 5, right: 5,),
-                      hintText: 'Search for a food...',
-                      hintStyle: const TextStyle(
-                        color: Colors.white30,
-                        fontSize: (18),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    bottom: 5,
+                    left: 20,
+                    right: 20,
+                  ),
+                  constraints: BoxConstraints(
+                    maxWidth: width,
+                    maxHeight: 35,
+                  ),
+                  child: Form(
+                    key: searchKey,
+                    child: TextFormField(
+                      //inputFormatters: textInputFormatter,
+                      keyboardType: TextInputType.text,
+                      controller: searchController,
+                      cursorColor: Colors.white,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18-(height * heightFactor),
                       ),
-                      errorStyle: const TextStyle(
-                        height: 0,
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: appSecondaryColour,
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: appSecondaryColour.withAlpha(20),
+                        contentPadding: const EdgeInsets.only(
+                          left: 5,
+                          right: 5,
+                          top: 4,
+                          bottom: 0,
+                        ),
+                        hintText: 'Search for a food...',
+                        hintStyle: TextStyle(
+                          color: Colors.white30,
+                          fontSize: 18-(height * heightFactor),
+                        ),
+                        errorStyle: const TextStyle(
+                          height: 0,
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: appSecondaryColour,
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+                      onChanged: (value) => SearchFoodHistory(value),
+                      onTapOutside: (value) => FocusManager.instance.primaryFocus?.unfocus(),
+                      onFieldSubmitted: (value) => SearchOFFbyString(value),
                     ),
-                    onChanged: (value) => SearchFoodHistory(value),
-                    onTapOutside: (value) => FocusManager.instance.primaryFocus?.unfocus(),
-                    onFieldSubmitted: (value) => SearchOFFbyString(value),
                   ),
                 ),
               ),
-              const Spacer(),
             ],
           ),
         ),

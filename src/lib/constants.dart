@@ -13,3 +13,5 @@ const BoxDecoration homeBoxDecoration = BoxDecoration(
   color: appTertiaryColour,
   borderRadius: BorderRadius.all(Radius.circular(4)),
 );
+
+const double heightFactor = 0.002;

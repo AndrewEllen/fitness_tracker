@@ -26,19 +26,22 @@ class AppButton extends StatelessWidget {
 
       style: changeColor,
       onPressed: onTap,
-      child: Text(
-        buttonText,
-        style: TextStyle(
-          color: Colors.white,
-          shadows: const <Shadow>[
-            Shadow(
-              offset: Offset(1,1),
-              blurRadius: 1,
-              color: Color.fromRGBO(0, 0, 0, 0.1),
-            ),
-          ],
-          fontSize: fontSize,
-          fontWeight: FontWeight.w400,
+      child: FittedBox(
+        fit: BoxFit.fitHeight,
+        child: Text(
+          buttonText,
+          style: TextStyle(
+            color: Colors.white,
+            shadows: const <Shadow>[
+              Shadow(
+                offset: Offset(1,1),
+                blurRadius: 1,
+                color: Color.fromRGBO(0, 0, 0, 0.1),
+              ),
+            ],
+            fontSize: fontSize,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ),
     );
