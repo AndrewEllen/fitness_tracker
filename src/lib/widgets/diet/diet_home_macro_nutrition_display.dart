@@ -176,7 +176,7 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
           ),
           ConstrainedBox(
             constraints: BoxConstraints(
-              maxHeight: widget.height / 1.29,
+              maxHeight: widget.height * 0.67,
             ),
             child: ListView(
               shrinkWrap: true,
