@@ -77,7 +77,7 @@ class _DietHomePageState extends State<DietHomePage> {
                 ),
 
                 SizedBox(
-                  height: _height/1.8,
+                  height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.5 : _height * 0.54,
                   child: ListView(
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -118,7 +118,6 @@ class _DietHomePageState extends State<DietHomePage> {
                         title: "Snacks",
                         foodList: context.watch<UserNutritionData>().foodListItemsSnacks,
                       ),
-                      SizedBox(height: _height/14),
                     ],
                   ),
                 ),

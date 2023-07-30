@@ -206,49 +206,53 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
                     ),
                   ),
                 ),
-                NutritionProgressBar(
-                  title: "Protein",
-                  currentProgress: context.watch<UserNutritionData>().protein,
-                  goal: context.watch<UserNutritionData>().proteinGoal,
-                  width: widget.width,
-                  units: "g",
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 1.0, color: appPrimaryColour),
+                MediaQuery.of(context).devicePixelRatio < 3 ? Column(
+                  children: [
+                    NutritionProgressBar(
+                      title: "Protein",
+                      currentProgress: context.watch<UserNutritionData>().protein,
+                      goal: context.watch<UserNutritionData>().proteinGoal,
+                      width: widget.width,
+                      units: "g",
                     ),
-                  ),
-                ),
-                NutritionProgressBar(
-                  title: "Carbohydrates",
-                  currentProgress:
+                    Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(width: 1.0, color: appPrimaryColour),
+                        ),
+                      ),
+                    ),
+                    NutritionProgressBar(
+                      title: "Carbohydrates",
+                      currentProgress:
                       context.watch<UserNutritionData>().carbohydrates,
-                  goal: context.watch<UserNutritionData>().carbohydratesGoal,
-                  width: widget.width,
-                  units: "g",
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 1.0, color: appPrimaryColour),
+                      goal: context.watch<UserNutritionData>().carbohydratesGoal,
+                      width: widget.width,
+                      units: "g",
                     ),
-                  ),
-                ),
-                NutritionProgressBar(
-                  title: "Fat",
-                  currentProgress: context.watch<UserNutritionData>().fat,
-                  goal: context.watch<UserNutritionData>().fatGoal,
-                  width: widget.width,
-                  units: "g",
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 1.0, color: appPrimaryColour),
+                    Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(width: 1.0, color: appPrimaryColour),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                    NutritionProgressBar(
+                      title: "Fat",
+                      currentProgress: context.watch<UserNutritionData>().fat,
+                      goal: context.watch<UserNutritionData>().fatGoal,
+                      width: widget.width,
+                      units: "g",
+                    ),
+                    Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(width: 1.0, color: appPrimaryColour),
+                        ),
+                      ),
+                    ),
+                  ],
+                ) : const SizedBox.shrink(),
                 _expanded
                     ? ExtraNutritionBars(
                         width: widget.width,
@@ -257,23 +261,26 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
               ],
             ),
           ),
-          Material(
-            type: MaterialType.transparency,
-            shape: const CircleBorder(),
-            clipBehavior: Clip.antiAlias,
-            child: IconButton(
-              icon: Icon(
-                _expanded
-                    ? Icons.keyboard_arrow_up_outlined
-                    : Icons.keyboard_arrow_down_outlined,
+          SizedBox(
+            height: MediaQuery.of(context).devicePixelRatio < 3 ? 35 : 40,
+            child: Material(
+              type: MaterialType.transparency,
+              shape: const CircleBorder(),
+              clipBehavior: Clip.antiAlias,
+              child: IconButton(
+                icon: Icon(
+                  _expanded
+                      ? Icons.keyboard_arrow_up_outlined
+                      : Icons.keyboard_arrow_down_outlined,
+                ),
+                color: Colors.white,
+                onPressed: () {
+                  setState(() {
+                    _expanded = !_expanded;
+                  });
+                  print(_expanded);
+                },
               ),
-              color: Colors.white,
-              onPressed: () {
-                setState(() {
-                  _expanded = !_expanded;
-                });
-                print(_expanded);
-              },
             ),
           ),
         ],
@@ -301,6 +308,53 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        MediaQuery.of(context).devicePixelRatio >= 3 ? Column(
+          children: [
+            NutritionProgressBar(
+              title: "Protein",
+              currentProgress: context.watch<UserNutritionData>().protein,
+              goal: context.watch<UserNutritionData>().proteinGoal,
+              width: widget.width,
+              units: "g",
+            ),
+            Container(
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 1.0, color: appPrimaryColour),
+                ),
+              ),
+            ),
+            NutritionProgressBar(
+              title: "Carbohydrates",
+              currentProgress:
+              context.watch<UserNutritionData>().carbohydrates,
+              goal: context.watch<UserNutritionData>().carbohydratesGoal,
+              width: widget.width,
+              units: "g",
+            ),
+            Container(
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 1.0, color: appPrimaryColour),
+                ),
+              ),
+            ),
+            NutritionProgressBar(
+              title: "Fat",
+              currentProgress: context.watch<UserNutritionData>().fat,
+              goal: context.watch<UserNutritionData>().fatGoal,
+              width: widget.width,
+              units: "g",
+            ),
+            Container(
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 1.0, color: appPrimaryColour),
+                ),
+              ),
+            ),
+          ],
+        ) : const SizedBox.shrink(),
         DietListHeaderBox(
           width: widget.width,
           title: "Carbohydrates and Fats",

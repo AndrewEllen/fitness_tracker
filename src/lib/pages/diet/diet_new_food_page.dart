@@ -359,7 +359,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
             ScreenWidthContainer(
               minHeight: 300,
               maxHeight: 920,
-              height: 600,
+              height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.8 : _height * 0.75,
               child: ListView(
                 children: [
                   FoodNutritionListFormField(

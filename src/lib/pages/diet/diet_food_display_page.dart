@@ -144,7 +144,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
           ScreenWidthContainer(
             minHeight: _bigContainerMin,
             maxHeight: _bigContainerMin*4,
-            height: _height/3,
+            height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.34 : _height * 0.43,
             margin: 0,
             child: ListView(
               children: [
@@ -172,53 +172,61 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   formName: "Serving Size",
                   centerForm: true,
                 ),
-                ScreenWidthContainer(
-                  minHeight: _smallContainerMin * 0.2,
-                  maxHeight: _smallContainerMin * 1.5,
-                  height: (_height / 100) * 6,
-                  margin: _margin / 1.5,
-                  child: FractionallySizedBox(
-                    heightFactor: 1,
-                    widthFactor: 1,
-                    child: AppButton(
-                      buttonText: "Add to Diary",
-                      onTap: AddToDiary,
+                Padding(
+                  padding: EdgeInsets.all(_height/120),
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    margin: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        width: 1,
+                        color: appSecondaryColour,
+                      ),
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        Clipboard.setData(ClipboardData(text: currentFoodItem.barcode));
+                      },
+                      child: Column(
+                        children: [
+                          const Center(
+                            child: Text(
+                              "Tap to Copy Code:",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: Text(
+                              currentFoodItem.barcode,
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  margin: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      width: 1,
-                      color: appSecondaryColour,
-                    ),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      Clipboard.setData(ClipboardData(text: currentFoodItem.barcode));
-                    },
-                    child: Column(
-                      children: [
-                        const Center(
-                          child: Text(
-                            "Tap to Copy Code:",
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        Center(
-                          child: Text(
-                            currentFoodItem.barcode,
-                            style: const TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
+                Padding(
+                  padding: EdgeInsets.all(_height/120),
+                  child: ScreenWidthContainer(
+                    minHeight: _smallContainerMin * 0.2,
+                    maxHeight: _smallContainerMin * 1.5,
+                    height: (_height / 100) * 4.8,
+                    customMargin: true,
+                    left: 6,
+                    right: 6,
+                    child: FractionallySizedBox(
+                      heightFactor: 1,
+                      widthFactor: 1,
+                      child: AppButton(
+                        buttonText: "Add to Diary",
+                        onTap: AddToDiary,
+                      ),
                     ),
                   ),
                 ),
@@ -228,7 +236,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
           ScreenWidthContainer(
             minHeight: _bigContainerMin,
             maxHeight: _bigContainerMin*4,
-            height: _height/2,
+            height: MediaQuery.of(context).devicePixelRatio < 3 ? _height/1.9 : _height/2.6,
             margin: _margin,
             child: ListView(
               children: [
