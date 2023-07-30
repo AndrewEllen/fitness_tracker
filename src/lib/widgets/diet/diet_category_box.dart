@@ -25,11 +25,15 @@ class DietCategoryBox extends StatefulWidget {
 }
 
 class _DietCategoryBoxState extends State<DietCategoryBox> {
-  deleteMeasurement(BuildContext context, int index, String value, double width) {
+  editEntry(BuildContext context, int index, String value, double width) {
+
+    double buttonSize = width/17;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          insetPadding: const EdgeInsets.all(0),
           backgroundColor: appTertiaryColour,
           title: const Text(
             "Edit Selection",
@@ -56,43 +60,54 @@ class _DietCategoryBoxState extends State<DietCategoryBox> {
             ),
           ),
           actions: [
-            SizedBox(
-                height: 30,
-                child: AppButton(
-                  primaryColor: Colors.red,
-                  buttonText: "Delete",
-                  onTap: () {
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
 
-                    context.read<UserNutritionData>().deleteFoodFromDiary(index, widget.title);
+              children: [
+                const Spacer(),
+                SizedBox(
+                    height: buttonSize,
+                    child: AppButton(
+                      primaryColor: Colors.red,
+                      buttonText: "Delete",
+                      onTap: () {
 
-                    Navigator.pop(context);
-                  },
-                )
-            ),
-            SizedBox(
-                height: 30,
-                child: AppButton(
-                  buttonText: "Cancel",
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                )
-            ),
-            SizedBox(
-                height: 30,
-                child: AppButton(
-                  primaryColor: appSecondaryColour,
-                  buttonText: "Edit",
-                  onTap: () {
-                    context.read<UserNutritionData>().setCurrentFoodItem(widget.foodList[index].foodItemData);
+                        context.read<UserNutritionData>().deleteFoodFromDiary(index, widget.title);
 
-                    context.read<UserNutritionData>().updateCurrentFoodItemServings(widget.foodList[index].foodServings);
-                    context.read<UserNutritionData>().updateCurrentFoodItemServingSize(widget.foodList[index].foodServingSize);
-                    context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.title, editDiary: true, index: index));
+                        Navigator.pop(context);
+                      },
+                    )
+                ),
+                const Spacer(),
+                SizedBox(
+                    height: buttonSize,
+                    child: AppButton(
+                      buttonText: "Cancel",
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                ),
+                const Spacer(),
+                SizedBox(
+                    height: buttonSize,
+                    child: AppButton(
+                      primaryColor: appSecondaryColour,
+                      buttonText: "Edit",
+                      onTap: () {
+                        context.read<UserNutritionData>().setCurrentFoodItem(widget.foodList[index].foodItemData);
 
-                    Navigator.pop(context);
-                    },
-                )
+                        context.read<UserNutritionData>().updateCurrentFoodItemServings(widget.foodList[index].foodServings);
+                        context.read<UserNutritionData>().updateCurrentFoodItemServingSize(widget.foodList[index].foodServingSize);
+                        context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.title, editDiary: true, index: index));
+
+                        Navigator.pop(context);
+                      },
+                    )
+                ),
+                const Spacer(),
+              ],
             ),
           ],
         );
@@ -135,7 +150,7 @@ class _DietCategoryBoxState extends State<DietCategoryBox> {
                 foodObject: widget.foodList[index],
                 icon: MdiIcons.squareEditOutline,
                 iconColour: Colors.white,
-                onTapIcon: () => deleteMeasurement(
+                onTapIcon: () => editEntry(
                   this.context,
                   index,
                   widget.foodList[index].foodItemData.foodName,
