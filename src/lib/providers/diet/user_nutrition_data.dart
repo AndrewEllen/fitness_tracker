@@ -127,9 +127,9 @@ class UserNutritionData with ChangeNotifier {
   List<UserRecipesModel> get userRecipesList => _userRecipesList;
 
   late final UserRecipesModel _currentRecipe = UserRecipesModel(
-      barcode: "",
-      recipeFoodList: [],
-      foodData: FoodItem(
+    barcode: "",
+    recipeFoodList: [],
+    foodData: FoodItem(
     barcode: "",
     foodName: "",
     quantity: "",
@@ -511,7 +511,6 @@ class UserNutritionData with ChangeNotifier {
 
   List<ListFoodItem> get foodListItemsSnacks =>
       _userDailyNutrition.foodListItemsSnacks;
-
 
   UserNutritionModel get userDailyNutrition => _userDailyNutrition;
 
@@ -1054,6 +1053,21 @@ class UserNutritionData with ChangeNotifier {
     notifyListeners();
   }
 
+  void addFoodItemToRecipe(FoodItem newItem, String category, String servings,
+      String servingSize) {
+    if (category.toLowerCase() == "recipe") {
+      _currentRecipe.recipeFoodList.add(ListFoodItem(
+      barcode: newItem.barcode,
+      category: category,
+      foodServings: servings,
+      foodServingSize: servingSize,
+      foodItemData: newItem,
+    ));
+
+      notifyListeners();
+    }
+  }
+
   void addFoodItemToDiary(FoodItem newItem, String category, String servings,
       String servingSize) {
 
@@ -1073,7 +1087,6 @@ class UserNutritionData with ChangeNotifier {
         foodItemData: newItem,
       ));
 
-      //_userDailyNutrition.foodListItemsDinner += _foodListItemsDinner;
     } else if (category.toLowerCase() == "lunch") {
       _userDailyNutrition.foodListItemsLunch.add(ListFoodItem(
         barcode: newItem.barcode,
@@ -1083,7 +1096,6 @@ class UserNutritionData with ChangeNotifier {
         foodItemData: newItem,
       ));
 
-      //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
     } else if (category.toLowerCase() == "dinner") {
       _userDailyNutrition.foodListItemsDinner.add(ListFoodItem(
         barcode: newItem.barcode,
@@ -1093,7 +1105,6 @@ class UserNutritionData with ChangeNotifier {
         foodItemData: newItem,
       ));
 
-      //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
     } else if (category.toLowerCase() == "snacks") {
       _userDailyNutrition.foodListItemsSnacks.add(ListFoodItem(
         barcode: newItem.barcode,
@@ -1103,7 +1114,6 @@ class UserNutritionData with ChangeNotifier {
         foodItemData: newItem,
       ));
 
-      //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
     }
 
     UpdateUserNutritionalData(_userDailyNutrition);

@@ -159,7 +159,6 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
 
   void SetControllerValues() {
     currentFoodItem = context.read<UserNutritionData>().currentFoodItem;
-
     barcodeController.text = currentFoodItem.barcode;
     foodNameController.text = currentFoodItem.foodName;
     quantityController.text = currentFoodItem.quantity;

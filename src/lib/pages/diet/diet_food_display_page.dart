@@ -10,6 +10,7 @@ import '../../models/diet/food_item.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/diet/diet_list_header_box.dart';
 import '../../widgets/diet/food_nutrition_list_formfield.dart';
+import 'diet_recipe_new.dart';
 import 'food_nutrition_list_edit.dart';
 import '../../widgets/diet/food_nutrition_list_text.dart';
 
@@ -49,6 +50,39 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
 
     servingSizeController.text = currentFoodListItem.foodServingSize;
     servingsController.text = currentFoodListItem.foodServings;
+
+  }
+
+  void AddToRecipe() {
+
+    if (currentFoodItem.foodName.isNotEmpty &&
+        currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
+        (servingsController.text != "-" || servingsController.text.isNotEmpty) &&
+        (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
+    ) {
+
+      context.read<UserNutritionData>().addFoodItemToRecipe(
+        currentFoodItem,
+        widget.category,
+        servingsController.text,
+        servingSizeController.text,
+      );
+
+      context.read<PageChange>().changePageClearCache(const FoodRecipeNew(category: 'recipe',));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text(
+          "Missing Food Name, Servings or Calories",
+          style: TextStyle(
+            color: Colors.red,
+          ),
+        ),
+        action: SnackBarAction(
+          label: "Edit",
+          onPressed: () => context.read<PageChange>().changePageCache(FoodNutritionListEdit(category: widget.category)),
+        ),
+      ));
+    }
 
   }
 
@@ -224,8 +258,8 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                       heightFactor: 1,
                       widthFactor: 1,
                       child: AppButton(
-                        buttonText: "Add to Diary",
-                        onTap: AddToDiary,
+                        buttonText: widget.recipe ? "Add to Recipe" : "Add to Diary",
+                        onTap: widget.recipe ? AddToRecipe : AddToDiary,
                       ),
                     ),
                   ),

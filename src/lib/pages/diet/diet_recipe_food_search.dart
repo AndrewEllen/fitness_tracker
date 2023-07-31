@@ -51,6 +51,8 @@ class _FoodRecipeSearchPageState extends State<FoodRecipeSearchPage> {
   @override
   void initState() {
 
+
+
     customFood = context.read<UserNutritionData>().userNutritionCustomFood;
     customRecipes = context.read<UserNutritionData>().userRecipesList;
 
@@ -105,6 +107,20 @@ class _FoodRecipeSearchPageState extends State<FoodRecipeSearchPage> {
 
   }
 
+  void AddFoodItem(String barcode, String servings, String servingSize) async {
+
+    FoodItem newFoodItem = await CheckFoodBarcode(barcode);
+
+    context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
+    context.read<UserNutritionData>().updateCurrentFoodItemServings(servings);
+    context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSize);
+
+    searchController.text = "";
+
+    context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipe: true,));
+
+  }
+
   void SearchCustomFood(String value) {
 
     print("searching");
@@ -144,10 +160,6 @@ class _FoodRecipeSearchPageState extends State<FoodRecipeSearchPage> {
         customFood;
       });
     }
-
-  }
-
-  void AddFoodItem(String barcode, String servings, String servingSize) async {
 
   }
 

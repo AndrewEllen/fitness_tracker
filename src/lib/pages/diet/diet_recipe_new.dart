@@ -6,6 +6,8 @@ import 'package:uuid/uuid.dart';
 
 import '../../constants.dart';
 import '../../models/diet/food_item.dart';
+import '../../models/diet/user_recipes_model.dart';
+import '../../providers/diet/user_nutrition_data.dart';
 import '../../providers/general/page_change_provider.dart';
 import '../../widgets/diet/food_nutrition_list_text.dart';
 import '../../widgets/general/app_default_button.dart';
@@ -39,11 +41,13 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
   late final servingskey = GlobalKey<FormState>();
 
 
-  late final recipeFoodList = <ListFoodItem>[];
+  late final UserRecipesModel currentRecipe;
 
 
   @override
   void initState() {
+
+    currentRecipe = context.read<UserNutritionData>().currentRecipe;
 
     barcodeController.text = barcodeController.text = const Uuid().v4();
 
@@ -75,7 +79,7 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
             ScreenWidthContainer(
               minHeight: 100,
               maxHeight: 820,
-              height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.88 : _height * 0.43,
+              height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.73 : _height * 0.43,
               child: Column(
                 children: [
                   FoodNutritionListFormField(
@@ -114,7 +118,7 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.18 : _height * 0.18),
-                    child: Column(
+                    child: currentRecipe.recipeFoodList.isEmpty ? Column(
                       children: [
                         const Padding(
                           padding: EdgeInsets.all(8.0),
@@ -153,9 +157,48 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
                           ),
                         )
                       ],
+                    ) : ListView.builder(
+                      itemCount: context.watch<UserNutritionData>().currentRecipe.recipeFoodList.length,
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+
+
+
+                        return Text(
+                          context.watch<UserNutritionData>().currentRecipe.recipeFoodList[index].foodItemData.foodName,
+                        );
+                      },
                     ),
                   )
                 ],
+              ),
+            ),
+            ScreenWidthContainer(
+              minHeight: _smallContainerMin * 0.2,
+              maxHeight: _smallContainerMin * 1.5,
+              height: (_height / 100) * 6,
+              margin: _margin / 1.5,
+              child: FractionallySizedBox(
+                heightFactor: 1,
+                widthFactor: 1,
+                child: AppButton(
+                  buttonText: "Add Ingredient",
+                  onTap: () => context.read<PageChange>().changePageCache(const FoodRecipeSearchPage()),
+                ),
+              ),
+            ),
+            ScreenWidthContainer(
+              minHeight: _smallContainerMin * 0.2,
+              maxHeight: _smallContainerMin * 1.5,
+              height: (_height / 100) * 6,
+              margin: _margin / 1.5,
+              child: FractionallySizedBox(
+                heightFactor: 1,
+                widthFactor: 1,
+                child: AppButton(
+                  buttonText: "Next",
+                  onTap: () {},
+                ),
               ),
             ),
           ],
