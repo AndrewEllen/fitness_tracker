@@ -126,7 +126,7 @@ class UserNutritionData with ChangeNotifier {
 
   List<UserRecipesModel> get userRecipesList => _userRecipesList;
 
-  late final UserRecipesModel _currentRecipe = UserRecipesModel(
+  late UserRecipesModel _currentRecipe = UserRecipesModel(
     barcode: "",
     barcodeList: [],
     recipeFoodList: [],
@@ -1093,6 +1093,11 @@ class UserNutritionData with ChangeNotifier {
       calculateRecipeMacros();
       notifyListeners();
     }
+
+  }
+
+  void setCurrentRecipe(UserRecipesModel recipeItem) {
+    _currentRecipe = recipeItem;
 
   }
 

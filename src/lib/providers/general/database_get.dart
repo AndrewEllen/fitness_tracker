@@ -503,12 +503,10 @@ GetFoodDataFromFirebaseRecipe(String barcode) async {
 
     final _data = snapshot.get("food-data");
 
-    print(_data);
-
     return UserRecipesModel(
       barcode: _data["barcode"] ?? "",
-      barcodeList: _data["barcodeList"],
-      recipeFoodList: [],
+      barcodeList: List<String>.from(_data["barcodeList"] as List),
+      recipeFoodList: <ListFoodItem>[],
       foodData: FoodItem(
         barcode: _data["foodData"]["barcode"] ?? "",
         foodName: _data["foodData"]["foodName"] ?? "",

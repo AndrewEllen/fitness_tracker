@@ -182,9 +182,10 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
     if (recipe) {
 
-      FoodItem newFoodItem = await CheckFoodBarcode(barcode, recipe: true);
+      UserRecipesModel recipeItem = await CheckFoodBarcode(barcode, recipe: true);
+      context.read<UserNutritionData>().setCurrentRecipe(recipeItem);
 
-      context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
+      context.read<UserNutritionData>().setCurrentFoodItem(recipeItem.foodData);
 
       context.read<UserNutritionData>().updateCurrentFoodItemServings(servings);
       context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSize);

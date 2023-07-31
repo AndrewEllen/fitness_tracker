@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import '../../models/diet/food_item.dart';
+import '../../models/diet/user_recipes_model.dart';
 import '../../providers/general/database_get.dart';
 
 //[LO3.7.3.5]
@@ -289,21 +290,22 @@ CheckFoodBarcode(String barcodeDisplayValue, {bool recipe = false}) async {
 
   if (recipe) {
 
-    FoodItem newFoodItem = await GetFoodDataFromFirebaseRecipe(barcodeDisplayValue);
+    print("getting recipe");
+    UserRecipesModel recipeData = await GetFoodDataFromFirebaseRecipe(barcodeDisplayValue);
 
     print("un Capitalised Name");
-    print(newFoodItem.foodName);
+    print(recipeData.foodData.foodName);
 
     try {
       print("Capitalised Name");
-      print(newFoodItem.foodName);
-      newFoodItem.foodName = newFoodItem.foodName.capitalize();
-      print(newFoodItem.foodName);
+      print(recipeData.foodData.foodName);
+      recipeData.foodData.foodName = recipeData.foodData.foodName.capitalize();
+      print(recipeData.foodData.foodName);
     } catch (error) {
       print(error);
     }
 
-    return newFoodItem;
+    return recipeData;
 
   } else {
 
