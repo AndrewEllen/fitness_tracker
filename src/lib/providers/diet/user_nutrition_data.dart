@@ -1195,7 +1195,7 @@ class UserNutritionData with ChangeNotifier {
     _currentFoodItem.barcode = barcode;
     _currentFoodItem.foodName = foodName;
     //_currentFoodItem.quantity = quantity;
-    //_currentFoodItem.servingSize = servingSize;
+    _currentFoodItem.servingSize = servingSize;
     //_currentFoodItem.servings = servings;
     _currentFoodItem.calories = calories;
     _currentFoodItem.kiloJoules = kiloJoules;

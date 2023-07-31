@@ -336,6 +336,14 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
                           numbersOnly: false,
                           centerForm: true,
                         ),
+                        FoodNutritionListFormField(
+                          controller: servingSizeController,
+                          formKey: servingSizekey,
+                          width: _width,
+                          formName: "Serving Size",
+                          numbersOnly: true,
+                          centerForm: true,
+                        ),
                         SizedBox(
                           width: _width / 2,
                           height: 40,
