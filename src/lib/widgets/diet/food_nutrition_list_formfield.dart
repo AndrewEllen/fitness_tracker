@@ -10,6 +10,7 @@ class FoodNutritionListFormField extends StatefulWidget {
     required this.formName, this.numbersOnly = true,
     this.secondaryController = false,
     this.recipe = false,
+    this.name = false,
     this.servings = false,
     this.servingSize = false,
     this.centerForm = false,
@@ -21,7 +22,7 @@ class FoodNutritionListFormField extends StatefulWidget {
   final  double width;
   final  String formName;
   final  bool numbersOnly, centerForm;
-  final  bool servings, servingSize, recipe;
+  final  bool servings, servingSize, recipe, name;
 
 
   @override
@@ -34,7 +35,15 @@ class _FoodNutritionListFormFieldState extends State<FoodNutritionListFormField>
     FilteringTextInputFormatter.allow(RegExp("[0-9.]")),
   ];
 
-  void SaveServings () {
+  void SaveName ({bool onChanged = false}) {
+
+    context.read<UserNutritionData>().updateRecipename(widget.controller.text);
+
+    onChanged ? null : FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  void SaveServings ({bool onChanged = false}) {
+
     if (widget.servings & widget.recipe) {
       context.read<UserNutritionData>().updateRecipeServings(widget.controller.text);
     } else if (widget.servings) {
@@ -45,7 +54,7 @@ class _FoodNutritionListFormFieldState extends State<FoodNutritionListFormField>
       context.read<UserNutritionData>().updateCurrentFoodItemServingSize(widget.controller.text);
       context.read<UserNutritionData>().updateCurrentFoodItemServings(widget.secondaryController.text);
     }
-    FocusManager.instance.primaryFocus?.unfocus();
+    onChanged ? null : FocusManager.instance.primaryFocus?.unfocus();
   }
 
   @override
@@ -102,10 +111,10 @@ class _FoodNutritionListFormFieldState extends State<FoodNutritionListFormField>
                     border: InputBorder.none,
                   ),
                   onFieldSubmitted: (value) {
-                    SaveServings();
+                    widget.name ? SaveName() : SaveServings();
                   },
-                  onTapOutside: (value) {
-                    widget.recipe ? null : SaveServings();
+                  onChanged: (value) {
+                    widget.name ? SaveName(onChanged: true) : SaveServings(onChanged: true);
                   },
                 ),
               ),

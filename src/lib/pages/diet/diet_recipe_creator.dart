@@ -210,6 +210,7 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
                     formName: "Name",
                     numbersOnly: false,
                     centerForm: true,
+                    name: true,
                   ),
                   FoodNutritionListFormField(
                     controller: servingsController,
@@ -293,13 +294,13 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
                         return FoodListDisplayBox(
                           key: UniqueKey(),
                           width: _width,
-                          foodObject: currentRecipe.recipeFoodList[index],
+                          foodObject: context.read<UserNutritionData>().currentRecipe.recipeFoodList[index],
                           icon: MdiIcons.squareEditOutline,
                           iconColour: Colors.white,
                           onTapIcon: () => editEntry(
                             this.context,
                             index,
-                            currentRecipe.recipeFoodList[index].foodItemData.foodName,
+                            context.read<UserNutritionData>().currentRecipe.recipeFoodList[index].foodItemData.foodName,
                             _width,
                           ),
                         );

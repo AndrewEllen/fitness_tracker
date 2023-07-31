@@ -1236,6 +1236,10 @@ class UserNutritionData with ChangeNotifier {
 
   }
 
+  void updateRecipename(String foodName) {
+    _currentRecipe.foodData.foodName = foodName;
+  }
+
   late double _recipeweight = 0;
   late double _recipecalories = 0;
   late double _recipeprotein = 0;
