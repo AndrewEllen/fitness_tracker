@@ -1,3 +1,4 @@
+import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/diet/user_custom_foods.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_history_model.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
@@ -843,7 +844,10 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                 child: Material(
                                   color: Colors.transparent,
                                   child: InkWell(
-                                    onTap: () => context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category)),
+                                    onTap: () {
+                                      context.read<UserNutritionData>().resetCurrentRecipe();
+                                      context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category));
+                                    },
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
@@ -903,14 +907,14 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                             itemBuilder: (BuildContext context, int index) {
                               return FoodHistoryListDisplayBox(
                                 width: width,
-                                foodHistoryName: customRecipes.foodListItemNames[index],
+                                foodHistoryName: customRecipes.foodListItemNames[index].capitalizeFirst(),
                                 foodHistoryServings: customRecipes.foodServings[index],
-                                foodHistoryServingSize: customRecipes.foodServingSize[index],
+                                foodHistoryServingSize: (double.parse(customRecipes.foodServingSize[index]) / double.parse(customRecipes.foodServings[index])).toStringAsFixed(1),
                                 icon: Icons.add_box,
                                 iconColour: appSecondaryColour,
                                 onTapIcon: () => AddFoodItem(
                                   customRecipes.barcodes[index],
-                                  customRecipes.foodServings[index],
+                                  "1",
                                   customRecipes.foodServingSize[index],
                                   true,
                                 ),
@@ -1043,14 +1047,16 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                     onTap: () async {
                                       if (newCodeKey.currentState!.validate()) {
 
-                                        FoodItem newFoodItem = await CheckFoodBarcode(newCodeController.text, recipe: true);
+                                        UserRecipesModel newRecipeItem = await CheckFoodBarcode(newCodeController.text, recipe: true);
 
-                                        if (newFoodItem.barcode.isNotEmpty) {
+                                        if (newRecipeItem.barcode.isNotEmpty) {
                                           setState(() {
                                             newCodeController.text = "";
                                             _displayDropDown = false;
                                           });
-                                          context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
+
+                                          context.read<UserNutritionData>().setCurrentRecipe(newRecipeItem);
+                                          context.read<UserNutritionData>().setCurrentFoodItem(newRecipeItem.foodData);
                                           context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipeEdit: true,));
                                         }
                                       }

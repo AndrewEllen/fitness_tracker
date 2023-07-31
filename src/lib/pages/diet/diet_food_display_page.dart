@@ -49,6 +49,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
 
 
     servingSizeController.text = currentFoodListItem.foodServingSize;
+
     servingsController.text = currentFoodListItem.foodServings;
 
   }
