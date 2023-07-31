@@ -20,9 +20,10 @@ import 'diet_new_food_page.dart';
 class FoodRecipeSearchPage extends StatefulWidget {
   const FoodRecipeSearchPage({
     Key? key,
+    required this.category,
   }) : super(key: key);
 
-  final String category = "recipe";
+  final String category;
 
   @override
   State<FoodRecipeSearchPage> createState() => _FoodRecipeSearchPageState();

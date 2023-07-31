@@ -63,7 +63,8 @@ class FoodItem {
       'palmiticAcid': palmiticAcid,
       'pantothenicAcid': pantothenicAcid,
       'selenium': selenium,
-      'stearicAcid': stearicAcid
+      'stearicAcid': stearicAcid,
+      'recipe': recipe
     };
   }
 
@@ -128,6 +129,7 @@ class FoodItem {
     required this.selenium,
     required this.stearicAcid,
     this.firebaseItem = false,
+    this.recipe = false,
     this.newItem = false,
   });
 
@@ -191,5 +193,6 @@ class FoodItem {
   String selenium;
   String stearicAcid;
   bool firebaseItem;
+  bool recipe;
   bool newItem;
 }

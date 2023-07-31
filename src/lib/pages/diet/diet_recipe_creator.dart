@@ -45,6 +45,8 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
 
     if (currentRecipe.foodData.servings.isNotEmpty && currentRecipe.recipeFoodList.isNotEmpty && foodNameController.text.isNotEmpty) {
 
+      print(widget.category);
+
       context.read<UserNutritionData>().createRecipe(
         foodNameController.text,
         barcodeController.text,
@@ -274,7 +276,7 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
                           child: SizedBox(
                             height: 25,
                             child: AppButton(
-                              onTap: () => context.read<PageChange>().changePageCache(const FoodRecipeSearchPage()),
+                              onTap: () => context.read<PageChange>().changePageCache(FoodRecipeSearchPage(category: widget.category,)),
                               buttonText: "Add Ingredients",
                             ),
                           ),
@@ -317,7 +319,10 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
                 widthFactor: 1,
                 child: AppButton(
                   buttonText: "Add Ingredient",
-                  onTap: () => context.read<PageChange>().changePageCache(const FoodRecipeSearchPage()),
+                  onTap: () {
+                    currentRecipe.foodData.foodName = foodNameController.text;
+                    context.read<PageChange>().changePageCache(FoodRecipeSearchPage(category: widget.category,));
+                  }
                 ),
               ),
             ),

@@ -1,4 +1,3 @@
-import 'package:fitness_tracker/models/diet/user_custom_foods.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_history_model.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import '../../models/diet/food_data_list_item.dart';
 import '../../models/diet/food_item.dart';
+import '../../models/diet/user_custom_foods.dart';
 import '../../models/diet/user_nutrition_model.dart';
 import '../general/database_write.dart';
 
@@ -1097,27 +1097,52 @@ class UserNutritionData with ChangeNotifier {
 
   void addFoodItemToRecipe(FoodItem newItem, String category, String servings,
       String servingSize) {
-    if (category.toLowerCase() == "recipe") {
       _currentRecipe.recipeFoodList.add(ListFoodItem(
-      barcode: newItem.barcode,
-      category: category,
-      foodServings: servings,
-      foodServingSize: servingSize,
-      foodItemData: newItem,
-    ));
+        barcode: newItem.barcode,
+        category: category,
+        foodServings: servings,
+        foodServingSize: servingSize,
+        foodItemData: newItem,
+      ));
 
       calculateRecipeMacros();
 
       updateRecipeServings(_currentRecipe.foodData.servings);
 
       notifyListeners();
-    }
+  }
+
+  late final UserNutritionCustomFoodModel _userNutritionCustomRecipes = UserNutritionCustomFoodModel(
+      barcodes: [], foodListItemNames: [], foodServings: [], foodServingSize: []);
+
+  UserNutritionCustomFoodModel get userNutritionCustomRecipes => _userNutritionCustomRecipes;
+
+  void updateRecipeFoodList(String barcode, String foodName, String servings, String servingSize) {
+
+    _userNutritionCustomRecipes.barcodes.add(barcode);
+    _userNutritionCustomRecipes.foodListItemNames.add(foodName);
+    _userNutritionCustomRecipes.foodServings.add(servings);
+    _userNutritionCustomRecipes.foodServingSize.add(servingSize);
+
+    print(_userNutritionCustomRecipes.barcodes.length);
+
+    UpdateUserCustomRecipeData(userNutritionCustomRecipes);
+
+    notifyListeners();
+
   }
 
   void createRecipe(String foodName, String barcode) {
     _currentRecipe.foodData.foodName = foodName;
     _currentRecipe.foodData.barcode = barcode;
     _currentRecipe.barcode = barcode;
+
+    UpdateRecipeFoodData(currentRecipe);
+
+    if (!_userNutritionCustomRecipes.barcodes.contains(barcode)) {
+      updateRecipeFoodList(barcode, foodName, _currentRecipe.foodData.servings, _currentRecipe.foodData.servingSize);
+    }
+
   }
 
   late double _recipeweight = 0;
@@ -1626,6 +1651,7 @@ class UserNutritionData with ChangeNotifier {
         pantothenicAcid: recipepantothenicAcid.toString(),
         selenium: recipeselenium.toString(),
         stearicAcid: recipestearicAcid.toString(),
+        recipe: true,
     );
 
     notifyListeners();

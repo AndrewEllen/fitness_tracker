@@ -71,7 +71,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         widget.index,
       );
 
-      context.read<PageChange>().changePageClearCache(const FoodRecipeCreator(category: 'recipe',));
+      context.read<PageChange>().changePageClearCache(FoodRecipeCreator(category: widget.category,));
 
     } else if (currentFoodItem.foodName.isNotEmpty &&
         currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
@@ -86,7 +86,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         servingSizeController.text,
       );
 
-      context.read<PageChange>().changePageClearCache(const FoodRecipeCreator(category: 'recipe',));
+      context.read<PageChange>().changePageClearCache(FoodRecipeCreator(category: widget.category,));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text(
@@ -315,7 +315,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                               icon: const Icon(
                                   Icons.edit
                               ),
-                              onPressed: () => widget.recipeEdit ? context.read<PageChange>().changePageCache(FoodNutritionListEdit(category: widget.category)) : context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category)),
+                              onPressed: () => widget.recipeEdit ? context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category)) : context.read<PageChange>().changePageCache(FoodNutritionListEdit(category: widget.category)),
                             ),
                           ),
                         ),

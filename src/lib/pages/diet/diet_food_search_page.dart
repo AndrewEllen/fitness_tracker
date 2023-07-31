@@ -41,7 +41,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
   late UserNutritionHistoryModel foodHistory;
   late UserNutritionCustomFoodModel customFood;
-  late List<UserRecipesModel> customRecipes;
+  late UserNutritionCustomFoodModel customRecipes;
 
   late List<FoodItem> foodItemsFromSearch = [];
   late List<FoodItem> foodItemsFromSearchFirebase = [];
@@ -57,7 +57,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
     foodHistory = context.read<UserNutritionData>().userNutritionHistory;
     customFood = context.read<UserNutritionData>().userNutritionCustomFood;
-    customRecipes = context.read<UserNutritionData>().userRecipesList;
+    customRecipes = context.read<UserNutritionData>().userNutritionCustomRecipes;
 
     super.initState();
   }
@@ -861,7 +861,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                             ],
                           ),
                         ),
-                        customRecipes.isNotEmpty ? AppHeaderBox(
+                        customRecipes.barcodes.isNotEmpty ? AppHeaderBox(
                           title: "Recipes",
                           width: width,
                           largeTitle: true,
@@ -873,20 +873,20 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                         ),
                         ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: customRecipes.length,
+                            itemCount: customRecipes.foodListItemNames.length,
                             shrinkWrap: true,
                             itemBuilder: (BuildContext context, int index) {
                               return FoodHistoryListDisplayBox(
                                 width: width,
-                                foodHistoryName: customRecipes[index].foodData.foodName,
-                                foodHistoryServings: customRecipes[index].foodData.servings[index],
-                                foodHistoryServingSize: customRecipes[index].foodData.servingSize[index],
+                                foodHistoryName: customRecipes.foodListItemNames[index],
+                                foodHistoryServings: customRecipes.foodServings[index],
+                                foodHistoryServingSize: customRecipes.foodServingSize[index],
                                 icon: Icons.add_box,
                                 iconColour: appSecondaryColour,
                                 onTapIcon: () => AddFoodItem(
-                                  customRecipes[index].barcode,
-                                  customRecipes[index].foodData.servings[index],
-                                  customRecipes[index].foodData.servingSize[index],
+                                  customRecipes.barcodes[index],
+                                  customRecipes.foodServings[index],
+                                  customRecipes.foodServingSize[index],
                                 ),
                               );
                             }),
