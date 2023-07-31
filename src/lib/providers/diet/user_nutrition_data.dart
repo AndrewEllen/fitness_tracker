@@ -1053,6 +1053,12 @@ class UserNutritionData with ChangeNotifier {
     notifyListeners();
   }
 
+  void removeFoodItemFromRecipe(int index) {
+    _currentRecipe.recipeFoodList.removeAt(index);
+
+    notifyListeners();
+  }
+
   void addFoodItemToRecipe(FoodItem newItem, String category, String servings,
       String servingSize) {
     if (category.toLowerCase() == "recipe") {

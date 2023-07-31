@@ -1,6 +1,7 @@
 import 'package:fitness_tracker/models/diet/food_data_list_item.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -9,6 +10,7 @@ import '../../models/diet/food_item.dart';
 import '../../models/diet/user_recipes_model.dart';
 import '../../providers/diet/user_nutrition_data.dart';
 import '../../providers/general/page_change_provider.dart';
+import '../../widgets/diet/food_list_item_box.dart';
 import '../../widgets/diet/food_nutrition_list_text.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/diet/diet_list_header_box.dart';
@@ -116,9 +118,9 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
                       )
                     ),
                   ),
-                  Padding(
+                  currentRecipe.recipeFoodList.isEmpty ? Padding(
                     padding: EdgeInsets.only(top: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.18 : _height * 0.18),
-                    child: currentRecipe.recipeFoodList.isEmpty ? Column(
+                    child: Column(
                       children: [
                         const Padding(
                           padding: EdgeInsets.all(8.0),
@@ -157,19 +159,25 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
                           ),
                         )
                       ],
-                    ) : ListView.builder(
+                    )
+                  ) : SizedBox(
+                    ///Overflowing parent constraints. Adding constraints here for now.
+                    height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.54 : _height * 0.43,
+                    child: ListView.builder(
                       itemCount: context.watch<UserNutritionData>().currentRecipe.recipeFoodList.length,
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
-
-
-
-                        return Text(
-                          context.watch<UserNutritionData>().currentRecipe.recipeFoodList[index].foodItemData.foodName,
+                        return FoodListDisplayBox(
+                          key: UniqueKey(),
+                          width: MediaQuery.of(context).size.width,
+                          foodObject: currentRecipe.recipeFoodList[index],
+                          icon: Icons.delete,
+                          iconColour: Colors.red,
+                          onTapIcon: () => context.read<UserNutritionData>().removeFoodItemFromRecipe(index),
                         );
                       },
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
