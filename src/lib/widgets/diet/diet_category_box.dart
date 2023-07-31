@@ -100,7 +100,7 @@ class _DietCategoryBoxState extends State<DietCategoryBox> {
 
                         context.read<UserNutritionData>().updateCurrentFoodItemServings(widget.foodList[index].foodServings);
                         context.read<UserNutritionData>().updateCurrentFoodItemServingSize(widget.foodList[index].foodServingSize);
-                        context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.title, editDiary: true, index: index));
+                        context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.title, editDiary: true, index: index, recipeEdit: widget.foodList[index].foodItemData.recipe ?? false,));
 
                         Navigator.pop(context);
                       },

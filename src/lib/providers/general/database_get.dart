@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/helpers/diet/nutrition_tracker.dart';
+import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:fitness_tracker/models/workout/exercise_model.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:fitness_tracker/models/workout/training_plan_model.dart';
@@ -455,6 +456,121 @@ GetUserCustomFood() async {
       foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
       foodServings: List<String>.from(_data["foodServings"] as List),
       foodServingSize: List<String>.from(_data["foodServingSize"] as List),
+    );
+
+  } catch (exception) {
+    print(exception);
+  }
+}
+
+GetUserCustomRecipes() async {
+  try {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc("${firebaseAuth.currentUser?.uid.toString()}")
+        .collection("nutrition-recipes-food-data")
+        .doc("food")
+        .get();
+
+    final _data = snapshot.get("food");
+
+    return UserNutritionCustomFoodModel(
+      barcodes: List<String>.from(_data["barcodes"] as List),
+      foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
+      foodServings: List<String>.from(_data["foodServings"] as List),
+      foodServingSize: List<String>.from(_data["foodServingSize"] as List),
+    );
+
+  } catch (exception) {
+    print(exception);
+  }
+}
+
+GetFoodDataFromFirebaseRecipe(String barcode) async {
+
+  print("firebase get");
+
+  try {
+
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('recipe-data')
+        .doc(barcode)
+        .get();
+
+    final _data = snapshot.get("food-data");
+
+    print(_data);
+
+    return UserRecipesModel(
+      barcode: _data["barcode"] ?? "",
+      barcodeList: _data["barcodeList"],
+      recipeFoodList: [],
+      foodData: FoodItem(
+        barcode: _data["foodData"]["barcode"] ?? "",
+        foodName: _data["foodData"]["foodName"] ?? "",
+        quantity: _data["foodData"]["quantity"] ?? "",
+        servingSize: _data["foodData"]["servingSize"] ?? "",
+        servings: _data["foodData"]["servings"] ?? "",
+        calories: _data["foodData"]["calories"] ?? "",
+        kiloJoules: _data["foodData"]["kiloJoules"] ?? "",
+        proteins: _data["foodData"]["proteins"] ?? "",
+        carbs: _data["foodData"]["carbs"] ?? "",
+        fiber: _data["foodData"]["fiber"] ?? "",
+        sugars: _data["foodData"]["sugars"] ?? "",
+        fat: _data["foodData"]["fat"] ?? "",
+        saturatedFat: _data["foodData"]["saturatedFat"] ?? "",
+        polyUnsaturatedFat: _data["foodData"]["polyUnsaturatedFat"] ?? "",
+        monoUnsaturatedFat: _data["foodData"]["monoUnsaturatedFat"] ?? "",
+        transFat: _data["foodData"]["transFat"] ?? "",
+        cholesterol: _data["foodData"]["cholesterol"] ?? "",
+        calcium: _data["foodData"]["calcium"] ?? "",
+        iron: _data["foodData"]["iron"] ?? "",
+        sodium: _data["foodData"]["sodium"] ?? "",
+        zinc: _data["foodData"]["zinc"] ?? "",
+        magnesium: _data["foodData"]["magnesium"] ?? "",
+        potassium: _data["foodData"]["potassium"] ?? "",
+        vitaminA: _data["foodData"]["vitaminA"] ?? "",
+        vitaminB1: _data["foodData"]["vitaminB1"] ?? "",
+        vitaminB2: _data["foodData"]["vitaminB2"] ?? "",
+        vitaminB3: _data["foodData"]["vitaminB3"] ?? "",
+        vitaminB6: _data["foodData"]["vitaminB6"] ?? "",
+        vitaminB9: _data["foodData"]["vitaminB9"] ?? "",
+        vitaminB12: _data["foodData"]["vitaminB12"] ?? "",
+        vitaminC: _data["foodData"]["vitaminC"] ?? "",
+        vitaminD: _data["foodData"]["vitaminD"] ?? "",
+        vitaminE: _data["foodData"]["vitaminE"] ?? "",
+        vitaminK: _data["foodData"]["vitaminK"] ?? "",
+        omega3: _data["foodData"]["omega3"] ?? "",
+        omega6: _data["foodData"]["omega6"] ?? "",
+        alcohol: _data["foodData"]["alcohol"] ?? "",
+        biotin: _data["foodData"]["biotin"] ?? "",
+        butyricAcid: _data["foodData"]["butyricAcid"] ?? "",
+        caffeine: _data["foodData"]["caffeine"] ?? "",
+        capricAcid: _data["foodData"]["capricAcid"] ?? "",
+        caproicAcid: _data["foodData"]["caproicAcid"] ?? "",
+        caprylicAcid: _data["foodData"]["caprylicAcid"] ?? "",
+        chloride: _data["foodData"]["chloride"] ?? "",
+        chromium: _data["foodData"]["chromium"] ?? "",
+        copper: _data["foodData"]["copper"] ?? "",
+        docosahexaenoicAcid: _data["foodData"]["docosahexaenoicAcid"] ?? "",
+        eicosapentaenoicAcid: _data["foodData"]["eicosapentaenoicAcid"] ?? "",
+        erucicAcid: _data["foodData"]["erucicAcid"] ?? "",
+        fluoride: _data["foodData"]["fluoride"] ?? "",
+        iodine: _data["foodData"]["iodine"] ?? "",
+        manganese: _data["foodData"]["manganese"] ?? "",
+        molybdenum: _data["foodData"]["molybdenum"] ?? "",
+        myristicAcid: _data["foodData"]["myristicAcid"] ?? "",
+        oleicAcid: _data["foodData"]["oleicAcid"] ?? "",
+        palmiticAcid: _data["foodData"]["palmiticAcid"] ?? "",
+        pantothenicAcid: _data["foodData"]["pantothenicAcid"] ?? "",
+        selenium: _data["foodData"]["selenium"] ?? "",
+        stearicAcid: _data["foodData"]["stearicAcid"] ?? "",
+        firebaseItem: true,
+      ),
     );
 
   } catch (exception) {

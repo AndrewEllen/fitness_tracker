@@ -128,6 +128,7 @@ class UserNutritionData with ChangeNotifier {
 
   late final UserRecipesModel _currentRecipe = UserRecipesModel(
     barcode: "",
+    barcodeList: [],
     recipeFoodList: [],
     foodData: FoodItem(
     barcode: "",
@@ -1112,7 +1113,7 @@ class UserNutritionData with ChangeNotifier {
       notifyListeners();
   }
 
-  late final UserNutritionCustomFoodModel _userNutritionCustomRecipes = UserNutritionCustomFoodModel(
+  late UserNutritionCustomFoodModel _userNutritionCustomRecipes = UserNutritionCustomFoodModel(
       barcodes: [], foodListItemNames: [], foodServings: [], foodServingSize: []);
 
   UserNutritionCustomFoodModel get userNutritionCustomRecipes => _userNutritionCustomRecipes;
@@ -1142,6 +1143,11 @@ class UserNutritionData with ChangeNotifier {
     if (!_userNutritionCustomRecipes.barcodes.contains(barcode)) {
       updateRecipeFoodList(barcode, foodName, _currentRecipe.foodData.servings, _currentRecipe.foodData.servingSize);
     }
+
+  }
+
+  void setCustomRecipes(UserNutritionCustomFoodModel userRecipes) {
+    _userNutritionCustomRecipes = userRecipes;
 
   }
 

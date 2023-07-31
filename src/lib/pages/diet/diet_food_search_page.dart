@@ -178,23 +178,43 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
   }
 
-  void AddFoodItem(String barcode, String servings, String servingSize) async {
+  void AddFoodItem(String barcode, String servings, String servingSize, bool recipe) async {
 
-    FoodItem newFoodItem = await CheckFoodBarcode(barcode);
+    if (recipe) {
 
-    context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
+      FoodItem newFoodItem = await CheckFoodBarcode(barcode, recipe: true);
 
-    context.read<UserNutritionData>().updateCurrentFoodItemServings(servings);
-    context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSize);
+      context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
 
-    searchController.text = "";
+      context.read<UserNutritionData>().updateCurrentFoodItemServings(servings);
+      context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSize);
 
-    setState(() {
-      foodHistory = context.read<UserNutritionData>().userNutritionHistory;
-    });
+      searchController.text = "";
 
-    context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
+      setState(() {
+        foodHistory = context.read<UserNutritionData>().userNutritionHistory;
+      });
 
+      context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipeEdit: true,));
+
+    } else {
+
+      FoodItem newFoodItem = await CheckFoodBarcode(barcode);
+
+      context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
+
+      context.read<UserNutritionData>().updateCurrentFoodItemServings(servings);
+      context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSize);
+
+      searchController.text = "";
+
+      setState(() {
+        foodHistory = context.read<UserNutritionData>().userNutritionHistory;
+      });
+
+      context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
+
+    }
   }
 
   @override
@@ -522,6 +542,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                     foodHistory.barcodes[index],
                                     foodHistory.foodServings[index],
                                     foodHistory.foodServingSize[index],
+                                    foodHistory.recipe ?? false,
                                 ),
                               );
                             }),
@@ -763,7 +784,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                   child: InkWell(
                                     onTap: () {
                                       setState(() {
-                                        //_displayDropDown = true;
+                                        _displayDropDown = true;
                                       });
                                     },
                                     child: Column(
@@ -887,6 +908,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                   customRecipes.barcodes[index],
                                   customRecipes.foodServings[index],
                                   customRecipes.foodServingSize[index],
+                                  true,
                                 ),
                               );
                             }),
@@ -933,7 +955,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                 child: SizedBox(
                                   height: 24,
                                   child: Text(
-                                    "Add Food",
+                                    "Add Recipe",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       color: Colors.white,
@@ -968,7 +990,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                     textAlign: TextAlign.center,
                                     decoration: InputDecoration(
                                       contentPadding: EdgeInsets.only(bottom: (width/12)/2.5, left: 5, right: 5,),
-                                      hintText: 'Food Code...',
+                                      hintText: 'Recipe Code...',
                                       hintStyle: const TextStyle(
                                         color: Colors.white54,
                                         fontSize: (18),
@@ -1017,7 +1039,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                     onTap: () async {
                                       if (newCodeKey.currentState!.validate()) {
 
-                                        FoodItem newFoodItem = await CheckFoodBarcode(newCodeController.text);
+                                        FoodItem newFoodItem = await CheckFoodBarcode(newCodeController.text, recipe: true);
 
                                         if (newFoodItem.barcode.isNotEmpty) {
                                           setState(() {
@@ -1025,7 +1047,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                             _displayDropDown = false;
                                           });
                                           context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
-                                          context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
+                                          context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipeEdit: true,));
                                         }
                                       }
                                     }),
@@ -1141,6 +1163,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                   customFood.barcodes[index],
                                   customFood.foodServings[index],
                                   customFood.foodServingSize[index],
+                                  false,
                                 ),
                               );
                             }),

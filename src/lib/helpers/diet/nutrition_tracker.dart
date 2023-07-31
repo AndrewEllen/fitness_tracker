@@ -285,12 +285,11 @@ String ConvertToUsableData(dynamic valueToConvert, {String defaultValue = ""}) {
   return valueToConvert;
 }
 
-CheckFoodBarcode(String barcodeDisplayValue) async {
-  try {
+CheckFoodBarcode(String barcodeDisplayValue, {bool recipe = false}) async {
 
-    print("firebase");
+  if (recipe) {
 
-    FoodItem newFoodItem = await GetFoodDataFromFirebase(barcodeDisplayValue);
+    FoodItem newFoodItem = await GetFoodDataFromFirebaseRecipe(barcodeDisplayValue);
 
     print("un Capitalised Name");
     print(newFoodItem.foodName);
@@ -304,23 +303,43 @@ CheckFoodBarcode(String barcodeDisplayValue) async {
       print(error);
     }
 
-
-
-
     return newFoodItem;
 
-  } catch (error){
+  } else {
 
-    print("openFF");
+    try {
 
-    ProductResultV3 product = await CheckFoodBarcodeOpenFF(barcodeDisplayValue);
+      print("firebase");
 
-    FoodItem newFoodItem = ConvertToFoodItem(product.product, scannedBarcode: barcodeDisplayValue);
+      FoodItem newFoodItem = await GetFoodDataFromFirebase(barcodeDisplayValue);
 
-    newFoodItem.foodName = newFoodItem.foodName.capitalize();
+      print("un Capitalised Name");
+      print(newFoodItem.foodName);
 
-    return newFoodItem;
+      try {
+        print("Capitalised Name");
+        print(newFoodItem.foodName);
+        newFoodItem.foodName = newFoodItem.foodName.capitalize();
+        print(newFoodItem.foodName);
+      } catch (error) {
+        print(error);
+      }
 
+      return newFoodItem;
+
+    } catch (error){
+
+      print("openFF");
+
+      ProductResultV3 product = await CheckFoodBarcodeOpenFF(barcodeDisplayValue);
+
+      FoodItem newFoodItem = ConvertToFoodItem(product.product, scannedBarcode: barcodeDisplayValue);
+
+      newFoodItem.foodName = newFoodItem.foodName.capitalize();
+
+      return newFoodItem;
+
+    }
   }
 }
 

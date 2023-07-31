@@ -16,17 +16,19 @@ class UserRecipesModel {
 
     return {
       'barcode': barcode,
-      'recipeFoodList': ConvertToList(foodList: recipeFoodList),
+      'recipeBarcodeList': ConvertToList(foodList: recipeFoodList),
       'foodData': foodData.toMap(),
     };
   }
   UserRecipesModel({
     required this.barcode,
     required this.recipeFoodList,
+    required this.barcodeList,
     required this.foodData,
   });
 
   String barcode;
   List<ListFoodItem> recipeFoodList;
+  List<String> barcodeList;
   FoodItem foodData;
 }
