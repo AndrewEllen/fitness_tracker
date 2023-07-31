@@ -1,4 +1,5 @@
 import 'package:fitness_tracker/exports.dart';
+import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../constants.dart';
 import '../../models/diet/food_data_list_item.dart';
 import '../../models/diet/food_item.dart';
+import '../../providers/general/database_get.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/diet/diet_list_header_box.dart';
 import '../../widgets/diet/food_nutrition_list_formfield.dart';
@@ -33,6 +35,15 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
 
   late final servingSizekey = GlobalKey<FormState>();
   late final servingskey = GlobalKey<FormState>();
+
+  void loadFoodItemsInRecipe() async {
+
+    UserRecipesModel recipe = await GetFoodDataFromFirebaseRecipe(currentFoodItem.barcode);
+    context.read<UserNutritionData>().setCurrentRecipe(recipe);
+    context.read<UserNutritionData>().setCurrentRecipeFood(await GetRecipeFoodList(recipe.recipeFoodList));
+
+    context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category));
+  }
 
   @override
   void initState() {
@@ -324,7 +335,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                               icon: const Icon(
                                   Icons.edit
                               ),
-                              onPressed: () => widget.recipeEdit ? context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category)) : context.read<PageChange>().changePageCache(FoodNutritionListEdit(category: widget.category)),
+                              onPressed: () => widget.recipeEdit ? loadFoodItemsInRecipe() : context.read<PageChange>().changePageCache(FoodNutritionListEdit(category: widget.category)),
                             ),
                           ),
                         ),

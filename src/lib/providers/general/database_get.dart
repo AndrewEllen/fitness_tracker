@@ -506,7 +506,6 @@ GetFoodDataFromFirebaseRecipe(String barcode) async {
 
   try {
 
-
     final snapshot = await FirebaseFirestore.instance
         .collection('recipe-data')
         .doc(barcode)
@@ -514,10 +513,23 @@ GetFoodDataFromFirebaseRecipe(String barcode) async {
 
     final _data = snapshot.get("food-data");
 
+    final List<ListFoodItem> generateFoodList = List<ListFoodItem>.generate(_data["recipeFoodList"].length, (int index) {
+
+      return ListFoodItem(
+        category: _data["recipeFoodList"][index]["category"] ?? "",
+        barcode: _data["recipeFoodList"][index]["barcode"] ?? "",
+        foodServingSize: _data["recipeFoodList"][index]["foodServingSize"] ?? "",
+        foodServings: _data["recipeFoodList"][index]["foodServings"] ?? "",
+        foodItemData: FoodDefaultData(),
+        recipe: _data["recipeFoodList"][index]["recipe"] as bool,
+      );
+    });
+
+    List<ListFoodItem> foodList = generateFoodList;
+
     return UserRecipesModel(
       barcode: _data["barcode"] ?? "",
-      barcodeList: List<String>.from(_data["barcodeList"] as List),
-      recipeFoodList: <ListFoodItem>[],
+      recipeFoodList: foodList,
       foodData: FoodItem(
         barcode: _data["foodData"]["barcode"] ?? "",
         foodName: _data["foodData"]["foodName"] ?? "",
@@ -586,4 +598,27 @@ GetFoodDataFromFirebaseRecipe(String barcode) async {
   } catch (exception) {
     print(exception);
   }
+}
+
+
+GetRecipeFoodList(List<ListFoodItem> foodList) async {
+
+  try{
+    for (int i = 0; i < foodList.length; i++) {
+
+      FoodItem data = await CheckFoodBarcode(foodList[i].barcode);
+
+      if (data != null) {
+        foodList[i].foodItemData = data;
+      }
+  }
+
+    return foodList;
+
+  } catch (exception) {
+    print("nutrition failed");
+    print(exception);
+
+  }
+
 }

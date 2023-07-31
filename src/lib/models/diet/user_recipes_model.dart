@@ -6,29 +6,28 @@ class UserRecipesModel {
 
   Map<String, dynamic> toMap() {
 
-    List<String> ConvertToList({required List<ListFoodItem> foodList}) {
-      List<String> barcodeList = [];
+    List<Map> ConvertToMapList({required List<ListFoodItem> foodList}) {
+      List<Map> foodListMap = [];
       for (var foodListItem in foodList) {
-        barcodeList.add(foodListItem.barcode);
+        Map food = foodListItem.toMap();
+        foodListMap.add(food);
       }
-      return barcodeList;
+      return foodListMap;
     }
 
     return {
       'barcode': barcode,
-      'barcodeList': ConvertToList(foodList: recipeFoodList),
+      'recipeFoodList': ConvertToMapList(foodList: recipeFoodList),
       'foodData': foodData.toMap(),
     };
   }
   UserRecipesModel({
     required this.barcode,
     required this.recipeFoodList,
-    required this.barcodeList,
     required this.foodData,
   });
 
   String barcode;
   List<ListFoodItem> recipeFoodList;
-  List<String> barcodeList;
   FoodItem foodData;
 }

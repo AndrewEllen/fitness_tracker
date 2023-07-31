@@ -128,7 +128,6 @@ class UserNutritionData with ChangeNotifier {
 
   late UserRecipesModel _currentRecipe = UserRecipesModel(
     barcode: "",
-    barcodeList: [],
     recipeFoodList: [],
     foodData: FoodItem(
     barcode: "",
@@ -1104,7 +1103,6 @@ class UserNutritionData with ChangeNotifier {
   void resetCurrentRecipe() {
     _currentRecipe = UserRecipesModel(
       barcode: "",
-      barcodeList: [],
       recipeFoodList: [],
       foodData: FoodItem(
         barcode: "",
@@ -1174,6 +1172,11 @@ class UserNutritionData with ChangeNotifier {
 
   void setCurrentRecipe(UserRecipesModel recipeItem) {
     _currentRecipe = recipeItem;
+
+  }
+
+  void setCurrentRecipeFood(List<ListFoodItem> recipeFoodList) {
+    _currentRecipe.recipeFoodList = recipeFoodList;
 
   }
 
