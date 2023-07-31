@@ -379,11 +379,12 @@ GetUserNutritionData(String date) async {
           dynamic data = await CheckFoodBarcode(foodList[i].barcode, recipe: foodList[i].recipe);
 
           print("PRINTING NAMES OF FOOD");
-          print(data.foodData.foodName);
 
-          if (foodList[i].recipe) {
+          if (data.runtimeType == UserRecipesModel) {
+            print("recipe");
             foodList[i].foodItemData = data.foodData;
           } else {
+            print("food");
             foodList[i].foodItemData = data;
           }
 
