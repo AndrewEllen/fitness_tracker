@@ -1078,6 +1078,23 @@ class UserNutritionData with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateRecipeServings(String servings) {
+
+    try {
+      _currentRecipe.foodData.servings = servings;
+      _currentRecipe.foodData.servingSize = (double.parse(_currentRecipe.foodData.quantity) / double.parse(servings)).toStringAsFixed(1);
+
+      calculateRecipeMacros();
+    } catch (error) {
+      _currentRecipe.foodData.servings = "";
+      _currentRecipe.foodData.servingSize = "";
+
+      calculateRecipeMacros();
+      notifyListeners();
+    }
+
+  }
+
   void addFoodItemToRecipe(FoodItem newItem, String category, String servings,
       String servingSize) {
     if (category.toLowerCase() == "recipe") {
@@ -1090,6 +1107,8 @@ class UserNutritionData with ChangeNotifier {
     ));
 
       calculateRecipeMacros();
+
+      updateRecipeServings(_currentRecipe.foodData.servings);
 
       notifyListeners();
     }

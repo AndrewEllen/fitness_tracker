@@ -150,9 +150,6 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
   @override
   Widget build(BuildContext context) {
 
-    print("quanity " + currentRecipe.foodData.quantity);
-    print("calories " + currentRecipe.foodData.calories);
-
     double _margin = 15;
     double _smallContainerMin = 95;
     double _height = MediaQuery.of(context).size.height;
@@ -184,9 +181,23 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
                     numbersOnly: false,
                     centerForm: true,
                   ),
+                  FoodNutritionListFormField(
+                    controller: servingsController,
+                    formKey: servingskey,
+                    width: _width,
+                    formName: "Servings",
+                    servings: true,
+                    recipe: true,
+                    numbersOnly: true,
+                    centerForm: true,
+                  ),
                   DietListHeaderBox(
                     width: _width,
-                    title: currentRecipe.recipeFoodList.isNotEmpty ? (double.parse(currentRecipe.foodData.calories) / double.parse(currentRecipe.foodData.quantity) * 100).toStringAsFixed(0) + "Kcal/100g" : "0 Kcal/100g",
+                    title:
+                    (currentRecipe.recipeFoodList.isNotEmpty & currentRecipe.foodData.servings.isNotEmpty) ?
+                    (double.parse(currentRecipe.foodData.calories) / double.parse(servingsController.text)).toStringAsFixed(0)
+                        + "Kcal/${currentRecipe.foodData.servingSize}g"
+                        : (currentRecipe.foodData.servings.isNotEmpty) ? "No Ingredients" : "Number of Servings Empty",
                     largeTitle: true,
                     color: Colors.white,
                   ),
@@ -244,7 +255,7 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
                     )
                   ) : SizedBox(
                     ///Overflowing parent constraints. Adding constraints here for now.
-                    height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.612 : _height * 0.43,
+                    height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.55 : _height * 0.43,
                     child: ListView.builder(
                       itemCount: context.watch<UserNutritionData>().currentRecipe.recipeFoodList.length,
                       shrinkWrap: true,

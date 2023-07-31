@@ -9,6 +9,7 @@ class FoodNutritionListFormField extends StatefulWidget {
     required this.formKey, required this.width,
     required this.formName, this.numbersOnly = true,
     this.secondaryController = false,
+    this.recipe = false,
     this.servings = false,
     this.servingSize = false,
     this.centerForm = false,
@@ -20,7 +21,7 @@ class FoodNutritionListFormField extends StatefulWidget {
   final  double width;
   final  String formName;
   final  bool numbersOnly, centerForm;
-  final  bool servings, servingSize;
+  final  bool servings, servingSize, recipe;
 
 
   @override
@@ -34,11 +35,13 @@ class _FoodNutritionListFormFieldState extends State<FoodNutritionListFormField>
   ];
 
   void SaveServings () {
-    if (widget.servings) {
+    if (widget.servings & widget.recipe) {
+      context.read<UserNutritionData>().updateRecipeServings(widget.controller.text);
+    } else if (widget.servings) {
       context.read<UserNutritionData>().updateCurrentFoodItemServings(widget.controller.text);
       context.read<UserNutritionData>().updateCurrentFoodItemServingSize(widget.secondaryController.text);
     }
-    if (widget.servingSize) {
+    else if (widget.servingSize) {
       context.read<UserNutritionData>().updateCurrentFoodItemServingSize(widget.controller.text);
       context.read<UserNutritionData>().updateCurrentFoodItemServings(widget.secondaryController.text);
     }
@@ -102,7 +105,7 @@ class _FoodNutritionListFormFieldState extends State<FoodNutritionListFormField>
                     SaveServings();
                   },
                   onTapOutside: (value) {
-                    SaveServings();
+                    widget.recipe ? null : SaveServings();
                   },
                 ),
               ),
