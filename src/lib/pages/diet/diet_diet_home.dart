@@ -20,31 +20,6 @@ class DietHomePage extends StatefulWidget {
 
 class _DietHomePageState extends State<DietHomePage> {
 
-  void scanBarcode(dynamic displayImage) async {
-    //[LO3.7.3.5]
-
-    final imageFile = await getImageFileFromAssets(displayImage);
-
-    String barcodeDisplayValue = await analyseBarcode(imageFile) as String;
-
-    print("Checking Food");
-
-    if (barcodeDisplayValue.isNotEmpty) {
-
-      print("Firebase");
-      FoodItem newFoodItem = CheckFoodBarcode(barcodeDisplayValue);
-      context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
-
-
-      print(context.read<UserNutritionData>().currentFoodItem.foodName);
-
-    }
-
-    context.read<PageChange>().changePageCache(const FoodDisplayPage(category: 'Breakfast',));
-
-  }
-
-
   @override
   Widget build(BuildContext context) {
 

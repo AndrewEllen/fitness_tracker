@@ -206,7 +206,8 @@ FoodItem ConvertToFoodItem(product, {String scannedBarcode = "", bool firebase =
         selenium: ConvertToUsableData(product.nutriments?.getValue(
             Nutrient.selenium, PerSize.oneHundredGrams)),
         stearicAcid: ConvertToUsableData(product.nutriments?.getValue(
-            Nutrient.stearicAcid, PerSize.oneHundredGrams))
+            Nutrient.stearicAcid, PerSize.oneHundredGrams)),
+      newItem: true,
     );
   }
 

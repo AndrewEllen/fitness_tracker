@@ -221,6 +221,10 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
   }
 
   void SaveFoodItem() {
+
+    print("Barcode on edit screen");
+    print(barcodeController.text);
+
     context.read<UserNutritionData>().updateCurrentFoodItem(
           barcodeController.text,
           foodNameController.text,

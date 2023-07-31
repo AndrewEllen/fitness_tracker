@@ -25,7 +25,7 @@ class FoodNewNutritionEdit extends StatefulWidget {
 class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
   late bool _loading = true;
 
-  late FoodItem currentFoodItem = FoodDefaultData();
+  late FoodItem currentFoodItem = context.read<UserNutritionData>().currentFoodItem;
 
   late TextEditingController barcodeController = TextEditingController();
   late TextEditingController foodNameController = TextEditingController();
@@ -233,6 +233,9 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
   void SaveFoodItem() {
 
     //print(context.read<UserNutritionData>().foodListItemsBreakfast.last.foodItemData.foodName);
+
+    print("Barcode on new food edit screen");
+    print(barcodeController.text);
 
     if (foodNameController.text.isNotEmpty && caloriesController.text.isNotEmpty && servingSizeController.text.isNotEmpty
     && servingsController.text.isNotEmpty) {

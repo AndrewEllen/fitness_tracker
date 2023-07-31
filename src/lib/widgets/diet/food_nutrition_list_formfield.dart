@@ -35,27 +35,32 @@ class _FoodNutritionListFormFieldState extends State<FoodNutritionListFormField>
     FilteringTextInputFormatter.allow(RegExp("[0-9.]")),
   ];
 
-  void SaveName ({bool onChanged = false}) {
+  void SaveName () {
 
-    context.read<UserNutritionData>().updateRecipename(widget.controller.text);
-
-    onChanged ? null : FocusManager.instance.primaryFocus?.unfocus();
+    if (focusNode.hasPrimaryFocus) {
+      context.read<UserNutritionData>().updateRecipename(widget.controller.text);
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
   }
 
-  void SaveServings ({bool onChanged = false}) {
+  void SaveServings () {
 
-    if (widget.servings & widget.recipe) {
-      context.read<UserNutritionData>().updateRecipeServings(widget.controller.text);
-    } else if (widget.servings) {
-      context.read<UserNutritionData>().updateCurrentFoodItemServings(widget.controller.text);
-      context.read<UserNutritionData>().updateCurrentFoodItemServingSize(widget.secondaryController.text);
+    if (focusNode.hasPrimaryFocus) {
+      if (widget.servings & widget.recipe) {
+        context.read<UserNutritionData>().updateRecipeServings(widget.controller.text);
+      } else if (widget.servings) {
+        context.read<UserNutritionData>().updateCurrentFoodItemServings(widget.controller.text);
+        context.read<UserNutritionData>().updateCurrentFoodItemServingSize(widget.secondaryController.text);
+      }
+      else if (widget.servingSize) {
+        context.read<UserNutritionData>().updateCurrentFoodItemServingSize(widget.controller.text);
+        context.read<UserNutritionData>().updateCurrentFoodItemServings(widget.secondaryController.text);
+      }
+      FocusManager.instance.primaryFocus?.unfocus();
     }
-    else if (widget.servingSize) {
-      context.read<UserNutritionData>().updateCurrentFoodItemServingSize(widget.controller.text);
-      context.read<UserNutritionData>().updateCurrentFoodItemServings(widget.secondaryController.text);
-    }
-    onChanged ? null : FocusManager.instance.primaryFocus?.unfocus();
   }
+
+  final FocusNode focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +89,7 @@ class _FoodNutritionListFormFieldState extends State<FoodNutritionListFormField>
               child: Form(
                 key: widget.formKey,
                 child: TextFormField(
+                  focusNode: focusNode,
                   inputFormatters: widget.numbersOnly ? textInputFormatter : null,
                   keyboardType: widget.numbersOnly ? TextInputType.number : TextInputType.text,
                   controller: widget.controller,
@@ -113,8 +119,8 @@ class _FoodNutritionListFormFieldState extends State<FoodNutritionListFormField>
                   onFieldSubmitted: (value) {
                     widget.name ? SaveName() : SaveServings();
                   },
-                  onChanged: (value) {
-                    widget.name ? SaveName(onChanged: true) : SaveServings(onChanged: true);
+                  onTapOutside: (value) {
+                    widget.name ? SaveName() : SaveServings();
                   },
                 ),
               ),

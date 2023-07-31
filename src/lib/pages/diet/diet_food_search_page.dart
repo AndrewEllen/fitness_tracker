@@ -907,7 +907,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                             itemBuilder: (BuildContext context, int index) {
                               return FoodHistoryListDisplayBox(
                                 width: width,
-                                foodHistoryName: customRecipes.foodListItemNames[index].capitalizeFirst(),
+                                foodHistoryName: customRecipes.foodListItemNames[index].capitalize(),
                                 foodHistoryServings: customRecipes.foodServings[index],
                                 foodHistoryServingSize: (double.parse(customRecipes.foodServingSize[index]) / double.parse(customRecipes.foodServings[index])).toStringAsFixed(1),
                                 icon: Icons.add_box,
