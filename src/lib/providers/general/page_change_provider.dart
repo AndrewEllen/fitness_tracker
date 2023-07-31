@@ -1,15 +1,22 @@
 import 'package:fitness_tracker/exports.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../pages/diet/diet_recipe_creator.dart';
+
 class PageChange with ChangeNotifier {
   Widget _pageWidget = const DietHomePage();
   List<Widget> _pageWidgetCache = [const DietHomePage()];
   int _pageWidgetCacheIndex = 0;
 
+  late int _confirmationCounter = 0;
+
   Widget get pageWidget => _pageWidget;
   List<Widget> get pageWidgetCache => _pageWidgetCache;
   int get pageWidgetCacheIndex => _pageWidgetCacheIndex;
 
+  late bool _confirmation = false;
+
+  bool get confirmation => _confirmation;
 
   void changePageRemovePreviousCache(Widget newPage) {
     _pageWidget = newPage;
@@ -24,6 +31,9 @@ class PageChange with ChangeNotifier {
   }
 
   void changePageClearCache(Widget newPage) {
+
+    _confirmation = false;
+
     _pageWidget = newPage;
 
     _pageWidgetCache = [_pageWidget];
@@ -33,6 +43,11 @@ class PageChange with ChangeNotifier {
   }
 
   void changePageCache(Widget newPage) {
+
+    if (newPage.runtimeType == FoodRecipeCreator && _confirmation == false) {
+      _confirmation = true;
+    }
+
     _pageWidget = newPage;
 
     if (_pageWidgetCache.isEmpty) {
@@ -53,15 +68,38 @@ class PageChange with ChangeNotifier {
 
   void backPage() {
 
-    _pageWidgetCache.removeLast();
-    _pageWidgetCacheIndex = _pageWidgetCache.length-1;
+    if (_pageWidgetCache.last.runtimeType == FoodRecipeCreator) {
 
-    if (_pageWidgetCache.isEmpty) {
-      _pageWidgetCache.add(const HomePage());
+      if (_confirmationCounter >= 1) {
+        _confirmation = false;
+        _confirmationCounter = 0;
+        _pageWidgetCache.removeLast();
+        _pageWidgetCacheIndex = _pageWidgetCache.length-1;
+
+        if (_pageWidgetCache.isEmpty) {
+          _pageWidgetCache.add(const HomePage());
+          _pageWidgetCacheIndex = _pageWidgetCache.length-1;
+        }
+
+        notifyListeners();
+      } else {
+        _confirmationCounter++;
+      }
+
+    } else {
+
+      _confirmation = false;
+      _pageWidgetCache.removeLast();
       _pageWidgetCacheIndex = _pageWidgetCache.length-1;
+
+      if (_pageWidgetCache.isEmpty) {
+        _pageWidgetCache.add(const HomePage());
+        _pageWidgetCacheIndex = _pageWidgetCache.length-1;
+      }
+
+      notifyListeners();
     }
 
-    notifyListeners();
   }
 
 }

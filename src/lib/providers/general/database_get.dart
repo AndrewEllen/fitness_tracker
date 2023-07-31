@@ -368,7 +368,7 @@ GetUserNutritionData(String date) async {
             foodServingSize: _data[index]["foodServingSize"] ?? "",
             foodServings: _data[index]["foodServings"] ?? "",
             foodItemData: FoodDefaultData(),
-            recipe: _data[index]["recipe"] ?? false,
+            recipe: _data[index]["recipe"] as bool,
           );
         });
 
@@ -377,6 +377,9 @@ GetUserNutritionData(String date) async {
         for (int i = 0; i < foodList.length; i++) {
 
           dynamic data = await CheckFoodBarcode(foodList[i].barcode, recipe: foodList[i].recipe);
+
+          print("PRINTING NAMES OF FOOD");
+          print(data.foodData.foodName);
 
           if (foodList[i].recipe) {
             foodList[i].foodItemData = data.foodData;

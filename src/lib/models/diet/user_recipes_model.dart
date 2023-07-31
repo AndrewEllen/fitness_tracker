@@ -16,7 +16,7 @@ class UserRecipesModel {
 
     return {
       'barcode': barcode,
-      'recipeBarcodeList': ConvertToList(foodList: recipeFoodList),
+      'barcodeList': ConvertToList(foodList: recipeFoodList),
       'foodData': foodData.toMap(),
     };
   }

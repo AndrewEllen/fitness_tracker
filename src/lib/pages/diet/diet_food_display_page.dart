@@ -133,6 +133,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
           currentFoodItem.recipe,
         );
 
+        context.read<UserNutritionData>().resetCurrentRecipe();
         context.read<PageChange>().changePageClearCache(const DietHomePage());
 
       } else if (currentFoodItem.foodName.isNotEmpty &&
@@ -157,6 +158,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         currentFoodItem.recipe,
       );
 
+      context.read<UserNutritionData>().resetCurrentRecipe();
       context.read<PageChange>().changePageClearCache(const DietHomePage());
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

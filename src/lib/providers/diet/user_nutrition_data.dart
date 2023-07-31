@@ -1101,6 +1101,77 @@ class UserNutritionData with ChangeNotifier {
 
   }
 
+  void resetCurrentRecipe() {
+    _currentRecipe = UserRecipesModel(
+      barcode: "",
+      barcodeList: [],
+      recipeFoodList: [],
+      foodData: FoodItem(
+        barcode: "",
+        foodName: "",
+        quantity: "",
+        servingSize: "",
+        servings: "",
+        calories: "",
+        kiloJoules: "",
+        proteins: "",
+        carbs: "",
+        fiber: "",
+        sugars: "",
+        fat: "",
+        saturatedFat: "",
+        polyUnsaturatedFat: "",
+        monoUnsaturatedFat: "",
+        transFat: "",
+        cholesterol: "",
+        calcium: "",
+        iron: "",
+        sodium: "",
+        zinc: "",
+        magnesium: "",
+        potassium: "",
+        vitaminA: "",
+        vitaminB1: "",
+        vitaminB2: "",
+        vitaminB3: "",
+        vitaminB6: "",
+        vitaminB9: "",
+        vitaminB12: "",
+        vitaminC: "",
+        vitaminD: "",
+        vitaminE: "",
+        vitaminK: "",
+        omega3: "",
+        omega6: "",
+        alcohol: "",
+        biotin: "",
+        butyricAcid: "",
+        caffeine: "",
+        capricAcid: "",
+        caproicAcid: "",
+        caprylicAcid: "",
+        chloride: "",
+        chromium: "",
+        copper: "",
+        docosahexaenoicAcid: "",
+        eicosapentaenoicAcid: "",
+        erucicAcid: "",
+        fluoride: "",
+        iodine: "",
+        manganese: "",
+        molybdenum: "",
+        myristicAcid: "",
+        oleicAcid: "",
+        palmiticAcid: "",
+        pantothenicAcid: "",
+        selenium: "",
+        stearicAcid: "",
+      ),
+    );
+
+    notifyListeners();
+  }
+
   void setCurrentRecipe(UserRecipesModel recipeItem) {
     _currentRecipe = recipeItem;
 

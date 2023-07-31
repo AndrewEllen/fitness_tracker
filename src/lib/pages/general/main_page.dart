@@ -37,11 +37,11 @@ class _MainPageState extends State<MainPage> {
   ];
 
   static final List<Widget> itemsSelected = [
-    const Icon(Icons.fitness_center, size: 40, color: Colors.white,),
-    const Icon(MdiIcons.foodApple, size: 40, color: Colors.white,),
-    const Icon(Icons.home, size: 40, color: Colors.white,),
-    const Icon(MdiIcons.ruler, size: 40, color: Colors.white,),
-    const Icon(MdiIcons.informationOutline, size: 40, color: Colors.white,),
+    const Icon(Icons.fitness_center, size: 35, color: Colors.white,),
+    const Icon(MdiIcons.foodApple, size: 35, color: Colors.white,),
+    const Icon(Icons.home, size: 35, color: Colors.white,),
+    const Icon(MdiIcons.ruler, size: 35, color: Colors.white,),
+    const Icon(MdiIcons.informationOutline, size: 35, color: Colors.white,),
   ];
 
   late List<Widget> items;
@@ -121,6 +121,7 @@ class _MainPageState extends State<MainPage> {
               backgroundColor: appPrimaryColour,
               bottomNavigationBar: CurvedNavigationBar(
                   key: _NavigationBarKey,
+                  letIndexChange: (index) {return !context.read<PageChange>().confirmation;},
                   backgroundColor: appTertiaryColour.withAlpha(100),
                   buttonBackgroundColor: appSecondaryColour,
                   //buttonBackgroundColor: Colors.transparent,
