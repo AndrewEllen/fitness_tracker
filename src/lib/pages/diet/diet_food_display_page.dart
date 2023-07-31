@@ -14,9 +14,9 @@ import 'food_nutrition_list_edit.dart';
 import '../../widgets/diet/food_nutrition_list_text.dart';
 
 class FoodDisplayPage extends StatefulWidget {
-  const FoodDisplayPage({Key? key, required this.category, this.editDiary = false, this.index = 0}) : super(key: key);
+  const FoodDisplayPage({Key? key, required this.category, this.editDiary = false, this.index = 0, this.recipe = false}) : super(key: key);
   final String category;
-  final bool editDiary;
+  final bool editDiary, recipe;
   final int index;
 
   @override

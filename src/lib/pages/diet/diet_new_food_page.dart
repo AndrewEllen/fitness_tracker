@@ -14,9 +14,9 @@ import '../../widgets/diet/food_nutrition_list_formfield.dart';
 import 'diet_food_display_page.dart';
 
 class FoodNewNutritionEdit extends StatefulWidget {
-  const FoodNewNutritionEdit({Key? key, required this.category, this.fromBarcode = false}) : super(key: key);
+  const FoodNewNutritionEdit({Key? key, required this.category, this.fromBarcode = false, this.recipe = false}) : super(key: key);
   final String category;
-  final bool fromBarcode;
+  final bool fromBarcode, recipe;
 
   @override
   State<FoodNewNutritionEdit> createState() => _FoodNewNutritionEditState();

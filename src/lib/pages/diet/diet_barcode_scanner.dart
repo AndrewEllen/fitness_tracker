@@ -12,8 +12,9 @@ import 'diet_food_display_page.dart';
 import 'diet_new_food_page.dart';
 
 class BarcodeScannerPage extends StatefulWidget {
-  const BarcodeScannerPage({Key? key, required this.category}) : super(key: key);
+  const BarcodeScannerPage({Key? key, required this.category, this.recipe = false}) : super(key: key);
   final String category;
+  final bool recipe;
 
   @override
   State<BarcodeScannerPage> createState() => _BarcodeScannerPageState();
@@ -101,7 +102,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
               if (newFoodItem.newItem) {
                 scannerController.stop();
 
-                context.read<PageChange>().changePageRemovePreviousCache(FoodNewNutritionEdit(category: widget.category, fromBarcode: true,));
+                context.read<PageChange>().changePageRemovePreviousCache(FoodNewNutritionEdit(category: widget.category, fromBarcode: true, recipe: widget.recipe,));
               } else {
                 scannerController.stop();
 

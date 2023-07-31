@@ -12,6 +12,7 @@ import '../../widgets/general/app_default_button.dart';
 import '../../widgets/diet/diet_list_header_box.dart';
 import '../../widgets/diet/food_nutrition_list_formfield.dart';
 import 'diet_food_display_page.dart';
+import 'diet_recipe_food_search.dart';
 
 class FoodRecipeNew extends StatefulWidget {
   const FoodRecipeNew({Key? key, required this.category})
@@ -146,7 +147,7 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
                           child: SizedBox(
                             height: 25,
                             child: AppButton(
-                              onTap: () {},
+                              onTap: () => context.read<PageChange>().changePageCache(const FoodRecipeSearchPage()),
                               buttonText: "Add Ingredients",
                             ),
                           ),
