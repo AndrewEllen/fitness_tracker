@@ -18,32 +18,53 @@ import '../../widgets/diet/food_nutrition_list_formfield.dart';
 import 'diet_food_display_page.dart';
 import 'diet_recipe_food_search.dart';
 
-class FoodRecipeNew extends StatefulWidget {
-  const FoodRecipeNew({Key? key, required this.category})
+class FoodRecipeCreator extends StatefulWidget {
+  const FoodRecipeCreator({Key? key, required this.category})
       : super(key: key);
   final String category;
 
   @override
-  State<FoodRecipeNew> createState() => _FoodRecipeNewState();
+  State<FoodRecipeCreator> createState() => _FoodRecipeCreatorState();
 }
 
-class _FoodRecipeNewState extends State<FoodRecipeNew> {
+class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
   late bool _loading = true;
 
   late TextEditingController barcodeController = TextEditingController();
   late TextEditingController foodNameController = TextEditingController();
-  late TextEditingController quantityController = TextEditingController();
-  late TextEditingController servingSizeController = TextEditingController();
   late TextEditingController servingsController = TextEditingController();
 
   late final barcodeKey = GlobalKey<FormState>();
   late final foodNameKey = GlobalKey<FormState>();
-  late final quanityKey = GlobalKey<FormState>();
-  late final servingSizekey = GlobalKey<FormState>();
-  late final servingskey = GlobalKey<FormState>();
+  late final servingsKey = GlobalKey<FormState>();
 
 
   late final UserRecipesModel currentRecipe;
+
+  void AddToRecipe() {
+
+    if (currentRecipe.foodData.servings.isNotEmpty && currentRecipe.recipeFoodList.isNotEmpty && foodNameController.text.isNotEmpty) {
+
+      context.read<UserNutritionData>().createRecipe(
+        foodNameController.text,
+        barcodeController.text,
+      );
+
+      context.read<UserNutritionData>().setCurrentFoodItem(currentRecipe.foodData);
+      context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipeEdit: true,));
+
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+          "Missing Recipe Name, Servings or Ingredients",
+          style: TextStyle(
+            color: Colors.red,
+          ),
+        ),
+      ));
+    }
+
+  }
 
 
   editEntry(BuildContext context, int index, String value, double width) {
@@ -140,7 +161,14 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
 
     currentRecipe = context.read<UserNutritionData>().currentRecipe;
 
-    barcodeController.text = barcodeController.text = const Uuid().v4();
+    if (currentRecipe.barcode.isEmpty) {
+      barcodeController.text = barcodeController.text = const Uuid().v4();
+    } else {
+      barcodeController.text = currentRecipe.barcode;
+    }
+
+    foodNameController.text = currentRecipe.foodData.foodName;
+    servingsController.text = currentRecipe.foodData.servings;
 
     _loading = false;
 
@@ -183,7 +211,7 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
                   ),
                   FoodNutritionListFormField(
                     controller: servingsController,
-                    formKey: servingskey,
+                    formKey: servingsKey,
                     width: _width,
                     formName: "Servings",
                     servings: true,
@@ -303,7 +331,7 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
                 widthFactor: 1,
                 child: AppButton(
                   buttonText: "Next",
-                  onTap: () {},
+                  onTap: AddToRecipe,
                 ),
               ),
             ),

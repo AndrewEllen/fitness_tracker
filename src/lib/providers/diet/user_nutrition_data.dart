@@ -1114,6 +1114,12 @@ class UserNutritionData with ChangeNotifier {
     }
   }
 
+  void createRecipe(String foodName, String barcode) {
+    _currentRecipe.foodData.foodName = foodName;
+    _currentRecipe.foodData.barcode = barcode;
+    _currentRecipe.barcode = barcode;
+  }
+
   late double _recipeweight = 0;
   late double _recipecalories = 0;
   late double _recipeprotein = 0;

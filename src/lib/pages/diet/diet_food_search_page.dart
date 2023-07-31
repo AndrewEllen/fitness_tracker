@@ -17,8 +17,7 @@ import '../../widgets/diet/food_list_search_display_box.dart';
 import 'diet_barcode_scanner.dart';
 import 'diet_food_display_page.dart';
 import 'diet_new_food_page.dart';
-import 'diet_recipe_edit.dart';
-import 'diet_recipe_new.dart';
+import 'diet_recipe_creator.dart';
 
 class FoodSearchPage extends StatefulWidget {
   const FoodSearchPage({
@@ -819,7 +818,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                 child: Material(
                                   color: Colors.transparent,
                                   child: InkWell(
-                                    onTap: () => context.read<PageChange>().changePageCache(FoodRecipeNew(category: widget.category)),
+                                    onTap: () => context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category)),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [

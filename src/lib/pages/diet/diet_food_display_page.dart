@@ -10,14 +10,14 @@ import '../../models/diet/food_item.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/diet/diet_list_header_box.dart';
 import '../../widgets/diet/food_nutrition_list_formfield.dart';
-import 'diet_recipe_new.dart';
+import 'diet_recipe_creator.dart';
 import 'food_nutrition_list_edit.dart';
 import '../../widgets/diet/food_nutrition_list_text.dart';
 
 class FoodDisplayPage extends StatefulWidget {
-  const FoodDisplayPage({Key? key, required this.category, this.editDiary = false, this.index = 0, this.recipe = false}) : super(key: key);
+  const FoodDisplayPage({Key? key, required this.category, this.editDiary = false, this.index = 0, this.recipe = false, this.recipeEdit = false}) : super(key: key);
   final String category;
-  final bool editDiary, recipe;
+  final bool editDiary, recipe, recipeEdit;
   final int index;
 
   @override
@@ -71,7 +71,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         widget.index,
       );
 
-      context.read<PageChange>().changePageClearCache(const FoodRecipeNew(category: 'recipe',));
+      context.read<PageChange>().changePageClearCache(const FoodRecipeCreator(category: 'recipe',));
 
     } else if (currentFoodItem.foodName.isNotEmpty &&
         currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
@@ -86,7 +86,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         servingSizeController.text,
       );
 
-      context.read<PageChange>().changePageClearCache(const FoodRecipeNew(category: 'recipe',));
+      context.read<PageChange>().changePageClearCache(const FoodRecipeCreator(category: 'recipe',));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text(
@@ -315,7 +315,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                               icon: const Icon(
                                   Icons.edit
                               ),
-                              onPressed: () => context.read<PageChange>().changePageCache(FoodNutritionListEdit(category: widget.category)),
+                              onPressed: () => widget.recipeEdit ? context.read<PageChange>().changePageCache(FoodNutritionListEdit(category: widget.category)) : context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category)),
                             ),
                           ),
                         ),
