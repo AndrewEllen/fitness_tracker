@@ -46,6 +46,95 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
   late final UserRecipesModel currentRecipe;
 
 
+  editEntry(BuildContext context, int index, String value, double width) {
+
+    double buttonSize = width/17;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          insetPadding: const EdgeInsets.all(0),
+          backgroundColor: appTertiaryColour,
+          title: const Text(
+            "Edit Selection",
+            style: TextStyle(
+              color: appSecondaryColour,
+            ),
+          ),
+          content: RichText(
+            text: TextSpan(text: 'Editing: ',
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+              ),
+              children: <TextSpan>[
+                TextSpan(text: value,
+                  style: const TextStyle(
+                    color: appSecondaryColour,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+
+              children: [
+                const Spacer(),
+                SizedBox(
+                    height: buttonSize,
+                    child: AppButton(
+                      primaryColor: Colors.red,
+                      buttonText: "Delete",
+                      onTap: () {
+                        context.read<UserNutritionData>().removeFoodItemFromRecipe(index);
+                        Navigator.pop(context);
+                      },
+                    )
+                ),
+                const Spacer(),
+                SizedBox(
+                    height: buttonSize,
+                    child: AppButton(
+                      buttonText: "Cancel",
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                ),
+                const Spacer(),
+                SizedBox(
+                    height: buttonSize,
+                    child: AppButton(
+                      primaryColor: appSecondaryColour,
+                      buttonText: "Edit",
+                      onTap: () {
+                        context.read<UserNutritionData>().setCurrentFoodItem(currentRecipe.recipeFoodList[index].foodItemData);
+                        context.read<UserNutritionData>().updateCurrentFoodItemServings(currentRecipe.recipeFoodList[index].foodServings);
+                        context.read<UserNutritionData>().updateCurrentFoodItemServingSize(currentRecipe.recipeFoodList[index].foodServingSize);
+
+                        context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, editDiary: true, index: index, recipe: true,));
+
+                        Navigator.pop(context);
+                      },
+                    )
+                ),
+                const Spacer(),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
   @override
   void initState() {
 
@@ -60,6 +149,9 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
 
   @override
   Widget build(BuildContext context) {
+
+    print("quanity " + currentRecipe.foodData.quantity);
+    print("calories " + currentRecipe.foodData.calories);
 
     double _margin = 15;
     double _smallContainerMin = 95;
@@ -92,21 +184,11 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
                     numbersOnly: false,
                     centerForm: true,
                   ),
-                  FoodNutritionListFormField(
-                    controller: servingsController,
-                    formKey: servingskey,
+                  DietListHeaderBox(
                     width: _width,
-                    formName: "Servings",
-                    numbersOnly: true,
-                    centerForm: true,
-                  ),
-                  FoodNutritionListFormField(
-                    controller: servingSizeController,
-                    formKey: servingSizekey,
-                    width: _width,
-                    formName: "Serving Size",
-                    numbersOnly: true,
-                    centerForm: true,
+                    title: currentRecipe.recipeFoodList.isNotEmpty ? (double.parse(currentRecipe.foodData.calories) / double.parse(currentRecipe.foodData.quantity) * 100).toStringAsFixed(0) + "Kcal/100g" : "0 Kcal/100g",
+                    largeTitle: true,
+                    color: Colors.white,
                   ),
                   Container(
                     decoration: const BoxDecoration(
@@ -162,18 +244,23 @@ class _FoodRecipeNewState extends State<FoodRecipeNew> {
                     )
                   ) : SizedBox(
                     ///Overflowing parent constraints. Adding constraints here for now.
-                    height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.54 : _height * 0.43,
+                    height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.612 : _height * 0.43,
                     child: ListView.builder(
                       itemCount: context.watch<UserNutritionData>().currentRecipe.recipeFoodList.length,
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         return FoodListDisplayBox(
                           key: UniqueKey(),
-                          width: MediaQuery.of(context).size.width,
+                          width: _width,
                           foodObject: currentRecipe.recipeFoodList[index],
-                          icon: Icons.delete,
-                          iconColour: Colors.red,
-                          onTapIcon: () => context.read<UserNutritionData>().removeFoodItemFromRecipe(index),
+                          icon: MdiIcons.squareEditOutline,
+                          iconColour: Colors.white,
+                          onTapIcon: () => editEntry(
+                            this.context,
+                            index,
+                            currentRecipe.recipeFoodList[index].foodItemData.foodName,
+                            _width,
+                          ),
                         );
                       },
                     ),

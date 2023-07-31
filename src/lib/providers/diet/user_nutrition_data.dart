@@ -1053,8 +1053,27 @@ class UserNutritionData with ChangeNotifier {
     notifyListeners();
   }
 
+  void editFoodItemInRecipe(FoodItem item, String category, String servings,
+      String servingSize, index) {
+
+
+    _currentRecipe.recipeFoodList[index] = (ListFoodItem(
+      barcode: item.barcode,
+      category: category,
+      foodServings: servings,
+      foodServingSize: servingSize,
+      foodItemData: item,
+    ));
+
+    calculateRecipeMacros();
+
+    notifyListeners();
+  }
+
   void removeFoodItemFromRecipe(int index) {
     _currentRecipe.recipeFoodList.removeAt(index);
+
+    calculateRecipeMacros();
 
     notifyListeners();
   }
@@ -1070,8 +1089,522 @@ class UserNutritionData with ChangeNotifier {
       foodItemData: newItem,
     ));
 
+      calculateRecipeMacros();
+
       notifyListeners();
     }
+  }
+
+  late double _recipeweight = 0;
+  late double _recipecalories = 0;
+  late double _recipeprotein = 0;
+  late double _recipefat = 0;
+  late double _recipecarbohydrates = 0;
+  late double _recipefiber = 0;
+  late double _recipesugar = 0;
+  late double _recipesaturatedFat = 0.0;
+  late double _recipepolyUnsaturatedFat = 0.0;
+  late double _recipemonoUnsaturatedFat = 0.0;
+  late double _recipetransFat = 0.0;
+  late double _recipecholesterol = 0.0;
+  late double _recipecalcium = 0.0;
+  late double _recipeiron = 0.0;
+  late double _recipesodium = 0.0;
+  late double _recipezinc = 0.0;
+  late double _recipemagnesium = 0.0;
+  late double _recipepotassium = 0.0;
+  late double _recipevitaminA = 0.0;
+  late double _recipevitaminB1 = 0.0;
+  late double _recipevitaminB2 = 0.0;
+  late double _recipevitaminB3 = 0.0;
+  late double _recipevitaminB6 = 0.0;
+  late double _recipevitaminB9 = 0.0;
+  late double _recipevitaminB12 = 0.0;
+  late double _recipevitaminC = 0.0;
+  late double _recipevitaminD = 0.0;
+  late double _recipevitaminE = 0.0;
+  late double _recipevitaminK = 0.0;
+  late double _recipeomega3 = 0.0;
+  late double _recipeomega6 = 0.0;
+  late double _recipealcohol = 0.0;
+  late double _recipebiotin = 0.0;
+  late double _recipebutyricAcid = 0.0;
+  late double _recipecaffeine = 0.0;
+  late double _recipecapricAcid = 0.0;
+  late double _recipecaproicAcid = 0.0;
+  late double _recipecaprylicAcid = 0.0;
+  late double _recipechloride = 0.0;
+  late double _recipechromium = 0.0;
+  late double _recipecopper = 0.0;
+  late double _recipedocosahexaenoicAcid = 0.0;
+  late double _recipeeicosapentaenoicAcid = 0.0;
+  late double _recipeerucicAcid = 0.0;
+  late double _recipefluoride = 0.0;
+  late double _recipeiodine = 0.0;
+  late double _recipemanganese = 0.0;
+  late double _recipemolybdenum = 0.0;
+  late double _recipemyristicAcid = 0.0;
+  late double _recipeoleicAcid = 0.0;
+  late double _recipepalmiticAcid = 0.0;
+  late double _recipepantothenicAcid = 0.0;
+  late double _recipeselenium = 0.0;
+  late double _recipestearicAcid = 0.0;
+
+  double get recipeweight => _recipeweight;
+  double get recipecalories => _recipecalories;
+  double get recipeprotein => _recipeprotein;
+  double get recipefat => _recipefat;
+  double get recipecarbohydrates => _recipecarbohydrates;
+  double get recipefiber => _recipefiber;
+  double get recipesugar => _recipesugar;
+  double get recipesaturatedFat => _recipesaturatedFat;
+  double get recipepolyUnsaturatedFat => _recipepolyUnsaturatedFat;
+  double get recipemonoUnsaturatedFat => _recipemonoUnsaturatedFat;
+  double get recipetransFat => _recipetransFat;
+  double get recipecholesterol => _recipecholesterol;
+  double get recipecalcium => _recipecalcium;
+  double get recipeiron => _recipeiron;
+  double get recipesodium => _recipesodium;
+  double get recipezinc => _recipezinc;
+  double get recipemagnesium => _recipemagnesium;
+  double get recipepotassium => _recipepotassium;
+  double get recipevitaminA => _recipevitaminA;
+  double get recipevitaminB1 => _recipevitaminB1;
+  double get recipevitaminB2 => _recipevitaminB2;
+  double get recipevitaminB3 => _recipevitaminB3;
+  double get recipevitaminB6 => _recipevitaminB6;
+  double get recipevitaminB9 => _recipevitaminB9;
+  double get recipevitaminB12 => _recipevitaminB12;
+  double get recipevitaminC => _recipevitaminC;
+  double get recipevitaminD => _recipevitaminD;
+  double get recipevitaminE => _recipevitaminE;
+  double get recipevitaminK => _recipevitaminK;
+  double get recipeomega3 => _recipeomega3;
+  double get recipeomega6 => _recipeomega6;
+  double get recipealcohol => _recipealcohol;
+  double get recipebiotin => _recipebiotin;
+  double get recipebutyricAcid => _recipebutyricAcid;
+  double get recipecaffeine => _recipecaffeine;
+  double get recipecapricAcid => _recipecapricAcid;
+  double get recipecaproicAcid => _recipecaproicAcid;
+  double get recipecaprylicAcid => _recipecaprylicAcid;
+  double get recipechloride => _recipechloride;
+  double get recipechromium => _recipechromium;
+  double get recipecopper => _recipecopper;
+  double get recipedocosahexaenoicAcid => _recipedocosahexaenoicAcid;
+  double get recipeeicosapentaenoicAcid => _recipeeicosapentaenoicAcid;
+  double get recipeerucicAcid => _recipeerucicAcid;
+  double get recipefluoride => _recipefluoride;
+  double get recipeiodine => _recipeiodine;
+  double get recipemanganese => _recipemanganese;
+  double get recipemolybdenum => _recipemolybdenum;
+  double get recipemyristicAcid => _recipemyristicAcid;
+  double get recipeoleicAcid => _recipeoleicAcid;
+  double get recipepalmiticAcid => _recipepalmiticAcid;
+  double get recipepantothenicAcid => _recipepantothenicAcid;
+  double get recipeselenium => _recipeselenium;
+  double get recipestearicAcid => _recipestearicAcid;
+
+  void calculateRecipeMacros() {
+
+    _recipeweight = 0;
+    _recipecalories = 0;
+    _recipeprotein = 0;
+    _recipefat = 0;
+    _recipecarbohydrates = 0;
+    _recipefiber = 0;
+    _recipesugar = 0;
+    _recipesaturatedFat = 0.0;
+    _recipepolyUnsaturatedFat = 0.0;
+    _recipemonoUnsaturatedFat = 0.0;
+    _recipetransFat = 0.0;
+    _recipecholesterol = 0.0;
+    _recipecalcium = 0.0;
+    _recipeiron = 0.0;
+    _recipesodium = 0.0;
+    _recipezinc = 0.0;
+    _recipemagnesium = 0.0;
+    _recipepotassium = 0.0;
+    _recipevitaminA = 0.0;
+    _recipevitaminB1 = 0.0;
+    _recipevitaminB2 = 0.0;
+    _recipevitaminB3 = 0.0;
+    _recipevitaminB6 = 0.0;
+    _recipevitaminB9 = 0.0;
+    _recipevitaminB12 = 0.0;
+    _recipevitaminC = 0.0;
+    _recipevitaminD = 0.0;
+    _recipevitaminE = 0.0;
+    _recipevitaminK = 0.0;
+    _recipeomega3 = 0.0;
+    _recipeomega6 = 0.0;
+    _recipealcohol = 0.0;
+    _recipebiotin = 0.0;
+    _recipebutyricAcid = 0.0;
+    _recipecaffeine = 0.0;
+    _recipecapricAcid = 0.0;
+    _recipecaproicAcid = 0.0;
+    _recipecaprylicAcid = 0.0;
+    _recipechloride = 0.0;
+    _recipechromium = 0.0;
+    _recipecopper = 0.0;
+    _recipedocosahexaenoicAcid = 0.0;
+    _recipeeicosapentaenoicAcid = 0.0;
+    _recipeerucicAcid = 0.0;
+    _recipefluoride = 0.0;
+    _recipeiodine = 0.0;
+    _recipemanganese = 0.0;
+    _recipemolybdenum = 0.0;
+    _recipemyristicAcid = 0.0;
+    _recipeoleicAcid = 0.0;
+    _recipepalmiticAcid = 0.0;
+    _recipepantothenicAcid = 0.0;
+    _recipeselenium = 0.0;
+    _recipestearicAcid = 0.0;
+
+    void calculateTotal(List<ListFoodItem> listOfFood) {
+      for (var foodItem in listOfFood) {
+        try {
+          print("serving size " + foodItem.foodItemData.servingSize);
+          print("servings " + foodItem.foodServings);
+          _recipeweight += (double.parse(foodItem.foodServingSize)) * (double.parse(foodItem.foodServings));
+        } catch (exception) {
+          _recipeweight += 0;
+        }
+        try {
+          _recipecalories += (double.parse(foodItem.foodItemData.calories)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipecalories += 0;
+        }
+        try {
+          _recipeprotein += (double.parse(foodItem.foodItemData.proteins)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipeprotein += 0;
+        }
+        try {
+          _recipefat += (double.parse(foodItem.foodItemData.fat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipefat += 0;
+        }
+        try {
+          _recipecarbohydrates += (double.parse(foodItem.foodItemData.carbs)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipecarbohydrates += 0;
+        }
+        try {
+          _recipefiber += (double.parse(foodItem.foodItemData.fiber)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipefiber += 0;
+        }
+        try {
+          _recipesugar += (double.parse(foodItem.foodItemData.sugars)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipesugar += 0;
+        }
+        try {
+          _recipesaturatedFat += (double.parse(foodItem.foodItemData.saturatedFat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipesaturatedFat += 0;
+        }
+        try {
+          _recipepolyUnsaturatedFat += (double.parse(foodItem.foodItemData.polyUnsaturatedFat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipepolyUnsaturatedFat += 0;
+        }
+        try {
+          _recipemonoUnsaturatedFat += (double.parse(foodItem.foodItemData.monoUnsaturatedFat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipemonoUnsaturatedFat += 0;
+        }
+        try {
+          _recipetransFat += (double.parse(foodItem.foodItemData.transFat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipetransFat += 0;
+        }
+        try {
+          _recipecholesterol += (double.parse(foodItem.foodItemData.cholesterol)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipecholesterol += 0;
+        }
+        try {
+          _recipecalcium += (double.parse(foodItem.foodItemData.calcium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipecalcium += 0;
+        }
+        try {
+          _recipeiron += (double.parse(foodItem.foodItemData.iron)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipeiron += 0;
+        }
+        try {
+          _recipesodium += (double.parse(foodItem.foodItemData.sodium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipesodium += 0;
+        }
+        try {
+          _recipezinc += (double.parse(foodItem.foodItemData.zinc)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipezinc += 0;
+        }
+        try {
+          _recipemagnesium += (double.parse(foodItem.foodItemData.magnesium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipemagnesium += 0;
+        }
+        try {
+          _recipepotassium += (double.parse(foodItem.foodItemData.potassium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipepotassium += 0;
+        }
+        try {
+          _recipevitaminA += (double.parse(foodItem.foodItemData.vitaminA)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipevitaminA += 0;
+        }
+        try {
+          _recipevitaminB1 += (double.parse(foodItem.foodItemData.vitaminB1)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipevitaminB1 += 0;
+        }
+        try {
+          _recipevitaminB2 += (double.parse(foodItem.foodItemData.vitaminB2)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipevitaminB2 += 0;
+        }
+        try {
+          _recipevitaminB3 += (double.parse(foodItem.foodItemData.vitaminB3)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipevitaminB3 += 0;
+        }
+        try {
+          _recipevitaminB6 += (double.parse(foodItem.foodItemData.vitaminB6)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipevitaminB6 += 0;
+        }
+        try {
+          _recipevitaminB9 += (double.parse(foodItem.foodItemData.vitaminB9)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipevitaminB9 += 0;
+        }
+        try {
+          _recipevitaminB12 += (double.parse(foodItem.foodItemData.vitaminB12)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipevitaminB12 += 0;
+        }
+        try {
+          _recipevitaminC += (double.parse(foodItem.foodItemData.vitaminC)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipevitaminC += 0;
+        }
+        try {
+          _recipevitaminD += (double.parse(foodItem.foodItemData.vitaminD)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipevitaminD += 0;
+        }
+        try {
+          _recipevitaminE += (double.parse(foodItem.foodItemData.vitaminE)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipevitaminE += 0;
+        }
+        try {
+          _recipevitaminK += (double.parse(foodItem.foodItemData.vitaminK)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipevitaminK += 0;
+        }
+        try {
+          _recipeomega3 += (double.parse(foodItem.foodItemData.omega3)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipeomega3 += 0;
+        }
+        try {
+          _recipeomega6 += (double.parse(foodItem.foodItemData.omega6)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipeomega6 += 0;
+        }
+        try {
+          _recipealcohol += (double.parse(foodItem.foodItemData.alcohol)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipealcohol += 0;
+        }
+        try {
+          _recipebiotin += (double.parse(foodItem.foodItemData.biotin)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipebiotin += 0;
+        }
+        try {
+          _recipebutyricAcid += (double.parse(foodItem.foodItemData.butyricAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipebutyricAcid += 0;
+        }
+        try {
+          _recipecaffeine += (double.parse(foodItem.foodItemData.caffeine)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipecaffeine += 0;
+        }
+        try {
+          _recipecapricAcid += (double.parse(foodItem.foodItemData.capricAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipecapricAcid += 0;
+        }
+        try {
+          _recipecaproicAcid += (double.parse(foodItem.foodItemData.caproicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipecaproicAcid += 0;
+        }
+        try {
+          _recipecaprylicAcid += (double.parse(foodItem.foodItemData.caprylicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipecaprylicAcid += 0;
+        }
+        try {
+          _recipechloride += (double.parse(foodItem.foodItemData.chloride)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipechloride += 0;
+        }
+        try {
+          _recipechromium += (double.parse(foodItem.foodItemData.chromium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipechromium += 0;
+        }
+        try {
+          _recipecopper += (double.parse(foodItem.foodItemData.copper)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipecopper += 0;
+        }
+        try {
+          _recipedocosahexaenoicAcid += (double.parse(foodItem.foodItemData.docosahexaenoicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipedocosahexaenoicAcid += 0;
+        }
+        try {
+          _recipeeicosapentaenoicAcid += (double.parse(foodItem.foodItemData.eicosapentaenoicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipeeicosapentaenoicAcid += 0;
+        }
+        try {
+          _recipeerucicAcid += (double.parse(foodItem.foodItemData.erucicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipeerucicAcid += 0;
+        }
+        try {
+          _recipefluoride += (double.parse(foodItem.foodItemData.fluoride)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipefluoride += 0;
+        }
+        try {
+          _recipeiodine += (double.parse(foodItem.foodItemData.iodine)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipeiodine += 0;
+        }
+        try {
+          _recipemanganese += (double.parse(foodItem.foodItemData.manganese)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipemanganese += 0;
+        }
+        try {
+          _recipemolybdenum += (double.parse(foodItem.foodItemData.molybdenum)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipemolybdenum += 0;
+        }
+        try {
+          _recipemyristicAcid += (double.parse(foodItem.foodItemData.myristicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipemyristicAcid += 0;
+        }
+        try {
+          _recipeoleicAcid += (double.parse(foodItem.foodItemData.oleicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipeoleicAcid += 0;
+        }
+        try {
+          _recipepalmiticAcid += (double.parse(foodItem.foodItemData.palmiticAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipepalmiticAcid += 0;
+        }
+        try {
+          _recipepantothenicAcid += (double.parse(foodItem.foodItemData.pantothenicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipepantothenicAcid += 0;
+        }
+        try {
+          _recipeselenium += (double.parse(foodItem.foodItemData.selenium)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipeselenium += 0;
+        }
+        try {
+          _recipestearicAcid += (double.parse(foodItem.foodItemData.stearicAcid)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+        } catch (exception) {
+          _recipestearicAcid += 0;
+        }
+      }
+    }
+
+    calculateTotal(_currentRecipe.recipeFoodList);
+
+    _currentRecipe.foodData = FoodItem(
+        barcode: _currentRecipe.barcode,
+        foodName: _currentRecipe.foodData.foodName,
+        quantity: recipeweight.toString(),
+        servingSize: _currentRecipe.foodData.servingSize,
+        servings: _currentRecipe.foodData.servings,
+        calories: recipecalories.toString(),
+        kiloJoules: "",
+        proteins: recipeprotein.toString(),
+        carbs: recipecarbohydrates.toString(),
+        fiber: recipefiber.toString(),
+        sugars: recipesugar.toString(),
+        fat: recipefat.toString(),
+        saturatedFat: recipesaturatedFat.toString(),
+        polyUnsaturatedFat: recipepolyUnsaturatedFat.toString(),
+        monoUnsaturatedFat: recipemonoUnsaturatedFat.toString(),
+        transFat: recipetransFat.toString(),
+        cholesterol: recipecholesterol.toString(),
+        calcium: recipecalcium.toString(),
+        iron: recipeiron.toString(),
+        sodium: recipesodium.toString(),
+        zinc: recipezinc.toString(),
+        magnesium: recipemagnesium.toString(),
+        potassium: recipepotassium.toString(),
+        vitaminA: recipevitaminA.toString(),
+        vitaminB1: recipevitaminB1.toString(),
+        vitaminB2: recipevitaminB2.toString(),
+        vitaminB3: recipevitaminB3.toString(),
+        vitaminB6: recipevitaminB6.toString(),
+        vitaminB9: recipevitaminB9.toString(),
+        vitaminB12: recipevitaminB12.toString(),
+        vitaminC: recipevitaminC.toString(),
+        vitaminD: recipevitaminD.toString(),
+        vitaminE: recipevitaminE.toString(),
+        vitaminK: recipevitaminK.toString(),
+        omega3: recipeomega3.toString(),
+        omega6: recipeomega6.toString(),
+        alcohol: recipealcohol.toString(),
+        biotin: recipebiotin.toString(),
+        butyricAcid: recipebutyricAcid.toString(),
+        caffeine: recipecaffeine.toString(),
+        capricAcid: recipecapricAcid.toString(),
+        caproicAcid: recipecaproicAcid.toString(),
+        caprylicAcid: recipecaprylicAcid.toString(),
+        chloride: recipechloride.toString(),
+        chromium: recipechromium.toString(),
+        copper: recipecopper.toString(),
+        docosahexaenoicAcid: recipedocosahexaenoicAcid.toString(),
+        eicosapentaenoicAcid: recipeeicosapentaenoicAcid.toString(),
+        erucicAcid: recipeerucicAcid.toString(),
+        fluoride: recipefluoride.toString(),
+        iodine: recipeiodine.toString(),
+        manganese: recipemanganese.toString(),
+        molybdenum: recipemolybdenum.toString(),
+        myristicAcid: recipemyristicAcid.toString(),
+        oleicAcid: recipeoleicAcid.toString(),
+        palmiticAcid: recipepalmiticAcid.toString(),
+        pantothenicAcid: recipepantothenicAcid.toString(),
+        selenium: recipeselenium.toString(),
+        stearicAcid: recipestearicAcid.toString(),
+    );
+
+    notifyListeners();
+
   }
 
   void addFoodItemToDiary(FoodItem newItem, String category, String servings,

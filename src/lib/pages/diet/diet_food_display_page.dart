@@ -55,7 +55,25 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
 
   void AddToRecipe() {
 
-    if (currentFoodItem.foodName.isNotEmpty &&
+    if (widget.editDiary && currentFoodItem.foodName.isNotEmpty &&
+        currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
+        (servingsController.text != "-" || servingsController.text.isNotEmpty) &&
+        (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
+    ) {
+
+      print("editing");
+
+      context.read<UserNutritionData>().editFoodItemInRecipe(
+        currentFoodItem,
+        widget.category,
+        servingsController.text,
+        servingSizeController.text,
+        widget.index,
+      );
+
+      context.read<PageChange>().changePageClearCache(const FoodRecipeNew(category: 'recipe',));
+
+    } else if (currentFoodItem.foodName.isNotEmpty &&
         currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
         (servingsController.text != "-" || servingsController.text.isNotEmpty) &&
         (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
