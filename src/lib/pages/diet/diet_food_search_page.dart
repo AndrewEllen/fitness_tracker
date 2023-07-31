@@ -1057,10 +1057,13 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
                                           context.read<UserNutritionData>().setCurrentRecipe(newRecipeItem);
                                           context.read<UserNutritionData>().setCurrentFoodItem(newRecipeItem.foodData);
+                                          context.read<UserNutritionData>().updateCurrentFoodItemServings("1");
+
                                           context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipeEdit: true,));
                                         }
                                       }
-                                    }),
+                                    }
+                                    ),
                               ),
                             ),
                           ],
