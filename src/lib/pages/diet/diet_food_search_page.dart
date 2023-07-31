@@ -123,6 +123,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
         foodListItemNames: [],
         foodServings: [],
         foodServingSize: [],
+        recipe: []
     );
 
     UserNutritionCustomFoodModel customFoodSearch = UserNutritionCustomFoodModel(
@@ -183,8 +184,10 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
     if (recipe) {
 
       UserRecipesModel recipeItem = await CheckFoodBarcode(barcode, recipe: true);
-      context.read<UserNutritionData>().setCurrentRecipe(recipeItem);
 
+      print(recipeItem.foodData.recipe);
+
+      context.read<UserNutritionData>().setCurrentRecipe(recipeItem);
       context.read<UserNutritionData>().setCurrentFoodItem(recipeItem.foodData);
 
       context.read<UserNutritionData>().updateCurrentFoodItemServings(servings);
@@ -543,7 +546,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                     foodHistory.barcodes[index],
                                     foodHistory.foodServings[index],
                                     foodHistory.foodServingSize[index],
-                                    foodHistory.recipe ?? false,
+                                    foodHistory.recipe[index],
                                 ),
                               );
                             }),

@@ -368,6 +368,7 @@ GetUserNutritionData(String date) async {
             foodServingSize: _data[index]["foodServingSize"] ?? "",
             foodServings: _data[index]["foodServings"] ?? "",
             foodItemData: FoodDefaultData(),
+            recipe: _data[index]["recipe"] ?? false,
           );
         });
 
@@ -375,7 +376,13 @@ GetUserNutritionData(String date) async {
 
         for (int i = 0; i < foodList.length; i++) {
 
-          foodList[i].foodItemData = await CheckFoodBarcode( foodList[i].barcode);
+          dynamic data = await CheckFoodBarcode(foodList[i].barcode, recipe: foodList[i].recipe);
+
+          if (foodList[i].recipe) {
+            foodList[i].foodItemData = data.foodData;
+          } else {
+            foodList[i].foodItemData = data;
+          }
 
         }
 
@@ -430,6 +437,7 @@ GetUserNutritionHistory() async {
       foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
       foodServings: List<String>.from(_data["foodServings"] as List),
       foodServingSize: List<String>.from(_data["foodServingSize"] as List),
+      recipe: List<bool>.from(_data["recipe"] as List),
     );
 
   } catch (exception) {
@@ -567,6 +575,7 @@ GetFoodDataFromFirebaseRecipe(String barcode) async {
         pantothenicAcid: _data["foodData"]["pantothenicAcid"] ?? "",
         selenium: _data["foodData"]["selenium"] ?? "",
         stearicAcid: _data["foodData"]["stearicAcid"] ?? "",
+        recipe: _data["foodData"]["recipe"] as bool,
         firebaseItem: true,
       ),
     );

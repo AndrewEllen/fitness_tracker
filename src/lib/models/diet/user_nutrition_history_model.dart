@@ -15,12 +15,12 @@ class UserNutritionHistoryModel {
     required this.foodListItemNames,
     required this.foodServings,
     required this.foodServingSize,
-    this.recipe = false,
+    required this.recipe,
   });
 
   List<String> barcodes;
   List<String> foodListItemNames;
   List<String> foodServings;
   List<String> foodServingSize;
-  bool recipe;
+  List<bool> recipe;
 }

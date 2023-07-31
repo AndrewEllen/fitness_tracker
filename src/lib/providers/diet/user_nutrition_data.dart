@@ -262,6 +262,7 @@ class UserNutritionData with ChangeNotifier {
     foodServingSize: "100",
     foodServings: "1",
     foodItemData: FoodDefaultData(),
+    recipe: false
   );
   late bool _isCurrentFoodItemLoaded = false;
   late DateTime _nutritionDate = DateTime(DateTime
@@ -527,7 +528,7 @@ class UserNutritionData with ChangeNotifier {
 
 
   late UserNutritionHistoryModel _userNutritionHistory = UserNutritionHistoryModel(
-      barcodes: [], foodListItemNames: [], foodServings: [], foodServingSize: []);
+      barcodes: [], foodListItemNames: [], foodServings: [], foodServingSize: [], recipe: []);
 
   UserNutritionHistoryModel get userNutritionHistory => _userNutritionHistory;
 
@@ -561,25 +562,22 @@ class UserNutritionData with ChangeNotifier {
 
   }
 
-  void updateFoodHistory(String barcode, String foodName, String servings, String servingSize) {
+  void updateFoodHistory(String barcode, String foodName, String servings, String servingSize, bool recipe) {
 
     if (!_userNutritionHistory.barcodes.contains(barcode)) {
       _userNutritionHistory.barcodes.insert(0, barcode);
       _userNutritionHistory.foodListItemNames.insert(0, foodName);
       _userNutritionHistory.foodServings.insert(0, servings);
       _userNutritionHistory.foodServingSize.insert(0, servingSize);
+      _userNutritionHistory.recipe.insert(0, recipe);
 
       if (_userNutritionHistory.barcodes.length > 50) {
         _userNutritionHistory.barcodes.removeLast();
         _userNutritionHistory.foodListItemNames.removeLast();
         _userNutritionHistory.foodServings.removeLast();
         _userNutritionHistory.foodServingSize.removeLast();
+        _userNutritionHistory.recipe.removeLast();
       }
-
-      //_userNutritionHistory.barcodes = _userNutritionHistory.barcodes.reversed.toList();
-      //_userNutritionHistory.foodListItemNames = _userNutritionHistory.foodListItemNames.reversed.toList();
-      //_userNutritionHistory.foodServings = _userNutritionHistory.foodServings.reversed.toList();
-      //_userNutritionHistory.foodServingSize = _userNutritionHistory.foodServingSize.reversed.toList();
 
       UpdateUserNutritionHistoryData(userNutritionHistory);
 
@@ -593,11 +591,13 @@ class UserNutritionData with ChangeNotifier {
       _userNutritionHistory.foodListItemNames.removeAt(index);
       _userNutritionHistory.foodServings.removeAt(index);
       _userNutritionHistory.foodServingSize.removeAt(index);
+      _userNutritionHistory.recipe.removeAt(index);
 
       _userNutritionHistory.barcodes.insert(0, barcode);
       _userNutritionHistory.foodListItemNames.insert(0, foodName);
       _userNutritionHistory.foodServings.insert(0, servings);
       _userNutritionHistory.foodServingSize.insert(0, servingSize);
+      _userNutritionHistory.recipe.insert(0, recipe);
 
       UpdateUserNutritionHistoryData(userNutritionHistory);
 
@@ -999,7 +999,7 @@ class UserNutritionData with ChangeNotifier {
   }
 
   void editFoodItemInDiary(FoodItem item, String category, String servings,
-      String servingSize, index) {
+      String servingSize, index, recipe) {
 
     print("EDITING DATA");
 
@@ -1012,6 +1012,7 @@ class UserNutritionData with ChangeNotifier {
         foodServings: servings,
         foodServingSize: servingSize,
         foodItemData: item,
+        recipe: recipe,
       ));
 
       //_userDailyNutrition.foodListItemsDinner += _foodListItemsDinner;
@@ -1022,6 +1023,7 @@ class UserNutritionData with ChangeNotifier {
         foodServings: servings,
         foodServingSize: servingSize,
         foodItemData: item,
+        recipe: recipe,
       ));
 
       //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
@@ -1032,6 +1034,7 @@ class UserNutritionData with ChangeNotifier {
         foodServings: servings,
         foodServingSize: servingSize,
         foodItemData: item,
+        recipe: recipe,
       ));
 
       //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
@@ -1042,6 +1045,7 @@ class UserNutritionData with ChangeNotifier {
         foodServings: servings,
         foodServingSize: servingSize,
         foodItemData: item,
+        recipe: recipe,
       ));
 
       //_userDailyNutrition.foodListItemsSnacks += _foodListItemsSnacks;
@@ -1055,7 +1059,7 @@ class UserNutritionData with ChangeNotifier {
   }
 
   void editFoodItemInRecipe(FoodItem item, String category, String servings,
-      String servingSize, index) {
+      String servingSize, index, recipe) {
 
 
     _currentRecipe.recipeFoodList[index] = (ListFoodItem(
@@ -1064,6 +1068,7 @@ class UserNutritionData with ChangeNotifier {
       foodServings: servings,
       foodServingSize: servingSize,
       foodItemData: item,
+      recipe: recipe,
     ));
 
     calculateRecipeMacros();
@@ -1102,13 +1107,14 @@ class UserNutritionData with ChangeNotifier {
   }
 
   void addFoodItemToRecipe(FoodItem newItem, String category, String servings,
-      String servingSize) {
+      String servingSize, recipe) {
       _currentRecipe.recipeFoodList.add(ListFoodItem(
         barcode: newItem.barcode,
         category: category,
         foodServings: servings,
         foodServingSize: servingSize,
         foodItemData: newItem,
+        recipe: recipe,
       ));
 
       calculateRecipeMacros();
@@ -1670,7 +1676,7 @@ class UserNutritionData with ChangeNotifier {
   }
 
   void addFoodItemToDiary(FoodItem newItem, String category, String servings,
-      String servingSize) {
+      String servingSize, recipe) {
 
     print("ADDING DATA");
 
@@ -1686,6 +1692,7 @@ class UserNutritionData with ChangeNotifier {
         foodServings: servings,
         foodServingSize: servingSize,
         foodItemData: newItem,
+        recipe: recipe,
       ));
 
     } else if (category.toLowerCase() == "lunch") {
@@ -1695,6 +1702,7 @@ class UserNutritionData with ChangeNotifier {
         foodServings: servings,
         foodServingSize: servingSize,
         foodItemData: newItem,
+        recipe: recipe,
       ));
 
     } else if (category.toLowerCase() == "dinner") {
@@ -1704,6 +1712,7 @@ class UserNutritionData with ChangeNotifier {
         foodServings: servings,
         foodServingSize: servingSize,
         foodItemData: newItem,
+        recipe: recipe,
       ));
 
     } else if (category.toLowerCase() == "snacks") {
@@ -1713,6 +1722,7 @@ class UserNutritionData with ChangeNotifier {
         foodServings: servings,
         foodServingSize: servingSize,
         foodItemData: newItem,
+        recipe: recipe,
       ));
 
     }
@@ -1874,6 +1884,7 @@ class UserNutritionData with ChangeNotifier {
       foodServings: convertToUsableData(_currentFoodItem.servings),
       foodServingSize: convertToUsableData(_currentFoodItem.servingSize),
       foodItemData: newFoodItem,
+      recipe: newFoodItem.recipe,
     );
   }
 

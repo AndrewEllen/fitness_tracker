@@ -47,6 +47,9 @@ class _SplashScreenState extends State<SplashScreen> {
     print("Fetching nutrition");
     try {userNutrition = await GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString());} catch (exception) {print(exception);}
 
+    print("PRINTING FOOD ON SPLASH");
+    print(userNutrition.foodListItemsBreakfast[0].foodItemData.foodName);
+
     try {userNutritionHistory = await GetUserNutritionHistory();} catch (exception) {print(exception);}
     try {userCustomFood = await GetUserCustomFood();} catch (exception) {print(exception);}
     try {userRecipes = await GetUserCustomRecipes();} catch (exception) {print(exception);}

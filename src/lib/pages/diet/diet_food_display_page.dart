@@ -69,6 +69,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         servingsController.text,
         servingSizeController.text,
         widget.index,
+        currentFoodItem.recipe,
       );
 
       context.read<PageChange>().changePageClearCache(FoodRecipeCreator(category: widget.category,));
@@ -84,6 +85,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         widget.category,
         servingsController.text,
         servingSizeController.text,
+        currentFoodItem.recipe,
       );
 
       context.read<PageChange>().changePageClearCache(FoodRecipeCreator(category: widget.category,));
@@ -120,6 +122,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
           servingsController.text,
           servingSizeController.text,
           widget.index,
+          currentFoodItem.recipe,
         );
 
         context.read<UserNutritionData>().updateFoodHistory(
@@ -127,6 +130,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
           currentFoodItem.foodName,
           servingsController.text,
           servingSizeController.text,
+          currentFoodItem.recipe,
         );
 
         context.read<PageChange>().changePageClearCache(const DietHomePage());
@@ -142,6 +146,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         widget.category,
         servingsController.text,
         servingSizeController.text,
+        currentFoodItem.recipe,
       );
 
       context.read<UserNutritionData>().updateFoodHistory(
@@ -149,6 +154,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         currentFoodItem.foodName,
         servingsController.text,
         servingSizeController.text,
+        currentFoodItem.recipe,
       );
 
       context.read<PageChange>().changePageClearCache(const DietHomePage());

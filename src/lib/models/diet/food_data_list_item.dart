@@ -13,6 +13,7 @@ class ListFoodItem {
       'category': category,
       'foodServings': foodServings,
       'foodServingSize': foodServingSize,
+      'recipe': recipe,
     };
   }
   ListFoodItem({
@@ -21,6 +22,7 @@ class ListFoodItem {
     required this.foodServings,
     required this.foodServingSize,
     required this.foodItemData,
+    required this.recipe,
   });
 
   String barcode;
@@ -28,5 +30,6 @@ class ListFoodItem {
   String foodServings;
   String foodServingSize;
   FoodItem foodItemData;
+  bool recipe;
 
 }
