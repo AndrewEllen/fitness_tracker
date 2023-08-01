@@ -200,7 +200,7 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
             ScreenWidthContainer(
               minHeight: 100,
               maxHeight: 820,
-              height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.73 : _height * 0.43,
+              height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.73 : _height * 0.68,
               child: Column(
                 children: [
                   FoodNutritionListFormField(
@@ -243,7 +243,7 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
                     ),
                   ),
                   currentRecipe.recipeFoodList.isEmpty ? Padding(
-                    padding: EdgeInsets.only(top: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.18 : _height * 0.18),
+                    padding: EdgeInsets.only(top: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.18 : _height * 0.07),
                     child: Column(
                       children: [
                         const Padding(
