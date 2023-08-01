@@ -454,7 +454,10 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                 child: Material(
                                   color: Colors.transparent,
                                   child: InkWell(
-                                    onTap: () => context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category)),
+                                    onTap: () {
+                                      context.read<UserNutritionData>().resetCurrentFood();
+                                      context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category));
+                                    } ,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
@@ -1134,7 +1137,10 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                 child: Material(
                                   color: Colors.transparent,
                                   child: InkWell(
-                                    onTap: () => context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category)),
+                                    onTap: () {
+                                      context.read<UserNutritionData>().resetCurrentFood();
+                                      context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category));
+                                    } ,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [

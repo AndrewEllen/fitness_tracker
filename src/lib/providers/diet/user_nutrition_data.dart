@@ -541,6 +541,10 @@ class UserNutritionData with ChangeNotifier {
 
   }
 
+  void resetCurrentFood() {
+    _currentFoodItem = FoodDefaultData();
+  }
+
   void updateCustomFoodList(String barcode, String foodName, String servings, String servingSize) {
 
     _userNutritionCustomFood.barcodes.add(barcode);

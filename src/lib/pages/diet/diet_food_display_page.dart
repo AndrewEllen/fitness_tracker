@@ -469,7 +469,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
 
                 DietListHeaderBox(
                   width: _width,
-                  title: "Minerals (g)",
+                  title: "Minerals (mg)",
                 ),
 
                 FoodNutritionListText(
@@ -478,7 +478,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   //controller: sodiumController,
                   value: currentFoodItem.sodium,
                   width: _width,
-                  title: "Sodium",
+                  title: "Salt",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,

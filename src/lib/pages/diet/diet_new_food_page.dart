@@ -497,7 +497,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     controller: sodiumController,
                     formKey: sodiumKey,
                     width: _width,
-                    formName: "Sodium",
+                    formName: "Salt",
                   ),
                   FoodNutritionListFormField(
                     controller: magnesiumController,

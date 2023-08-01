@@ -521,7 +521,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           ),
         ),
         NutritionProgressBar(
-          title: "Sodium",
+          title: "Salt",
           currentProgress: context.watch<UserNutritionData>().sodium,
           goal: context.watch<UserNutritionData>().sodiumGoal,
           width: widget.width,
