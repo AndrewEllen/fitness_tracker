@@ -111,7 +111,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
               } else {
                 scannerController.stop();
 
-                context.read<PageChange>().changePageRemovePreviousCache(FoodDisplayPage(category: widget.category));
+                context.read<PageChange>().changePageRemovePreviousCache(FoodDisplayPage(category: widget.category, recipe: widget.recipe,));
               }
 
             }
