@@ -53,6 +53,7 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
       );
 
       context.read<UserNutritionData>().setCurrentFoodItem(currentRecipe.foodData);
+      context.read<UserNutritionData>().updateCurrentFoodItemServings("1");
       context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipeEdit: true,));
 
     } else {
@@ -226,7 +227,7 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
                     width: _width,
                     title:
                     (currentRecipe.recipeFoodList.isNotEmpty & currentRecipe.foodData.servings.isNotEmpty) ?
-                    (double.parse(currentRecipe.foodData.calories) / double.parse(servingsController.text)).toStringAsFixed(0)
+                    (((double.parse(currentRecipe.foodData.calories)/100)*double.parse(currentRecipe.foodData.quantity))/ double.parse(servingsController.text)).toStringAsFixed(0)
                         + "Kcal/${currentRecipe.foodData.servingSize}g"
                         : (currentRecipe.foodData.servings.isNotEmpty) ? "No Ingredients" : "Number of Servings Empty",
                     largeTitle: true,

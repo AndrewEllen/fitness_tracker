@@ -118,6 +118,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
     foodHistory = context.read<UserNutritionData>().userNutritionHistory;
     customFood = context.read<UserNutritionData>().userNutritionCustomFood;
+    customRecipes = context.read<UserNutritionData>().userNutritionCustomRecipes;
 
     UserNutritionHistoryModel foodHistorySearch = UserNutritionHistoryModel(
         barcodes: [],
@@ -128,6 +129,13 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
     );
 
     UserNutritionCustomFoodModel customFoodSearch = UserNutritionCustomFoodModel(
+      barcodes: [],
+      foodListItemNames: [],
+      foodServings: [],
+      foodServingSize: [],
+    );
+
+    UserNutritionCustomFoodModel customRecipeSearch = UserNutritionCustomFoodModel(
       barcodes: [],
       foodListItemNames: [],
       foodServings: [],
@@ -151,6 +159,21 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
       });
 
+      customRecipes.foodListItemNames.asMap().forEach((index, item) {
+
+        if (item.toLowerCase().contains(value.toLowerCase())) {
+
+          print(item);
+
+          customRecipeSearch.foodListItemNames.add(customRecipes.foodListItemNames[index]);
+          customRecipeSearch.barcodes.add(customRecipes.barcodes[index]);
+          customRecipeSearch.foodServings.add(customRecipes.foodServings[index]);
+          customRecipeSearch.foodServingSize.add(customRecipes.foodServingSize[index]);
+
+        }
+
+      });
+
       customFood.foodListItemNames.asMap().forEach((index, item) {
 
         if (item.toLowerCase().contains(value.toLowerCase())) {
@@ -169,12 +192,14 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
       setState(() {
         foodHistory = foodHistorySearch;
         customFood = customFoodSearch;
+        customRecipes = customRecipeSearch;
       });
 
     } else {
       setState(() {
         foodHistory;
         customFood;
+        customRecipes;
       });
     }
 
