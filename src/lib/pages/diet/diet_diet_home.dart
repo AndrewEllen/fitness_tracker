@@ -52,7 +52,7 @@ class _DietHomePageState extends State<DietHomePage> {
                 ),
 
                 SizedBox(
-                  height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.5 : _height * 0.54,
+                  height: MediaQuery.of(context).devicePixelRatio < 2.75 ? (MediaQuery.of(context).size.aspectRatio > 0.6 ? _height * 0.61 : _height * 0.51) : _height * 0.5,
                   child: ListView(
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -96,6 +96,7 @@ class _DietHomePageState extends State<DietHomePage> {
                     ],
                   ),
                 ),
+
               ],
             ),
           ),

@@ -216,7 +216,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
           ScreenWidthContainer(
             minHeight: _bigContainerMin,
             maxHeight: _bigContainerMin*4,
-            height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.34 : _height * 0.43,
+            height: MediaQuery.of(context).devicePixelRatio < 2.75 ? (MediaQuery.of(context).size.aspectRatio > 0.6 ? _height * 0.375 : _height * 0.45) : _height * 0.33,
             margin: 0,
             child: ListView(
               children: [
@@ -306,9 +306,9 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
             ),
           ),
           ScreenWidthContainer(
-            minHeight: _bigContainerMin,
+            minHeight: _bigContainerMin/2,
             maxHeight: _bigContainerMin*4,
-            height: MediaQuery.of(context).devicePixelRatio < 3 ? _height/1.9 : _height/2.6,
+            height: MediaQuery.of(context).devicePixelRatio < 2.75 ? (MediaQuery.of(context).size.aspectRatio > 0.6 ? _height * 0.45 : _height * 0.35) : _height * 0.52,
             margin: _margin,
             child: ListView(
               children: [

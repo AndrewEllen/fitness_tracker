@@ -34,6 +34,11 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
   @override
   Widget build(BuildContext context) {
 
+
+    print("pixel ratio ${MediaQuery.of(context).devicePixelRatio}");
+    print("aspect ratio ${MediaQuery.of(context).size.aspectRatio}");
+    print("height ${MediaQuery.of(context).size.height}");
+
     context.watch<UserNutritionData>().isCurrentFoodItemLoaded;
 
     return Container(
@@ -206,7 +211,7 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
                     ),
                   ),
                 ),
-                MediaQuery.of(context).devicePixelRatio < 3 ? Column(
+                MediaQuery.of(context).devicePixelRatio >= 2.75 ? Column(
                   children: [
                     NutritionProgressBar(
                       title: "Protein",
@@ -262,7 +267,7 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).devicePixelRatio < 3 ? 35 : 40,
+            height: MediaQuery.of(context).devicePixelRatio < 2.75 ? 35 : 40,
             child: Material(
               type: MaterialType.transparency,
               shape: const CircleBorder(),
@@ -308,7 +313,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        MediaQuery.of(context).devicePixelRatio >= 3 ? Column(
+        MediaQuery.of(context).devicePixelRatio < 2.75 ? Column(
           children: [
             NutritionProgressBar(
               title: "Protein",
