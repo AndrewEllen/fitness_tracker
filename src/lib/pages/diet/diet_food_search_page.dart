@@ -631,9 +631,9 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                           context.read<UserNutritionData>().setCurrentFoodItem(foodItemsFromSearch[index]);
 
                                           if (foodItemsFromSearch[index].firebaseItem == true) {
-                                            context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipe: true,));
+                                            context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipe: false,));
                                           } else {
-                                            context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category, fromBarcode: true, recipe: true, saveAsCustom: false));
+                                            context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category, fromBarcode: true, recipe: false, saveAsCustom: false));
                                           }
                                         },
                                   ),
@@ -651,9 +651,9 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                       context.read<UserNutritionData>().setCurrentFoodItem(foodItemsFromSearch[index]);
 
                                       if (foodItemsFromSearch[index].firebaseItem == true) {
-                                        context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipe: true,));
+                                        context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipe: false,));
                                       } else {
-                                        context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category, fromBarcode: true, recipe: true, saveAsCustom: false));
+                                        context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category, fromBarcode: true, recipe: false, saveAsCustom: false));
                                       }
                                     },
                                   );
