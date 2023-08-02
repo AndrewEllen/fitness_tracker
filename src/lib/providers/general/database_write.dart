@@ -242,3 +242,16 @@ void UpdateRecipeFoodData(UserRecipesModel foodItem) async {
     "foodNameSearch" : foodItem.foodData.foodName.triGram(),
   });
 }
+
+void writeUserCalories(String calories) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .collection("calories")
+      .doc("calories")
+      .set({"calories": calories});
+
+}

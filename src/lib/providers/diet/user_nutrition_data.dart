@@ -326,10 +326,19 @@ class UserNutritionData with ChangeNotifier {
   late double _selenium = 0.0;
   late double _stearicAcid = 0.0;
 
-  late final double _caloriesGoal = 2424;
-  late final double _proteinGoal = 160;
-  late final double _fatGoal = 85;
-  late final double _carbohydratesGoal = 286;
+  late double _caloriesGoal = 2424;
+  late double _proteinGoal = 160;
+  late double _fatGoal = 85;
+  late double _carbohydratesGoal = 286;
+
+  void setCalories (String caloriesFromDB) {
+
+    _caloriesGoal = double.parse(caloriesFromDB);
+    _carbohydratesGoal = double.parse(((double.parse(caloriesFromDB)*0.5)/4).toStringAsFixed(1));
+    _fatGoal = double.parse(((double.parse(caloriesFromDB)*0.3)/9).toStringAsFixed(1));
+    _proteinGoal = double.parse(((double.parse(caloriesFromDB)*0.2)/4).toStringAsFixed(1));
+
+  }
 
   //grams
   late final double _fiberGoal = 30; // Recommended fiber intake for adults (general guideline)

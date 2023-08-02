@@ -624,3 +624,22 @@ GetRecipeFoodList(List<ListFoodItem> foodList) async {
   }
 
 }
+
+GetUserCalories() async {
+  try {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc("${firebaseAuth.currentUser?.uid.toString()}")
+        .collection("calories")
+        .doc("calories")
+        .get();
+
+    return snapshot["calories"];
+
+  } catch (exception) {
+    print(exception);
+  }
+}
