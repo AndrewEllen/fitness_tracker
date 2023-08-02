@@ -84,7 +84,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         currentFoodItem.recipe,
       );
 
-      context.read<PageChange>().changePageClearCache(FoodRecipeCreator(category: widget.category,));
+      context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category,));
 
     } else if (currentFoodItem.foodName.isNotEmpty &&
         currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
@@ -100,7 +100,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         currentFoodItem.recipe,
       );
 
-      context.read<PageChange>().changePageClearCache(FoodRecipeCreator(category: widget.category,));
+      context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category,));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text(

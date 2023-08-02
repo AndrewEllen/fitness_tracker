@@ -1,11 +1,10 @@
-import 'package:fitness_tracker/models/diet/user_nutrition_history_model.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import '../../models/diet/food_data_list_item.dart';
 import '../../models/diet/food_item.dart';
-import '../../models/diet/user_custom_foods.dart';
+import '../../models/diet/user__foods_model.dart';
 import '../../models/diet/user_nutrition_model.dart';
 import '../general/database_write.dart';
 
@@ -526,17 +525,17 @@ class UserNutritionData with ChangeNotifier {
   String get formattedNutritionDate => FormatDate(_nutritionDate);
 
 
-  late UserNutritionHistoryModel _userNutritionHistory = UserNutritionHistoryModel(
+  late UserNutritionFoodModel _userNutritionHistory = UserNutritionFoodModel(
       barcodes: [], foodListItemNames: [], foodServings: [], foodServingSize: [], recipe: []);
 
-  UserNutritionHistoryModel get userNutritionHistory => _userNutritionHistory;
+  UserNutritionFoodModel get userNutritionHistory => _userNutritionHistory;
 
-  late UserNutritionCustomFoodModel _userNutritionCustomFood = UserNutritionCustomFoodModel(
-      barcodes: [], foodListItemNames: [], foodServings: [], foodServingSize: []);
+  late UserNutritionFoodModel _userNutritionCustomFood = UserNutritionFoodModel(
+      barcodes: [], foodListItemNames: [], foodServings: [], foodServingSize: [], recipe: []);
 
-  UserNutritionCustomFoodModel get userNutritionCustomFood => _userNutritionCustomFood;
+  UserNutritionFoodModel get userNutritionCustomFood => _userNutritionCustomFood;
 
-  void setCustomFood(UserNutritionCustomFoodModel userCustomFood) {
+  void setCustomFood(UserNutritionFoodModel userCustomFood) {
     _userNutritionCustomFood = userCustomFood;
 
   }
@@ -560,7 +559,7 @@ class UserNutritionData with ChangeNotifier {
 
   }
 
-  void setFoodHistory(UserNutritionHistoryModel userHistory) {
+  void setFoodHistory(UserNutritionFoodModel userHistory) {
     _userNutritionHistory = userHistory;
 
   }
@@ -1202,10 +1201,10 @@ class UserNutritionData with ChangeNotifier {
       notifyListeners();
   }
 
-  late UserNutritionCustomFoodModel _userNutritionCustomRecipes = UserNutritionCustomFoodModel(
-      barcodes: [], foodListItemNames: [], foodServings: [], foodServingSize: []);
+  late UserNutritionFoodModel _userNutritionCustomRecipes = UserNutritionFoodModel(
+      barcodes: [], foodListItemNames: [], foodServings: [], foodServingSize: [], recipe: []);
 
-  UserNutritionCustomFoodModel get userNutritionCustomRecipes => _userNutritionCustomRecipes;
+  UserNutritionFoodModel get userNutritionCustomRecipes => _userNutritionCustomRecipes;
 
   void updateRecipeFoodList(String barcode, String foodName, String servings, String servingSize) {
 
@@ -1235,7 +1234,7 @@ class UserNutritionData with ChangeNotifier {
 
   }
 
-  void setCustomRecipes(UserNutritionCustomFoodModel userRecipes) {
+  void setCustomRecipes(UserNutritionFoodModel userRecipes) {
     _userNutritionCustomRecipes = userRecipes;
 
   }

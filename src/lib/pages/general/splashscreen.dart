@@ -1,7 +1,6 @@
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
-import 'package:fitness_tracker/models/diet/user_custom_foods.dart';
-import 'package:fitness_tracker/models/diet/user_nutrition_history_model.dart';
+import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
 import 'package:fitness_tracker/providers/workout/user_exercises.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +27,9 @@ class _SplashScreenState extends State<SplashScreen> {
   late List<StatsMeasurement> measurements;
   late Map userData;
   late UserNutritionModel userNutrition;
-  late UserNutritionHistoryModel userNutritionHistory;
-  late UserNutritionCustomFoodModel userCustomFood;
-  late UserNutritionCustomFoodModel userRecipes;
+  late UserNutritionFoodModel userNutritionHistory;
+  late UserNutritionFoodModel userCustomFood;
+  late UserNutritionFoodModel userRecipes;
 
   void fetchData() async {
     categories = await GetPreDefinedCategories();
@@ -49,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     try {userNutritionHistory = await GetUserNutritionHistory();} catch (exception) {print(exception);}
     try {userCustomFood = await GetUserCustomFood();} catch (exception) {print(exception);}
-    try {userRecipes = await GetUserCustomRecipes();} catch (exception) {print(exception);}
+    try {userRecipes = await GetUserCustomRecipes();} catch (exception) {print("recipe");print(exception);}
 
     try {context.read<UserExercisesList>().inititateExerciseList(exercises);} catch (exception) {print(exception);}
     try {context.read<ExerciseList>().setCategoriesInititial(categories);} catch (exception) {print(exception);}

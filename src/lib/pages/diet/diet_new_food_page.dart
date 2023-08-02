@@ -14,9 +14,9 @@ import '../../widgets/diet/food_nutrition_list_formfield.dart';
 import 'diet_food_display_page.dart';
 
 class FoodNewNutritionEdit extends StatefulWidget {
-  const FoodNewNutritionEdit({Key? key, required this.category, this.fromBarcode = false, this.recipe = false}) : super(key: key);
+  const FoodNewNutritionEdit({Key? key, required this.category, this.fromBarcode = false, this.recipe = false, this.saveAsCustom = true}) : super(key: key);
   final String category;
-  final bool fromBarcode, recipe;
+  final bool fromBarcode, recipe, saveAsCustom;
 
   @override
   State<FoodNewNutritionEdit> createState() => _FoodNewNutritionEditState();
@@ -239,12 +239,15 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
 
     if (foodNameController.text.isNotEmpty && caloriesController.text.isNotEmpty && servingSizeController.text.isNotEmpty
     && servingsController.text.isNotEmpty) {
-      context.read<UserNutritionData>().updateCustomFoodList(
-        barcodeController.text,
-        foodNameController.text,
-        servingsController.text,
-        servingSizeController.text,
-      );
+
+      if (widget.saveAsCustom) {
+        context.read<UserNutritionData>().updateCustomFoodList(
+          barcodeController.text,
+          foodNameController.text,
+          servingsController.text,
+          servingSizeController.text,
+        );
+      }
 
       context.read<UserNutritionData>().updateCurrentFoodItemServings(servingsController.text);
       context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSizeController.text);
@@ -313,7 +316,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
 
       UpdateFoodItemData(context.read<UserNutritionData>().currentFoodItem);
 
-      context.read<PageChange>().changePageRemovePreviousCache(FoodDisplayPage(category: widget.category));
+      context.read<PageChange>().changePageRemovePreviousCache(FoodDisplayPage(category: widget.category, recipe: widget.recipe,));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text(

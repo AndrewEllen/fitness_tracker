@@ -1,5 +1,4 @@
-import 'package:fitness_tracker/models/diet/user_custom_foods.dart';
-import 'package:fitness_tracker/models/diet/user_nutrition_history_model.dart';
+import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -37,7 +36,7 @@ class _FoodRecipeSearchPageState extends State<FoodRecipeSearchPage> {
   late final searchKey = GlobalKey<FormState>();
   late final newCodeKey = GlobalKey<FormState>();
 
-  late UserNutritionCustomFoodModel customFood;
+  late UserNutritionFoodModel customFood;
   late List<UserRecipesModel> customRecipes;
 
   late List<FoodItem> foodItemsFromSearch = [];
@@ -81,11 +80,11 @@ class _FoodRecipeSearchPageState extends State<FoodRecipeSearchPage> {
 
       foodItemsFromSearchTriGramFirebase = await SearchByNameTriGramFirebase(value);
 
-      setState(() {
+      for (int i = 0; i < foodItemsFromSearch.length; i++) {
+        foodItemsFromSearchTriGramFirebase.removeWhere((item) => item.barcode == foodItemsFromSearch[i].barcode);
+      }
 
-        for (int i = 0; i < foodItemsFromSearch.length; i++) {
-          foodItemsFromSearchTriGramFirebase.removeWhere((item) => item.barcode == foodItemsFromSearch[i].barcode);
-        }
+      setState(() {
 
         foodItemsFromSearch = foodItemsFromSearchFirebase + foodItemsFromSearchTriGramFirebase;
 
@@ -96,6 +95,10 @@ class _FoodRecipeSearchPageState extends State<FoodRecipeSearchPage> {
       });
 
       foodItemsFromSearchOpenFF = await SearchByNameOpenff(value);
+
+      for (int i = 0; i < foodItemsFromSearch.length; i++) {
+        foodItemsFromSearchOpenFF.removeWhere((item) => item.barcode == foodItemsFromSearch[i].barcode);
+      }
 
       setState(() {
 
@@ -128,11 +131,12 @@ class _FoodRecipeSearchPageState extends State<FoodRecipeSearchPage> {
 
     customFood = context.read<UserNutritionData>().userNutritionCustomFood;
 
-    UserNutritionCustomFoodModel customFoodSearch = UserNutritionCustomFoodModel(
+    UserNutritionFoodModel customFoodSearch = UserNutritionFoodModel(
       barcodes: [],
       foodListItemNames: [],
       foodServings: [],
       foodServingSize: [],
+      recipe: [],
     );
 
     if (value.isNotEmpty) {
@@ -484,7 +488,12 @@ class _FoodRecipeSearchPageState extends State<FoodRecipeSearchPage> {
 
                                             context.read<UserNutritionData>().setCurrentFoodItem(foodItemsFromSearch[index]);
 
-                                            context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipe: true,));
+                                            if (foodItemsFromSearch[index].firebaseItem == true) {
+                                              context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipe: true,));
+                                            } else {
+                                              context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category, fromBarcode: true, recipe: true, saveAsCustom: false));
+                                            }
+
                                           },
                                         ),
                                       ],
@@ -500,7 +509,11 @@ class _FoodRecipeSearchPageState extends State<FoodRecipeSearchPage> {
 
                                       context.read<UserNutritionData>().setCurrentFoodItem(foodItemsFromSearch[index]);
 
-                                      context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipe: true));
+                                      if (foodItemsFromSearch[index].firebaseItem == true) {
+                                        context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipe: true,));
+                                      } else {
+                                        context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category, fromBarcode: true, recipe: true, saveAsCustom: false));
+                                      }
                                     },
                                   );
                                 }),

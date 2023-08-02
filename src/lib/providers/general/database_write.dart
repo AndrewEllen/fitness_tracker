@@ -6,11 +6,10 @@ import 'package:fitness_tracker/models/workout/exercise_model.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:fitness_tracker/models/stats/stats_model.dart';
 import 'package:fitness_tracker/models/workout/training_plan_model.dart';
-import 'package:fitness_tracker/models/diet/user_custom_foods.dart';
+import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
 
 import '../../models/diet/food_item.dart';
-import '../../models/diet/user_nutrition_history_model.dart';
 
 void UpdateUserDocumentCategories(List<String> categories) async {
 
@@ -192,7 +191,7 @@ void UpdateUserNutritionalData(UserNutritionModel userNutrition) async {
 
 }
 
-void UpdateUserNutritionHistoryData(UserNutritionHistoryModel userNutritionHistory) async {
+void UpdateUserNutritionHistoryData(UserNutritionFoodModel userNutritionHistory) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -204,7 +203,7 @@ void UpdateUserNutritionHistoryData(UserNutritionHistoryModel userNutritionHisto
       .set({"history": userNutritionHistory.toMap()});
 }
 
-void UpdateUserCustomFoodData(UserNutritionCustomFoodModel userNutritionCustomFood) async {
+void UpdateUserCustomFoodData(UserNutritionFoodModel userNutritionCustomFood) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -216,7 +215,7 @@ void UpdateUserCustomFoodData(UserNutritionCustomFoodModel userNutritionCustomFo
       .set({"food": userNutritionCustomFood.toMap()});
 }
 
-void UpdateUserCustomRecipeData(UserNutritionCustomFoodModel userNutritionCustomFood) async {
+void UpdateUserCustomRecipeData(UserNutritionFoodModel userNutritionCustomFood) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 

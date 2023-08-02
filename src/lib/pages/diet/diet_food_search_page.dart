@@ -1,6 +1,5 @@
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
-import 'package:fitness_tracker/models/diet/user_custom_foods.dart';
-import 'package:fitness_tracker/models/diet/user_nutrition_history_model.dart';
+import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -40,9 +39,9 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
   late final searchKey = GlobalKey<FormState>();
   late final newCodeKey = GlobalKey<FormState>();
 
-  late UserNutritionHistoryModel foodHistory;
-  late UserNutritionCustomFoodModel customFood;
-  late UserNutritionCustomFoodModel customRecipes;
+  late UserNutritionFoodModel foodHistory;
+  late UserNutritionFoodModel customFood;
+  late UserNutritionFoodModel customRecipes;
 
   late List<FoodItem> foodItemsFromSearch = [];
   late List<FoodItem> foodItemsFromSearchFirebase = [];
@@ -84,11 +83,11 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
       foodItemsFromSearchTriGramFirebase = await SearchByNameTriGramFirebase(value);
 
-      setState(() {
+      for (int i = 0; i < foodItemsFromSearch.length; i++) {
+        foodItemsFromSearchTriGramFirebase.removeWhere((item) => item.barcode == foodItemsFromSearch[i].barcode);
+      }
 
-        for (int i = 0; i < foodItemsFromSearch.length; i++) {
-          foodItemsFromSearchTriGramFirebase.removeWhere((item) => item.barcode == foodItemsFromSearch[i].barcode);
-        }
+      setState(() {
 
         foodItemsFromSearch = foodItemsFromSearchFirebase + foodItemsFromSearchTriGramFirebase;
 
@@ -99,6 +98,10 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
       });
 
       foodItemsFromSearchOpenFF = await SearchByNameOpenff(value);
+
+      for (int i = 0; i < foodItemsFromSearch.length; i++) {
+        foodItemsFromSearchOpenFF.removeWhere((item) => item.barcode == foodItemsFromSearch[i].barcode);
+      }
 
       setState(() {
 
@@ -120,7 +123,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
     customFood = context.read<UserNutritionData>().userNutritionCustomFood;
     customRecipes = context.read<UserNutritionData>().userNutritionCustomRecipes;
 
-    UserNutritionHistoryModel foodHistorySearch = UserNutritionHistoryModel(
+    UserNutritionFoodModel foodHistorySearch = UserNutritionFoodModel(
         barcodes: [],
         foodListItemNames: [],
         foodServings: [],
@@ -128,18 +131,20 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
         recipe: []
     );
 
-    UserNutritionCustomFoodModel customFoodSearch = UserNutritionCustomFoodModel(
+    UserNutritionFoodModel customFoodSearch = UserNutritionFoodModel(
       barcodes: [],
       foodListItemNames: [],
       foodServings: [],
       foodServingSize: [],
+      recipe: [],
     );
 
-    UserNutritionCustomFoodModel customRecipeSearch = UserNutritionCustomFoodModel(
+    UserNutritionFoodModel customRecipeSearch = UserNutritionFoodModel(
       barcodes: [],
       foodListItemNames: [],
       foodServings: [],
       foodServingSize: [],
+      recipe: [],
     );
 
     if (value.isNotEmpty) {
@@ -205,7 +210,23 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
   }
 
-  void AddFoodItem(String barcode, String servings, String servingSize, bool recipe) async {
+  void AddFoodItem(String barcode, String servings, String servingSize, bool recipe, bool noData) async {
+
+    if (noData) {
+
+      late UserRecipesModel recipeItem;
+      late FoodItem newFoodItem;
+
+      try {
+        recipeItem = await CheckFoodBarcode(barcode, recipe: true);
+        recipe = recipeItem.foodData.recipe;
+      }catch (error) {
+        newFoodItem = await CheckFoodBarcode(barcode);
+        recipe = newFoodItem.recipe;
+      }
+
+    }
+
 
     if (recipe) {
 
@@ -223,6 +244,8 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
       setState(() {
         foodHistory = context.read<UserNutritionData>().userNutritionHistory;
+        customFood = context.read<UserNutritionData>().userNutritionCustomFood;
+        customRecipes = context.read<UserNutritionData>().userNutritionCustomRecipes;
       });
 
       context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipeEdit: true,));
@@ -240,6 +263,8 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
       setState(() {
         foodHistory = context.read<UserNutritionData>().userNutritionHistory;
+        customFood = context.read<UserNutritionData>().userNutritionCustomFood;
+        customRecipes = context.read<UserNutritionData>().userNutritionCustomRecipes;
       });
 
       context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
@@ -575,7 +600,8 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                     foodHistory.barcodes[index],
                                     foodHistory.foodServings[index],
                                     foodHistory.foodServingSize[index],
-                                    foodHistory.recipe[index],
+                                    foodHistory.recipe.isNotEmpty ? foodHistory.recipe[index] : false,
+                                    foodHistory.recipe.isEmpty,
                                 ),
                               );
                             }),
@@ -604,7 +630,11 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
                                           context.read<UserNutritionData>().setCurrentFoodItem(foodItemsFromSearch[index]);
 
-                                          context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
+                                          if (foodItemsFromSearch[index].firebaseItem == true) {
+                                            context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipe: true,));
+                                          } else {
+                                            context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category, fromBarcode: true, recipe: true, saveAsCustom: false));
+                                          }
                                         },
                                   ),
                                       ],
@@ -620,7 +650,11 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
                                       context.read<UserNutritionData>().setCurrentFoodItem(foodItemsFromSearch[index]);
 
-                                      context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category));
+                                      if (foodItemsFromSearch[index].firebaseItem == true) {
+                                        context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipe: true,));
+                                      } else {
+                                        context.read<PageChange>().changePageCache(FoodNewNutritionEdit(category: widget.category, fromBarcode: true, recipe: true, saveAsCustom: false));
+                                      }
                                     },
                                   );
                                 }),
@@ -945,6 +979,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                   "1",
                                   customRecipes.foodServingSize[index],
                                   true,
+                                  foodHistory.recipe.isEmpty,
                                 ),
                               );
                             }),
@@ -1208,6 +1243,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                   customFood.foodServings[index],
                                   customFood.foodServingSize[index],
                                   false,
+                                  foodHistory.recipe.isEmpty,
                                 ),
                               );
                             }),

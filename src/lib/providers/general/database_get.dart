@@ -4,7 +4,7 @@ import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:fitness_tracker/models/workout/exercise_model.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:fitness_tracker/models/workout/training_plan_model.dart';
-import 'package:fitness_tracker/models/diet/user_custom_foods.dart';
+import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
 import 'package:fitness_tracker/providers/diet/user_nutrition_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,7 +13,6 @@ import 'dart:async';
 import '../../models/diet/food_data_list_item.dart';
 import '../../models/diet/food_item.dart';
 import '../../models/stats/stats_model.dart';
-import '../../models/diet/user_nutrition_history_model.dart';
 
 GetPreDefinedCategories() async {
 
@@ -436,7 +435,7 @@ GetUserNutritionHistory() async {
 
     final _data = snapshot.get("history");
 
-    return UserNutritionHistoryModel(
+    return UserNutritionFoodModel(
       barcodes: List<String>.from(_data["barcodes"] as List),
       foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
       foodServings: List<String>.from(_data["foodServings"] as List),
@@ -463,11 +462,12 @@ GetUserCustomFood() async {
 
     final _data = snapshot.get("food");
 
-    return UserNutritionCustomFoodModel(
+    return UserNutritionFoodModel(
       barcodes: List<String>.from(_data["barcodes"] as List),
       foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
       foodServings: List<String>.from(_data["foodServings"] as List),
       foodServingSize: List<String>.from(_data["foodServingSize"] as List),
+      recipe: List<bool>.generate(_data["barcodes"].length, (index) => false),
     );
 
   } catch (exception) {
@@ -489,11 +489,12 @@ GetUserCustomRecipes() async {
 
     final _data = snapshot.get("food");
 
-    return UserNutritionCustomFoodModel(
+    return UserNutritionFoodModel(
       barcodes: List<String>.from(_data["barcodes"] as List),
       foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
       foodServings: List<String>.from(_data["foodServings"] as List),
       foodServingSize: List<String>.from(_data["foodServingSize"] as List),
+      recipe: List<bool>.generate(_data["barcodes"].length, (index) => true),
     );
 
   } catch (exception) {
