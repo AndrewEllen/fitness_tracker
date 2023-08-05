@@ -355,18 +355,18 @@ class UserNutritionData with ChangeNotifier {
   //mg
   late final double _calciumGoal = 1000; // Example: Calcium goal for adults (general guideline)
   late final double _ironGoal = 8; // Example: Iron goal for adults (general guideline)
-  late final double _sodiumGoal = 2300; // Example: Sodium goal for adults (general guideline)
+  late final double _sodiumGoal = 5000; // Example: Sodium goal for adults (general guideline)
   late final double _zincGoal = 11; // Example: Zinc goal for adults (general guideline)
   late final double _magnesiumGoal = 400; // Example: Magnesium goal for adults (general guideline)
   late final double _potassiumGoal = 3500; // Example: Potassium goal
 
   //mg
-  late final double _vitaminAGoal = 0.800; // Example: Vitamin A goal for adults (general guideline)
+  late final double _vitaminAGoal = 800; // Example: Vitamin A goal for adults (general guideline)
   late final double _vitaminB1Goal = 1.1; // Example: Thiamine (Vitamin B1) goal for adults (general guideline)
   late final double _vitaminB2Goal = 1.3; // Example: Riboflavin (Vitamin B2) goal for adults (general guideline)
   late final double _vitaminB3Goal = 16; // Example: Niacin (Vitamin B3) goal for adults (general guideline)
   late final double _vitaminB6Goal = 1.3; // Example: Vitamin B6 goal for adults (general guideline)
-  late final double _vitaminB9Goal = 0.400; // Example: Folate (Vitamin B9) goal for adults (general guideline)
+  late final double _vitaminB9Goal = 400; // Example: Folate (Vitamin B9) goal for adults (general guideline)
   late final double _vitaminB12Goal = 2.4; // Example: Vitamin B12 goal for adults (general guideline)
   late final double _vitaminCGoal = 90; // Example: Vitamin C goal for adults (general guideline)
   late final double _vitaminDGoal = 15; // Example: Vitamin D goal for adults (general guideline)
@@ -379,26 +379,26 @@ class UserNutritionData with ChangeNotifier {
   //mg
   late final double _omega3Goal = 1000; // mg of combined EPA and DHA per day
   late final double _omega6Goal = 12000; // approximate ratio of 4:1 (omega-6 to omega-3)
-  late final double _biotinGoal = 0.30; // mcg per day
+  late final double _biotinGoal = 30; // mcg per day
   late final double _butyricAcidGoal = 150; // no specific recommendation
   late final double _capricAcidGoal = 1000; // no specific recommendation
   late final double _caproicAcidGoal = 0; // no specific recommendation
   late final double _caprylicAcidGoal = 1000; // no specific recommendation
   late final double _chlorideGoal = 2300; // mg per day
-  late final double _chromiumGoal = 0.25; // mcg per day
-  late final double _copperGoal = 0.900; // mcg per day
+  late final double _chromiumGoal = 25; // mcg per day
+  late final double _copperGoal = 900; // mcg per day
   late final double _docosahexaenoicAcidGoal = 250; // mg per day
   late final double _eicosapentaenoicAcidGoal = 250; // mg per day
   late final double _erucicAcidGoal = 400; // no specific recommendation
   late final double _fluorideGoal = 4; // mg per day
-  late final double _iodineGoal = 0.150; // mcg per day
+  late final double _iodineGoal = 150; // mcg per day
   late final double _manganeseGoal = 1.8; // mg per day
-  late final double _molybdenumGoal = 0.045; // mcg per day
+  late final double _molybdenumGoal = 45; // mcg per day
   late final double _myristicAcidGoal = 0.89; // no specific recommendation
   late final double _oleicAcidGoal = 20000; // no specific recommendation
   late final double _palmiticAcidGoal = 20000; // no specific recommendation
   late final double _pantothenicAcidGoal = 5; // mg per day
-  late final double _seleniumGoal = 0.055; // mcg per day
+  late final double _seleniumGoal = 55; // mcg per day
   late final double _stearicAcidGoal = 5700; // no specific recommendation
 
 

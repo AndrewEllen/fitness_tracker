@@ -603,6 +603,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           currentProgress: context.watch<UserNutritionData>().selenium,
           goal: context.watch<UserNutritionData>().seleniumGoal,
           width: widget.width,
+          units: "μg",
         ),
         Container(
           decoration: const BoxDecoration(
@@ -629,6 +630,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           currentProgress: context.watch<UserNutritionData>().chromium,
           goal: context.watch<UserNutritionData>().chromiumGoal,
           width: widget.width,
+          units: "μg",
         ),
         Container(
           decoration: const BoxDecoration(
@@ -642,6 +644,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           currentProgress: context.watch<UserNutritionData>().copper,
           goal: context.watch<UserNutritionData>().copperGoal,
           width: widget.width,
+          units: "μg",
         ),
         Container(
           decoration: const BoxDecoration(
@@ -668,6 +671,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           currentProgress: context.watch<UserNutritionData>().iodine,
           goal: context.watch<UserNutritionData>().iodineGoal,
           width: widget.width,
+          units: "μg",
         ),
         Container(
           decoration: const BoxDecoration(
@@ -694,6 +698,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           currentProgress: context.watch<UserNutritionData>().molybdenum,
           goal: context.watch<UserNutritionData>().molybdenumGoal,
           width: widget.width,
+          units: "μg",
         ),
         Container(
           decoration: const BoxDecoration(
@@ -718,6 +723,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           currentProgress: context.watch<UserNutritionData>().vitaminA,
           goal: context.watch<UserNutritionData>().vitaminAGoal,
           width: widget.width,
+          units: "μg",
         ),
         Container(
           decoration: const BoxDecoration(
@@ -783,6 +789,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           currentProgress: context.watch<UserNutritionData>().biotin,
           goal: context.watch<UserNutritionData>().biotinGoal,
           width: widget.width,
+          units: "μg",
         ),
         Container(
           decoration: const BoxDecoration(
@@ -792,10 +799,11 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           ),
         ),
         NutritionProgressBar(
-          title: "Vitamin B9",
+          title: "Folic Acid (B9)",
           currentProgress: context.watch<UserNutritionData>().vitaminB9,
           goal: context.watch<UserNutritionData>().vitaminB9Goal,
           width: widget.width,
+          units: "μg",
         ),
         Container(
           decoration: const BoxDecoration(
@@ -809,6 +817,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           currentProgress: context.watch<UserNutritionData>().vitaminB12,
           goal: context.watch<UserNutritionData>().vitaminB12Goal,
           width: widget.width,
+          units: "μg",
         ),
         Container(
           decoration: const BoxDecoration(
@@ -835,6 +844,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           currentProgress: context.watch<UserNutritionData>().vitaminD,
           goal: context.watch<UserNutritionData>().vitaminDGoal,
           width: widget.width,
+          units: "μg",
         ),
         Container(
           decoration: const BoxDecoration(
@@ -861,6 +871,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           currentProgress: context.watch<UserNutritionData>().vitaminK,
           goal: context.watch<UserNutritionData>().vitaminKGoal,
           width: widget.width,
+          units: "μg",
         ),
         Container(
           decoration: const BoxDecoration(
