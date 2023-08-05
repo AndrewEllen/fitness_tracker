@@ -61,7 +61,6 @@ class _DietCategoryAddBarExerciseState extends State<DietCategoryAddBarExercise>
                       fontSize: (20),
                     ),
                     textAlign: TextAlign.center,
-                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(bottom: (width/12)/2.5, left: 5, right: 5,),
                       hintText: 'Exercise Name...',
