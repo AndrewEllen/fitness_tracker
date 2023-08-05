@@ -3,6 +3,7 @@ import 'package:fitness_tracker/models/diet/exercise_calories_list_item.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/constants.dart';
+import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -97,7 +98,16 @@ class _DietCategoryAddBarExerciseState extends State<DietCategoryAddBarExercise>
                     ),
                     textAlign: TextAlign.center,
                     inputFormatters: [
-                      NumericalRangeFormatter(min: 1, max: 100000),
+                      FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                      TextInputFormatter.withFunction((oldValue, newValue) {
+                        final text = newValue.text;
+                        return text.isEmpty
+                            ? newValue
+                            : double.tryParse(text) == null
+                            ? oldValue
+                            : newValue;
+                      }),
+                      //NumericalRangeFormatter(min: 0, max: 100000),
                     ],
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
@@ -150,12 +160,14 @@ class _DietCategoryAddBarExerciseState extends State<DietCategoryAddBarExercise>
                       primaryColor: appSecondaryColour,
                       buttonText: "Add",
                       onTap: () {
-                        context.read<UserNutritionData>().addExerciseItemToDiary(ListExerciseItem(
+                        if (nameKey.currentState!.validate() && caloriesKey.currentState!.validate()) {
+                          context.read<UserNutritionData>().addExerciseItemToDiary(ListExerciseItem(
                             name: nameController.text,
                             category: "Exercise",
                             calories: caloriesController.text,
-                        ));
-                        Navigator.pop(context);
+                          ));
+                          Navigator.pop(context);
+                        }
                       },
                     )
                 ),

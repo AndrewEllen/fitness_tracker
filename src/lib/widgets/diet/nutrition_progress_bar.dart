@@ -2,35 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import '../../constants.dart';
 
-class NutritionProgressBar extends StatefulWidget {
-  const NutritionProgressBar({super.key,
+class NutritionProgressBar extends StatelessWidget {
+  NutritionProgressBar({super.key,
     required this.title, required this.currentProgress,
     required this.goal, required this.width,
     this.barColour = appSecondaryColour,
     this.units = "mg"
   });
   final String title, units;
-  final double currentProgress, goal;
+  late double currentProgress, goal;
   final double width;
   final Color barColour;
-
-  @override
-  _NutritionProgressBarState createState() => _NutritionProgressBarState();
-}
-
-class _NutritionProgressBarState extends State<NutritionProgressBar> with SingleTickerProviderStateMixin {
-
-  late double currentProgress = widget.currentProgress;
-
-  @override
-  initState() {
-
-    if (widget.units == "μg") {
-      currentProgress *= 1000;
-    }
-
-    super.initState();
-  }
 
   ProgressDistanceValidation(double currentProgress, double goal) {
 
@@ -55,7 +37,11 @@ class _NutritionProgressBarState extends State<NutritionProgressBar> with Single
   @override
   Widget build(BuildContext context) {
 
-    print(widget.currentProgress);
+    if (units == "μg") {
+      currentProgress *= 1000;
+    }
+
+    print(currentProgress);
 
     double _width = MediaQuery.of(context).size.width;
     return Center(
@@ -74,7 +60,7 @@ class _NutritionProgressBarState extends State<NutritionProgressBar> with Single
                 margin: const EdgeInsets.only(left:10),
                 child: FittedBox(
                   child: Text(
-                    widget.title,
+                    title,
                     style: const TextStyle(
                       color: Colors.white,
                       //fontSize: 16,
@@ -86,7 +72,7 @@ class _NutritionProgressBarState extends State<NutritionProgressBar> with Single
             Align(
               alignment: Alignment.topCenter,
               child: Text(
-                "${currentProgress.toStringAsFixed(1)}/${widget.goal} ${widget.units}",
+                "${currentProgress.toStringAsFixed(1)}/$goal $units",
                 style: const TextStyle(
                   color: Colors.white,
                 ),
@@ -98,9 +84,9 @@ class _NutritionProgressBarState extends State<NutritionProgressBar> with Single
                 margin: const EdgeInsets.only(top:20),
                 child: LinearPercentIndicator(
                   backgroundColor: appQuarternaryColour,
-                  progressColor: widget.barColour,
-                  percent: ProgressDistanceValidation(currentProgress, widget.goal),
-                  width: (widget.width / 100) * 90,
+                  progressColor: barColour,
+                  percent: ProgressDistanceValidation(currentProgress, goal),
+                  width: (width / 100) * 90,
                   barRadius: const Radius.circular(10),
                   animation: true,
                   animationDuration: 400,
