@@ -1,7 +1,9 @@
+import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
+import '../../models/diet/exercise_calories_list_item.dart';
 import '../../models/diet/food_data_list_item.dart';
 import '../../models/diet/food_item.dart';
 import '../../models/diet/user__foods_model.dart';
@@ -119,6 +121,7 @@ class UserNutritionData with ChangeNotifier {
     foodListItemsLunch: [],
     foodListItemsDinner: [],
     foodListItemsSnacks: [],
+    foodListItemsExercise: [],
   );
 
   late final List<UserRecipesModel> _userRecipesList = [];
@@ -521,6 +524,9 @@ class UserNutritionData with ChangeNotifier {
   List<ListFoodItem> get foodListItemsSnacks =>
       _userDailyNutrition.foodListItemsSnacks;
 
+  List<ListExerciseItem> get foodListItemsExercise =>
+      _userDailyNutrition.foodListItemsExercise;
+
   UserNutritionModel get userDailyNutrition => _userDailyNutrition;
 
   FoodItem get currentFoodItem => _currentFoodItem;
@@ -697,6 +703,18 @@ class UserNutritionData with ChangeNotifier {
     _pantothenicAcid = 0.0;
     _selenium = 0.0;
     _stearicAcid = 0.0;
+
+    void calculateTotalExercise(List<ListExerciseItem> exerciseList) {
+
+      for (var exercise in exerciseList) {
+        try {
+          _calories -= double.parse(exercise.calories);
+        } catch (exception) {
+          _calories += 0;
+        }
+      }
+
+    }
 
     void calculateTotal(List<ListFoodItem> listOfFood) {
       for (var foodItem in listOfFood) {
@@ -972,6 +990,7 @@ class UserNutritionData with ChangeNotifier {
     calculateTotal(_userDailyNutrition.foodListItemsLunch);
     calculateTotal(_userDailyNutrition.foodListItemsDinner);
     calculateTotal(_userDailyNutrition.foodListItemsSnacks);
+    calculateTotalExercise(_userDailyNutrition.foodListItemsExercise);
 
     notifyListeners();
 
@@ -988,6 +1007,34 @@ class UserNutritionData with ChangeNotifier {
     calculateMacros();
 
     notifyListeners();
+
+  }
+
+  void addExerciseItemToDiary(ListExerciseItem newExercise) {
+
+    if (newExercise.category.toLowerCase() == "exercise") {
+      _userDailyNutrition.foodListItemsExercise.add(newExercise);
+
+      calculateMacros();
+
+      UpdateUserNutritionalData(_userDailyNutrition);
+
+      notifyListeners();
+    }
+
+  }
+
+  void deleteExerciseItemFromDiary(int index, String category) {
+
+    if (category.toLowerCase() == "exercise") {
+      _userDailyNutrition.foodListItemsExercise.removeAt(index);
+
+      calculateMacros();
+
+      UpdateUserNutritionalData(_userDailyNutrition);
+
+      notifyListeners();
+    }
 
   }
 

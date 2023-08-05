@@ -7,6 +7,7 @@ import '../../helpers/diet/nutrition_tracker.dart';
 import '../../models/diet/food_item.dart';
 import 'package:provider/provider.dart';
 
+import '../../widgets/diet/diet_exercise_box.dart';
 import '../../widgets/diet/diet_home_macro_nutrition_display.dart';
 import '../../widgets/diet/diet_category_box.dart';
 import 'diet_food_display_page.dart';
@@ -92,6 +93,14 @@ class _DietHomePageState extends State<DietHomePage> {
                         width: _width,
                         title: "Snacks",
                         foodList: context.watch<UserNutritionData>().foodListItemsSnacks,
+                      ),
+                      DietExerciseBox(
+                        bigContainerMin: _smallContainerMin,
+                        height: _height,
+                        margin: _margin,
+                        width: _width,
+                        title: "Exercise",
+                        exerciseList: context.watch<UserNutritionData>().foodListItemsExercise,
                       ),
                     ],
                   ),

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/helpers/diet/nutrition_tracker.dart';
+import 'package:fitness_tracker/models/diet/exercise_calories_list_item.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:fitness_tracker/models/workout/exercise_model.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
@@ -398,12 +399,34 @@ GetUserNutritionData(String date) async {
       }
     }
 
+    Future<List<ListExerciseItem>> ToListExerciseItem (_data) async {
+      try {
+
+        final List<ListExerciseItem> generateExerciseList = List<ListExerciseItem>.generate(_data.length, (int index) {
+
+          return ListExerciseItem(
+            category: _data[index]["category"] ?? "",
+            name: _data[index]["name"] ?? "",
+            calories: _data[index]["calories"] ?? "",
+          );
+        });
+
+        return generateExerciseList;
+
+      } catch (exception) {
+        print(exception);
+
+        return [];
+      }
+    }
+
     return UserNutritionModel(
         date: _data["date"] ?? "",
         foodListItemsBreakfast: await ToListFoodItem(_data["foodListItemsBreakfast"]),
         foodListItemsLunch: await ToListFoodItem(_data["foodListItemsLunch"]),
         foodListItemsDinner: await ToListFoodItem(_data["foodListItemsDinner"]),
         foodListItemsSnacks: await ToListFoodItem(_data["foodListItemsSnacks"]),
+        foodListItemsExercise: await ToListExerciseItem(_data["foodListItemsExercise"]),
     );
 
   } catch (exception) {
@@ -416,6 +439,7 @@ GetUserNutritionData(String date) async {
       foodListItemsLunch: [],
       foodListItemsDinner: [],
       foodListItemsSnacks: [],
+      foodListItemsExercise: [],
     );
   }
 
