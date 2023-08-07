@@ -6,10 +6,12 @@ const Color appTertiaryColour = Color.fromRGBO(41, 41, 41, 1.0);
 const Color appQuarternaryColour = Color.fromRGBO(117, 117, 117, 1.0);
 const Color appQuinaryColour = Color.fromRGBO(57, 57, 57, 1.0);
 
-final Color streakColourOrange = Colors.deepOrange;
-final Color streakColourGrey = Colors.grey;
+const Color streakColourOrange = Colors.deepOrange;
+const Color streakColourGrey = Colors.grey;
 
 const BoxDecoration homeBoxDecoration = BoxDecoration(
   color: appTertiaryColour,
   borderRadius: BorderRadius.all(Radius.circular(4)),
 );
+
+const double heightFactor = 0.002;

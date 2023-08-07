@@ -1,11 +1,10 @@
 import 'dart:ui';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fitness_tracker/constants.dart';
-import 'package:fitness_tracker/pages/auth_choose_login_signup.dart';
-import 'package:fitness_tracker/pages/splashscreen.dart';
-import 'package:fitness_tracker/providers/user_exercises.dart';
+import 'package:fitness_tracker/pages/general/auth_choose_login_signup.dart';
+import 'package:fitness_tracker/pages/general/splashscreen.dart';
+import 'package:fitness_tracker/providers/workout/user_exercises.dart';
 import 'package:flutter/material.dart';
 import 'exports.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
-import 'helpers/firebase_auth_service.dart';
+import 'helpers/general/firebase_auth_service.dart';
 import 'openfoodfacts_options.dart';
 
 void main() async {
@@ -74,9 +73,9 @@ class FireBaseAuthenticationCheck extends StatelessWidget {
     final currentUser = context.watch<User?>();
 
     if (currentUser != null) {
-      return SplashScreen();
+      return const SplashScreen();
     }
-    return ChooseLoginSignUp();
+    return const ChooseLoginSignUp();
   }
 }
 
@@ -108,8 +107,7 @@ class _AppMainState extends State<AppMain> {
             side: const BorderSide(
               width: 3,
               color: Colors.transparent,
-            ),
-            primary: appSecondaryColour,
+            ), backgroundColor: appSecondaryColour,
             shadowColor: Colors.transparent,
             elevation: 0,
             shape: RoundedRectangleBorder(
