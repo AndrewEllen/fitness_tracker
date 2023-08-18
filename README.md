@@ -32,7 +32,7 @@ To clone the repository you can either Clone it or download it although it is be
   Once you have done this don't forget to extract the zip file.
 
 
-### Step 3 Open the project folder in android studio
+### Step 3 - Open the project folder in android studio
 
 - Launch android studio.
 
@@ -40,33 +40,33 @@ To clone the repository you can either Clone it or download it although it is be
 
 - Select "open" from the dropdown.
 
-- Select the fitness_tracker folder, this folder should contain the src and builds folders inside of it.
+- Select the fitness_tracker folder, this folder should contain the src and builds folders inside of it. (If this doesn't work then you may have to select the "src" file instead).
 
 - Select "OK" to open the project folder.
 
 
-### Step 4 Run Pub Get
+### Step 4 - Run Pub Get
 
 Now that you have the project open you will need to run the pub get command. Navigating to "pubspec.yaml" inside of the "src" folder should give a prompt for the option on the top of the editor window.
 
 If this is not the case then open the IDE's terminal and run "flutter pub get"
 
 
-### Step 5 Follow the instructions for setting up Firebase
+### Step 5 - Follow the instructions for setting up Firebase
 
 Note: You will need to set up a firebase project [here](https://firebase.google.com/). This project uses Firestore Database, Firebase Auth and Crashlytics currently.
 
 Follow the instruction [here](https://firebase.google.com/docs/flutter/setup?platform=android) to setup firebase with flutter.
 
 
-### Step 6 Set up Database Rules
+### Step 6 - Set up Database Rules
 
 Open up the Cloud Firestore console and navigate to Rules.
 
 Copy the rules from [DBRULES.md](DBRULES.md) and replace the default rules from firebase and save.
 
 
-### Step 7 Build the app
+### Step 7 - Build the app
 
 Assuming all has gone to plan the app should now be functional.
 
@@ -77,7 +77,7 @@ Assuming all has gone to plan the app should now be functional.
 - Click "Build APK"
 
 
-### Step 8 Copy the APK to your device
+### Step 8 - Copy the APK to your device
 
 Navigate to "src/build/app/outputs/flutter-apk/" to find the "app-release.apk".
 
