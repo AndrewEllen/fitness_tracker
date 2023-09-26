@@ -442,7 +442,15 @@ GetUserNutritionData(String date) async {
 
         for (int i = 0; i < foodList.length; i++) {
 
-          dynamic data = foodItemList[i];
+          for (int x = 0; x < foodItemList.length; x++) {
+            if (foodList[i].barcode == foodItemList[x].barcode) {
+              foodList[i].foodItemData = foodItemList[x];
+            }
+          }
+        }
+        return foodList;
+
+/*        dynamic data = foodItemList[i];
 
           print("PRINTING NAMES OF FOOD");
 
@@ -452,9 +460,7 @@ GetUserNutritionData(String date) async {
           } else {
             print("food");
             foodList[i].foodItemData = data;
-          }
-
-        }
+          }*/
 
         return generateFoodList;
 
