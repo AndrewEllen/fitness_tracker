@@ -433,8 +433,6 @@ GetUserNutritionData(String date) async {
 
         List<ListFoodItem> foodList = generateFoodList;
 
-        [for (final food in foodList) if (!food.recipe) print(food.barcode)];
-
         List<FoodItem> foodItemList = await CheckFoodBarcodeList(
             [for (final food in foodList) if (!food.recipe) food.barcode],
             [for (final food in foodList) if (food.recipe) food.barcode]
@@ -447,20 +445,6 @@ GetUserNutritionData(String date) async {
         }
 
         return foodList;
-
-/*        dynamic data = foodItemList[i];
-
-          print("PRINTING NAMES OF FOOD");
-
-          if (data.runtimeType == UserRecipesModel) {
-            print("recipe");
-            foodList[i].foodItemData = data.foodData;
-          } else {
-            print("food");
-            foodList[i].foodItemData = data;
-          }*/
-
-        return generateFoodList;
 
       } catch (exception) {
         print(exception);

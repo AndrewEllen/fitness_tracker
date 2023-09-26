@@ -72,6 +72,8 @@ FoodItem ConvertToFoodItem(product, {String scannedBarcode = "", bool firebase =
       pantothenicAcid: product["pantothenicAcid"] ?? "",
       selenium: product["selenium"] ?? "",
       stearicAcid: product["stearicAcid"] ?? "",
+      firebaseItem: true,
+      recipe: product["recipe"] ?? "",
     );
 
     try {
