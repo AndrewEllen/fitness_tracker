@@ -684,14 +684,23 @@ GetFoodDataFromFirebaseRecipe(String barcode) async {
 GetRecipeFoodList(List<ListFoodItem> foodList) async {
 
   try{
-    for (int i = 0; i < foodList.length; i++) {
 
-      FoodItem data = await CheckFoodBarcode(foodList[i].barcode);
+    final snapshot = await FirebaseFirestore.instance
+        .collection('food-data')
+        .where(FieldPath.documentId, whereIn: List.generate(foodList.length, (index) => foodList[index].barcode))
+        .get();
 
-      if (data != null) {
-        foodList[i].foodItemData = data;
-      }
-  }
+    List<FoodItem> foodItemData = [
+      for (QueryDocumentSnapshot document in snapshot.docs)
+        ConvertToFoodItem(document.get("food-data"), firebase: true)
+          ..firebaseItem = true,
+    ];
+
+    final foodListMap = {for (final food in foodItemData) food.barcode : food};
+    for (final food in foodList) {
+      ///TODO Implement null check
+      food.foodItemData = foodListMap[food.barcode]!;
+    }
 
     return foodList;
 
