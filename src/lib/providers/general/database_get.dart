@@ -346,6 +346,8 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false}) async
 
   if (recipe) {
 
+    print("IS IN RECIPE");
+
     try {
 
       final snapshot = await FirebaseFirestore.instance
@@ -355,9 +357,11 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false}) async
 
       foodItems = [
         for (QueryDocumentSnapshot document in snapshot.docs)
-          ConvertToFoodItem(document.get("recipe-data"), firebase: true)
+          ConvertToFoodItem(document.get("food-data")["foodData"], firebase: true)
             ..firebaseItem = true,
       ];
+
+      print(foodItems[0].foodName);
 
     } catch (exception) {
       print(exception);
