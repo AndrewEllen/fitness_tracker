@@ -212,6 +212,7 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
                     numbersOnly: false,
                     centerForm: true,
                     name: true,
+                    noUnits: true,
                   ),
                   FoodNutritionListFormField(
                     controller: servingsController,
@@ -222,6 +223,7 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
                     recipe: true,
                     numbersOnly: true,
                     centerForm: true,
+                    units: "g",
                   ),
                   DietListHeaderBox(
                     width: _width,

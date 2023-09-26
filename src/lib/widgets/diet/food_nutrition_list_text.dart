@@ -6,6 +6,7 @@ class FoodNutritionListText extends StatefulWidget {
     required this.value,
     required this.width,
     required this.title,
+    this.units = "mg",
     this.servingSize = "100",
     this.servings = "1",
 
@@ -15,6 +16,7 @@ class FoodNutritionListText extends StatefulWidget {
   final  String title, value;
   final  String servingSize;
   final  String servings;
+  final  String units;
 
 
   @override
@@ -57,7 +59,7 @@ class _FoodNutritionListTextState extends State<FoodNutritionListText> {
              child: Padding(
                padding: const EdgeInsets.all(5.0),
                child: Text(
-                 widget.value.isEmpty ? "-" : widget.value,
+                 widget.value.isEmpty ? "-" : widget.value + " ${widget.units}",
                  style: const TextStyle(
                    color: Colors.white,
                  ),
@@ -75,7 +77,7 @@ class _FoodNutritionListTextState extends State<FoodNutritionListText> {
               alignment: Alignment.centerRight,
               child: Text(
                 widget.value.isEmpty ? "-" :
-                ServingSizeCalculator(widget.value, widget.servingSize, widget.servings, 1),
+                ServingSizeCalculator(widget.value, widget.servingSize, widget.servings, 1) + " ${widget.units}",
                 style: const TextStyle(
                   color: Colors.white,
                 ),

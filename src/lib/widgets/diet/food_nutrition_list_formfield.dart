@@ -14,15 +14,17 @@ class FoodNutritionListFormField extends StatefulWidget {
     this.servings = false,
     this.servingSize = false,
     this.centerForm = false,
+    this.units = "mg",
+    this.noUnits = false,
   }) : super(key: key);
 
   final  TextEditingController controller;
   final  dynamic secondaryController;
   final  GlobalKey<FormState> formKey;
   final  double width;
-  final  String formName;
+  final  String formName, units;
   final  bool numbersOnly, centerForm;
-  final  bool servings, servingSize, recipe, name;
+  final  bool servings, servingSize, recipe, name, noUnits;
 
 
   @override
@@ -76,7 +78,7 @@ class _FoodNutritionListFormFieldState extends State<FoodNutritionListFormField>
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: Text(
-              "${widget.formName}:",
+              widget.noUnits ? "${widget.formName}:" : "${widget.formName} (${widget.units}):",
               style: const TextStyle(
                 color: Colors.white,
               ),
@@ -100,6 +102,9 @@ class _FoodNutritionListFormFieldState extends State<FoodNutritionListFormField>
                   ),
                   textAlign: widget.centerForm ? TextAlign.center : TextAlign.left,
                   decoration: InputDecoration(
+                    suffix: widget.noUnits ? null : Text(
+                      widget.units,
+                    ),
                     contentPadding: EdgeInsets.only(bottom: (widget.width/12)/2.5, left: 5, right: 5,),
                     hintText: 'N/A',
                     hintStyle: const TextStyle(
