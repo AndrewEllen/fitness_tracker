@@ -440,14 +440,12 @@ GetUserNutritionData(String date) async {
             [for (final food in foodList) if (food.recipe) food.barcode]
         );
 
-        for (int i = 0; i < foodList.length; i++) {
-
-          for (int x = 0; x < foodItemList.length; x++) {
-            if (foodList[i].barcode == foodItemList[x].barcode) {
-              foodList[i].foodItemData = foodItemList[x];
-            }
-          }
+        final foodListMap = {for (final food in foodItemList) food.barcode : food};
+        for (final food in foodList) {
+          ///TODO Implement null check
+          food.foodItemData = foodListMap[food.barcode]!;
         }
+
         return foodList;
 
 /*        dynamic data = foodItemList[i];
