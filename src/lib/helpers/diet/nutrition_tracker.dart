@@ -294,14 +294,8 @@ CheckFoodBarcode(String barcodeDisplayValue, {bool recipe = false}) async {
     print("getting recipe");
     UserRecipesModel recipeData = await GetFoodDataFromFirebaseRecipe(barcodeDisplayValue);
 
-    print("un Capitalised Name");
-    print(recipeData.foodData.foodName);
-
     try {
-      print("Capitalised Name");
-      print(recipeData.foodData.foodName);
       recipeData.foodData.foodName = recipeData.foodData.foodName.capitalize();
-      print(recipeData.foodData.foodName);
     } catch (error) {
       print(error);
     }
@@ -316,14 +310,8 @@ CheckFoodBarcode(String barcodeDisplayValue, {bool recipe = false}) async {
 
       FoodItem newFoodItem = await GetFoodDataFromFirebase(barcodeDisplayValue);
 
-      print("un Capitalised Name");
-      print(newFoodItem.foodName);
-
       try {
-        print("Capitalised Name");
-        print(newFoodItem.foodName);
         newFoodItem.foodName = newFoodItem.foodName.capitalize();
-        print(newFoodItem.foodName);
       } catch (error) {
         print(error);
       }
@@ -343,6 +331,40 @@ CheckFoodBarcode(String barcodeDisplayValue, {bool recipe = false}) async {
       return newFoodItem;
 
     }
+  }
+}
+
+CheckFoodBarcodeList(List<String> barcodeDisplayValues, List<String> recipeBarcodeDisplayValues) async {
+
+  try {
+
+    List<FoodItem> newFoodItems = <FoodItem>[];
+
+    if (barcodeDisplayValues.isNotEmpty) {
+      print("passing");
+      newFoodItems.addAll(await BatchGetFoodDataFromFirebase(barcodeDisplayValues));
+      print("passed");
+    }
+    if (recipeBarcodeDisplayValues.isNotEmpty) {
+      print("CHECKING RECIPE LIST");
+      newFoodItems.addAll(await BatchGetFoodDataFromFirebase(recipeBarcodeDisplayValues, recipe: true));
+    }
+
+    return newFoodItems;
+
+  } catch (error){
+    print(error);
+
+    List<FoodItem> newFoodItems = [];
+
+    print("Batch Fetch Fallback");
+
+    for (String value in barcodeDisplayValues) {
+      newFoodItems.add(await CheckFoodBarcode(value, recipe: false));
+    }
+
+    return newFoodItems;
+
   }
 }
 

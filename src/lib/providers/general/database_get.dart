@@ -339,6 +339,63 @@ GetFoodDataFromFirebase(String barcode) async {
   }
 }
 
+BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false}) async {
+
+  List<FoodItem> foodItems = [];
+  print(barcodes);
+
+  if (recipe) {
+
+    try {
+
+      final snapshot = await FirebaseFirestore.instance
+          .collection('recipe-data')
+          .where(FieldPath.documentId, whereIn: barcodes)
+          .get();
+
+      foodItems = [
+        for (QueryDocumentSnapshot document in snapshot.docs)
+          ConvertToFoodItem(document.get("recipe-data"), firebase: true)
+            ..firebaseItem = true,
+      ];
+
+    } catch (exception) {
+      print(exception);
+
+      for (var barcode in barcodes) {
+        foodItems.add(await GetFoodDataFromFirebase(barcode));
+      }
+
+    }
+    return foodItems;
+
+  } else {
+
+    try {
+
+      final snapshot = await FirebaseFirestore.instance
+          .collection('food-data')
+          .where(FieldPath.documentId, whereIn: barcodes)
+          .get();
+
+      foodItems = [
+        for (QueryDocumentSnapshot document in snapshot.docs)
+          ConvertToFoodItem(document.get("food-data"), firebase: true)
+            ..firebaseItem = true,
+      ];
+
+    } catch (exception) {
+      print(exception);
+
+      for (var barcode in barcodes) {
+        foodItems.add(await GetFoodDataFromFirebase(barcode));
+      }
+
+    }
+    return foodItems;
+  }
+}
+
 GetUserNutritionData(String date) async {
 
   try {
@@ -353,8 +410,6 @@ GetUserNutritionData(String date) async {
         .get();
 
     final Map _data = snapshot.get("nutrition-data");
-
-    print("returning nutrition");
 
 
     Future<List<ListFoodItem>> ToListFoodItem (_data) async {
@@ -374,9 +429,16 @@ GetUserNutritionData(String date) async {
 
         List<ListFoodItem> foodList = generateFoodList;
 
+        [for (final food in foodList) if (!food.recipe) print(food.barcode)];
+
+        List<FoodItem> foodItemList = await CheckFoodBarcodeList(
+            [for (final food in foodList) if (!food.recipe) food.barcode],
+            [for (final food in foodList) if (food.recipe) food.barcode]
+        );
+
         for (int i = 0; i < foodList.length; i++) {
 
-          dynamic data = await CheckFoodBarcode(foodList[i].barcode, recipe: foodList[i].recipe);
+          dynamic data = foodItemList[i];
 
           print("PRINTING NAMES OF FOOD");
 
