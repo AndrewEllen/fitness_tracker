@@ -7,12 +7,14 @@ class NutritionProgressBar extends StatelessWidget {
     required this.title, required this.currentProgress,
     required this.goal, required this.width,
     this.barColour = appSecondaryColour,
-    this.units = "mg"
+    this.units = "mg",
+    this.excludeColourChange = true,
   });
   final String title, units;
   late double currentProgress, goal;
   final double width;
-  final Color barColour;
+  late Color barColour;
+  final bool excludeColourChange;
 
   ProgressDistanceValidation(double currentProgress, double goal) {
 
@@ -26,6 +28,7 @@ class NutritionProgressBar extends StatelessWidget {
 
     if (progressDistance > 1) {
       progressDistance = 1;
+      barColour = streakColourOrange;
       return progressDistance;
     } else if (progressDistance < 0) {
       progressDistance = 0;
@@ -34,12 +37,34 @@ class NutritionProgressBar extends StatelessWidget {
     return progressDistance;
   }
 
+  ColourValidation(double currentProgress, double goal) {
+
+    if (excludeColourChange) {
+      return barColour;
+    }
+
+    double progressDistance;
+
+    if (goal == 0) {
+      progressDistance = currentProgress;
+    } else {
+      progressDistance = currentProgress/goal;
+    }
+
+    if (progressDistance > 1) {
+      return streakColourOrange;
+    } else {
+      return barColour;
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    if (units == "μg") {
-      currentProgress *= 1000;
-    }
+    //if (units == "μg") {
+    //  currentProgress *= 1000;
+    //}
 
     print(currentProgress);
 
@@ -84,7 +109,7 @@ class NutritionProgressBar extends StatelessWidget {
                 margin: const EdgeInsets.only(top:20),
                 child: LinearPercentIndicator(
                   backgroundColor: appQuarternaryColour,
-                  progressColor: barColour,
+                  progressColor: ColourValidation(currentProgress, goal),
                   percent: ProgressDistanceValidation(currentProgress, goal),
                   width: (width / 100) * 90,
                   barRadius: const Radius.circular(10),

@@ -335,13 +335,14 @@ class UserNutritionData with ChangeNotifier {
   late double _fatGoal = 85;
   late double _carbohydratesGoal = 286;
 
-  void setCalories (String caloriesFromDB) {
+  void setCalories(String caloriesFromDB) {
 
     _caloriesGoal = double.parse(caloriesFromDB);
     _carbohydratesGoal = double.parse(((double.parse(caloriesFromDB)*0.5)/4).toStringAsFixed(1));
     _fatGoal = double.parse(((double.parse(caloriesFromDB)*0.3)/9).toStringAsFixed(1));
     _proteinGoal = double.parse(((double.parse(caloriesFromDB)*0.2)/4).toStringAsFixed(1));
 
+    notifyListeners();
   }
 
   //grams
@@ -356,7 +357,7 @@ class UserNutritionData with ChangeNotifier {
   //mg
   late final double _calciumGoal = 1000; // Example: Calcium goal for adults (general guideline)
   late final double _ironGoal = 8; // Example: Iron goal for adults (general guideline)
-  late final double _sodiumGoal = 5000; // Example: Sodium goal for adults (general guideline)
+  late final double _sodiumGoal = 5; // Example: Sodium goal for adults (general guideline)
   late final double _zincGoal = 11; // Example: Zinc goal for adults (general guideline)
   late final double _magnesiumGoal = 400; // Example: Magnesium goal for adults (general guideline)
   late final double _potassiumGoal = 3500; // Example: Potassium goal
@@ -1150,6 +1151,7 @@ class UserNutritionData with ChangeNotifier {
       _currentRecipe.foodData.servingSize = (double.parse(_currentRecipe.foodData.quantity) / double.parse(servings)).toStringAsFixed(1);
 
       calculateRecipeMacros();
+      
     } catch (error) {
       _currentRecipe.foodData.servings = "";
       _currentRecipe.foodData.servingSize = "";

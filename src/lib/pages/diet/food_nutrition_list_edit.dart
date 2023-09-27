@@ -463,13 +463,14 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
                         ),
                         DietListHeaderBox(
                           width: _width,
-                          title: "Minerals (mg)",
+                          title: "Minerals",
                         ),
                         FoodNutritionListFormField(
                           controller: sodiumController,
                           formKey: sodiumKey,
                           width: _width,
                           formName: "Salt",
+                          units: "g"
                         ),
                         FoodNutritionListFormField(
                           controller: magnesiumController,
@@ -526,6 +527,7 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
                           formKey: copperKey,
                           width: _width,
                           formName: "Copper",
+                          units: "μg",
                         ),
                         FoodNutritionListFormField(
                           controller: fluorideController,
@@ -555,7 +557,7 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
                         ),
                         DietListHeaderBox(
                           width: _width,
-                          title: "Vitamins and Amino Acids (mg)",
+                          title: "Vitamins and Amino Acids",
                         ),
                         FoodNutritionListFormField(
                           controller: vitaminAController,
@@ -599,7 +601,8 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
                           controller: vitaminB9Controller,
                           formKey: vitaminB9Key,
                           width: _width,
-                          formName: "Vitamin B9",
+                          formName: "Folic Acid (B9)",
+                          units: "μg",
                         ),
                         FoodNutritionListFormField(
                           controller: vitaminB12Controller,

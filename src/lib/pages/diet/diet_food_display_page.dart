@@ -470,7 +470,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   //controller: caffeineController,
                   value: currentFoodItem.caffeine,
                   width: _width,
-                  title: "Caffeine (mg)",
+                  title: "Caffeine",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -478,13 +478,13 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   //controller: alcoholController,
                   value: currentFoodItem.alcohol,
                   width: _width,
-                  title: "Alcohol (g)",
+                  title: "Alcohol",
                   units: "g",
                 ),
 
                 DietListHeaderBox(
                   width: _width,
-                  title: "Minerals (mg)",
+                  title: "Minerals",
                 ),
 
                 FoodNutritionListText(
@@ -494,6 +494,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.sodium,
                   width: _width,
                   title: "Salt",
+                  units: "g",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -607,7 +608,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
 
                 DietListHeaderBox(
                   width: _width,
-                  title: "Vitamins and Amino Acids (mg)",
+                  title: "Vitamins and Amino Acids",
                 ),
 
                 FoodNutritionListText(
@@ -642,6 +643,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.vitaminB3,
                   width: _width,
                   title: "Niacin",
+                  units: "μg",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,

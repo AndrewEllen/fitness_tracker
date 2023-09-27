@@ -230,7 +230,7 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
                     title:
                     (currentRecipe.recipeFoodList.isNotEmpty & currentRecipe.foodData.servings.isNotEmpty & (currentRecipe.foodData.servings != "0")) ?
                     (((double.parse(currentRecipe.foodData.calories)/100)*double.parse(currentRecipe.foodData.quantity))/ double.parse(servingsController.text)).toStringAsFixed(0)
-                        + "Kcal/${currentRecipe.foodData.servingSize}g"
+                        + "Kcal/${currentRecipe.foodData.quantity}g"
                         : (currentRecipe.foodData.servings.isNotEmpty) ? "No Ingredients" : "Number of Servings Empty",
                     largeTitle: true,
                     color: Colors.white,

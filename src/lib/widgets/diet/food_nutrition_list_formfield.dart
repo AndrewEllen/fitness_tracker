@@ -78,7 +78,7 @@ class _FoodNutritionListFormFieldState extends State<FoodNutritionListFormField>
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: Text(
-              widget.noUnits ? "${widget.formName}:" : "${widget.formName} (${widget.units}):",
+              "${widget.formName}:",
               style: const TextStyle(
                 color: Colors.white,
               ),
