@@ -262,6 +262,22 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                     child: GestureDetector(
                       onTap: () {
                         Clipboard.setData(ClipboardData(text: currentFoodItem.barcode));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text("Copied Code To Clipboard!"),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              margin: EdgeInsets.only(
+                                bottom: MediaQuery.of(context).size.height * 0.6695,
+                                right: 20,
+                                left: 20,
+                              ),
+                              dismissDirection: DismissDirection.none,
+                              duration: Duration(milliseconds: 700),
+                            ),
+                        );
                       },
                       child: Column(
                         children: [
