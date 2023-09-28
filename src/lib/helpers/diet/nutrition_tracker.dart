@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import '../../models/diet/food_item.dart';
@@ -9,6 +10,8 @@ import '../../providers/general/database_get.dart';
 //Checks public food database
 
 FoodItem ConvertToFoodItem(product, {String scannedBarcode = "", bool firebase = false}) {
+
+  print("converting food");
 
   if (firebase) {
 
@@ -73,7 +76,7 @@ FoodItem ConvertToFoodItem(product, {String scannedBarcode = "", bool firebase =
       selenium: product["selenium"] ?? "",
       stearicAcid: product["stearicAcid"] ?? "",
       firebaseItem: true,
-      recipe: product["recipe"] ?? "",
+      recipe: product["recipe"] ?? false,
     );
 
     try {
@@ -422,7 +425,7 @@ SearchByNameTriGramFirebase(String value) async {
     final snapshot = await FirebaseFirestore.instance
         .collection("food-data")
         .where("foodNameSearch", arrayContainsAny: searchValues)
-        .limit(20)
+        .limit(40)
         .get();
 
     foodItems = [

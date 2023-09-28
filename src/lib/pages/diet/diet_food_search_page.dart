@@ -81,6 +81,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
       });
 
+      print("Entering search");
       foodItemsFromSearchTriGramFirebase = await SearchByNameTriGramFirebase(value);
 
       for (int i = 0; i < foodItemsFromSearch.length; i++) {
