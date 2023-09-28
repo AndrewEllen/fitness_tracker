@@ -275,7 +275,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                                 left: 20,
                               ),
                               dismissDirection: DismissDirection.none,
-                              duration: Duration(milliseconds: 700),
+                              duration: const Duration(milliseconds: 700),
                             ),
                         );
                       },
