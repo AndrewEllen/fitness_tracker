@@ -203,6 +203,7 @@ class _NutritionHomeStatsState extends State<NutritionHomeStats> {
                   goal: context.watch<UserNutritionData>().caloriesGoal,
                   width: widget.width,
                   units: "Kcal",
+                  excludeColourChange: false,
                 ),
                 Container(
                   decoration: const BoxDecoration(
@@ -377,6 +378,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           goal: context.watch<UserNutritionData>().fiberGoal,
           width: widget.width,
           units: "g",
+          excludeColourChange: false,
         ),
         Container(
           decoration: const BoxDecoration(
@@ -391,6 +393,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           goal: context.watch<UserNutritionData>().sugarGoal,
           width: widget.width,
           units: "g",
+          excludeColourChange: false,
         ),
         Container(
           decoration: const BoxDecoration(
@@ -405,6 +408,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           goal: context.watch<UserNutritionData>().saturatedFatGoal,
           width: widget.width,
           units: "g",
+          excludeColourChange: false,
         ),
         Container(
           decoration: const BoxDecoration(
@@ -420,6 +424,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           goal: context.watch<UserNutritionData>().polyUnsaturatedFatGoal,
           width: widget.width,
           units: "g",
+          excludeColourChange: false,
         ),
         Container(
           decoration: const BoxDecoration(
@@ -435,6 +440,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           goal: context.watch<UserNutritionData>().monoUnsaturatedFatGoal,
           width: widget.width,
           units: "g",
+          excludeColourChange: false,
         ),
         Container(
           decoration: const BoxDecoration(
@@ -449,6 +455,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           goal: context.watch<UserNutritionData>().transFatGoal,
           width: widget.width,
           units: "g",
+          excludeColourChange: false,
         ),
         Container(
           decoration: const BoxDecoration(
@@ -463,6 +470,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           goal: context.watch<UserNutritionData>().cholesterolGoal,
           width: widget.width,
           units: "g",
+          excludeColourChange: false,
         ),
         Container(
           decoration: const BoxDecoration(
@@ -487,6 +495,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           currentProgress: context.watch<UserNutritionData>().caffeine,
           goal: context.watch<UserNutritionData>().caffeineGoal,
           width: widget.width,
+          excludeColourChange: false,
         ),
         Container(
           decoration: const BoxDecoration(
@@ -501,6 +510,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           goal: context.watch<UserNutritionData>().alcoholGoal,
           width: widget.width,
           units: "g",
+          excludeColourChange: false,
         ),
         Container(
           decoration: const BoxDecoration(
@@ -525,6 +535,8 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           currentProgress: context.watch<UserNutritionData>().sodium,
           goal: context.watch<UserNutritionData>().sodiumGoal,
           width: widget.width,
+          units: "g",
+          excludeColourChange: false,
         ),
         Container(
           decoration: const BoxDecoration(
@@ -538,6 +550,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           currentProgress: context.watch<UserNutritionData>().magnesium,
           goal: context.watch<UserNutritionData>().magnesiumGoal,
           width: widget.width,
+          excludeColourChange: false,
         ),
         Container(
           decoration: const BoxDecoration(
@@ -551,6 +564,7 @@ class _ExtraNutritionBarsState extends State<ExtraNutritionBars> {
           currentProgress: context.watch<UserNutritionData>().potassium,
           goal: context.watch<UserNutritionData>().potassiumGoal,
           width: widget.width,
+          excludeColourChange: false,
         ),
         Container(
           decoration: const BoxDecoration(

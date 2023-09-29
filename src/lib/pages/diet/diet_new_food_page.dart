@@ -375,6 +375,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     formName: "Name",
                     numbersOnly: false,
                     centerForm: true,
+                    noUnits: true,
                   ),
                   FoodNutritionListFormField(
                     controller: servingsController,
@@ -383,6 +384,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     formName: "Servings",
                     numbersOnly: true,
                     centerForm: true,
+                    noUnits: true,
                   ),
                   FoodNutritionListFormField(
                     controller: servingSizeController,
@@ -391,6 +393,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     formName: "Serving Size",
                     numbersOnly: true,
                     centerForm: true,
+                    units: "g"
                   ),
                   SizedBox(
                     width: _width / 2,
@@ -411,24 +414,28 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     formKey: caloriesKey,
                     width: _width,
                     formName: "Calories",
+                    units: "Kcal",
                   ),
                   FoodNutritionListFormField(
                     controller: proteinsController,
                     formKey: proteinsKey,
                     width: _width,
                     formName: "Protein",
+                    units: "g",
                   ),
                   FoodNutritionListFormField(
                     controller: carbsController,
                     formKey: carbsKey,
                     width: _width,
                     formName: "Carbohydrates",
+                    units: "g",
                   ),
                   FoodNutritionListFormField(
                     controller: fatController,
                     formKey: fatKey,
                     width: _width,
                     formName: "Fat",
+                    units: "g",
                   ),
                   DietListHeaderBox(
                     width: _width,
@@ -439,42 +446,49 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     formKey: fiberKey,
                     width: _width,
                     formName: "Fiber",
+                    units: "g",
                   ),
                   FoodNutritionListFormField(
                     controller: sugarsController,
                     formKey: sugarsKey,
                     width: _width,
                     formName: "Sugars",
+                    units: "g",
                   ),
                   FoodNutritionListFormField(
                     controller: saturatedFatController,
                     formKey: saturatedFatKey,
                     width: _width,
                     formName: "Saturated Fat",
+                    units: "g",
                   ),
                   FoodNutritionListFormField(
                     controller: polyUnsaturatedFatController,
                     formKey: polyUnsaturatedFatKey,
                     width: _width,
                     formName: "Polyunsaturated Fat",
+                    units: "g",
                   ),
                   FoodNutritionListFormField(
                     controller: monoUnsaturatedFatController,
                     formKey: monoUnsaturatedFatKey,
                     width: _width,
                     formName: "Monounsaturated Fat",
+                    units: "g",
                   ),
                   FoodNutritionListFormField(
                     controller: transFatController,
                     formKey: transFatKey,
                     width: _width,
                     formName: "Trans Fat",
+                    units: "g",
                   ),
                   FoodNutritionListFormField(
                     controller: cholesterolController,
                     formKey: cholesterolKey,
                     width: _width,
                     formName: "Cholesterol",
+                    units: "g",
                   ),
                   DietListHeaderBox(
                     width: _width,
@@ -484,23 +498,25 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     controller: caffeineController,
                     formKey: caffeineKey,
                     width: _width,
-                    formName: "Caffeine (mg)",
+                    formName: "Caffeine",
                   ),
                   FoodNutritionListFormField(
                     controller: alcoholController,
                     formKey: alcoholKey,
                     width: _width,
-                    formName: "Alcohol (g)",
+                    formName: "Alcohol",
+                    units: "g",
                   ),
                   DietListHeaderBox(
                     width: _width,
-                    title: "Minerals (mg)",
+                    title: "Minerals",
                   ),
                   FoodNutritionListFormField(
-                    controller: sodiumController,
-                    formKey: sodiumKey,
-                    width: _width,
-                    formName: "Salt",
+                      controller: sodiumController,
+                      formKey: sodiumKey,
+                      width: _width,
+                      formName: "Salt",
+                      units: "g"
                   ),
                   FoodNutritionListFormField(
                     controller: magnesiumController,
@@ -537,6 +553,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     formKey: seleniumKey,
                     width: _width,
                     formName: "Selenium",
+                    units: "μg",
                   ),
                   FoodNutritionListFormField(
                     controller: chlorideController,
@@ -549,12 +566,14 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     formKey: chromiumKey,
                     width: _width,
                     formName: "Chromium",
+                    units: "μg",
                   ),
                   FoodNutritionListFormField(
                     controller: copperController,
                     formKey: copperKey,
                     width: _width,
                     formName: "Copper",
+                    units: "μg",
                   ),
                   FoodNutritionListFormField(
                     controller: fluorideController,
@@ -567,6 +586,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     formKey: iodineKey,
                     width: _width,
                     formName: "Iodine",
+                    units: "μg",
                   ),
                   FoodNutritionListFormField(
                     controller: manganeseController,
@@ -579,16 +599,18 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     formKey: molybdenumKey,
                     width: _width,
                     formName: "Molybdenum",
+                    units: "μg",
                   ),
                   DietListHeaderBox(
                     width: _width,
-                    title: "Vitamins and Amino Acids (mg)",
+                    title: "Vitamins and Amino Acids",
                   ),
                   FoodNutritionListFormField(
                     controller: vitaminAController,
                     formKey: vitaminAKey,
                     width: _width,
                     formName: "Vitamin A",
+                    units: "μg",
                   ),
                   FoodNutritionListFormField(
                     controller: vitaminB1Controller,
@@ -619,18 +641,21 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     formKey: biotinKey,
                     width: _width,
                     formName: "Biotin",
+                    units: "μg",
                   ),
                   FoodNutritionListFormField(
                     controller: vitaminB9Controller,
                     formKey: vitaminB9Key,
                     width: _width,
-                    formName: "Vitamin B9",
+                    formName: "Folic Acid (B9)",
+                    units: "μg",
                   ),
                   FoodNutritionListFormField(
                     controller: vitaminB12Controller,
                     formKey: vitaminB12Key,
                     width: _width,
                     formName: "Vitamin B12",
+                    units: "μg",
                   ),
                   FoodNutritionListFormField(
                     controller: vitaminCController,
@@ -643,6 +668,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     formKey: vitaminDKey,
                     width: _width,
                     formName: "Vitamin D",
+                    units: "μg",
                   ),
                   FoodNutritionListFormField(
                     controller: vitaminEController,
@@ -655,6 +681,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     formKey: vitaminKKey,
                     width: _width,
                     formName: "Vitamin K",
+                    units: "μg",
                   ),
                   FoodNutritionListFormField(
                     controller: omega3Controller,

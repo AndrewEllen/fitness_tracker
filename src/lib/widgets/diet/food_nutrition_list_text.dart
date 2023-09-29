@@ -6,8 +6,10 @@ class FoodNutritionListText extends StatefulWidget {
     required this.value,
     required this.width,
     required this.title,
+    this.units = "mg",
     this.servingSize = "100",
     this.servings = "1",
+    this.decimalPlacesToRound = 2,
 
   }) : super(key: key);
 
@@ -15,6 +17,8 @@ class FoodNutritionListText extends StatefulWidget {
   final  String title, value;
   final  String servingSize;
   final  String servings;
+  final  String units;
+  final  int decimalPlacesToRound;
 
 
   @override
@@ -26,7 +30,10 @@ class _FoodNutritionListTextState extends State<FoodNutritionListText> {
   String ServingSizeCalculator(String valuePerOneHundred, String servingSize, String servings, int decimalPlaces) {
 
     try {
-      return ((double.parse(valuePerOneHundred) / 100) * (double.parse(servingSize) * double.parse(servings))).toStringAsFixed(decimalPlaces);
+      if (((double.parse(valuePerOneHundred) / 100) * (double.parse(servingSize) * double.parse(servings))) < 0.1) {
+        return ((double.parse(valuePerOneHundred) / 100) * (double.parse(servingSize) * double.parse(servings))).toStringAsFixed(decimalPlaces+1).replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), '');
+      }
+      return ((double.parse(valuePerOneHundred) / 100) * (double.parse(servingSize) * double.parse(servings))).toStringAsFixed(decimalPlaces).replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), '');
     } catch (error) {
       return "-";
     }
@@ -57,7 +64,7 @@ class _FoodNutritionListTextState extends State<FoodNutritionListText> {
              child: Padding(
                padding: const EdgeInsets.all(5.0),
                child: Text(
-                 widget.value.isEmpty ? "-" : widget.value,
+                 widget.value.isEmpty || widget.value == "0.00" || widget.value == "0" ? "-" : widget.value + " ${widget.units}",
                  style: const TextStyle(
                    color: Colors.white,
                  ),
@@ -74,8 +81,8 @@ class _FoodNutritionListTextState extends State<FoodNutritionListText> {
             child: Align(
               alignment: Alignment.centerRight,
               child: Text(
-                widget.value.isEmpty ? "-" :
-                ServingSizeCalculator(widget.value, widget.servingSize, widget.servings, 1),
+                widget.value.isEmpty || widget.value == "0.00" || widget.value == "0" ? "-" :
+                ServingSizeCalculator(widget.value, widget.servingSize, widget.servings, widget.decimalPlacesToRound) + " ${widget.units}",
                 style: const TextStyle(
                   color: Colors.white,
                 ),

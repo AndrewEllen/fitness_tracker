@@ -24,6 +24,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  late String _dropdownActivityValue = "0";
+  late String _dropdownWeightValue = "0";
+  late String _dropdownGenderValue = "0";
+
   late TextEditingController heightController = TextEditingController();
   late final heightKey = GlobalKey<FormState>();
 
@@ -58,58 +62,55 @@ class _HomePageState extends State<HomePage> {
   void calculateCalories() {
 
     if (heightController.text.isNotEmpty && weightController.text.isNotEmpty
-    && ageController.text.isNotEmpty && activityLevelController.text.isNotEmpty
-    && weightGainController.text.isNotEmpty && genderController.text.isNotEmpty) {
+    && ageController.text.isNotEmpty) {
+      late double calories;
+      late double calAdjustment;
+      late double bmrMult;
+      late double weightGain;
 
+      switch (double.parse(_dropdownActivityValue)) {
+        case 0:
+          bmrMult = 1.2;
+        case 1:
+          bmrMult = 1.375;
+        case 2:
+          bmrMult = 1.55;
+        case 3:
+          bmrMult = 1.725;
+        case 4:
+          bmrMult = 1.9;
+      }
+
+      switch (double.parse(_dropdownWeightValue)) {
+        case 0:
+          weightGain = -500;
+        case 1:
+          weightGain = -250;
+        case 2:
+          weightGain = 0;
+        case 3:
+          weightGain = 250;
+        case 4:
+          weightGain = 500;
+      }
+
+      switch (double.parse(_dropdownGenderValue)) {
+        case 0:
+          calAdjustment = 5;
+        case 1:
+          calAdjustment = -161;
+      }
+
+      calories = ((
+          10 * double.parse(weightController.text) + 6.25 * double.parse(heightController.text)
+              - 5 * double.parse(ageController.text) + calAdjustment
+      ) * bmrMult) + weightGain;
+
+      print(calories);
+
+      writeUserCalories(calories.toStringAsFixed(2));
+      context.read<UserNutritionData>().setCalories(calories.toStringAsFixed(2));
     }
-
-    late double calories;
-    late double calAdjustment;
-    late double bmrMult;
-    late double weightGain;
-
-    switch (double.parse(activityLevelController.text)) {
-      case 0:
-        bmrMult = 1.2;
-      case 1:
-        bmrMult = 1.375;
-      case 2:
-        bmrMult = 1.55;
-      case 3:
-        bmrMult = 1.725;
-      case 4:
-        bmrMult = 1.9;
-    }
-
-    switch (double.parse(weightGainController.text)) {
-      case 0:
-        weightGain = -500;
-      case 1:
-        weightGain = -250;
-      case 2:
-        weightGain = 0;
-      case 3:
-        weightGain = 250;
-      case 4:
-        weightGain = 500;
-    }
-
-    switch (double.parse(genderController.text)) {
-      case 0:
-        calAdjustment = -161;
-      case 1:
-        calAdjustment = 5;
-    }
-
-    calories = ((
-        10 * double.parse(weightController.text) + 6.25 * double.parse(heightController.text)
-        - 5 * double.parse(ageController.text) + calAdjustment
-    ) * bmrMult) + weightGain;
-
-    print(calories);
-
-    writeUserCalories(calories.toString());
-
   }
 
 
@@ -327,6 +328,7 @@ class _HomePageState extends State<HomePage> {
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(bottom: (_width/12)/2.5, left: 5, right: 5,),
                                   hintText: 'Height (CM)...',
+                                  suffix: const Text("Cm"),
                                   hintStyle: const TextStyle(
                                     color: Colors.white54,
                                     fontSize: (18),
@@ -365,6 +367,7 @@ class _HomePageState extends State<HomePage> {
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(bottom: (_width/12)/2.5, left: 5, right: 5,),
                                   hintText: 'Weight (KG)...',
+                                  suffix: const Text("Kg"),
                                   hintStyle: const TextStyle(
                                     color: Colors.white54,
                                     fontSize: (18),
@@ -404,6 +407,7 @@ class _HomePageState extends State<HomePage> {
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(bottom: (_width/12)/2.5, left: 5, right: 5,),
                                   hintText: 'Age (Years)...',
+                                  suffix: const Text("Years"),
                                   hintStyle: const TextStyle(
                                     color: Colors.white54,
                                     fontSize: (18),
@@ -425,126 +429,162 @@ class _HomePageState extends State<HomePage> {
                                 },
                               ),
                             ),
-                            Form(
-                              key: activityLevelKey,
-                              child: TextFormField(
-                                controller: activityLevelController,
-                                cursorColor: Colors.white,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (20),
-                                ),
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
-                                  NumericalRangeFormatter(min: 0, max: 4),
-                                ],
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(bottom: (_width/12)/2.5, left: 5, right: 5,),
-                                  hintText: 'Activity Level (0-4)...',
-                                  hintStyle: const TextStyle(
-                                    color: Colors.white54,
-                                    fontSize: (18),
-                                  ),
-                                  errorStyle: const TextStyle(
-                                    height: 0,
-                                  ),
-                                  focusedBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: appSecondaryColour,
+                            Theme(
+                              data: Theme.of(context).copyWith(
+                                canvasColor: appTertiaryColour,
+                              ),
+                              child: DropdownButton(
+                                value: _dropdownActivityValue,
+                                items: const [
+                                  DropdownMenuItem(child: Text("Sedentary",
+                                    style: TextStyle(
+                                        color: Colors.white,
                                     ),
                                   ),
-                                ),
-                                validator: (String? value) {
-                                  if (value!.isNotEmpty) {
-                                    return null;
-                                  }
-                                  return "";
-                                },
+                                    value: "0",
+                                  ),
+                                  DropdownMenuItem(child: Text("Lightly Active",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                    value: "1",
+                                  ),
+                                  DropdownMenuItem(child: Text("Moderately Active",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                    value: "2",
+                                  ),
+                                  DropdownMenuItem(child: Text("Very Active",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                    value: "3",
+                                  ),
+                                  DropdownMenuItem(child: Text("Extremely Active",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                    value: "4",
+                                  ),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _dropdownActivityValue = value!;
+                                  });
+                                }
                               ),
                             ),
-                            Form(
-                              key: weightGainKey,
-                              child: TextFormField(
-                                controller: weightGainController,
-                                cursorColor: Colors.white,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (20),
-                                ),
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
-                                  NumericalRangeFormatter(min: 0, max: 4),
-                                ],
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(bottom: (_width/12)/2.5, left: 5, right: 5,),
-                                  hintText: 'Weight Change Amount (0-4)...',
-                                  hintStyle: const TextStyle(
-                                    color: Colors.white54,
-                                    fontSize: (18),
-                                  ),
-                                  errorStyle: const TextStyle(
-                                    height: 0,
-                                  ),
-                                  focusedBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: appSecondaryColour,
+                            Theme(
+                              data: Theme.of(context).copyWith(
+                                canvasColor: appTertiaryColour,
+                              ),
+                              child: DropdownButton(
+                                  value: _dropdownWeightValue,
+                                  items: const [
+                                    DropdownMenuItem(child: Text("Extreme Weight Loss",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                validator: (String? value) {
-                                  if (value!.isNotEmpty) {
-                                    return null;
+                                      value: "0",
+                                    ),
+                                    DropdownMenuItem(child: Text("Mild Weight Loss",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                      value: "1",
+                                    ),
+                                    DropdownMenuItem(child: Text("Maintain Weight",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                      value: "2",
+                                    ),
+                                    DropdownMenuItem(child: Text("Mild Weight Gain",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                      value: "3",
+                                    ),
+                                    DropdownMenuItem(child: Text("Extreme Weight Gain",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                      value: "4",
+                                    ),
+                                  ],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _dropdownWeightValue = value!;
+                                    });
                                   }
-                                  return "";
-                                },
                               ),
                             ),
-                            Form(
-                              key: genderKey,
-                              child: TextFormField(
-                                controller: genderController,
-                                cursorColor: Colors.white,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (20),
-                                ),
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
-                                  NumericalRangeFormatter(min: 0, max: 1),
-                                ],
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(bottom: (_width/12)/2.5, left: 5, right: 5,),
-                                  hintText: 'Male or Female (0-1)...',
-                                  hintStyle: const TextStyle(
-                                    color: Colors.white54,
-                                    fontSize: (18),
-                                  ),
-                                  errorStyle: const TextStyle(
-                                    height: 0,
-                                  ),
-                                  focusedBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: appSecondaryColour,
+                            Theme(
+                              data: Theme.of(context).copyWith(
+                                canvasColor: appTertiaryColour,
+                              ),
+                              child: DropdownButton(
+                                  value: _dropdownGenderValue,
+                                  items: const [
+                                    DropdownMenuItem(child: Text("Male",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                validator: (String? value) {
-                                  if (value!.isNotEmpty) {
-                                    return null;
+                                      value: "0",
+                                    ),
+                                    DropdownMenuItem(child: Text("Female",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                      value: "1",
+                                    ),
+                                  ],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _dropdownGenderValue = value!;
+                                    });
                                   }
-                                  return "";
-                                },
                               ),
                             ),
                             AppButton(
                               onTap: calculateCalories,
                               buttonText: "Calculate Calories",
+                            ),
+                            Text(
+                              "Calories: " + context.watch<UserNutritionData>().caloriesGoal.toString() + " Kcal",
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              "Protein: " + context.read<UserNutritionData>().proteinGoal.toString() + " g",
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              "Carbs: " + context.read<UserNutritionData>().carbohydratesGoal.toString() + " g",
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              "Fat: " + context.read<UserNutritionData>().fatGoal.toString() + " g",
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                             const Spacer(flex: 1),
                           ],

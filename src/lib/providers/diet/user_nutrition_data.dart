@@ -1,4 +1,5 @@
 import 'package:fitness_tracker/exports.dart';
+import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -334,13 +335,14 @@ class UserNutritionData with ChangeNotifier {
   late double _fatGoal = 85;
   late double _carbohydratesGoal = 286;
 
-  void setCalories (String caloriesFromDB) {
+  void setCalories(String caloriesFromDB) {
 
     _caloriesGoal = double.parse(caloriesFromDB);
     _carbohydratesGoal = double.parse(((double.parse(caloriesFromDB)*0.5)/4).toStringAsFixed(1));
     _fatGoal = double.parse(((double.parse(caloriesFromDB)*0.3)/9).toStringAsFixed(1));
     _proteinGoal = double.parse(((double.parse(caloriesFromDB)*0.2)/4).toStringAsFixed(1));
 
+    notifyListeners();
   }
 
   //grams
@@ -355,7 +357,7 @@ class UserNutritionData with ChangeNotifier {
   //mg
   late final double _calciumGoal = 1000; // Example: Calcium goal for adults (general guideline)
   late final double _ironGoal = 8; // Example: Iron goal for adults (general guideline)
-  late final double _sodiumGoal = 5000; // Example: Sodium goal for adults (general guideline)
+  late final double _sodiumGoal = 5; // Example: Sodium goal for adults (general guideline)
   late final double _zincGoal = 11; // Example: Zinc goal for adults (general guideline)
   late final double _magnesiumGoal = 400; // Example: Magnesium goal for adults (general guideline)
   late final double _potassiumGoal = 3500; // Example: Potassium goal
@@ -1149,6 +1151,7 @@ class UserNutritionData with ChangeNotifier {
       _currentRecipe.foodData.servingSize = (double.parse(_currentRecipe.foodData.quantity) / double.parse(servings)).toStringAsFixed(1);
 
       calculateRecipeMacros();
+      
     } catch (error) {
       _currentRecipe.foodData.servings = "";
       _currentRecipe.foodData.servingSize = "";
@@ -1230,6 +1233,7 @@ class UserNutritionData with ChangeNotifier {
   }
 
   void setCurrentRecipe(UserRecipesModel recipeItem) {
+    recipeItem.foodData.foodName = recipeItem.foodData.foodName.capitalize();
     _currentRecipe = recipeItem;
 
   }
@@ -1745,66 +1749,68 @@ class UserNutritionData with ChangeNotifier {
 
     calculateTotal(_currentRecipe.recipeFoodList);
 
+    int roundToDecimalPlaces = 2;
+
     _currentRecipe.foodData = FoodItem(
         barcode: _currentRecipe.barcode,
         foodName: _currentRecipe.foodData.foodName,
         quantity: recipeweight.toString(),
         servingSize: _currentRecipe.foodData.servingSize,
         servings: _currentRecipe.foodData.servings,
-        calories: ((recipecalories/recipeweight)*100).toStringAsFixed(1),
+        calories: ((recipecalories/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
         kiloJoules: "",
-        proteins: ((recipeprotein/recipeweight)*100).toStringAsFixed(1),
-        carbs: ((recipecarbohydrates/recipeweight)*100).toStringAsFixed(1),
-        fiber: ((recipefiber/recipeweight)*100).toStringAsFixed(1),
-        sugars: ((recipesugar/recipeweight)*100).toStringAsFixed(1),
-        fat: ((recipefat/recipeweight)*100).toStringAsFixed(1),
-        saturatedFat: ((recipesaturatedFat/recipeweight)*100).toStringAsFixed(1),
-        polyUnsaturatedFat: ((recipepolyUnsaturatedFat/recipeweight)*100).toStringAsFixed(1),
-        monoUnsaturatedFat: ((recipemonoUnsaturatedFat/recipeweight)*100).toStringAsFixed(1),
-        transFat: ((recipetransFat/recipeweight)*100).toStringAsFixed(1),
-        cholesterol: ((recipecholesterol/recipeweight)*100).toStringAsFixed(1),
-        calcium: ((recipecalcium/recipeweight)*100).toStringAsFixed(1),
-        iron: ((recipeiron/recipeweight)*100).toStringAsFixed(1),
-        sodium: ((recipesodium/recipeweight)*100).toStringAsFixed(1),
-        zinc: ((recipezinc/recipeweight)*100).toStringAsFixed(1),
-        magnesium: ((recipemagnesium/recipeweight)*100).toStringAsFixed(1),
-        potassium: ((recipepotassium/recipeweight)*100).toStringAsFixed(1),
-        vitaminA: ((recipevitaminA/recipeweight)*100).toStringAsFixed(1),
-        vitaminB1: ((recipevitaminB1/recipeweight)*100).toStringAsFixed(1),
-        vitaminB2: ((recipevitaminB2/recipeweight)*100).toStringAsFixed(1),
-        vitaminB3: ((recipevitaminB3/recipeweight)*100).toStringAsFixed(1),
-        vitaminB6: ((recipevitaminB6/recipeweight)*100).toStringAsFixed(1),
-        vitaminB9: ((recipevitaminB9/recipeweight)*100).toStringAsFixed(1),
-        vitaminB12: ((recipevitaminB12/recipeweight)*100).toStringAsFixed(1),
-        vitaminC: ((recipevitaminC/recipeweight)*100).toStringAsFixed(1),
-        vitaminD: ((recipevitaminD/recipeweight)*100).toStringAsFixed(1),
-        vitaminE: ((recipevitaminE/recipeweight)*100).toStringAsFixed(1),
-        vitaminK: ((recipevitaminK/recipeweight)*100).toStringAsFixed(1),
-        omega3: ((recipeomega3/recipeweight)*100).toStringAsFixed(1),
-        omega6: ((recipeomega6/recipeweight)*100).toStringAsFixed(1),
-        alcohol: ((recipealcohol/recipeweight)*100).toStringAsFixed(1),
-        biotin: ((recipebiotin/recipeweight)*100).toStringAsFixed(1),
-        butyricAcid: ((recipebutyricAcid/recipeweight)*100).toStringAsFixed(1),
-        caffeine: ((recipecaffeine/recipeweight)*100).toStringAsFixed(1),
-        capricAcid: ((recipecapricAcid/recipeweight)*100).toStringAsFixed(1),
-        caproicAcid: ((recipecaproicAcid/recipeweight)*100).toStringAsFixed(1),
-        caprylicAcid: ((recipecaprylicAcid/recipeweight)*100).toStringAsFixed(1),
-        chloride: ((recipechloride/recipeweight)*100).toStringAsFixed(1),
-        chromium: ((recipechromium/recipeweight)*100).toStringAsFixed(1),
-        copper: ((recipecopper/recipeweight)*100).toStringAsFixed(1),
-        docosahexaenoicAcid: ((recipedocosahexaenoicAcid/recipeweight)*100).toStringAsFixed(1),
-        eicosapentaenoicAcid: ((recipeeicosapentaenoicAcid/recipeweight)*100).toStringAsFixed(1),
-        erucicAcid: ((recipeerucicAcid/recipeweight)*100).toStringAsFixed(1),
-        fluoride: ((recipefluoride/recipeweight)*100).toStringAsFixed(1),
-        iodine: ((recipeiodine/recipeweight)*100).toStringAsFixed(1),
-        manganese: ((recipemanganese/recipeweight)*100).toStringAsFixed(1),
-        molybdenum: ((recipemolybdenum/recipeweight)*100).toStringAsFixed(1),
-        myristicAcid: ((recipemyristicAcid/recipeweight)*100).toStringAsFixed(1),
-        oleicAcid: ((recipeoleicAcid/recipeweight)*100).toStringAsFixed(1),
-        palmiticAcid: ((recipepalmiticAcid/recipeweight)*100).toStringAsFixed(1),
-        pantothenicAcid: ((recipepantothenicAcid/recipeweight)*100).toStringAsFixed(1),
-        selenium: ((recipeselenium/recipeweight)*100).toStringAsFixed(1),
-        stearicAcid: ((recipestearicAcid/recipeweight)*100).toStringAsFixed(1),
+        proteins: ((recipeprotein/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        carbs: ((recipecarbohydrates/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        fiber: ((recipefiber/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        sugars: ((recipesugar/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        fat: ((recipefat/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        saturatedFat: ((recipesaturatedFat/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        polyUnsaturatedFat: ((recipepolyUnsaturatedFat/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        monoUnsaturatedFat: ((recipemonoUnsaturatedFat/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        transFat: ((recipetransFat/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        cholesterol: ((recipecholesterol/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        calcium: ((recipecalcium/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        iron: ((recipeiron/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        sodium: ((recipesodium/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        zinc: ((recipezinc/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        magnesium: ((recipemagnesium/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        potassium: ((recipepotassium/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        vitaminA: ((recipevitaminA/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        vitaminB1: ((recipevitaminB1/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        vitaminB2: ((recipevitaminB2/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        vitaminB3: ((recipevitaminB3/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        vitaminB6: ((recipevitaminB6/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        vitaminB9: ((recipevitaminB9/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        vitaminB12: ((recipevitaminB12/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        vitaminC: ((recipevitaminC/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        vitaminD: ((recipevitaminD/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        vitaminE: ((recipevitaminE/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        vitaminK: ((recipevitaminK/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        omega3: ((recipeomega3/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        omega6: ((recipeomega6/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        alcohol: ((recipealcohol/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        biotin: ((recipebiotin/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        butyricAcid: ((recipebutyricAcid/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        caffeine: ((recipecaffeine/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        capricAcid: ((recipecapricAcid/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        caproicAcid: ((recipecaproicAcid/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        caprylicAcid: ((recipecaprylicAcid/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        chloride: ((recipechloride/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        chromium: ((recipechromium/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        copper: ((recipecopper/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        docosahexaenoicAcid: ((recipedocosahexaenoicAcid/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        eicosapentaenoicAcid: ((recipeeicosapentaenoicAcid/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        erucicAcid: ((recipeerucicAcid/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        fluoride: ((recipefluoride/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        iodine: ((recipeiodine/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        manganese: ((recipemanganese/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        molybdenum: ((recipemolybdenum/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        myristicAcid: ((recipemyristicAcid/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        oleicAcid: ((recipeoleicAcid/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        palmiticAcid: ((recipepalmiticAcid/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        pantothenicAcid: ((recipepantothenicAcid/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        selenium: ((recipeselenium/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
+        stearicAcid: ((recipestearicAcid/recipeweight)*100).toStringAsFixed(roundToDecimalPlaces),
         recipe: true,
     );
 

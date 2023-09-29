@@ -1,4 +1,5 @@
 import 'package:fitness_tracker/exports.dart';
+import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
@@ -234,6 +235,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   width: _width,
                   formName: "Servings",
                   centerForm: true,
+                  noUnits: true,
                 ),
                 FoodNutritionListFormField(
                   servingSize: true,
@@ -243,6 +245,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   width: _width,
                   formName: "Serving Size",
                   centerForm: true,
+                  units: "g",
                 ),
                 Padding(
                   padding: EdgeInsets.all(_height/120),
@@ -259,6 +262,22 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                     child: GestureDetector(
                       onTap: () {
                         Clipboard.setData(ClipboardData(text: currentFoodItem.barcode));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text("Copied Code To Clipboard!"),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              margin: EdgeInsets.only(
+                                bottom: MediaQuery.of(context).size.height * 0.6695,
+                                right: 20,
+                                left: 20,
+                              ),
+                              dismissDirection: DismissDirection.none,
+                              duration: const Duration(milliseconds: 700),
+                            ),
+                        );
                       },
                       child: Column(
                         children: [
@@ -356,6 +375,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.calories,
                   width: _width,
                   title: "Calories",
+                  units: "Kcal",
                 ),
 
                 FoodNutritionListText(
@@ -365,6 +385,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.proteins,
                   width: _width,
                   title: "Protein",
+                  units: "g",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -373,6 +394,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.carbs,
                   width: _width,
                   title: "Carbohydrates",
+                  units: "g",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -381,6 +403,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.fat,
                   width: _width,
                   title: "Fat",
+                  units: "g",
                 ),
 
                 DietListHeaderBox(
@@ -395,6 +418,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.fiber,
                   width: _width,
                   title: "Fiber",
+                  units: "g",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -403,6 +427,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.sugars,
                   width: _width,
                   title: "Sugars",
+                  units: "g",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -411,6 +436,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.saturatedFat,
                   width: _width,
                   title: "Saturated Fat",
+                  units: "g",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -419,6 +445,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.polyUnsaturatedFat,
                   width: _width,
                   title: "Polyunsaturated Fat",
+                  units: "g",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -427,6 +454,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.monoUnsaturatedFat,
                   width: _width,
                   title: "Monounsaturated Fat",
+                  units: "g",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -435,6 +463,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.transFat,
                   width: _width,
                   title: "Trans Fat",
+                  units: "g",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -443,6 +472,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.cholesterol,
                   width: _width,
                   title: "Cholesterol",
+                  units: "g",
                 ),
 
                 DietListHeaderBox(
@@ -456,7 +486,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   //controller: caffeineController,
                   value: currentFoodItem.caffeine,
                   width: _width,
-                  title: "Caffeine (mg)",
+                  title: "Caffeine",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -464,12 +494,13 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   //controller: alcoholController,
                   value: currentFoodItem.alcohol,
                   width: _width,
-                  title: "Alcohol (g)",
+                  title: "Alcohol",
+                  units: "g",
                 ),
 
                 DietListHeaderBox(
                   width: _width,
-                  title: "Minerals (mg)",
+                  title: "Minerals",
                 ),
 
                 FoodNutritionListText(
@@ -479,6 +510,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.sodium,
                   width: _width,
                   title: "Salt",
+                  units: "g",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -527,6 +559,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.selenium,
                   width: _width,
                   title: "Selenium",
+                  units: "μg",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -543,6 +576,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.chromium,
                   width: _width,
                   title: "Chromium",
+                  units: "μg",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -551,6 +585,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.copper,
                   width: _width,
                   title: "Copper",
+                  units: "μg",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -567,6 +602,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.iodine,
                   width: _width,
                   title: "Iodine",
+                  units: "μg",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -583,11 +619,12 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.molybdenum,
                   width: _width,
                   title: "Molybdenum",
+                  units: "μg",
                 ),
 
                 DietListHeaderBox(
                   width: _width,
-                  title: "Vitamins and Amino Acids (mg)",
+                  title: "Vitamins and Amino Acids",
                 ),
 
                 FoodNutritionListText(
@@ -597,6 +634,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.vitaminA,
                   width: _width,
                   title: "Vitamin A",
+                  units: "μg",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -621,6 +659,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.vitaminB3,
                   width: _width,
                   title: "Niacin",
+                  units: "μg",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -637,6 +676,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.biotin,
                   width: _width,
                   title: "Biotin",
+                  units: "μg",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -645,6 +685,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.vitaminB9,
                   width: _width,
                   title: "Vitamin B9",
+                  units: "μg",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -653,6 +694,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.vitaminB12,
                   width: _width,
                   title: "Vitamin B12",
+                  units: "μg",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -669,6 +711,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.vitaminD,
                   width: _width,
                   title: "Vitamin D",
+                  units: "μg",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,
@@ -685,6 +728,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.vitaminK,
                   width: _width,
                   title: "Vitamin K",
+                  units: "μg",
                 ),
                 FoodNutritionListText(
                   servingSize: servingSizeController.text,

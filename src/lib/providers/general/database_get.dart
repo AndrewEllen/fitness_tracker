@@ -339,6 +339,67 @@ GetFoodDataFromFirebase(String barcode) async {
   }
 }
 
+BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false}) async {
+
+  List<FoodItem> foodItems = [];
+  print(barcodes);
+
+  if (recipe) {
+
+    print("IS IN RECIPE");
+
+    try {
+
+      final snapshot = await FirebaseFirestore.instance
+          .collection('recipe-data')
+          .where(FieldPath.documentId, whereIn: barcodes)
+          .get();
+
+      foodItems = [
+        for (QueryDocumentSnapshot document in snapshot.docs)
+          ConvertToFoodItem(document.get("food-data")["foodData"], firebase: true)
+            ..firebaseItem = true,
+      ];
+
+      print(foodItems[0].foodName);
+
+    } catch (exception) {
+      print(exception);
+
+      for (var barcode in barcodes) {
+        foodItems.add(await GetFoodDataFromFirebase(barcode));
+      }
+
+    }
+    return foodItems;
+
+  } else {
+
+    try {
+
+      final snapshot = await FirebaseFirestore.instance
+          .collection('food-data')
+          .where(FieldPath.documentId, whereIn: barcodes)
+          .get();
+
+      foodItems = [
+        for (QueryDocumentSnapshot document in snapshot.docs)
+          ConvertToFoodItem(document.get("food-data"), firebase: true)
+            ..firebaseItem = true,
+      ];
+
+    } catch (exception) {
+      print(exception);
+
+      for (var barcode in barcodes) {
+        foodItems.add(await GetFoodDataFromFirebase(barcode));
+      }
+
+    }
+    return foodItems;
+  }
+}
+
 GetUserNutritionData(String date) async {
 
   try {
@@ -353,8 +414,6 @@ GetUserNutritionData(String date) async {
         .get();
 
     final Map _data = snapshot.get("nutrition-data");
-
-    print("returning nutrition");
 
 
     Future<List<ListFoodItem>> ToListFoodItem (_data) async {
@@ -374,23 +433,18 @@ GetUserNutritionData(String date) async {
 
         List<ListFoodItem> foodList = generateFoodList;
 
-        for (int i = 0; i < foodList.length; i++) {
+        List<FoodItem> foodItemList = await CheckFoodBarcodeList(
+            [for (final food in foodList) if (!food.recipe) food.barcode],
+            [for (final food in foodList) if (food.recipe) food.barcode]
+        );
 
-          dynamic data = await CheckFoodBarcode(foodList[i].barcode, recipe: foodList[i].recipe);
-
-          print("PRINTING NAMES OF FOOD");
-
-          if (data.runtimeType == UserRecipesModel) {
-            print("recipe");
-            foodList[i].foodItemData = data.foodData;
-          } else {
-            print("food");
-            foodList[i].foodItemData = data;
-          }
-
+        final foodListMap = {for (final food in foodItemList) food.barcode : food};
+        for (final food in foodList) {
+          ///TODO Implement null check
+          food.foodItemData = foodListMap[food.barcode]!;
         }
 
-        return generateFoodList;
+        return foodList;
 
       } catch (exception) {
         print(exception);
@@ -630,14 +684,23 @@ GetFoodDataFromFirebaseRecipe(String barcode) async {
 GetRecipeFoodList(List<ListFoodItem> foodList) async {
 
   try{
-    for (int i = 0; i < foodList.length; i++) {
 
-      FoodItem data = await CheckFoodBarcode(foodList[i].barcode);
+    final snapshot = await FirebaseFirestore.instance
+        .collection('food-data')
+        .where(FieldPath.documentId, whereIn: List.generate(foodList.length, (index) => foodList[index].barcode))
+        .get();
 
-      if (data != null) {
-        foodList[i].foodItemData = data;
-      }
-  }
+    List<FoodItem> foodItemData = [
+      for (QueryDocumentSnapshot document in snapshot.docs)
+        ConvertToFoodItem(document.get("food-data"), firebase: true)
+          ..firebaseItem = true,
+    ];
+
+    final foodListMap = {for (final food in foodItemData) food.barcode : food};
+    for (final food in foodList) {
+      ///TODO Implement null check
+      food.foodItemData = foodListMap[food.barcode]!;
+    }
 
     return foodList;
 

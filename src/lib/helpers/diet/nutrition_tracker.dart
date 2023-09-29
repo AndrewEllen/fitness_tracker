@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import '../../models/diet/food_item.dart';
@@ -9,6 +10,8 @@ import '../../providers/general/database_get.dart';
 //Checks public food database
 
 FoodItem ConvertToFoodItem(product, {String scannedBarcode = "", bool firebase = false}) {
+
+  print("converting food");
 
   if (firebase) {
 
@@ -72,6 +75,8 @@ FoodItem ConvertToFoodItem(product, {String scannedBarcode = "", bool firebase =
       pantothenicAcid: product["pantothenicAcid"] ?? "",
       selenium: product["selenium"] ?? "",
       stearicAcid: product["stearicAcid"] ?? "",
+      firebaseItem: true,
+      recipe: product["recipe"] ?? false,
     );
 
     try {
@@ -294,14 +299,8 @@ CheckFoodBarcode(String barcodeDisplayValue, {bool recipe = false}) async {
     print("getting recipe");
     UserRecipesModel recipeData = await GetFoodDataFromFirebaseRecipe(barcodeDisplayValue);
 
-    print("un Capitalised Name");
-    print(recipeData.foodData.foodName);
-
     try {
-      print("Capitalised Name");
-      print(recipeData.foodData.foodName);
       recipeData.foodData.foodName = recipeData.foodData.foodName.capitalize();
-      print(recipeData.foodData.foodName);
     } catch (error) {
       print(error);
     }
@@ -316,14 +315,8 @@ CheckFoodBarcode(String barcodeDisplayValue, {bool recipe = false}) async {
 
       FoodItem newFoodItem = await GetFoodDataFromFirebase(barcodeDisplayValue);
 
-      print("un Capitalised Name");
-      print(newFoodItem.foodName);
-
       try {
-        print("Capitalised Name");
-        print(newFoodItem.foodName);
         newFoodItem.foodName = newFoodItem.foodName.capitalize();
-        print(newFoodItem.foodName);
       } catch (error) {
         print(error);
       }
@@ -343,6 +336,40 @@ CheckFoodBarcode(String barcodeDisplayValue, {bool recipe = false}) async {
       return newFoodItem;
 
     }
+  }
+}
+
+CheckFoodBarcodeList(List<String> barcodeDisplayValues, List<String> recipeBarcodeDisplayValues) async {
+
+  try {
+
+    List<FoodItem> newFoodItems = <FoodItem>[];
+
+    if (barcodeDisplayValues.isNotEmpty) {
+      print("passing");
+      newFoodItems.addAll(await BatchGetFoodDataFromFirebase(barcodeDisplayValues));
+      print("passed");
+    }
+    if (recipeBarcodeDisplayValues.isNotEmpty) {
+      print("CHECKING RECIPE LIST");
+      newFoodItems.addAll(await BatchGetFoodDataFromFirebase(recipeBarcodeDisplayValues, recipe: true));
+    }
+
+    return newFoodItems;
+
+  } catch (error){
+    print(error);
+
+    List<FoodItem> newFoodItems = [];
+
+    print("Batch Fetch Fallback");
+
+    for (String value in barcodeDisplayValues) {
+      newFoodItems.add(await CheckFoodBarcode(value, recipe: false));
+    }
+
+    return newFoodItems;
+
   }
 }
 
@@ -398,7 +425,7 @@ SearchByNameTriGramFirebase(String value) async {
     final snapshot = await FirebaseFirestore.instance
         .collection("food-data")
         .where("foodNameSearch", arrayContainsAny: searchValues)
-        .limit(20)
+        .limit(40)
         .get();
 
     foodItems = [
