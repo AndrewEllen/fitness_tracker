@@ -6,6 +6,7 @@ import '../../providers/diet/user_nutrition_data.dart';
 import 'diet_home_bottom_button.dart';
 import 'diet_home_calories_circle.dart';
 import 'diet_home_date_picker.dart';
+import 'diet_home_extra_nutrition_bars.dart';
 import 'diet_home_nutrition_bars.dart';
 
 class DailyNutritionDisplay extends StatelessWidget {
@@ -58,7 +59,7 @@ class DailyNutritionDisplay extends StatelessWidget {
             ],
           ),
         ),
-        const DietHomeBottomButton(),
+        const DietHomeExtraNutritionBars(),
       ],
     );
   }
