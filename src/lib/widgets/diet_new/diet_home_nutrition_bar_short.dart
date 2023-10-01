@@ -25,7 +25,7 @@ class HomeNutritionBarShort extends StatelessWidget {
                 child: Text(
                   label,
                   style: boldTextStyle.copyWith(
-                      fontSize: 13.h
+                      fontSize: 11.5.h
                   ),
                 ),
               ),
@@ -34,7 +34,7 @@ class HomeNutritionBarShort extends StatelessWidget {
                 child: Text(
                   " " + progress + "g of " + goal + "g",
                   style: boldTextStyle.copyWith(
-                    fontSize: 12.h
+                    fontSize: 11.5.h
                   ),
                 ),
               ),

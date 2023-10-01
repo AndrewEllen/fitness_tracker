@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'diet_home_bottom_button.dart';
 import 'diet_home_calories_circle.dart';
+import 'diet_home_date_picker.dart';
 import 'diet_home_nutrition_bars.dart';
 
 class DailyNutritionDisplay extends StatelessWidget {
@@ -22,12 +23,16 @@ class DailyNutritionDisplay extends StatelessWidget {
             color: appTertiaryColour,
           ),
           width: double.maxFinite.w,
-          height: 213.h,
-          child: Column(
+          height: 240.h,
+          child: const Column(
             children: [
+              DietDatePicker(),
               Spacer(),
-              const Center(
-                child: CalorieCircle(),
+              Center(
+                child: CalorieCircle(
+                  calories: "800",
+                  caloriesGoal: "3200",
+                ),
               ),
               Spacer(),
               DietHomeNutritionBars(),

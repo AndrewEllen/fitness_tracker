@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CalorieCircle extends StatelessWidget {
-  const CalorieCircle({Key? key}) : super(key: key);
+  const CalorieCircle({Key? key, required this.caloriesGoal, required this.calories}) : super(key: key);
+  final String caloriesGoal, calories;
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +37,13 @@ class CalorieCircle extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "800 Kcal Remaining",
+                  "$calories Kcal Remaining",
                   style: boldTextStyle.copyWith(
                     fontSize: 13.h,
                   ),
                 ),
                 Text(
-                  "of 3200 Kcal",
+                  "of $caloriesGoal Kcal",
                   style: boldTextStyle.copyWith(
                     fontSize: 13.h,
                   ),
