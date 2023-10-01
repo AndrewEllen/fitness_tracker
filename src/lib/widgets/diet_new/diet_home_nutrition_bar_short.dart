@@ -10,14 +10,28 @@ class HomeNutritionBarShort extends StatelessWidget {
     this.indicatorColour = appSecondaryColour,
     this.indicatorBackgroundColour = appSecondaryColourDark}) : super(key: key);
   final Color indicatorColour, indicatorBackgroundColour;
-  final String label, progress, goal;
+  final String label;
+  final double progress, goal;
+
+  double barProgress(double progress, double goal) {
+    double barProgressDouble;
+    try {
+      barProgressDouble = progress / goal;
+      if (barProgressDouble > 1) {
+        barProgressDouble = 1;
+      }
+    } catch (error) {
+      barProgressDouble = 0;
+    }
+    return barProgressDouble;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(
-          width: 120.h,
+          width: 160.w,
           child: Stack(
             children: [
               Align(
@@ -25,16 +39,16 @@ class HomeNutritionBarShort extends StatelessWidget {
                 child: Text(
                   label,
                   style: boldTextStyle.copyWith(
-                      fontSize: 11.5.h
+                      fontSize: 13.w
                   ),
                 ),
               ),
               Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  " " + progress + "g of " + goal + "g",
+                  "${goal.toStringAsFixed(0)}g of ${goal.toStringAsFixed(0)}g",
                   style: boldTextStyle.copyWith(
-                    fontSize: 11.5.h
+                    fontSize: 13.w
                   ),
                 ),
               ),
@@ -42,10 +56,10 @@ class HomeNutritionBarShort extends StatelessWidget {
           ),
         ),
         SizedBox(
-          width: 120.h,
-          height: 10.h,
+          width: 160.w,
+          height: 10.w,
           child: TweenAnimationBuilder<double>(
-            tween: Tween<double>(begin: 0.0, end: 0.5),
+            tween: Tween<double>(begin: 0.0, end: barProgress(progress, goal)),
             duration: const Duration(milliseconds: 750),
             builder: (context, value, _) => ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(10)),
