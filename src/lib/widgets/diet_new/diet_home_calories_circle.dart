@@ -9,19 +9,49 @@ class CalorieCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 100.w,
-      height: 100.w,
-      child: TweenAnimationBuilder<double>(
-        tween: Tween<double>(begin: 0.0, end: 0.75),
-        duration: const Duration(milliseconds: 750),
-        builder: (context, value, _) => CircularProgressIndicator(
-          value: value,
-          valueColor: AlwaysStoppedAnimation<Color>(appSecondaryColour),
-          backgroundColor: appSecondaryColourDark,
-          strokeWidth: 10,
+    return Stack(
+      children: [
+        Positioned(
+          child: SizedBox(
+            width: 140.h,
+            height: 140.h,
+            child: TweenAnimationBuilder<double>(
+              tween: Tween<double>(begin: 0.0, end: 0.75),
+              duration: const Duration(milliseconds: 750),
+              builder: (context, value, _) => CircularProgressIndicator(
+
+                value: value,
+                valueColor: AlwaysStoppedAnimation<Color>(appSecondaryColour),
+                backgroundColor: appSecondaryColourDark,
+                strokeWidth: 10.h,
+              ),
+            ),
+          ),
         ),
-      ),
+        Positioned(
+          top: 55.h,
+          left: 12.h,
+          child: Align(
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Text(
+                  "800 Kcal Remaining",
+                  style: boldTextStyle.copyWith(
+                    fontSize: 13.h,
+                  ),
+                ),
+                Text(
+                  "of 3200 Kcal",
+                  style: boldTextStyle.copyWith(
+                    fontSize: 13.h,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
