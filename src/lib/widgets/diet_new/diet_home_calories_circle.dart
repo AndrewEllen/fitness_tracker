@@ -12,6 +12,9 @@ class CalorieCircle extends StatelessWidget {
     double barProgressDouble;
     try {
       barProgressDouble = progress / goal;
+      if (barProgressDouble > 2) {
+        barProgressDouble = 2;
+      }
     } catch (error) {
       barProgressDouble = 0;
     }
