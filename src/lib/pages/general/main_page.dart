@@ -6,6 +6,8 @@ import 'package:fitness_tracker/exports.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../diet_new/diet_home.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -22,7 +24,7 @@ class _MainPageState extends State<MainPage> {
     const DietHomePage(),
     const HomePage(),
     const MeasurementsHomePage(),
-    const InformationHomePage(),
+    const DietHomePageNew(),
   ];
 
   int _currentNavigatorIndex = 1;

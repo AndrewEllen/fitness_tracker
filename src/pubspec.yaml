@@ -52,6 +52,7 @@ dependencies:
   firebase_crashlytics: ^3.3.2
   firebase_analytics: ^10.4.2
   firestore_cache: ^2.3.0+1
+  flutter_screenutil: ^5.9.0
 
 dev_dependencies:
 
