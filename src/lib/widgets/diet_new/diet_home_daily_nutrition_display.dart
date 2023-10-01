@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'diet_home_bottom_button.dart';
+import 'diet_home_calories_circle.dart';
 
 class DailyNutritionDisplay extends StatelessWidget {
   const DailyNutritionDisplay({Key? key}) : super(key: key);
@@ -21,6 +22,9 @@ class DailyNutritionDisplay extends StatelessWidget {
           ),
           width: double.maxFinite.w,
           height: 213.h,
+          child: const Center(
+            child: CalorieCircle(),
+          ),
         ),
         const DietHomeBottomButton(),
       ],
