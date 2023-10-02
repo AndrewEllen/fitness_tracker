@@ -68,7 +68,9 @@ class _DietHomeExtraNutritionBarsState extends State<DietHomeExtraNutritionBars>
                     child: Center(
                         child: Text(
                           value > 0 ? "Hide" : "See More",
-                          style: boldTextStyle,
+                          style: boldTextStyle.copyWith(
+                            fontSize: 16.h,
+                          ),
                         )
                     ),
                   ),

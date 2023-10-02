@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import '../../constants.dart';
+import '../../pages/diet/diet_food_search_page.dart';
+import '../../providers/general/page_change_provider.dart';
 
 class DietHomeBottomButton extends StatelessWidget {
-  const DietHomeBottomButton({Key? key}) : super(key: key);
+  const DietHomeBottomButton({Key? key, required this.category}) : super(key: key);
 
-  void onTap() {
-    print("Clicked");
-  }
+  final String category;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class DietHomeBottomButton extends StatelessWidget {
         bottomRight: Radius.circular(10),
         bottomLeft: Radius.circular(10),
       ),
-      onTap: onTap,
+      onTap: () => context.read<PageChange>().changePageCache(FoodSearchPage(category: category)),
       child: Ink(
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -28,10 +29,12 @@ class DietHomeBottomButton extends StatelessWidget {
         child: SizedBox(
           width: double.maxFinite.w,
           height: 30.h,
-          child: const Center(
+          child: Center(
               child: Text(
-                "See More",
-                style: boldTextStyle,
+                "Add Food",
+                style: boldTextStyle.copyWith(
+                  fontSize: 16.h,
+                ),
               )
           ),
         ),

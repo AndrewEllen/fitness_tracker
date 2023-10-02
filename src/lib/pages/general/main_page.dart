@@ -24,7 +24,7 @@ class _MainPageState extends State<MainPage> {
     const DietHomePage(),
     const HomePage(),
     const MeasurementsHomePage(),
-    const DietHomePageNew(),
+    const InformationHomePage(),
   ];
 
   int _currentNavigatorIndex = 1;

@@ -2,6 +2,7 @@ import 'package:fitness_tracker/exports.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../pages/diet/diet_recipe_creator.dart';
+import '../../pages/diet_new/diet_home.dart';
 
 class PageChange with ChangeNotifier {
   Widget _pageWidget = const DietHomePage();
