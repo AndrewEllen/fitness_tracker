@@ -53,7 +53,7 @@ class HomeNutritionBarLong extends StatelessWidget {
                     child: Text(
                       label,
                       style: boldTextStyle.copyWith(
-                          fontSize: 13.w
+                          fontSize: 14.w
                       ),
                     ),
                   ),
@@ -62,7 +62,7 @@ class HomeNutritionBarLong extends StatelessWidget {
                     child: Text(
                       "${progress.toStringAsFixed(0)}g of ${goal.toStringAsFixed(0)}g",
                       style: boldTextStyle.copyWith(
-                          fontSize: 13.w
+                          fontSize: 14.w
                       ),
                     ),
                   ),

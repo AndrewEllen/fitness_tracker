@@ -123,6 +123,13 @@ class _AppMainState extends State<AppMain> {
         ),
         color: appPrimaryColour,
         debugShowCheckedModeBanner: false,
+
+        builder: (context, child) {
+          return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: child!,
+          );
+        },
         home: const FireBaseAuthenticationCheck(),
       ),
     );

@@ -60,7 +60,7 @@ class _DietHomeExtraNutritionBarsState extends State<DietHomeExtraNutritionBars>
                       bottomRight: Radius.circular(10),
                       bottomLeft: Radius.circular(10),
                     ),
-                    color: appSecondaryColour,
+                    color: appSenaryColour,
                   ),
                   child: SizedBox(
                     width: double.maxFinite.w,
@@ -69,7 +69,7 @@ class _DietHomeExtraNutritionBarsState extends State<DietHomeExtraNutritionBars>
                         child: Text(
                           value > 0 ? "Hide" : "See More",
                           style: boldTextStyle.copyWith(
-                            fontSize: 16.h,
+                            fontSize: 17.w,
                           ),
                         )
                     ),
@@ -230,6 +230,7 @@ class ExtraNutritionBars extends StatelessWidget {
           label: "Caffeine",
           progress: context.watch<UserNutritionData>().caffeine,
           goal: context.watch<UserNutritionData>().caffeineGoal,
+          units: "mg",
 
           excludeColourChange: false,
         ),

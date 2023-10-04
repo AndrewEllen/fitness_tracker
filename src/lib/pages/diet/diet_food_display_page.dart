@@ -4,6 +4,7 @@ import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -198,10 +199,10 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
     InitializeControllers();
 
     double _margin = 15;
-    double _bigContainerMin = 230;
-    double _smallContainerMin = 95;
-    double _height = MediaQuery.of(context).size.height;
-    double _width = MediaQuery.of(context).size.width;
+    double _bigContainerMin = 230.h;
+    double _smallContainerMin = 95.h;
+    double _height = 851.h;
+    double _width = 393.w;
 
     print(widget.category);
 
@@ -218,7 +219,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
           ScreenWidthContainer(
             minHeight: _bigContainerMin,
             maxHeight: _bigContainerMin*4,
-            height: MediaQuery.of(context).devicePixelRatio < 2.75 ? (MediaQuery.of(context).size.aspectRatio > 0.6 ? _height * 0.375 : _height * 0.45) : _height * 0.33,
+            height: _height * 0.33,
             margin: 0,
             child: ListView(
               children: [
@@ -328,13 +329,13 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
           ScreenWidthContainer(
             minHeight: _bigContainerMin/2,
             maxHeight: _bigContainerMin*4,
-            height: MediaQuery.of(context).devicePixelRatio < 2.75 ? (MediaQuery.of(context).size.aspectRatio > 0.6 ? _height * 0.45 : _height * 0.35) : _height * 0.52,
+            height: _height * 0.53,
             margin: _margin,
             child: ListView(
               children: [
                 SizedBox(
                   width: _width/2,
-                  height: 40,
+                  height: 40.h,
                   child: Stack(
                     children: [
                       DietListHeaderBox(

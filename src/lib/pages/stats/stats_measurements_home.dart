@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/constants.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../providers/general/database_write.dart';
@@ -24,11 +25,11 @@ class _MeasurementsHomePageState extends State<MeasurementsHomePage> {
   @override
   Widget build(BuildContext context) {
 
-    double _height = MediaQuery.of(context).size.height;
-    double _width = MediaQuery.of(context).size.width;
-    double _margin = 15;
-    double _bigContainerMin = 500;
-    double _smallContainerMin = 95;
+    double _width = 393.w;
+    double _height = 851.h;
+    double _margin = 15.w;
+    double _bigContainerMin = 500.h;
+    double _smallContainerMin = 95.h;
 
     return Scaffold(
       backgroundColor: appPrimaryColour,
@@ -60,6 +61,7 @@ class _MeasurementsHomePageState extends State<MeasurementsHomePage> {
                           minHeight: _bigContainerMin,
                           maxHeight: _bigContainerMin,
                           height: _bigContainerMin,
+                          width: _width,
                           margin: _margin,
                           index: index,
                         );

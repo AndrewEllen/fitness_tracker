@@ -24,7 +24,6 @@ class CalorieCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //color: Colors.red,
       width: 160.h,
       height: 160.h,
       child: Stack(
@@ -61,12 +60,10 @@ class CalorieCircle extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-            top: 65.h,
-            left: 0,
-            right: 0,
+          Center(
             child: Column(
               children: [
+                const Spacer(),
                 Text(
                   "${(caloriesGoal - calories).toStringAsFixed(0)} Kcal Remaining",
                   style: boldTextStyle.copyWith(
@@ -79,6 +76,7 @@ class CalorieCircle extends StatelessWidget {
                     fontSize: 14.h,
                   ),
                 ),
+                const Spacer(),
               ],
             ),
           ),

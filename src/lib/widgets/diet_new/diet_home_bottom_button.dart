@@ -33,7 +33,7 @@ class DietHomeBottomButton extends StatelessWidget {
               child: Text(
                 "Add Food",
                 style: boldTextStyle.copyWith(
-                  fontSize: 16.h,
+                  fontSize: 17.w,
                 ),
               )
           ),
