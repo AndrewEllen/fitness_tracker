@@ -24,6 +24,13 @@ const BoxDecoration homeBoxDecoration = BoxDecoration(
   borderRadius: BorderRadius.all(Radius.circular(4)),
 );
 
+const BoxShadow basicAppShadow = BoxShadow(
+  color: Color.fromRGBO(0, 0, 0, 0.1),
+  spreadRadius: 3,
+  blurRadius: 4,
+);
+
+
 const double heightFactor = 0.002;
 
 const boldTextStyle = TextStyle(

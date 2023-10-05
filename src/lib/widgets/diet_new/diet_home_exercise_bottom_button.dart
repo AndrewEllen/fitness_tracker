@@ -184,6 +184,9 @@ class DietHomeExerciseBottomButton extends StatelessWidget {
             bottomRight: Radius.circular(10),
             bottomLeft: Radius.circular(10),
           ),
+          boxShadow: [
+            basicAppShadow
+          ],
           color: appSecondaryColour,
         ),
         child: SizedBox(

@@ -730,3 +730,22 @@ GetUserCalories() async {
     print(exception);
   }
 }
+
+GetUserWater() async {
+  try {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc("${firebaseAuth.currentUser?.uid.toString()}")
+        .collection("water")
+        .doc("water")
+        .get();
+
+    return snapshot["water"];
+
+  } catch (exception) {
+    print(exception);
+  }
+}

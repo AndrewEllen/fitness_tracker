@@ -55,7 +55,12 @@ class HomeNutritionBarShort extends StatelessWidget {
             ]
           ),
         ),
-        SizedBox(
+        Container(
+          decoration: const BoxDecoration(
+            boxShadow: [
+              basicAppShadow,
+            ],
+          ),
           width: 160.w,
           height: 10.w,
           child: TweenAnimationBuilder<double>(

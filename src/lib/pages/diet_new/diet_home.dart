@@ -6,6 +6,7 @@ import '../../providers/diet/user_nutrition_data.dart';
 import '../../widgets/diet_new/diet_home_daily_nutrition_display.dart';
 import '../../widgets/diet_new/diet_home_exercise_display.dart';
 import '../../widgets/diet_new/diet_home_food_display.dart';
+import '../../widgets/diet_new/diet_water_box.dart';
 
 class DietHomePage extends StatelessWidget {
   const DietHomePage({Key? key}) : super(key: key);
@@ -30,8 +31,8 @@ class DietHomePage extends StatelessWidget {
           //physics: const NeverScrollableScrollPhysics(),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(6.0),
+                const Padding(
+                  padding: EdgeInsets.all(6.0),
                   child: Center(
                     child: DailyNutritionDisplay(),
                   ),
@@ -85,6 +86,16 @@ class DietHomePage extends StatelessWidget {
                   exerciseList: context.watch<UserNutritionData>().foodListItemsExercise,
                   caloriesTotal: context.read<UserNutritionData>().exerciseCalories,
                 ),
+
+                DietWaterDisplay(
+                  bigContainerMin: _smallContainerMin,
+                  height: _height,
+                  margin: _margin,
+                  width: _width,
+                  title: "Water",
+
+                ),
+
                 SizedBox(
                   height: 40.h,
                 ),

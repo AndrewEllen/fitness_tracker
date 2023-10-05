@@ -60,7 +60,7 @@ class HomeNutritionBarLong extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      "${progress.toStringAsFixed(0)}g of ${goal.toStringAsFixed(0)}g",
+                      "${progress.toStringAsFixed(0)}$units of ${goal.toStringAsFixed(0)}$units",
                       style: boldTextStyle.copyWith(
                           fontSize: 14.w
                       ),

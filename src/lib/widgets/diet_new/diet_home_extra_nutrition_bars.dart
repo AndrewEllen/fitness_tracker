@@ -62,7 +62,12 @@ class _DietHomeExtraNutritionBarsState extends State<DietHomeExtraNutritionBars>
                     ),
                     color: appSenaryColour,
                   ),
-                  child: SizedBox(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        basicAppShadow
+                      ],
+                    ),
                     width: double.maxFinite.w,
                     height: 30.h,
                     child: Center(
