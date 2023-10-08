@@ -255,16 +255,3 @@ void writeUserCalories(String calories) async {
       .set({"calories": calories});
 
 }
-
-void writeUserWater(double water) async {
-
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc("${firebaseAuth.currentUser?.uid.toString()}")
-      .collection("water")
-      .doc("water")
-      .set({"water": water});
-
-}

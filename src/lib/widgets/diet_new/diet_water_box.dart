@@ -71,7 +71,7 @@ class _DietWaterDisplayState extends State<DietWaterDisplay> {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: Text(
-                            "${context.read<UserNutritionData>().water/2}L",
+                            "${context.read<UserNutritionData>().userDailyNutrition.water/2}L",
                             style: boldTextStyle.copyWith(
                               color: appSecondaryColour,
                               fontSize: 18.h,
@@ -99,8 +99,8 @@ class _DietWaterDisplayState extends State<DietWaterDisplay> {
                   onRatingUpdate: (rating) {
                     context.read<UserNutritionData>().updateWater(rating);
                   },
-                  itemCount: context.read<UserNutritionData>().water.round() + 1,
-                  initialRating: context.read<UserNutritionData>().water,
+                  itemCount: context.read<UserNutritionData>().userDailyNutrition.water.round() + 1,
+                  initialRating: context.read<UserNutritionData>().userDailyNutrition.water,
                 )
               ],
             ),

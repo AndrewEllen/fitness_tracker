@@ -481,6 +481,7 @@ GetUserNutritionData(String date) async {
         foodListItemsDinner: await ToListFoodItem(_data["foodListItemsDinner"]),
         foodListItemsSnacks: await ToListFoodItem(_data["foodListItemsSnacks"]),
         foodListItemsExercise: await ToListExerciseItem(_data["foodListItemsExercise"]),
+        water: await _data["water"] ?? 0,
     );
 
   } catch (exception) {
@@ -494,6 +495,7 @@ GetUserNutritionData(String date) async {
       foodListItemsDinner: [],
       foodListItemsSnacks: [],
       foodListItemsExercise: [],
+      water: 0,
     );
   }
 
@@ -725,25 +727,6 @@ GetUserCalories() async {
         .get();
 
     return snapshot["calories"];
-
-  } catch (exception) {
-    print(exception);
-  }
-}
-
-GetUserWater() async {
-  try {
-
-    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection("water")
-        .doc("water")
-        .get();
-
-    return snapshot["water"];
 
   } catch (exception) {
     print(exception);

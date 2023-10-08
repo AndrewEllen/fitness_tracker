@@ -26,7 +26,6 @@ class _SplashScreenState extends State<SplashScreen> {
   late List<TrainingPlan> trainingPlans;
   late List<StatsMeasurement> measurements;
   late String calories;
-  late double water;
   late Map userData;
   late UserNutritionModel userNutrition;
   late UserNutritionFoodModel userNutritionHistory;
@@ -46,7 +45,6 @@ class _SplashScreenState extends State<SplashScreen> {
     try {measurements = await GetUserMeasurements();} catch (exception) {print(exception);}
     try {userData = await GetUserDataTrainingPlan();} catch (exception) {print(exception);}
     try {calories = await GetUserCalories();} catch (exception) {print(exception);}
-    try {water = await GetUserWater();} catch (exception) {print(exception);}
     print("Fetching nutrition");
     try {userNutrition = await GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString());} catch (exception) {print(exception);}
 
@@ -55,7 +53,6 @@ class _SplashScreenState extends State<SplashScreen> {
     try {userRecipes = await GetUserCustomRecipes();} catch (exception) {print("recipe");print(exception);}
 
     try {context.read<UserNutritionData>().setCalories(calories);} catch (exception) {print(exception);}
-    try {context.read<UserNutritionData>().setWater(water);} catch (exception) {print(exception);}
     try {context.read<UserExercisesList>().inititateExerciseList(exercises);} catch (exception) {print(exception);}
     try {context.read<ExerciseList>().setCategoriesInititial(categories);} catch (exception) {print(exception);}
     try {context.read<ExerciseList>().setExerciseInititial(exercises);} catch (exception) {print(exception);}

@@ -72,8 +72,8 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
 
     if (widget.editDiary && currentFoodItem.foodName.isNotEmpty &&
         currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
-        (servingsController.text != "-" || servingsController.text.isNotEmpty) &&
-        (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
+        (servingsController.text != "-" && servingsController.text.isNotEmpty) &&
+        (servingSizeController.text != "-" && servingSizeController.text.isNotEmpty)
     ) {
 
       print("editing");
@@ -91,8 +91,8 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
 
     } else if (currentFoodItem.foodName.isNotEmpty &&
         currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
-        (servingsController.text != "-" || servingsController.text.isNotEmpty) &&
-        (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
+        (servingsController.text != "-" && servingsController.text.isNotEmpty) &&
+        (servingSizeController.text != "-" && servingSizeController.text.isNotEmpty)
     ) {
 
       context.read<UserNutritionData>().addFoodItemToRecipe(
@@ -125,8 +125,8 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
 
       if (widget.editDiary && currentFoodItem.foodName.isNotEmpty &&
           currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
-          (servingsController.text != "-" || servingsController.text.isNotEmpty) &&
-          (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
+          (servingsController.text != "-" && servingsController.text.isNotEmpty) &&
+          (servingSizeController.text != "-" && servingSizeController.text.isNotEmpty)
       ) {
 
         print("editing");
@@ -153,8 +153,8 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
 
       } else if (currentFoodItem.foodName.isNotEmpty &&
         currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
-        (servingsController.text != "-" || servingsController.text.isNotEmpty) &&
-        (servingSizeController.text != "-" || servingSizeController.text.isNotEmpty)
+        (servingsController.text != "-" && servingsController.text.isNotEmpty) &&
+        (servingSizeController.text != "-" && servingSizeController.text.isNotEmpty)
         ) {
 
       context.read<UserNutritionData>().addFoodItemToDiary(

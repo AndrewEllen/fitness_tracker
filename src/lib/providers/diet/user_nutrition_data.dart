@@ -123,6 +123,7 @@ class UserNutritionData with ChangeNotifier {
     foodListItemsDinner: [],
     foodListItemsSnacks: [],
     foodListItemsExercise: [],
+    water: 0,
   );
 
   late final List<UserRecipesModel> _userRecipesList = [];
@@ -282,7 +283,6 @@ class UserNutritionData with ChangeNotifier {
   late double _dinnerCalories = 0;
   late double _snacksCalories = 0;
   late double _exerciseCalories = 0;
-  late double _water = 0;
   late double _protein = 0;
   late double _fat = 0;
   late double _carbohydrates = 0;
@@ -417,7 +417,6 @@ class UserNutritionData with ChangeNotifier {
   double get dinnerCalories => _dinnerCalories;
   double get snacksCalories => _snacksCalories;
   double get exerciseCalories => _exerciseCalories;
-  double get water => _water;
 
   double get protein => _protein;
   double get fat => _fat;
@@ -576,15 +575,9 @@ class UserNutritionData with ChangeNotifier {
   }
 
   void updateWater(double water) {
-    _water = water;
+    userDailyNutrition.water = water;
 
-    writeUserWater(water);
-
-    notifyListeners();
-  }
-
-  void setWater(double water) {
-    _water = water;
+    UpdateUserNutritionalData(userDailyNutrition);
 
     notifyListeners();
   }
