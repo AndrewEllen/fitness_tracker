@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../constants.dart';
 
@@ -19,7 +20,20 @@ class _SelectionPageState extends State<SelectionPage> {
             overscroll.disallowIndicator();
             return true;
           },
-          child: Container(),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Container(
+                    color: appTertiaryColour,
+                    width: double.maxFinite,
+                    height: 730.h,
+                  ),
+                ),
+              ],
+            ),
+          ),
         )
     );
   }
