@@ -12,14 +12,14 @@ import '../../widgets/diet/diet_home_macro_nutrition_display.dart';
 import '../../widgets/diet/diet_category_box.dart';
 import 'diet_food_display_page.dart';
 
-class DietHomePage extends StatefulWidget {
-  const DietHomePage({Key? key}) : super(key: key);
+class DietHomePageOld extends StatefulWidget {
+  const DietHomePageOld({Key? key}) : super(key: key);
 
   @override
-  State<DietHomePage> createState() => _DietHomePageState();
+  State<DietHomePageOld> createState() => _DietHomePageOldState();
 }
 
-class _DietHomePageState extends State<DietHomePage> {
+class _DietHomePageOldState extends State<DietHomePageOld> {
 
   @override
   Widget build(BuildContext context) {

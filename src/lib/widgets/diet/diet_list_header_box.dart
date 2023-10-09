@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/constants.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DietListHeaderBox extends StatefulWidget {
   const DietListHeaderBox({Key? key, required this.width, required this.title,
@@ -45,18 +46,18 @@ class _DietListHeaderBoxState extends State<DietListHeaderBox> {
         ),
       ),
       width: widget.width,
-      height: 40,
+      height: 40.h,
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxHeight: 25,
-            minHeight: 15,
+          constraints: BoxConstraints(
+            maxHeight: 25.h,
+            minHeight: 15.h,
           ),
           child: FittedBox(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                maxHeight: 25,
-                minHeight: 15,
+                maxHeight: 25.h,
+                minHeight: 15.h,
                 maxWidth: widget.width/1.25,
               ),
               child: SingleChildScrollView(
@@ -67,7 +68,7 @@ class _DietListHeaderBoxState extends State<DietListHeaderBox> {
                   widget.title,
                   style: TextStyle(
                     color: widget.color,
-                    fontSize: widget.largeTitle ? 18 : 15,
+                    fontSize: widget.largeTitle ? 16.w : 15.w,
                     fontWeight: widget.largeTitle ? FontWeight.w600 : FontWeight.w500,
                   ),
                 ),

@@ -7,6 +7,7 @@ import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/widgets/home/home_bar_chart.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../helpers/general/numerical_range_formatter_extension.dart';
@@ -168,11 +169,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
-    double _margin = 15;
-    double _bigContainerMin = 160;
-    double _smallContainerMin = 95;
+    double _width = 393.w;
+    double _height = 851.h;
+    double _margin = 15.w;
+    double _bigContainerMin = 160.h;
+    double _smallContainerMin = 95.h;
     return Scaffold(
       backgroundColor: appPrimaryColour,
       body: NotificationListener<OverscrollIndicatorNotification>(
@@ -194,7 +195,7 @@ class _HomePageState extends State<HomePage> {
                         child: ScreenWidthContainer(
                           minHeight: _bigContainerMin * 0.96,
                           maxHeight: _bigContainerMin * 1.5,
-                          height: (_height / 100) * 26,
+                          height: _height * 0.3,
                           margin: _margin/2,
                           child: Column(
                             children: [
@@ -209,8 +210,8 @@ class _HomePageState extends State<HomePage> {
                               ),
                               HomeBarChart(
                                 chartWorkoutData: workoutData,
-                                chartHeight: (_height / 100) * 23.2,
-                                chartWidth: (_width / 100) * 97,
+                                chartHeight: ((_height / 100) * 23.2),
+                                chartWidth: ((_width / 100) * 97),
                               ),
                             ],
                           ),
@@ -307,7 +308,7 @@ class _HomePageState extends State<HomePage> {
                       ScreenWidthContainer(
                         minHeight: _smallContainerMin,
                         maxHeight: _smallContainerMin * 20,
-                        height: (_height / 100) * 50,
+                        height: (_height / 100) * 55,
                         margin: _margin,
                         child: Column(
                           children: [

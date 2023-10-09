@@ -1,6 +1,7 @@
 import 'package:fitness_tracker/models/diet/food_data_list_item.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -181,10 +182,10 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
   @override
   Widget build(BuildContext context) {
 
-    double _margin = 15;
-    double _smallContainerMin = 95;
-    double _height = MediaQuery.of(context).size.height;
-    double _width = MediaQuery.of(context).size.width;
+    double _margin = 15.h;
+    double _smallContainerMin = 95.h;
+    double _height = 851.h;
+    double _width = 393.w;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -199,9 +200,9 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
             : ListView(
           children: [
             ScreenWidthContainer(
-              minHeight: 100,
-              maxHeight: 820,
-              height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.73 : _height * 0.68,
+              minHeight: 100.h,
+              maxHeight: 820.h,
+              height: _height * 0.73,
               child: Column(
                 children: [
                   FoodNutritionListFormField(
@@ -246,7 +247,7 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
                     ),
                   ),
                   currentRecipe.recipeFoodList.isEmpty ? Padding(
-                    padding: EdgeInsets.only(top: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.18 : _height * 0.07),
+                    padding: EdgeInsets.only(top: _height * 0.18),
                     child: Column(
                       children: [
                         const Padding(
@@ -257,28 +258,30 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
                             size: 60,
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.all(2.0),
+                         Padding(
+                          padding: const EdgeInsets.all(2.0),
                           child: Text(
                             "No Ingredients Added",
                             style: TextStyle(
                               color: Colors.white,
+                              fontSize: 14.w,
                             ),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.all(2.0),
+                        Padding(
+                          padding: const EdgeInsets.all(2.0),
                           child: Text(
                             "Add an ingredient to get started.",
                             style: TextStyle(
                               color: appQuarternaryColour,
+                              fontSize: 14.w,
                             ),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: SizedBox(
-                            height: 25,
+                            height: 25.h,
                             child: AppButton(
                               onTap: () => context.read<PageChange>().changePageCache(FoodRecipeSearchPage(category: widget.category,)),
                               buttonText: "Add Ingredients",
@@ -289,7 +292,7 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
                     )
                   ) : SizedBox(
                     ///Overflowing parent constraints. Adding constraints here for now.
-                    height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.55 : _height * 0.43,
+                    height: _height * 0.55,
                     child: ListView.builder(
                       itemCount: context.watch<UserNutritionData>().currentRecipe.recipeFoodList.length,
                       shrinkWrap: true,

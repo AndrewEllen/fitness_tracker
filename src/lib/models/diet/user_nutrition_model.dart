@@ -30,6 +30,7 @@ class UserNutritionModel {
       'foodListItemsDinner': ConvertToMapListFood(foodList: foodListItemsDinner),
       'foodListItemsSnacks': ConvertToMapListFood(foodList: foodListItemsSnacks),
       'foodListItemsExercise': ConvertToMapListExercise(exerciseList: foodListItemsExercise),
+      'water': water,
     };
   }
 
@@ -40,6 +41,7 @@ class UserNutritionModel {
     required this.foodListItemsDinner,
     required this.foodListItemsSnacks,
     required this.foodListItemsExercise,
+    required this.water,
   });
 
   String date;
@@ -48,4 +50,5 @@ class UserNutritionModel {
   List<ListFoodItem> foodListItemsDinner;
   List<ListFoodItem> foodListItemsSnacks;
   List<ListExerciseItem> foodListItemsExercise;
+  double water;
 }

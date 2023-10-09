@@ -123,6 +123,7 @@ class UserNutritionData with ChangeNotifier {
     foodListItemsDinner: [],
     foodListItemsSnacks: [],
     foodListItemsExercise: [],
+    water: 0,
   );
 
   late final List<UserRecipesModel> _userRecipesList = [];
@@ -277,6 +278,11 @@ class UserNutritionData with ChangeNotifier {
 
 
   late double _calories = 0;
+  late double _breakfastCalories = 0;
+  late double _lunchCalories = 0;
+  late double _dinnerCalories = 0;
+  late double _snacksCalories = 0;
+  late double _exerciseCalories = 0;
   late double _protein = 0;
   late double _fat = 0;
   late double _carbohydrates = 0;
@@ -405,6 +411,13 @@ class UserNutritionData with ChangeNotifier {
 
 
   double get calories => _calories;
+
+  double get breakfastCalories => _breakfastCalories;
+  double get lunchCalories => _lunchCalories;
+  double get dinnerCalories => _dinnerCalories;
+  double get snacksCalories => _snacksCalories;
+  double get exerciseCalories => _exerciseCalories;
+
   double get protein => _protein;
   double get fat => _fat;
   double get carbohydrates => _carbohydrates;
@@ -561,6 +574,14 @@ class UserNutritionData with ChangeNotifier {
     _currentFoodItem = FoodDefaultData();
   }
 
+  void updateWater(double water) {
+    userDailyNutrition.water = water;
+
+    UpdateUserNutritionalData(userDailyNutrition);
+
+    notifyListeners();
+  }
+
   void updateCustomFoodList(String barcode, String foodName, String servings, String servingSize) {
 
     _userNutritionCustomFood.barcodes.add(barcode);
@@ -653,6 +674,13 @@ class UserNutritionData with ChangeNotifier {
   void calculateMacros() {
 
     _calories = 0;
+
+    _breakfastCalories = 0;
+    _lunchCalories = 0;
+    _dinnerCalories = 0;
+    _snacksCalories = 0;
+    _exerciseCalories = 0;
+
     _protein = 0;
     _fat = 0;
     _carbohydrates = 0;
@@ -714,17 +742,52 @@ class UserNutritionData with ChangeNotifier {
         } catch (exception) {
           _calories += 0;
         }
+        try {
+          _exerciseCalories += double.parse(exercise.calories);
+        } catch (exception) {
+          _exerciseCalories += 0;
+        }
       }
 
     }
 
-    void calculateTotal(List<ListFoodItem> listOfFood) {
+    void calculateTotal(List<ListFoodItem> listOfFood, String category) {
       for (var foodItem in listOfFood) {
         try {
           _calories += (double.parse(foodItem.foodItemData.calories)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
           _calories += 0;
         }
+
+        if (category == "breakfast") {
+          try {
+            _breakfastCalories += (double.parse(foodItem.foodItemData.calories)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _breakfastCalories += 0;
+          }
+        }
+        else if (category == "lunch") {
+          try {
+            _lunchCalories += (double.parse(foodItem.foodItemData.calories)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _lunchCalories += 0;
+          }
+        }
+        else if (category == "dinner") {
+          try {
+            _dinnerCalories += (double.parse(foodItem.foodItemData.calories)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _dinnerCalories += 0;
+          }
+        }
+        else if (category == "snacks") {
+          try {
+            _snacksCalories += (double.parse(foodItem.foodItemData.calories)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _snacksCalories += 0;
+          }
+        }
+
         try {
           _protein += (double.parse(foodItem.foodItemData.proteins)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
         } catch (exception) {
@@ -988,10 +1051,10 @@ class UserNutritionData with ChangeNotifier {
       }
     }
 
-    calculateTotal(_userDailyNutrition.foodListItemsBreakfast);
-    calculateTotal(_userDailyNutrition.foodListItemsLunch);
-    calculateTotal(_userDailyNutrition.foodListItemsDinner);
-    calculateTotal(_userDailyNutrition.foodListItemsSnacks);
+    calculateTotal(_userDailyNutrition.foodListItemsBreakfast, "breakfast");
+    calculateTotal(_userDailyNutrition.foodListItemsLunch, "lunch");
+    calculateTotal(_userDailyNutrition.foodListItemsDinner, "dinner");
+    calculateTotal(_userDailyNutrition.foodListItemsSnacks, "snacks");
     calculateTotalExercise(_userDailyNutrition.foodListItemsExercise);
 
     notifyListeners();

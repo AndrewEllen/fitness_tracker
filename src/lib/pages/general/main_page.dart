@@ -6,6 +6,8 @@ import 'package:fitness_tracker/exports.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../diet_new/diet_home.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 

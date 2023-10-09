@@ -3,6 +3,7 @@ import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:fitness_tracker/widgets/stats/stats_line_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/exports.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../constants.dart';
 import '../../models/stats/stats_model.dart';
@@ -12,6 +13,7 @@ class StatsWidget extends StatelessWidget {
     required this.minHeight,
     required this.maxHeight,
     required this.height,
+    required this.width,
     required this.margin,
     required this.index,
     Key? key,
@@ -20,7 +22,8 @@ class StatsWidget extends StatelessWidget {
       minHeight,
       maxHeight,
       height,
-      margin;
+      margin,
+      width;
   final int index;
 
   @override
@@ -54,7 +57,7 @@ class StatsWidget extends StatelessWidget {
               child: Align(
                 alignment: Alignment.center,
                 child: SizedBox(
-                  height: 24,
+                  height: 24.h,
                   child: Text(
                     data[index].measurementName.toString(),
                     overflow: TextOverflow.ellipsis,
@@ -70,11 +73,11 @@ class StatsWidget extends StatelessWidget {
               alignment: Alignment.center,
               child: Container(
                 margin: EdgeInsets.only(
-                  left: margin/2,
-                  right: margin/2,
+                  left: margin/4,
+                  right: margin*0.01,
                 ),
-                height: 337/1.34,
-                width: MediaQuery.of(context).size.width/1.15,
+                height: (337/1.34).h,
+                width: width,
                 child: data[index].measurementValues.isEmpty || data[index].measurementValues.length < 2  ? const Center(
                     child: Text(
                       "Not Enough Data to Display",

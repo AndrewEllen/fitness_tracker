@@ -1,5 +1,6 @@
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -347,8 +348,8 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
 
     double _margin = 15;
     double _smallContainerMin = 95;
-    double _height = MediaQuery.of(context).size.height;
-    double _width = MediaQuery.of(context).size.width;
+    double _width = 393.w;
+    double _height = 851.h;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -365,7 +366,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
             ScreenWidthContainer(
               minHeight: 300,
               maxHeight: 920,
-              height: MediaQuery.of(context).devicePixelRatio < 3 ? _height * 0.8 : _height * 0.75,
+              height: _height * 0.8,
               child: ListView(
                 children: [
                   FoodNutritionListFormField(
@@ -397,7 +398,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                   ),
                   SizedBox(
                     width: _width / 2,
-                    height: 40,
+                    height: 40.h,
                     child: DietListHeaderBox(
                       width: _width,
                       title: "Values per 100g",

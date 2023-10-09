@@ -481,6 +481,7 @@ GetUserNutritionData(String date) async {
         foodListItemsDinner: await ToListFoodItem(_data["foodListItemsDinner"]),
         foodListItemsSnacks: await ToListFoodItem(_data["foodListItemsSnacks"]),
         foodListItemsExercise: await ToListExerciseItem(_data["foodListItemsExercise"]),
+        water: await _data["water"] ?? 0,
     );
 
   } catch (exception) {
@@ -494,6 +495,7 @@ GetUserNutritionData(String date) async {
       foodListItemsDinner: [],
       foodListItemsSnacks: [],
       foodListItemsExercise: [],
+      water: 0,
     );
   }
 

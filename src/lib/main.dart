@@ -14,6 +14,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
 import 'helpers/general/firebase_auth_service.dart';
 import 'openfoodfacts_options.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -94,31 +95,43 @@ class _AppMainState extends State<AppMain> {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-      scaffoldMessengerKey: _scaffoldKey,
-      title: 'FIT',
-      theme: ThemeData(
-        fontFamily: 'Impact',
-        iconTheme: const IconThemeData(
-          color: appSecondaryColour,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            side: const BorderSide(
-              width: 3,
-              color: Colors.transparent,
-            ), backgroundColor: appSecondaryColour,
-            shadowColor: Colors.transparent,
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4)
+    return ScreenUtilInit(
+      designSize: const Size(393, 851),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: MaterialApp(
+        scaffoldMessengerKey: _scaffoldKey,
+        title: 'FIT',
+        theme: ThemeData(
+          fontFamily: 'Impact',
+          iconTheme: const IconThemeData(
+            color: appSecondaryColour,
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              side: const BorderSide(
+                width: 3,
+                color: Colors.transparent,
+              ), backgroundColor: appSecondaryColour,
+              shadowColor: Colors.transparent,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4)
+              ),
             ),
           ),
         ),
+        color: appPrimaryColour,
+        debugShowCheckedModeBanner: false,
+
+        builder: (context, child) {
+          return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: child!,
+          );
+        },
+        home: const FireBaseAuthenticationCheck(),
       ),
-      color: appPrimaryColour,
-      debugShowCheckedModeBanner: false,
-      home: const FireBaseAuthenticationCheck(),
     );
   }
 }

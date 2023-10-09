@@ -1,5 +1,6 @@
 import 'package:fitness_tracker/exports.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../constants.dart';
 import '../../models/stats/stats_model.dart';
@@ -96,8 +97,8 @@ class _MeasurementTrackingPageState extends State<MeasurementTrackingPage> {
   @override
   Widget build(BuildContext context) {
 
-    double _height = MediaQuery.of(context).size.height/1.03;
-    double _width = MediaQuery.of(context).size.width;
+    double _width = 393.w;
+    double _height = 851.h*0.99;
     double _margin = 15;
     double fontSize = 21;
 
@@ -132,7 +133,7 @@ class _MeasurementTrackingPageState extends State<MeasurementTrackingPage> {
                   Stack(
                     children: [
                       Container(
-                        height: 32,
+                        height: 32.h,
                         width: double.infinity,
                         decoration: const BoxDecoration(
                           border: Border(
@@ -142,7 +143,7 @@ class _MeasurementTrackingPageState extends State<MeasurementTrackingPage> {
                         child: Align(
                           alignment: Alignment.center,
                           child: SizedBox(
-                            height: 24,
+                            height: 24.h,
                             child: Form(
                               key: measurementNameKey,
                               child: TextFormField(
@@ -215,11 +216,11 @@ class _MeasurementTrackingPageState extends State<MeasurementTrackingPage> {
                     alignment: Alignment.center,
                     child: Container(
                       margin: EdgeInsets.only(
-                        left: _margin/2,
-                        right: _margin/2,
+                        left: _margin/4,
+                        right: _margin*0.01,
                       ),
-                      height: 337/1.34,
-                      width: MediaQuery.of(context).size.width/1.15,
+                      height: (337/1.22).h,
+                      width: _width,
                       child: data[widget.index].measurementValues.isEmpty || data[widget.index].measurementValues.length < 2 ? const Center(
                           child: Text(
                             "Not Enough Data to Display",
