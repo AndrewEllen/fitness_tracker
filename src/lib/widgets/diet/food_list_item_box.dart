@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/constants.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../models/diet/food_data_list_item.dart';
 
@@ -93,11 +94,11 @@ class _FoodListDisplayBoxState extends State<FoodListDisplayBox> {
             ),
             child: Center(
               child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxHeight: 100,
-                  minHeight: 10,
-                  maxWidth: 100,
-                  minWidth: 100,
+                constraints: BoxConstraints(
+                  maxHeight: 100.h,
+                  minHeight: 10.h,
+                  maxWidth: 100.w,
+                  minWidth: 100.w,
                 ),
                 child: FittedBox(
                   clipBehavior: Clip.antiAlias,
