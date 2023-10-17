@@ -18,10 +18,10 @@ class DailyNutritionDisplay extends StatelessWidget {
       children: [
         Container(
           decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(10),
-              topLeft: Radius.circular(10),
-            ),
+          //  borderRadius: BorderRadius.only(
+          //   topRight: Radius.circular(10),
+          //    topLeft: Radius.circular(10),
+          //  ),
             color: appTertiaryColour,
           ),
           width: double.maxFinite.w,
@@ -59,7 +59,10 @@ class DailyNutritionDisplay extends StatelessWidget {
             ],
           ),
         ),
-        const DietHomeExtraNutritionBars(),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: const DietHomeExtraNutritionBars(),
+        ),
       ],
     );
   }

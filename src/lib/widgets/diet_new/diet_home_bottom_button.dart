@@ -20,10 +20,10 @@ class DietHomeBottomButton extends StatelessWidget {
       onTap: () => context.read<PageChange>().changePageCache(FoodSearchPage(category: category)),
       child: Ink(
         decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(10),
-            bottomLeft: Radius.circular(10),
-          ),
+         // borderRadius: BorderRadius.only(
+         //   bottomRight: Radius.circular(10),
+         //   bottomLeft: Radius.circular(10),
+         // ),
           boxShadow: [
             basicAppShadow
           ],

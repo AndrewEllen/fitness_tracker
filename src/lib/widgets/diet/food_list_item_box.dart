@@ -59,11 +59,18 @@ class _FoodListDisplayBoxState extends State<FoodListDisplayBox> {
 
     return widget.foodObject.foodItemData.foodName.isNotEmpty ? Container(
       key: UniqueKey(),
-      margin: const EdgeInsets.all(4),
+      margin: const EdgeInsets.only(bottom: 8),
       height: 60,
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(4)),
-        color: appQuinaryColour,
+        //borderRadius: BorderRadius.all(Radius.circular(4)),
+        color: appTertiaryColour,
+        boxShadow: [
+          BoxShadow(
+            color: Color.fromRGBO(0, 0, 0, 0.35),
+            spreadRadius: 2,
+            blurRadius: 8,
+          ),
+        ],
       ),
       child: ListTile(
         onTap: widget.onTap,

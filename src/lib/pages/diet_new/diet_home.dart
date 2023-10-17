@@ -32,7 +32,7 @@ class DietHomePage extends StatelessWidget {
             child: Column(
               children: [
                 const Padding(
-                  padding: EdgeInsets.all(6.0),
+                  padding: EdgeInsets.all(0.0),
                   child: Center(
                     child: DailyNutritionDisplay(),
                   ),
