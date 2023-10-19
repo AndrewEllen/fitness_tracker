@@ -652,8 +652,7 @@ class UserNutritionData with ChangeNotifier {
     if (valueToConvert != null) {
       valueToConvert = valueToConvert.toString();
       if (convertToNumber) {
-
-        valueToConvert = valueToConvert.replaceAll(RegExp(r'[^0-9]'),' ');
+        valueToConvert = valueToConvert.replaceAll(RegExp(r'[^.0-9]'),' ');
         List valueToConvertList = valueToConvert.split(" ");
         valueToConvert = valueToConvertList[0];
 

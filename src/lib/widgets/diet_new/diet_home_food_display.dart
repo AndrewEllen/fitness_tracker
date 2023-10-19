@@ -31,6 +31,22 @@ class DietHomeFoodDisplay extends StatefulWidget {
 class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
   editEntry(BuildContext context, int index, String value, double width) {
 
+
+    String servingCalculation(String nutritionValue) {
+
+      try {
+        return ((double.parse(nutritionValue) / 100)
+            * (double.parse(widget.foodList[index].foodServingSize) *
+                double.parse(widget.foodList[index].foodServings))).toStringAsFixed(1);
+      } catch (error) {
+        return "0";
+      }
+
+
+
+    }
+
+
     double buttonSize = width/17;
 
     showDialog(
@@ -68,36 +84,28 @@ class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
                 ),
               ),
               Text(
-                ((double.parse(widget.foodList[index].foodItemData.calories) / 100)
-                    * (double.parse(widget.foodList[index].foodServingSize) *
-                        double.parse(widget.foodList[index].foodServings))).toStringAsFixed(1)
+                servingCalculation(widget.foodList[index].foodItemData.calories)
                     + " Kcal",
                 style: const TextStyle(
                   color: Colors.white,
                 ),
               ),
               Text(
-              ((double.parse(widget.foodList[index].foodItemData.proteins) / 100)
-                  * (double.parse(widget.foodList[index].foodServingSize) *
-                    double.parse(widget.foodList[index].foodServings))).toStringAsFixed(1)
+                servingCalculation(widget.foodList[index].foodItemData.proteins)
                     + "g of Protein",
                 style: const TextStyle(
                   color: Colors.white,
                 ),
               ),
               Text(
-                ((double.parse(widget.foodList[index].foodItemData.carbs) / 100)
-                    * (double.parse(widget.foodList[index].foodServingSize) *
-                        double.parse(widget.foodList[index].foodServings))).toStringAsFixed(1)
+                servingCalculation(widget.foodList[index].foodItemData.carbs)
                     + "g of Carbs",
                 style: const TextStyle(
                   color: Colors.white,
                 ),
               ),
               Text(
-                ((double.parse(widget.foodList[index].foodItemData.fat) / 100)
-                    * (double.parse(widget.foodList[index].foodServingSize) *
-                        double.parse(widget.foodList[index].foodServings))).toStringAsFixed(1)
+                servingCalculation(widget.foodList[index].foodItemData.fat)
                     + "g of Fat",
                 style: const TextStyle(
                   color: Colors.white,
