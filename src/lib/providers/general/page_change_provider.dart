@@ -5,8 +5,8 @@ import '../../pages/diet/diet_recipe_creator.dart';
 import '../../pages/diet_new/diet_home.dart';
 
 class PageChange with ChangeNotifier {
-  Widget _pageWidget = const DietHomePage();
-  List<Widget> _pageWidgetCache = [const DietHomePage()];
+  Widget _pageWidget = DietHomePage();
+  List<Widget> _pageWidgetCache = [DietHomePage()];
   int _pageWidgetCacheIndex = 0;
 
   late int _confirmationCounter = 0;
