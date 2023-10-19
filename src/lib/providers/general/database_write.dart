@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
+import 'package:fitness_tracker/models/stats/user_data_model.dart';
 import 'package:fitness_tracker/models/workout/exercise_model.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:fitness_tracker/models/stats/stats_model.dart';
@@ -243,15 +244,15 @@ void UpdateRecipeFoodData(UserRecipesModel foodItem) async {
   });
 }
 
-void writeUserCalories(String calories) async {
+void writeUserBiometric(UserDataModel userData) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   await FirebaseFirestore.instance
       .collection('user-data')
       .doc("${firebaseAuth.currentUser?.uid.toString()}")
-      .collection("calories")
-      .doc("calories")
-      .set({"calories": calories});
+      .collection("bioData")
+      .doc("bioData")
+      .set({"bioData": userData.toMap()});
 
 }

@@ -13,6 +13,7 @@ import '../diet/food_list_item_box.dart';
 import '../general/app_container_header.dart';
 import '../general/app_default_button.dart';
 import 'diet_home_bottom_button.dart';
+import 'food_list_item_box_new.dart';
 
 class DietHomeFoodDisplay extends StatefulWidget {
   const DietHomeFoodDisplay({Key? key, required this.bigContainerMin,
@@ -30,6 +31,22 @@ class DietHomeFoodDisplay extends StatefulWidget {
 class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
   editEntry(BuildContext context, int index, String value, double width) {
 
+
+    String servingCalculation(String nutritionValue) {
+
+      try {
+        return ((double.parse(nutritionValue) / 100)
+            * (double.parse(widget.foodList[index].foodServingSize) *
+                double.parse(widget.foodList[index].foodServings))).toStringAsFixed(1);
+      } catch (error) {
+        return "0";
+      }
+
+
+
+    }
+
+
     double buttonSize = width/17;
 
     showDialog(
@@ -44,23 +61,57 @@ class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
               color: appSecondaryColour,
             ),
           ),
-          content: RichText(
-            text: TextSpan(text: 'Editing: ',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w400,
-                fontSize: 16.h,
-              ),
-              children: <TextSpan>[
-                TextSpan(text: value,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              RichText(
+                text: TextSpan(text: 'Editing: ',
                   style: TextStyle(
-                    color: appSecondaryColour,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.h,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16.h,
                   ),
+                  children: <TextSpan>[
+                    TextSpan(text: value,
+                      style: TextStyle(
+                        color: appSecondaryColour,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.h,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Text(
+                servingCalculation(widget.foodList[index].foodItemData.calories)
+                    + " Kcal",
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                servingCalculation(widget.foodList[index].foodItemData.proteins)
+                    + "g of Protein",
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                servingCalculation(widget.foodList[index].foodItemData.carbs)
+                    + "g of Carbs",
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                servingCalculation(widget.foodList[index].foodItemData.fat)
+                    + "g of Fat",
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
           actions: [
             Row(
@@ -128,15 +179,15 @@ class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
   Widget build(BuildContext context) {
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
       child: Column(
         children: [
           Container(
             decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10),
-                topLeft: Radius.circular(10),
-              ),
+              //borderRadius: BorderRadius.only(
+              //  topRight: Radius.circular(10),
+              //  topLeft: Radius.circular(10),
+              //),
               color: appTertiaryColour,
             ),
             width: double.maxFinite.w,
@@ -177,26 +228,26 @@ class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
                     ],
                   ),
                 ),
-                context.read<UserNutritionData>().isCurrentFoodItemLoaded ? ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: widget.foodList.length,
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
+                context.read<UserNutritionData>().isCurrentFoodItemLoaded ? Padding(
+                  padding: const EdgeInsets.only(top:4.0),
+                  child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: widget.foodList.length,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
 
-                    return FoodListDisplayBox(
-                      key: UniqueKey(),
-                      width: widget.width,
-                      foodObject: widget.foodList[index],
-                      icon: MdiIcons.squareEditOutline,
-                      iconColour: Colors.white,
-                      onTapIcon: () => editEntry(
-                        this.context,
-                        index,
-                        widget.foodList[index].foodItemData.foodName,
-                        widget.width,
-                      ),
-                    );
-                  },
+                      return FoodListItemBoxNew(
+                        key: UniqueKey(),
+                        foodObject: widget.foodList[index],
+                        onTap: () => editEntry(
+                          this.context,
+                          index,
+                          widget.foodList[index].foodItemData.foodName,
+                          widget.width
+                        ),
+                      );
+                    },
+                  ),
                 ) : const SizedBox.shrink(),
               ],
             ),

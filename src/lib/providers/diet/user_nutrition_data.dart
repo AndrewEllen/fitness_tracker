@@ -336,10 +336,10 @@ class UserNutritionData with ChangeNotifier {
   late double _selenium = 0.0;
   late double _stearicAcid = 0.0;
 
-  late double _caloriesGoal = 2424;
-  late double _proteinGoal = 160;
-  late double _fatGoal = 85;
-  late double _carbohydratesGoal = 286;
+  late double _caloriesGoal = 2000;
+  late double _proteinGoal = 120;
+  late double _fatGoal = 65;
+  late double _carbohydratesGoal = 200;
 
   void setCalories(String caloriesFromDB) {
 
@@ -652,8 +652,7 @@ class UserNutritionData with ChangeNotifier {
     if (valueToConvert != null) {
       valueToConvert = valueToConvert.toString();
       if (convertToNumber) {
-
-        valueToConvert = valueToConvert.replaceAll(RegExp(r'[^0-9]'),' ');
+        valueToConvert = valueToConvert.replaceAll(RegExp(r'[^.0-9]'),' ');
         List valueToConvertList = valueToConvert.split(" ");
         valueToConvert = valueToConvertList[0];
 

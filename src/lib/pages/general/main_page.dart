@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../diet_new/diet_home.dart';
@@ -31,19 +32,19 @@ class _MainPageState extends State<MainPage> {
   int _previousIndex = 1;
 
   static const List<Widget> itemsUnselected = [
-    Icon(Icons.fitness_center, size: 30, color: Colors.white,),
-    Icon(MdiIcons.foodApple, size: 30, color: Colors.white,),
-    Icon(Icons.home, size: 30, color: Colors.white,),
-    Icon(MdiIcons.ruler, size: 30, color: Colors.white,),
-    Icon(MdiIcons.informationOutline, size: 30, color: Colors.white,),
+    Icon(Icons.fitness_center, color: Colors.white,),
+    Icon(MdiIcons.foodApple, color: Colors.white,),
+    Icon(Icons.home, color: Colors.white,),
+    Icon(MdiIcons.ruler, color: Colors.white,),
+    Icon(MdiIcons.informationOutline, color: Colors.white,),
   ];
 
   static final List<Widget> itemsSelected = [
-    const Icon(Icons.fitness_center, size: 35, color: Colors.white,),
-    const Icon(MdiIcons.foodApple, size: 35, color: Colors.white,),
-    const Icon(Icons.home, size: 35, color: Colors.white,),
-    const Icon(MdiIcons.ruler, size: 35, color: Colors.white,),
-    const Icon(MdiIcons.informationOutline, size: 35, color: Colors.white,),
+    const Icon(Icons.fitness_center, color: Colors.white,),
+    const Icon(MdiIcons.foodApple, color: Colors.white,),
+    const Icon(Icons.home, color: Colors.white,),
+    const Icon(MdiIcons.ruler, color: Colors.white,),
+    const Icon(MdiIcons.informationOutline, color: Colors.white,),
   ];
 
   late List<Widget> items;
@@ -121,20 +122,57 @@ class _MainPageState extends State<MainPage> {
             onWillPop: _onBackKey,
             child: Scaffold(
               backgroundColor: appPrimaryColour,
-              bottomNavigationBar: CurvedNavigationBar(
-                  key: _NavigationBarKey,
-                  letIndexChange: (index) {return !context.read<PageChange>().confirmation;},
-                  backgroundColor: appTertiaryColour.withAlpha(100),
-                  buttonBackgroundColor: appSecondaryColour,
-                  //buttonBackgroundColor: Colors.transparent,
-                  color: appTertiaryColour,
-                  index: _currentNavigatorIndex,
-                  height: 46,
-                  animationDuration: const Duration(milliseconds: 300),
-                  items: items,
-                  onTap: (index) {
-                    navBarColor(index);
-                  }
+              bottomNavigationBar: NavigationBarTheme(
+                data: NavigationBarThemeData(
+                  labelTextStyle: MaterialStateProperty.resolveWith<TextStyle>(
+                        (Set<MaterialState> states) => states.contains(MaterialState.selected)
+                        ? const TextStyle(color: appSecondaryColour)
+                        : const TextStyle(color: Colors.white),
+                  ),
+                ),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.4),
+                        spreadRadius: 3,
+                        blurRadius: 4,
+                      ),
+                    ],
+                  ),
+                  child: NavigationBar(
+                    height: 70.h,
+                    elevation: 10,
+                    shadowColor: Colors.black,
+                    indicatorColor: appSecondaryColour,
+                    labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+                    selectedIndex: _currentNavigatorIndex,
+                    onDestinationSelected: (int index) => navBarColor(index),
+                    backgroundColor: appTertiaryColour,
+                    destinations: [
+                      NavigationDestination(
+                          icon: itemsUnselected[0],
+                          selectedIcon: itemsSelected[0],
+                        label: "Workouts",
+                      ),
+                      NavigationDestination(
+                        icon: itemsUnselected[1],
+                        selectedIcon: itemsSelected[1],
+                        label: "Diet",
+                      ),
+                      NavigationDestination(
+                        icon: itemsUnselected[2],
+                        selectedIcon: itemsSelected[2],
+                        label: "Home",
+                      ),
+                      NavigationDestination(
+                        icon: itemsUnselected[3],
+                        selectedIcon: itemsSelected[3],
+                        label: "Metrics",
+                      ),
+                    ],
+                  ),
+                ),
               ),
               body: _loading
                   ? const Center(

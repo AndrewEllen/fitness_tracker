@@ -36,15 +36,15 @@ class _DietHomeExerciseDisplayState extends State<DietHomeExerciseDisplay> {
   Widget build(BuildContext context) {
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
       child: Column(
         children: [
           Container(
             decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10),
-                topLeft: Radius.circular(10),
-              ),
+             // borderRadius: BorderRadius.only(
+             //   topRight: Radius.circular(10),
+             //   topLeft: Radius.circular(10),
+             // ),
               color: appTertiaryColour,
             ),
             width: double.maxFinite.w,
