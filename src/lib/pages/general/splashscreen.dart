@@ -2,6 +2,7 @@ import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
+import 'package:fitness_tracker/models/stats/user_data_model.dart';
 import 'package:fitness_tracker/providers/workout/user_exercises.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,7 @@ import '../../models/workout/routines_model.dart';
 import '../../models/stats/stats_model.dart';
 import '../../models/workout/training_plan_model.dart';
 import '../../providers/general/database_get.dart';
+import '../../providers/stats/user_data.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -25,8 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   late List<WorkoutRoutine> routines;
   late List<TrainingPlan> trainingPlans;
   late List<StatsMeasurement> measurements;
-  late String calories;
-  late Map userData;
+  late UserDataModel userData;
   late UserNutritionModel userNutrition;
   late UserNutritionFoodModel userNutritionHistory;
   late UserNutritionFoodModel userCustomFood;
@@ -44,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
     try {trainingPlans = await GetUserTrainingPlans();} catch (exception) {print(exception);}
     try {measurements = await GetUserMeasurements();} catch (exception) {print(exception);}
     try {userData = await GetUserDataTrainingPlan();} catch (exception) {print(exception);}
-    try {calories = await GetUserCalories();} catch (exception) {print(exception);}
+    try {userData = await GetUserBioData();} catch (exception) {print(exception);}
     print("Fetching nutrition");
     try {userNutrition = await GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString());} catch (exception) {print(exception);}
 
@@ -52,7 +53,9 @@ class _SplashScreenState extends State<SplashScreen> {
     try {userCustomFood = await GetUserCustomFood();} catch (exception) {print(exception);}
     try {userRecipes = await GetUserCustomRecipes();} catch (exception) {print("recipe");print(exception);}
 
-    try {context.read<UserNutritionData>().setCalories(calories);} catch (exception) {print(exception);}
+    try {context.read<UserData>().setUserBioData(userData);} catch (exception) {print(exception);}
+    try {context.read<UserNutritionData>().setCalories(userData.calories);} catch (exception) {print(exception);}
+
     try {context.read<UserExercisesList>().inititateExerciseList(exercises);} catch (exception) {print(exception);}
     try {context.read<ExerciseList>().setCategoriesInititial(categories);} catch (exception) {print(exception);}
     try {context.read<ExerciseList>().setExerciseInititial(exercises);} catch (exception) {print(exception);}
@@ -64,10 +67,6 @@ class _SplashScreenState extends State<SplashScreen> {
     try {context.read<UserNutritionData>().setFoodHistory(userNutritionHistory);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCustomFood(userCustomFood);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCustomRecipes(userRecipes);} catch (exception) {print(exception);}
-
-    try {
-      context.read<TrainingPlanProvider>().selectTrainingPlan(userData["selected-training-plan"]);
-    } catch (exception) {print(exception);}
 
     setState(() {
       Navigator.of(context).pushReplacement(

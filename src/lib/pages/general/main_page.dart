@@ -141,7 +141,7 @@ class _MainPageState extends State<MainPage> {
                     ],
                   ),
                   child: NavigationBar(
-                    height: 75.h,
+                    height: 70.h,
                     elevation: 10,
                     shadowColor: Colors.black,
                     indicatorColor: appSecondaryColour,
