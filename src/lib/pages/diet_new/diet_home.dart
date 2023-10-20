@@ -54,10 +54,27 @@ class DietHomePage extends StatelessWidget {
 
                     await health.requestAuthorization(types).then((value) async {
                       if (value) {
-                        var now = DateTime.now();
 
-                        var midnight = DateTime(now.year, now.month, now.day);
-                        int? steps = await health.getTotalStepsInInterval(midnight, now);
+                        var day = context.read<UserNutritionData>().nutritionDate;
+
+                        int? steps = await health.getTotalStepsInInterval(
+                            DateTime(
+                              day.year,
+                              day.month,
+                              day.day,
+                              0,
+                              0,
+                              0,
+                            ),
+                            DateTime(
+                              day.year,
+                              day.month,
+                              day.day,
+                              23,
+                              59,
+                              59,
+                            ),
+                        );
 
                         print(steps ?? 0);
                       } else {
