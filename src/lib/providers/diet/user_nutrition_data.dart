@@ -1074,6 +1074,18 @@ class UserNutritionData with ChangeNotifier {
 
   }
 
+  void editExerciseItemInDiary(ListExerciseItem newExercise, int index) {
+    if (newExercise.category.toLowerCase() == "exercise") {
+      _userDailyNutrition.foodListItemsExercise[index] = newExercise;
+
+      calculateMacros();
+
+      UpdateUserNutritionalData(_userDailyNutrition);
+
+      notifyListeners();
+    }
+  }
+
   void addExerciseItemToDiary(ListExerciseItem newExercise) {
 
     if (newExercise.category.toLowerCase() == "exercise") {
@@ -1084,6 +1096,53 @@ class UserNutritionData with ChangeNotifier {
       UpdateUserNutritionalData(_userDailyNutrition);
 
       notifyListeners();
+    }
+
+  }
+
+  void addWalkingCalories(double caloriesBurned, int steps) {
+
+    try {
+
+      String exerciseName = "Google Connect Calories Adjustment";
+      String extraInfo = " Steps";
+
+      if (foodListItemsExercise.isEmpty) {
+        foodListItemsExercise.insert(
+          0,
+          ListExerciseItem(
+            name: exerciseName,
+            category: 'exercise',
+            calories: caloriesBurned.toStringAsFixed(0),
+            extraInfoField: steps.toString() + extraInfo,
+            hideDelete: true,
+          ),
+        );
+      } else if (foodListItemsExercise[0].name == exerciseName) {
+        foodListItemsExercise[0] = ListExerciseItem(
+          name: exerciseName,
+          category: 'exercise',
+          calories: caloriesBurned.toStringAsFixed(0),
+          extraInfoField: steps.toString() + extraInfo,
+          hideDelete: true,
+        );
+      } else {
+        foodListItemsExercise.insert(
+          0,
+          ListExerciseItem(
+            name: exerciseName,
+            category: 'exercise',
+            calories: caloriesBurned.toStringAsFixed(0),
+            extraInfoField: steps.toString() + extraInfo,
+            hideDelete: true,
+          ),
+        );
+      }
+
+      UpdateUserNutritionalData(_userDailyNutrition);
+
+    } catch (error) {
+      print(error);
     }
 
   }
@@ -2109,6 +2168,8 @@ class UserNutritionData with ChangeNotifier {
     } else {
       _nutritionDate = _nutritionDate.add(const Duration(days: 1));
     }
+
+
 
     notifyListeners();
   }

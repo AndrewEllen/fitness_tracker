@@ -34,56 +34,6 @@ class DietHomePage extends StatelessWidget {
           //physics: const NeverScrollableScrollPhysics(),
             child: Column(
               children: [
-                FloatingActionButton(
-                  onPressed: () async {
-
-                      final permissionStatus = Permission.activityRecognition.request();
-                      if (await permissionStatus.isDenied ||
-                          await permissionStatus.isPermanentlyDenied) {
-                        return;
-                      }
-
-                    await Permission.activityRecognition.request().isGranted;
-                    await Permission.location.request().isGranted;
-
-                    HealthFactory health = HealthFactory();
-
-                    var types = [
-                      HealthDataType.STEPS,
-                    ];
-
-                    await health.requestAuthorization(types).then((value) async {
-                      if (value) {
-
-                        var day = context.read<UserNutritionData>().nutritionDate;
-
-                        int? steps = await health.getTotalStepsInInterval(
-                            DateTime(
-                              day.year,
-                              day.month,
-                              day.day,
-                              0,
-                              0,
-                              0,
-                            ),
-                            DateTime(
-                              day.year,
-                              day.month,
-                              day.day,
-                              23,
-                              59,
-                              59,
-                            ),
-                        );
-
-                        print(steps ?? 0);
-                      } else {
-                        print("Failed to fetch steps");
-                      }
-                    });
-
-                  },
-                ),
                 const Padding(
                   padding: EdgeInsets.all(0.0),
                   child: Center(

@@ -463,6 +463,8 @@ GetUserNutritionData(String date) async {
             category: _data[index]["category"] ?? "",
             name: _data[index]["name"] ?? "",
             calories: _data[index]["calories"] ?? "",
+            extraInfoField: _data[index]["extraInfoField"] ?? "",
+            hideDelete: _data[index]["hideDelete"] ?? false,
           );
         });
 

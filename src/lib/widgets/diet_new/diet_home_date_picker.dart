@@ -1,7 +1,11 @@
+import 'package:fitness_tracker/providers/stats/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:health/health.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import '../../constants.dart';
+import '../../models/stats/user_data_model.dart';
 import '../../providers/diet/user_nutrition_data.dart';
 import '../../providers/general/database_get.dart';
 import '../general/app_container_header.dart';
@@ -100,7 +104,7 @@ class _DietDatePickerState extends State<DietDatePicker> {
               ),
               onPressed: () => _selectDate(context),
               child: Text(
-                context.watch<UserNutritionData>().formattedNutritionDate,
+                context.read<UserNutritionData>().formattedNutritionDate,
                 style: boldTextStyle.copyWith(
                   fontSize: 17.h,
                 ),

@@ -130,7 +130,7 @@ FoodItem ConvertToFoodItem(product, {String scannedBarcode = "", bool firebase =
         iron: ConvertToUsableData(product.nutriments?.getValue(
             Nutrient.iron, PerSize.oneHundredGrams)),
         sodium: ConvertToUsableData(product.nutriments?.getValue(
-            Nutrient.sodium, PerSize.oneHundredGrams, sodium: true)),
+            Nutrient.sodium, PerSize.oneHundredGrams), sodium: true),
         zinc: ConvertToUsableData(product.nutriments?.getValue(
             Nutrient.zinc, PerSize.oneHundredGrams)),
         magnesium: ConvertToUsableData(product.nutriments?.getValue(
@@ -284,14 +284,16 @@ FoodItem ConvertToFoodItem(product, {String scannedBarcode = "", bool firebase =
 
 String ConvertToUsableData(dynamic valueToConvert, {String defaultValue = "", bool sodium = false}) {
   if (valueToConvert != null) {
-    valueToConvert = valueToConvert.toString();
+    if (sodium) {
+      valueToConvert = (valueToConvert * 2.5).toString();
+    } else {
+      valueToConvert = valueToConvert.toString();
+    }
   } else {
     valueToConvert = defaultValue;
   }
 
-  if (sodium) {
-    valueToConvert = (double.parse(valueToConvert) * 2.5).toString();
-  }
+
 
   return valueToConvert;
 }
