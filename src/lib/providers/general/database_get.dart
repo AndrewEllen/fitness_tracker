@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/helpers/diet/nutrition_tracker.dart';
 import 'package:fitness_tracker/models/diet/exercise_calories_list_item.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
+import 'package:fitness_tracker/models/stats/user_data_model.dart';
 import 'package:fitness_tracker/models/workout/exercise_model.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:fitness_tracker/models/workout/training_plan_model.dart';
@@ -462,6 +463,8 @@ GetUserNutritionData(String date) async {
             category: _data[index]["category"] ?? "",
             name: _data[index]["name"] ?? "",
             calories: _data[index]["calories"] ?? "",
+            extraInfoField: _data[index]["extraInfoField"] ?? "",
+            hideDelete: _data[index]["hideDelete"] ?? false,
           );
         });
 
@@ -712,6 +715,33 @@ GetRecipeFoodList(List<ListFoodItem> foodList) async {
 
   }
 
+}
+
+GetUserBioData() async {
+  try {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc("${firebaseAuth.currentUser?.uid.toString()}")
+        .collection("bioData")
+        .doc("bioData")
+        .get();
+
+    return UserDataModel(
+        height: snapshot["bioData"]["height"],
+        weight: snapshot["bioData"]["weight"],
+        age: snapshot["bioData"]["age"],
+        activityLevel: snapshot["bioData"]["activityLevel"],
+        weightGoal: snapshot["bioData"]["weightGoal"],
+        biologicalSex: snapshot["bioData"]["biologicalSex"],
+        calories: snapshot["bioData"]["calories"],
+    );
+
+  } catch (exception) {
+    print(exception);
+  }
 }
 
 GetUserCalories() async {

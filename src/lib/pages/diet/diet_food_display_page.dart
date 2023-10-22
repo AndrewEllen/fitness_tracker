@@ -149,7 +149,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         );
 
         context.read<UserNutritionData>().resetCurrentRecipe();
-        context.read<PageChange>().changePageClearCache(const DietHomePage());
+        context.read<PageChange>().changePageClearCache(DietHomePage());
 
       } else if (currentFoodItem.foodName.isNotEmpty &&
         currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
@@ -174,7 +174,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
       );
 
       context.read<UserNutritionData>().resetCurrentRecipe();
-      context.read<PageChange>().changePageClearCache(const DietHomePage());
+      context.read<PageChange>().changePageClearCache(DietHomePage());
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text(
@@ -340,7 +340,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                     children: [
                       DietListHeaderBox(
                         width: _width,
-                        title: "Values per 100g ${servingSizeController.text.isEmpty || servingsController.text.isEmpty ? "" : "/ " + (double.parse(servingSizeController.text) * double.parse(servingsController.text)).toStringAsFixed(0) + "g"}",
+                        title: "Values per 100g ${servingSizeController.text.isEmpty || servingsController.text.isEmpty ? "" : "/ " + (double.parse(servingSizeController.text) * double.parse(servingsController.text)).toStringAsFixed(1) + "g"}",
                         largeTitle: true,
                         color: Colors.white,
                       ),

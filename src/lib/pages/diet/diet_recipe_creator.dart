@@ -13,6 +13,7 @@ import '../../providers/diet/user_nutrition_data.dart';
 import '../../providers/general/page_change_provider.dart';
 import '../../widgets/diet/food_list_item_box.dart';
 import '../../widgets/diet/food_nutrition_list_text.dart';
+import '../../widgets/diet_new/food_list_item_box_new.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/diet/diet_list_header_box.dart';
 import '../../widgets/diet/food_nutrition_list_formfield.dart';
@@ -75,6 +76,20 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
 
     double buttonSize = width/17;
 
+    String servingCalculation(String nutritionValue) {
+
+      try {
+        return ((double.parse(nutritionValue) / 100)
+            * (double.parse(context.read<UserNutritionData>().currentRecipe.recipeFoodList[index].foodServingSize) *
+                double.parse(context.read<UserNutritionData>().currentRecipe.recipeFoodList[index].foodServings))).toStringAsFixed(1);
+      } catch (error) {
+        return "0";
+      }
+
+
+
+    }
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -87,23 +102,57 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
               color: appSecondaryColour,
             ),
           ),
-          content: RichText(
-            text: TextSpan(text: 'Editing: ',
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-              ),
-              children: <TextSpan>[
-                TextSpan(text: value,
-                  style: const TextStyle(
-                    color: appSecondaryColour,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              RichText(
+                text: TextSpan(text: 'Editing: ',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16.h,
                   ),
+                  children: <TextSpan>[
+                    TextSpan(text: value,
+                      style: TextStyle(
+                        color: appSecondaryColour,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.h,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Text(
+                servingCalculation(context.read<UserNutritionData>().currentRecipe.recipeFoodList[index].foodItemData.calories)
+                    + " Kcal",
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                servingCalculation(context.read<UserNutritionData>().currentRecipe.recipeFoodList[index].foodItemData.proteins)
+                    + "g of Protein",
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                servingCalculation(context.read<UserNutritionData>().currentRecipe.recipeFoodList[index].foodItemData.carbs)
+                    + "g of Carbs",
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                servingCalculation(context.read<UserNutritionData>().currentRecipe.recipeFoodList[index].foodItemData.fat)
+                    + "g of Fat",
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
           actions: [
             Row(
@@ -297,17 +346,14 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
                       itemCount: context.watch<UserNutritionData>().currentRecipe.recipeFoodList.length,
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
-                        return FoodListDisplayBox(
+                        return FoodListItemBoxNew(
                           key: UniqueKey(),
-                          width: _width,
                           foodObject: context.read<UserNutritionData>().currentRecipe.recipeFoodList[index],
-                          icon: MdiIcons.squareEditOutline,
-                          iconColour: Colors.white,
-                          onTapIcon: () => editEntry(
-                            this.context,
-                            index,
-                            context.read<UserNutritionData>().currentRecipe.recipeFoodList[index].foodItemData.foodName,
-                            _width,
+                          onTap: () => editEntry(
+                              this.context,
+                              index,
+                              context.read<UserNutritionData>().currentRecipe.recipeFoodList[index].foodItemData.foodName,
+                              _width
                           ),
                         );
                       },

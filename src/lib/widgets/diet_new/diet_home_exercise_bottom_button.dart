@@ -173,17 +173,17 @@ class DietHomeExerciseBottomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.only(
-        bottomRight: Radius.circular(10),
-        bottomLeft: Radius.circular(10),
-      ),
+      //borderRadius: BorderRadius.only(
+      //  bottomRight: Radius.circular(10),
+      //  bottomLeft: Radius.circular(10),
+      //),
       onTap: () => addExercise(context, 400.w),
       child: Ink(
         decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(10),
-            bottomLeft: Radius.circular(10),
-          ),
+         // borderRadius: BorderRadius.only(
+         //   bottomRight: Radius.circular(10),
+         //   bottomLeft: Radius.circular(10),
+         // ),
           boxShadow: [
             basicAppShadow
           ],

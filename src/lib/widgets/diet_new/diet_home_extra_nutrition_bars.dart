@@ -50,15 +50,15 @@ class _DietHomeExtraNutritionBarsState extends State<DietHomeExtraNutritionBars>
               ),
               InkWell(
                 borderRadius: const BorderRadius.only(
-                  bottomRight: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
+                  //bottomRight: Radius.circular(10),
+                  //bottomLeft: Radius.circular(10),
                 ),
                 onTap: onTap,
                 child: Ink(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
+                      //bottomRight: Radius.circular(10),
+                      //bottomLeft: Radius.circular(10),
                     ),
                     color: appSenaryColour,
                   ),

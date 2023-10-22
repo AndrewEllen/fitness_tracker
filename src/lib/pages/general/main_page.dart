@@ -22,7 +22,7 @@ class _MainPageState extends State<MainPage> {
 
   final pages = [
     const WorkoutsHomePage(),
-    const DietHomePage(),
+    DietHomePage(),
     const HomePage(),
     const MeasurementsHomePage(),
     const InformationHomePage(),
@@ -130,37 +130,48 @@ class _MainPageState extends State<MainPage> {
                         : const TextStyle(color: Colors.white),
                   ),
                 ),
-                child: NavigationBar(
-                  height: 75.h,
-                  elevation: 100,
-                  shadowColor: Colors.black,
-                  indicatorColor: appSecondaryColour,
-                  labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-                  selectedIndex: _currentNavigatorIndex,
-                  onDestinationSelected: (int index) => navBarColor(index),
-                  backgroundColor: appTertiaryColour,
-                  destinations: [
-                    NavigationDestination(
-                        icon: itemsUnselected[0],
-                        selectedIcon: itemsSelected[0],
-                      label: "Workouts",
-                    ),
-                    NavigationDestination(
-                      icon: itemsUnselected[1],
-                      selectedIcon: itemsSelected[1],
-                      label: "Diet",
-                    ),
-                    NavigationDestination(
-                      icon: itemsUnselected[2],
-                      selectedIcon: itemsSelected[2],
-                      label: "Home",
-                    ),
-                    NavigationDestination(
-                      icon: itemsUnselected[3],
-                      selectedIcon: itemsSelected[3],
-                      label: "Metrics",
-                    ),
-                  ],
+                child: Container(
+                  decoration: const BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.4),
+                        spreadRadius: 3,
+                        blurRadius: 4,
+                      ),
+                    ],
+                  ),
+                  child: NavigationBar(
+                    height: 70.h,
+                    elevation: 10,
+                    shadowColor: Colors.black,
+                    indicatorColor: appSecondaryColour,
+                    labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+                    selectedIndex: _currentNavigatorIndex,
+                    onDestinationSelected: (int index) => navBarColor(index),
+                    backgroundColor: appTertiaryColour,
+                    destinations: [
+                      NavigationDestination(
+                          icon: itemsUnselected[0],
+                          selectedIcon: itemsSelected[0],
+                        label: "Workouts",
+                      ),
+                      NavigationDestination(
+                        icon: itemsUnselected[1],
+                        selectedIcon: itemsSelected[1],
+                        label: "Diet",
+                      ),
+                      NavigationDestination(
+                        icon: itemsUnselected[2],
+                        selectedIcon: itemsSelected[2],
+                        label: "Home",
+                      ),
+                      NavigationDestination(
+                        icon: itemsUnselected[3],
+                        selectedIcon: itemsSelected[3],
+                        label: "Metrics",
+                      ),
+                    ],
+                  ),
                 ),
               ),
               body: _loading

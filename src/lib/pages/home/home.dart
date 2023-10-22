@@ -13,7 +13,9 @@ import 'package:provider/provider.dart';
 import '../../helpers/general/numerical_range_formatter_extension.dart';
 import '../../helpers/workout/find_routine_id.dart';
 import '../../helpers/general/firebase_auth_service.dart';
+import '../../models/stats/user_data_model.dart';
 import '../../providers/general/database_write.dart';
+import '../../providers/stats/user_data.dart';
 import '../general/auth_choose_login_signup.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,27 +27,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  late String _dropdownActivityValue = "0";
-  late String _dropdownWeightValue = "0";
-  late String _dropdownGenderValue = "0";
+  late UserDataModel userData = context.read<UserData>().userData;
+  late String _dropdownActivityValue = userData.activityLevel;
+  late String _dropdownWeightValue = userData.weightGoal;
+  late String _dropdownGenderValue = userData.biologicalSex;
 
-  late TextEditingController heightController = TextEditingController();
+  late TextEditingController heightController = TextEditingController(text: userData.height);
   late final heightKey = GlobalKey<FormState>();
 
-  late TextEditingController weightController = TextEditingController();
+  late TextEditingController weightController = TextEditingController(text: userData.weight);
   late final weightKey = GlobalKey<FormState>();
 
-  late TextEditingController ageController = TextEditingController();
+  late TextEditingController ageController = TextEditingController(text: userData.age);
   late final ageKey = GlobalKey<FormState>();
-
-  late TextEditingController activityLevelController = TextEditingController();
-  late final activityLevelKey = GlobalKey<FormState>();
-
-  late TextEditingController weightGainController = TextEditingController();
-  late final weightGainKey = GlobalKey<FormState>();
-
-  late TextEditingController genderController = TextEditingController();
-  late final genderKey = GlobalKey<FormState>();
 
   bool _loading = true;
   late int userDailyStreak;
@@ -109,7 +103,16 @@ class _HomePageState extends State<HomePage> {
 
       print(calories);
 
-      writeUserCalories(calories.toStringAsFixed(2));
+      context.read<UserData>().updateUserBioData(UserDataModel(
+          height: heightController.text,
+          weight: weightController.text,
+          age: ageController.text,
+          activityLevel: _dropdownActivityValue,
+          weightGoal: _dropdownWeightValue,
+          biologicalSex: _dropdownGenderValue,
+          calories: calories.toStringAsFixed(2)
+      ));
+
       context.read<UserNutritionData>().setCalories(calories.toStringAsFixed(2));
     }
   }
