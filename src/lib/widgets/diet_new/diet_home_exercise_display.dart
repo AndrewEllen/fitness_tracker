@@ -2,6 +2,7 @@ import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/diet/exercise_calories_list_item.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_expanding_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ import '../general/app_container_header.dart';
 import '../general/app_default_button.dart';
 import 'diet_home_bottom_button.dart';
 import 'diet_home_exercise_bottom_button.dart';
+import 'exercise_list_item_box_new.dart';
 
 class DietHomeExerciseDisplay extends StatefulWidget {
   const DietHomeExerciseDisplay({Key? key, required this.bigContainerMin,
@@ -31,6 +33,182 @@ class DietHomeExerciseDisplay extends StatefulWidget {
 }
 
 class _DietHomeExerciseDisplayState extends State<DietHomeExerciseDisplay> {
+
+  editExercise(BuildContext context, double width, ListExerciseItem exerciseItem, int index) {
+
+    late TextEditingController nameController = TextEditingController(text: exerciseItem.name);
+    late final nameKey = GlobalKey<FormState>();
+
+    late TextEditingController caloriesController = TextEditingController(text: exerciseItem.calories);
+    late final caloriesKey = GlobalKey<FormState>();
+
+    double buttonSize = width/17;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          insetPadding: const EdgeInsets.all(0),
+          backgroundColor: appTertiaryColour,
+          title: const Text(
+            "Edit Exercise",
+            style: TextStyle(
+              color: appSecondaryColour,
+            ),
+          ),
+          content: SizedBox(
+            height: (width/2.5).w,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Form(
+                  key: nameKey,
+                  child: TextFormField(
+                    controller: nameController,
+                    cursorColor: Colors.white,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: (20.h),
+                    ),
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: (width/12)/2.5, left: 5, right: 5,),
+                      hintText: 'Exercise Name...',
+                      hintStyle: TextStyle(
+                        color: Colors.white54,
+                        fontSize: (18.h),
+                      ),
+                      errorStyle: const TextStyle(
+                        height: 0,
+                      ),
+                      focusedBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: appSecondaryColour,
+                        ),
+                      ),
+                    ),
+                    validator: (String? value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      }
+                      return "";
+                    },
+                  ),
+                ),
+
+                Form(
+                  key: caloriesKey,
+                  child: TextFormField(
+                    controller: caloriesController,
+                    cursorColor: Colors.white,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: (20.h),
+                    ),
+                    textAlign: TextAlign.center,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                      TextInputFormatter.withFunction((oldValue, newValue) {
+                        final text = newValue.text;
+                        return text.isEmpty
+                            ? newValue
+                            : double.tryParse(text) == null
+                            ? oldValue
+                            : newValue;
+                      }),
+                      //NumericalRangeFormatter(min: 0, max: 100000),
+                    ],
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: (width/12)/2.5, left: 5, right: 5,),
+                      hintText: 'Calories Burned...',
+                      hintStyle: TextStyle(
+                        color: Colors.white54,
+                        fontSize: (18.h),
+                      ),
+                      errorStyle: const TextStyle(
+                        height: 0,
+                      ),
+                      focusedBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: appSecondaryColour,
+                        ),
+                      ),
+                    ),
+                    validator: (String? value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      }
+                      return "";
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+
+              children: [
+                const Spacer(),
+                SizedBox(
+                    height: buttonSize,
+                    child: AppButton(
+                      primaryColor: Colors.red,
+                      buttonText: "Delete",
+                      onTap: () {
+
+                        context.read<UserNutritionData>().deleteExerciseItemFromDiary(index, "exercise");
+
+                        Navigator.pop(context);
+                      },
+                    )
+                ),
+                const Spacer(),
+                SizedBox(
+                    height: buttonSize,
+                    child: AppButton(
+                      buttonText: "Cancel",
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                ),
+                const Spacer(),
+                SizedBox(
+                    height: buttonSize,
+                    child: AppButton(
+                      primaryColor: appSecondaryColour,
+                      buttonText: "Save",
+                      onTap: () {
+                        if (nameKey.currentState!.validate() && caloriesKey.currentState!.validate()) {
+                          context.read<UserNutritionData>().editExerciseItemInDiary(
+                            ListExerciseItem(
+                              name: nameController.text,
+                              category: "Exercise",
+                              calories: caloriesController.text,
+                              extraInfoField: exerciseItem.extraInfoField,
+                              hideDelete: exerciseItem.hideDelete,
+                            ),
+                            index,
+                          );
+                          Navigator.pop(context);
+                        }
+                      },
+                    )
+                ),
+                const Spacer(),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -101,15 +279,10 @@ class _DietHomeExerciseDisplayState extends State<DietHomeExerciseDisplay> {
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
 
-                    return ExerciseListDisplayBox(
+                    return ExerciseListItemBoxNew(
                       key: UniqueKey(),
-                      width: widget.width,
-                      exerciseList: widget.exerciseList[index],
-                      icon: MdiIcons.trashCan,
-                      iconColour: Colors.red,
-                      onTapIcon: () {
-                        context.read<UserNutritionData>().deleteExerciseItemFromDiary(index, widget.title);
-                      },
+                      exerciseObject: widget.exerciseList[index],
+                      onTap: () => widget.exerciseList[index].hideDelete ? null : editExercise(context, widget.width, widget.exerciseList[index], index),
                     );
                   },
                 ) : const SizedBox.shrink(),

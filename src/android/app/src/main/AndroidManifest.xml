@@ -2,6 +2,12 @@
     package="com.example.fitness_tracker">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.health.READ_STEPS" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+
+    <queries>
+        <package android:name="com.google.android.apps.healthdata" />
+    </queries>
 
    <application
         android:label="FIT"

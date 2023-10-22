@@ -149,7 +149,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         );
 
         context.read<UserNutritionData>().resetCurrentRecipe();
-        context.read<PageChange>().changePageClearCache(const DietHomePage());
+        context.read<PageChange>().changePageClearCache(DietHomePage());
 
       } else if (currentFoodItem.foodName.isNotEmpty &&
         currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
@@ -174,7 +174,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
       );
 
       context.read<UserNutritionData>().resetCurrentRecipe();
-      context.read<PageChange>().changePageClearCache(const DietHomePage());
+      context.read<PageChange>().changePageClearCache(DietHomePage());
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text(

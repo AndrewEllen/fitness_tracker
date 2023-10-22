@@ -22,7 +22,7 @@ class _MainPageState extends State<MainPage> {
 
   final pages = [
     const WorkoutsHomePage(),
-    const DietHomePage(),
+    DietHomePage(),
     const HomePage(),
     const MeasurementsHomePage(),
     const InformationHomePage(),

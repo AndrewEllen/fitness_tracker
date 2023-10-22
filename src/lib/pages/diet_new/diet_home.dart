@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:health/health.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import '../../constants.dart';
 import '../../providers/diet/user_nutrition_data.dart';
@@ -9,7 +11,8 @@ import '../../widgets/diet_new/diet_home_food_display.dart';
 import '../../widgets/diet_new/diet_water_box.dart';
 
 class DietHomePage extends StatelessWidget {
-  const DietHomePage({Key? key}) : super(key: key);
+  DietHomePage({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
