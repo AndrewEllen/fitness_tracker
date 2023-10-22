@@ -1119,13 +1119,15 @@ class UserNutritionData with ChangeNotifier {
           ),
         );
       } else if (foodListItemsExercise[0].name == exerciseName) {
-        foodListItemsExercise[0] = ListExerciseItem(
-          name: exerciseName,
-          category: 'exercise',
-          calories: caloriesBurned.toStringAsFixed(0),
-          extraInfoField: steps.toString() + extraInfo,
-          hideDelete: true,
-        );
+        if (steps > int.parse(foodListItemsExercise[0].extraInfoField.split(" ")[0])) {
+          foodListItemsExercise[0] = ListExerciseItem(
+            name: exerciseName,
+            category: 'exercise',
+            calories: caloriesBurned.toStringAsFixed(0),
+            extraInfoField: steps.toString() + extraInfo,
+            hideDelete: true,
+          );
+        }
       } else {
         foodListItemsExercise.insert(
           0,
@@ -1139,6 +1141,8 @@ class UserNutritionData with ChangeNotifier {
         );
       }
 
+      calculateMacros();
+      notifyListeners();
       UpdateUserNutritionalData(_userDailyNutrition);
 
     } catch (error) {
