@@ -10,6 +10,7 @@ import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
 import 'package:fitness_tracker/providers/diet/user_nutrition_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 import 'dart:async';
 
 import '../../models/diet/food_data_list_item.dart';
@@ -36,8 +37,9 @@ GetPreDefinedExercises() async {
   final _data = snapshot.get("exercises");
   final List<Exercises> data = List<Exercises>.generate(_data.length, (int index) {
     return Exercises(
-        exerciseName: _data[index]["exerciseName"],
-        exerciseCategory: _data[index]["exerciseCategory"],
+      exerciseName: _data[index]["exerciseName"],
+      exerciseCategory: _data[index]["exerciseCategory"],
+      uniqueID: Uuid().v4(),
     );
   });
   return data;
@@ -244,6 +246,7 @@ GetUserExercises() async {
       return Exercises(
         exerciseName: _data[index]["exerciseName"],
         exerciseCategory: _data[index]["exerciseCategory"],
+        uniqueID: Uuid().v4(),
       );
     });
     return data;

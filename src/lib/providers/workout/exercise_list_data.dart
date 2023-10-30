@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:core';
 
+import 'package:uuid/uuid.dart';
+
 ExerciseCategoryListFiller(List<String> categoryNames, List<Exercises> categoryExercises) {
   List<Exercises> categoryExercisesClone = [...categoryExercises];
   List<List<String>> listOfExercisesByCategory = [];
@@ -11,7 +13,11 @@ ExerciseCategoryListFiller(List<String> categoryNames, List<Exercises> categoryE
     for (int x = 0; x < categoryExercises.length; x++) {
       if (categoryExercises[x].exerciseCategory == categoryNames[i]) {
         listOfExercisesByCategory[i].add(categoryExercises[x].exerciseName);
-        categoryExercisesClone[x] = Exercises(exerciseName: "added", exerciseCategory: categoryExercises[x].exerciseCategory);
+        categoryExercisesClone[x] = Exercises(
+          exerciseName: "added",
+          exerciseCategory: categoryExercises[x].exerciseCategory,
+          uniqueID: Uuid().v4(),
+        );
       }
     }
   }

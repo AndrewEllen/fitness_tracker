@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fitness_tracker/models/workout/exercise_model.dart';
+import 'package:uuid/uuid.dart';
 
 class UserExercisesList with ChangeNotifier {
   late List<Exercises> _exerciseList = [];
@@ -17,9 +18,11 @@ class UserExercisesList with ChangeNotifier {
     notifyListeners();
   }
   void addExercise(String newCategory, String newName) {
-    _exerciseList.add(Exercises(
+    _exerciseList.add(
+      Exercises(
         exerciseName: newName,
         exerciseCategory: newCategory,
+        uniqueID: Uuid().v4(),
       ),
     );
     notifyListeners();
