@@ -2161,6 +2161,8 @@ class UserNutritionData with ChangeNotifier {
 
     _nutritionDate = date;
 
+    print(_nutritionDate);
+
     notifyListeners();
   }
 
@@ -2168,12 +2170,12 @@ class UserNutritionData with ChangeNotifier {
 
 
     if (_leftArrow) {
-      _nutritionDate = _nutritionDate.subtract(const Duration(days: 1));
+      _nutritionDate = DateTime(_nutritionDate.year, _nutritionDate.month, _nutritionDate.day-1);
     } else {
-      _nutritionDate = _nutritionDate.add(const Duration(days: 1));
+      _nutritionDate = DateTime(_nutritionDate.year, _nutritionDate.month, _nutritionDate.day+1);
     }
 
-
+    print(_nutritionDate);
 
     notifyListeners();
   }
