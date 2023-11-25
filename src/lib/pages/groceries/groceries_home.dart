@@ -1,11 +1,17 @@
 import 'package:fitness_tracker/providers/grocery/groceries_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
+import '../../helpers/diet/nutrition_tracker.dart';
+import '../../models/diet/food_item.dart';
 import '../../models/groceries/grocery_item.dart';
+import '../../providers/general/page_change_provider.dart';
+import '../../widgets/general/app_default_button.dart';
 import '../../widgets/groceries/grocery_list.dart';
+import '../diet/diet_barcode_scanner.dart';
 
 class GroceriesHome extends StatefulWidget {
   const GroceriesHome({Key? key}) : super(key: key);
@@ -15,11 +21,14 @@ class GroceriesHome extends StatefulWidget {
 }
 
 class _GroceriesHomeState extends State<GroceriesHome> {
-
+  late bool _displayDropDown = false;
   late TextEditingController searchController = TextEditingController();
   late final searchKey = GlobalKey<FormState>();
   late List<GroceryItem> groceryList;
-  late String searchCriteria;
+  late String searchCriteria = "";
+
+  late final newItemKey = GlobalKey<FormState>();
+  late TextEditingController newItemController = TextEditingController();
 
   @override
   void initState() {
@@ -29,7 +38,6 @@ class _GroceriesHomeState extends State<GroceriesHome> {
 
   @override
   Widget build(BuildContext context) {
-
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
@@ -39,7 +47,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
         resizeToAvoidBottomInset: false,
         backgroundColor: appPrimaryColour,
         appBar: AppBar(
-          toolbarHeight: height/9,
+          toolbarHeight: height / 9,
           backgroundColor: appTertiaryColour,
           automaticallyImplyLeading: false,
           bottom: TabBar(
@@ -59,7 +67,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
             children: [
               Container(
                 width: width,
-                height: height/20,
+                height: height / 20,
                 padding: const EdgeInsets.all(5),
                 decoration: const BoxDecoration(
                   border: Border(
@@ -81,8 +89,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                           fontSize: 20,
                         ),
                       ),
-                    )
-                ),
+                    )),
               ),
               Align(
                 alignment: Alignment.center,
@@ -105,7 +112,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                       cursorColor: Colors.white,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18-(height * heightFactor),
+                        fontSize: 18 - (height * heightFactor),
                       ),
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
@@ -120,7 +127,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                         hintText: 'Search for a grocery item...',
                         hintStyle: TextStyle(
                           color: Colors.white30,
-                          fontSize: 18-(height * heightFactor),
+                          fontSize: 18 - (height * heightFactor),
                         ),
                         errorStyle: const TextStyle(
                           height: 0,
@@ -139,7 +146,8 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                           searchCriteria = value;
                         });
                       },
-                      onTapOutside: (value) => FocusManager.instance.primaryFocus?.unfocus(),
+                      onTapOutside: (value) =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
                       onFieldSubmitted: (value) => setState(() {
                         searchCriteria = value;
                       }),
@@ -162,11 +170,270 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                 overscroll.disallowIndicator();
                 return true;
               },
-              child: GroceryList(
-                groceryList: groceryList,
-                searchCriteria: searchCriteria,
+              child: Stack(
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: appTertiaryColour.withAlpha(180),
+                        ),
+                        child: Row(
+                          children: [
+                            const Spacer(),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                top: 8,
+                                bottom: 8,
+                              ),
+                              width: width / 4,
+                              decoration: BoxDecoration(
+                                color: appTertiaryColour,
+                                border: Border.all(
+                                    color: appSecondaryColour, width: 1),
+                              ),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _displayDropDown = true;
+                                    });
+                                  },
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.only(
+                                          top: 5,
+                                          bottom: 8,
+                                          left: 18.0,
+                                          right: 18.0,
+                                        ),
+                                        child: Icon(
+                                          MdiIcons.foodForkDrink,
+                                          size: height / 26,
+                                        ),
+                                      ),
+                                      const FittedBox(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            bottom: 4,
+                                          ),
+                                          child: FittedBox(
+                                            fit: BoxFit.fitWidth,
+                                            child: Text(
+                                              "Add New",
+                                              style: TextStyle(
+                                                color: appSecondaryColour,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const Spacer(),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                top: 8,
+                                bottom: 8,
+                              ),
+                              width: width / 4,
+                              decoration: BoxDecoration(
+                                color: appTertiaryColour,
+                                border: Border.all(
+                                    color: appSecondaryColour, width: 1),
+                              ),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () => context
+                                      .read<PageChange>()
+                                      .changePageCache(const BarcodeScannerPage(
+                                          category: "Groceries")),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.only(
+                                          top: 5,
+                                          bottom: 8,
+                                          left: 18.0,
+                                          right: 18.0,
+                                        ),
+                                        child: Icon(
+                                          MdiIcons.barcodeScan,
+                                          size: height / 26,
+                                        ),
+                                      ),
+                                      const FittedBox(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            bottom: 4,
+                                          ),
+                                          child: FittedBox(
+                                            fit: BoxFit.fitWidth,
+                                            child: Text(
+                                              "Scan Barcode",
+                                              style: TextStyle(
+                                                color: appSecondaryColour,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const Spacer(),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: GroceryList(
+                          groceryList: groceryList,
+                          searchCriteria: searchCriteria,
+                        ),
+                      ),
+                    ],
+                  ),
+                  _displayDropDown
+                      ? Positioned(
+                          top: height / 4,
+                          left: width / 10,
+                          right: width / 10,
+                          child: Container(
+                            height: height / 5,
+                            width: width / 1.5,
+                            margin: const EdgeInsets.all(15),
+                            decoration: const BoxDecoration(
+                              color: appTertiaryColour,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4)),
+                            ),
+                            child: Stack(children: [
+                              Container(
+                                height: 32,
+                                width: double.infinity,
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                        width: 2, color: appQuinaryColour),
+                                  ),
+                                ),
+                                child: const Align(
+                                  alignment: Alignment.center,
+                                  child: SizedBox(
+                                    height: 24,
+                                    child: Text(
+                                      "Add Grocery Item",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                bottom: width / 5.5,
+                                left: width / 30,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: appTertiaryColour,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(4)),
+                                    border: Border.all(
+                                      color: appQuarternaryColour,
+                                    ),
+                                  ),
+                                  width: width / 1.5,
+                                  height: width / 12,
+                                  child: Form(
+                                    key: newItemKey,
+                                    child: TextFormField(
+                                      controller: newItemController,
+                                      cursorColor: Colors.white,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: (20),
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(
+                                          bottom: (width / 12) / 2.5,
+                                          left: 5,
+                                          right: 5,
+                                        ),
+                                        hintText: 'Item Name...',
+                                        hintStyle: const TextStyle(
+                                          color: Colors.white54,
+                                          fontSize: (18),
+                                        ),
+                                        errorStyle: const TextStyle(
+                                          height: 0,
+                                        ),
+                                        focusedBorder:
+                                            const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: appSecondaryColour,
+                                          ),
+                                        ),
+                                      ),
+                                      validator: (String? value) {
+                                        if (value!.isNotEmpty) {
+                                          return null;
+                                        }
+                                        return "";
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                bottom: width / 42,
+                                right: width / 4.33,
+                                child: SizedBox(
+                                  height: 30,
+                                  child: AppButton(
+                                    buttonText: "Cancel",
+                                    onTap: () {
+                                      setState(() {
+                                        _displayDropDown = false;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                bottom: width / 42,
+                                right: width / 33,
+                                child: SizedBox(
+                                  height: 30,
+                                  child: AppButton(
+                                      buttonText: "Add",
+                                      onTap: () {
+                                        if (newItemKey.currentState!.validate()) {
+                                          context.read<GroceryProvider>().addGroceryItem(newItemController.text);
+                                        }
+                                      }
+                                  ),
+                                ),
+                              ),
+                            ]),
+                          ))
+                      : const SizedBox.shrink()
+                ],
               ),
             ),
+
             ///
             ///
             /// Groceries Cupboard Page
@@ -182,6 +449,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                 searchCriteria: searchCriteria,
               ),
             ),
+
             ///
             ///
             /// Groceries Fridge Page
@@ -197,6 +465,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                 searchCriteria: searchCriteria,
               ),
             ),
+
             ///
             ///
             /// Groceries Freezer Page
@@ -212,6 +481,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                 searchCriteria: searchCriteria,
               ),
             ),
+
             ///
             ///
             /// Groceries Needed Page

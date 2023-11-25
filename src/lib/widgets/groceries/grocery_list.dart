@@ -18,6 +18,7 @@ class _GroceryListState extends State<GroceryList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: context.watch<GroceryProvider>().groceryList.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
@@ -45,6 +46,7 @@ class _GroceryListCupboardState extends State<GroceryListCupboard> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: context.watch<GroceryProvider>().groceryList.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
@@ -74,6 +76,7 @@ class _GroceryListFridgeState extends State<GroceryListFridge> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: context.watch<GroceryProvider>().groceryList.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
@@ -103,6 +106,7 @@ class _GroceryListFreezerState extends State<GroceryListFreezer> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: context.watch<GroceryProvider>().groceryList.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
@@ -132,6 +136,7 @@ class _GroceryListNeededState extends State<GroceryListNeeded> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: context.watch<GroceryProvider>().groceryList.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:uuid/uuid.dart';
 import '../../models/groceries/grocery_item.dart';
 
 class GroceryProvider with ChangeNotifier {
@@ -85,6 +86,23 @@ class GroceryProvider with ChangeNotifier {
       _groceryList[index].needed = true;
 
     }
+
+    notifyListeners();
+  }
+
+  void addGroceryItem(String name) {
+
+    _groceryList.add(
+      GroceryItem(
+          uuid: const Uuid().v4(),
+          barcode: "",
+          foodName: name,
+          cupboard: true,
+          fridge: false,
+          freezer: false,
+          needed: false,
+      )
+    );
 
     notifyListeners();
   }

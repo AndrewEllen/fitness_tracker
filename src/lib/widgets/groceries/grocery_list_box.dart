@@ -105,6 +105,9 @@ class _GroceryListBoxState extends State<GroceryListBox> {
   Widget build(BuildContext context) {
     return Slidable(
       key: UniqueKey(),
+
+      direction: Axis.horizontal,
+
       startActionPane: ActionPane(
         motion: const DrawerMotion(),
         children: getSlidableActionList(),
