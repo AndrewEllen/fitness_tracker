@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class GroceryList extends StatefulWidget {
-  const GroceryList({Key? key}) : super(key: key);
+  GroceryList({Key? key, required this.groceryList, this.searchCriteria = ""}) : super(key: key);
+  List<GroceryItem> groceryList;
+  String searchCriteria;
 
   @override
   State<GroceryList> createState() => _GroceryListState();
@@ -19,10 +21,10 @@ class _GroceryListState extends State<GroceryList> {
       itemCount: context.watch<GroceryProvider>().groceryList.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          child: GroceryListBox(
-            groceryObject: context.read<GroceryProvider>().groceryList[index],
+          child: (widget.searchCriteria.isEmpty || widget.groceryList[index].foodName.toLowerCase().contains(widget.searchCriteria)) ? GroceryListBox(
+            groceryObject: widget.groceryList[index],
             index: index,
-          ),
+          ) : const SizedBox.shrink(),
         );
       },
     );
@@ -30,7 +32,9 @@ class _GroceryListState extends State<GroceryList> {
 }
 
 class GroceryListCupboard extends StatefulWidget {
-  const GroceryListCupboard({Key? key}) : super(key: key);
+  GroceryListCupboard({Key? key, required this.groceryList, this.searchCriteria = ""}) : super(key: key);
+  List<GroceryItem> groceryList;
+  String searchCriteria;
 
   @override
   State<GroceryListCupboard> createState() => _GroceryListCupboardState();
@@ -44,8 +48,10 @@ class _GroceryListCupboardState extends State<GroceryListCupboard> {
       itemCount: context.watch<GroceryProvider>().groceryList.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          child: context.read<GroceryProvider>().groceryList[index].cupboard ? GroceryListBox(
-            groceryObject: context.read<GroceryProvider>().groceryList[index],
+          child: widget.groceryList[index].cupboard
+              && (widget.searchCriteria.isEmpty || widget.groceryList[index].foodName.toLowerCase().contains(widget.searchCriteria))
+              ? GroceryListBox(
+            groceryObject: widget.groceryList[index],
             index: index,
           ) : const SizedBox.shrink(),
         );
@@ -55,7 +61,9 @@ class _GroceryListCupboardState extends State<GroceryListCupboard> {
 }
 
 class GroceryListFridge extends StatefulWidget {
-  const GroceryListFridge({Key? key}) : super(key: key);
+  GroceryListFridge({Key? key, required this.groceryList, this.searchCriteria = ""}) : super(key: key);
+  List<GroceryItem> groceryList;
+  String searchCriteria;
 
   @override
   State<GroceryListFridge> createState() => _GroceryListFridgeState();
@@ -69,8 +77,10 @@ class _GroceryListFridgeState extends State<GroceryListFridge> {
       itemCount: context.watch<GroceryProvider>().groceryList.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          child: context.read<GroceryProvider>().groceryList[index].fridge ? GroceryListBox(
-            groceryObject: context.read<GroceryProvider>().groceryList[index],
+          child: widget.groceryList[index].fridge
+              && (widget.searchCriteria.isEmpty || widget.groceryList[index].foodName.toLowerCase().contains(widget.searchCriteria))
+              ? GroceryListBox(
+            groceryObject: widget.groceryList[index],
             index: index,
           ) : const SizedBox.shrink(),
         );
@@ -80,7 +90,9 @@ class _GroceryListFridgeState extends State<GroceryListFridge> {
 }
 
 class GroceryListFreezer extends StatefulWidget {
-  const GroceryListFreezer({Key? key}) : super(key: key);
+  GroceryListFreezer({Key? key, required this.groceryList, this.searchCriteria = ""}) : super(key: key);
+  List<GroceryItem> groceryList;
+  String searchCriteria;
 
   @override
   State<GroceryListFreezer> createState() => _GroceryListFreezerState();
@@ -94,8 +106,10 @@ class _GroceryListFreezerState extends State<GroceryListFreezer> {
       itemCount: context.watch<GroceryProvider>().groceryList.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          child: context.read<GroceryProvider>().groceryList[index].freezer ? GroceryListBox(
-            groceryObject: context.read<GroceryProvider>().groceryList[index],
+          child: widget.groceryList[index].freezer
+              && (widget.searchCriteria.isEmpty || widget.groceryList[index].foodName.toLowerCase().contains(widget.searchCriteria))
+              ? GroceryListBox(
+            groceryObject: widget.groceryList[index],
             index: index,
           ) : const SizedBox.shrink(),
         );
@@ -105,7 +119,9 @@ class _GroceryListFreezerState extends State<GroceryListFreezer> {
 }
 
 class GroceryListNeeded extends StatefulWidget {
-  const GroceryListNeeded({Key? key}) : super(key: key);
+  GroceryListNeeded({Key? key, required this.groceryList, this.searchCriteria = ""}) : super(key: key);
+  List<GroceryItem> groceryList;
+  String searchCriteria;
 
   @override
   State<GroceryListNeeded> createState() => _GroceryListNeededState();
@@ -119,8 +135,10 @@ class _GroceryListNeededState extends State<GroceryListNeeded> {
       itemCount: context.watch<GroceryProvider>().groceryList.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          child: context.read<GroceryProvider>().groceryList[index].needed ? GroceryListBox(
-            groceryObject: context.read<GroceryProvider>().groceryList[index],
+          child: widget.groceryList[index].needed
+              && (widget.searchCriteria.isEmpty || widget.groceryList[index].foodName.toLowerCase().contains(widget.searchCriteria))
+              ? GroceryListBox(
+            groceryObject: widget.groceryList[index],
             index: index,
           ) : const SizedBox.shrink(),
         );

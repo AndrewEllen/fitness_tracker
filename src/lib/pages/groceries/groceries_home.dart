@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
+import '../../models/groceries/grocery_item.dart';
 import '../../widgets/groceries/grocery_list.dart';
 
 class GroceriesHome extends StatefulWidget {
@@ -17,6 +18,14 @@ class _GroceriesHomeState extends State<GroceriesHome> {
 
   late TextEditingController searchController = TextEditingController();
   late final searchKey = GlobalKey<FormState>();
+  late List<GroceryItem> groceryList;
+  late String searchCriteria;
+
+  @override
+  void initState() {
+    groceryList = context.read<GroceryProvider>().groceryList;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +117,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                           top: 4,
                           bottom: 0,
                         ),
-                        hintText: 'Search for a food...',
+                        hintText: 'Search for a grocery item...',
                         hintStyle: TextStyle(
                           color: Colors.white30,
                           fontSize: 18-(height * heightFactor),
@@ -125,9 +134,15 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        setState(() {
+                          searchCriteria = value;
+                        });
+                      },
                       onTapOutside: (value) => FocusManager.instance.primaryFocus?.unfocus(),
-                      onFieldSubmitted: (value) => {},
+                      onFieldSubmitted: (value) => setState(() {
+                        searchCriteria = value;
+                      }),
                     ),
                   ),
                 ),
@@ -147,7 +162,10 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                 overscroll.disallowIndicator();
                 return true;
               },
-              child: const GroceryList(),
+              child: GroceryList(
+                groceryList: groceryList,
+                searchCriteria: searchCriteria,
+              ),
             ),
             ///
             ///
@@ -159,7 +177,10 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                 overscroll.disallowIndicator();
                 return true;
               },
-              child: const GroceryListCupboard(),
+              child: GroceryListCupboard(
+                groceryList: groceryList,
+                searchCriteria: searchCriteria,
+              ),
             ),
             ///
             ///
@@ -171,7 +192,10 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                 overscroll.disallowIndicator();
                 return true;
               },
-              child: const GroceryListFridge(),
+              child: GroceryListFridge(
+                groceryList: groceryList,
+                searchCriteria: searchCriteria,
+              ),
             ),
             ///
             ///
@@ -183,7 +207,10 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                 overscroll.disallowIndicator();
                 return true;
               },
-              child: const GroceryListFreezer(),
+              child: GroceryListFreezer(
+                groceryList: groceryList,
+                searchCriteria: searchCriteria,
+              ),
             ),
             ///
             ///
@@ -195,7 +222,10 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                 overscroll.disallowIndicator();
                 return true;
               },
-              child: const GroceryListNeeded(),
+              child: GroceryListNeeded(
+                groceryList: groceryList,
+                searchCriteria: searchCriteria,
+              ),
             ),
           ],
         ),
