@@ -4,6 +4,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/pages/general/auth_choose_login_signup.dart';
 import 'package:fitness_tracker/pages/general/splashscreen.dart';
+import 'package:fitness_tracker/providers/grocery/groceries_provider.dart';
 import 'package:fitness_tracker/providers/stats/user_data.dart';
 import 'package:fitness_tracker/providers/workout/user_exercises.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,7 @@ void main() async {
           ChangeNotifierProvider(create: (context) => UserStatsMeasurements()),
           ChangeNotifierProvider(create: (context) => UserExercisesList()),
           ChangeNotifierProvider(create: (context) => UserData()),
+          ChangeNotifierProvider(create: (context) => GroceryProvider()),
         ],
         child: const AppMain()
     ),
