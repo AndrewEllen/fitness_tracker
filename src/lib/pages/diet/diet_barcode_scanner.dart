@@ -101,7 +101,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
 
               //print(newFoodItem.foodName);
 
-              if (widget.category == "Groceries") {
+              if (widget.category == "groceries") {
                 context.read<PageChange>().changePageRemovePreviousCache(GroceriesHome(
                   foodName: newFoodItem.foodName,
                   foodBarcode: newFoodItem.barcode,
