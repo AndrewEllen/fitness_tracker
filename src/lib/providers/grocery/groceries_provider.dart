@@ -1,51 +1,24 @@
+import 'package:fitness_tracker/providers/general/database_write.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 import '../../models/groceries/grocery_item.dart';
 
 class GroceryProvider with ChangeNotifier {
 
-  late List<GroceryItem> _groceryList = [
-    GroceryItem(
-      uuid: "1",
-      barcode: "1",
-      foodName: "Test Item 1",
-      cupboard: true,
-      fridge: false,
-      freezer: false,
-      needed: false,
-    ),
-    GroceryItem(
-      uuid: "2",
-      barcode: "2",
-      foodName: "Test Item 2",
-      cupboard: false,
-      fridge: true,
-      freezer: false,
-      needed: false,
-    ),
-    GroceryItem(
-      uuid: "3",
-      barcode: "3",
-      foodName: "Test Item 3",
-      cupboard: false,
-      fridge: false,
-      freezer: true,
-      needed: false,
-    ),
-    GroceryItem(
-      uuid: "4",
-      barcode: "4",
-      foodName: "Test Item 4",
-      cupboard: false,
-      fridge: false,
-      freezer: false,
-      needed: true,
-    ),
-  ];
+  late List<GroceryItem> _groceryList = [];
 
   List<GroceryItem> get groceryList => _groceryList;
 
+  void setGroceryList(List<GroceryItem> listFromDB) {
+
+    _groceryList = listFromDB;
+
+    notifyListeners();
+  }
+
   void deleteItemFromList(int index) {
+
+    deleteGrocery(_groceryList[index]);
 
     groceryList.removeAt(index);
 
@@ -87,22 +60,26 @@ class GroceryProvider with ChangeNotifier {
 
     }
 
+    writeGrocery(_groceryList[index]);
+
     notifyListeners();
   }
 
   void addGroceryItem({required String name, String barcode = "", bool cupboard = true, bool fridge = false, bool freezer = false, bool needed = false}) {
 
-    _groceryList.add(
-      GroceryItem(
-          uuid: const Uuid().v4(),
-          barcode: barcode,
-          foodName: name,
-          cupboard: cupboard,
-          fridge: fridge,
-          freezer: freezer,
-          needed: needed,
-      )
+    GroceryItem newGroceryItem = GroceryItem(
+      uuid: const Uuid().v4(),
+      barcode: barcode,
+      foodName: name,
+      cupboard: cupboard,
+      fridge: fridge,
+      freezer: freezer,
+      needed: needed,
     );
+
+    _groceryList.add(newGroceryItem);
+
+    writeGrocery(newGroceryItem);
 
     notifyListeners();
   }
