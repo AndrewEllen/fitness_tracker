@@ -90,7 +90,7 @@ class GroceryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void addGroceryItem(String name) {
+  void addGroceryItem({required String name, String barcode = "", bool cupboard = true, bool fridge = false, bool freezer = false, bool needed = false}) {
 
     _groceryList.add(
       GroceryItem(

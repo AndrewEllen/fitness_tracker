@@ -1,5 +1,6 @@
 
 import 'package:fitness_tracker/constants.dart';
+import 'package:fitness_tracker/pages/groceries/groceries_home.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
@@ -99,6 +100,14 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
               print(newFoodItem.foodName);
 
               //print(newFoodItem.foodName);
+
+              if (widget.category == "Groceries") {
+                context.read<PageChange>().changePageRemovePreviousCache(GroceriesHome(
+                  foodName: newFoodItem.foodName,
+                  foodBarcode: newFoodItem.barcode,
+                  dropdown: true,
+                ));
+              }
 
               context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
 

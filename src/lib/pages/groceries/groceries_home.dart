@@ -14,14 +14,16 @@ import '../../widgets/groceries/grocery_list.dart';
 import '../diet/diet_barcode_scanner.dart';
 
 class GroceriesHome extends StatefulWidget {
-  const GroceriesHome({Key? key}) : super(key: key);
+  GroceriesHome({Key? key, this.foodName = "", this.foodBarcode = "", this.dropdown = false}) : super(key: key);
+  String foodName, foodBarcode;
+  bool dropdown;
 
   @override
   State<GroceriesHome> createState() => _GroceriesHomeState();
 }
 
 class _GroceriesHomeState extends State<GroceriesHome> {
-  late bool _displayDropDown = false;
+  late bool _displayDropDown;
   late TextEditingController searchController = TextEditingController();
   late final searchKey = GlobalKey<FormState>();
   late List<GroceryItem> groceryList;
@@ -32,7 +34,9 @@ class _GroceriesHomeState extends State<GroceriesHome> {
 
   @override
   void initState() {
+    newItemController.text = widget.foodName;
     groceryList = context.read<GroceryProvider>().groceryList;
+    _displayDropDown = widget.dropdown;
     super.initState();
   }
 
@@ -186,7 +190,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                                 top: 8,
                                 bottom: 8,
                               ),
-                              width: width / 4,
+                              width: width / 2.5,
                               decoration: BoxDecoration(
                                 color: appTertiaryColour,
                                 border: Border.all(
@@ -242,7 +246,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                                 top: 8,
                                 bottom: 8,
                               ),
-                              width: width / 4,
+                              width: width / 2.5,
                               decoration: BoxDecoration(
                                 color: appTertiaryColour,
                                 border: Border.all(
@@ -251,10 +255,13 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                               child: Material(
                                 color: Colors.transparent,
                                 child: InkWell(
-                                  onTap: () => context
-                                      .read<PageChange>()
-                                      .changePageCache(const BarcodeScannerPage(
-                                          category: "Groceries")),
+                                  onTap: () {
+                                    context
+                                        .read<PageChange>()
+                                        .changePageCache(const BarcodeScannerPage(
+                                        category: "groceries")
+                                    );
+                                  },
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -421,7 +428,16 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                                       buttonText: "Add",
                                       onTap: () {
                                         if (newItemKey.currentState!.validate()) {
-                                          context.read<GroceryProvider>().addGroceryItem(newItemController.text);
+                                          context.read<GroceryProvider>().addGroceryItem(
+                                              name: newItemController.text,
+                                              barcode: widget.foodBarcode,
+                                          );
+
+                                          setState(() {
+                                            newItemController.text = "";
+                                            widget.foodBarcode = "";
+                                            _displayDropDown = false;
+                                          });
                                         }
                                       }
                                   ),

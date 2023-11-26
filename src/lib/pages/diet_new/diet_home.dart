@@ -102,7 +102,7 @@ class DietHomePage extends StatelessWidget {
                 ),
 
                 ElevatedButton(
-                  onPressed: () => context.read<PageChange>().changePageCache(const GroceriesHome()),
+                  onPressed: () => context.read<PageChange>().changePageCache(GroceriesHome()),
                   child: const Text(
                     "Groceries",
                   ),
