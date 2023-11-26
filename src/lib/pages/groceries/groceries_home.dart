@@ -28,6 +28,14 @@ class _GroceriesHomeState extends State<GroceriesHome> {
   late final searchKey = GlobalKey<FormState>();
   late List<GroceryItem> groceryList;
   late String searchCriteria = "";
+  late int _radioButtonValue = 0;
+
+
+  late bool _cupboard = true;
+  late bool _fridge = false;
+  late bool _freezer = false;
+  late bool _needed = false;
+
 
   late final newItemKey = GlobalKey<FormState>();
   late TextEditingController newItemController = TextEditingController();
@@ -312,11 +320,11 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                   ),
                   _displayDropDown
                       ? Positioned(
-                          top: height / 4,
+                          top: height / 18.h,
                           left: width / 10,
                           right: width / 10,
                           child: Container(
-                            height: height / 5,
+                            height: height / 2.4.h,
                             width: width / 1.5,
                             margin: const EdgeInsets.all(15),
                             decoration: const BoxDecoration(
@@ -350,7 +358,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                                 ),
                               ),
                               Positioned(
-                                bottom: width / 5.5,
+                                top: width / 8.5.h,
                                 left: width / 30,
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -362,7 +370,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                                     ),
                                   ),
                                   width: width / 1.5,
-                                  height: width / 12,
+                                  height: width / 10,
                                   child: Form(
                                     key: newItemKey,
                                     child: TextFormField(
@@ -404,6 +412,82 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                                   ),
                                 ),
                               ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: 88.0.h,
+                                    bottom: 18.0.h,
+                                    left: 8.0,
+                                    right: 8.0,
+                                ),
+                                child: Column(
+                                  children: [
+                                    RadioListTile(
+                                        value: 0,
+                                        groupValue: _radioButtonValue,
+                                        onChanged: (value) {
+                                          setState(() {
+
+                                            _radioButtonValue = value!;
+                                            _cupboard = true;
+                                            _fridge = false;
+                                            _freezer = false;
+                                            _needed = false;
+
+                                          });
+                                        },
+                                      title: const Text("Cupboard"),
+                                    ),
+                                    RadioListTile(
+                                      value: 1,
+                                      groupValue: _radioButtonValue,
+                                      onChanged: (value) {
+                                        setState(() {
+
+                                          _radioButtonValue = value!;
+                                          _cupboard = false;
+                                          _fridge = true;
+                                          _freezer = false;
+                                          _needed = false;
+
+                                        });
+                                      },
+                                      title: const Text("Fridge"),
+                                    ),
+                                    RadioListTile(
+                                      value: 2,
+                                      groupValue: _radioButtonValue,
+                                      onChanged: (value) {
+                                        setState(() {
+
+                                          _radioButtonValue = value!;
+                                          _cupboard = false;
+                                          _fridge = false;
+                                          _freezer = true;
+                                          _needed = false;
+
+                                        });
+                                      },
+                                      title: const Text("Freezer"),
+                                    ),
+                                    RadioListTile(
+                                      value: 3,
+                                      groupValue: _radioButtonValue,
+                                      onChanged: (value) {
+                                        setState(() {
+
+                                          _radioButtonValue = value!;
+                                          _cupboard = false;
+                                          _fridge = false;
+                                          _freezer = false;
+                                          _needed = true;
+
+                                        });
+                                      },
+                                      title: const Text("Needed"),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               Positioned(
                                 bottom: width / 42,
                                 right: width / 4.33,
@@ -429,8 +513,12 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                                       onTap: () {
                                         if (newItemKey.currentState!.validate()) {
                                           context.read<GroceryProvider>().addGroceryItem(
-                                              name: newItemController.text,
-                                              barcode: widget.foodBarcode,
+                                            name: newItemController.text,
+                                            barcode: widget.foodBarcode,
+                                            cupboard: _cupboard,
+                                            fridge: _fridge,
+                                            freezer: _freezer,
+                                            needed: _needed,
                                           );
 
                                           setState(() {

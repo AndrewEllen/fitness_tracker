@@ -95,12 +95,12 @@ class GroceryProvider with ChangeNotifier {
     _groceryList.add(
       GroceryItem(
           uuid: const Uuid().v4(),
-          barcode: "",
+          barcode: barcode,
           foodName: name,
-          cupboard: true,
-          fridge: false,
-          freezer: false,
-          needed: false,
+          cupboard: cupboard,
+          fridge: fridge,
+          freezer: freezer,
+          needed: needed,
       )
     );
 
