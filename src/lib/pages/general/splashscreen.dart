@@ -2,7 +2,9 @@ import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
+import 'package:fitness_tracker/models/groceries/grocery_item.dart';
 import 'package:fitness_tracker/models/stats/user_data_model.dart';
+import 'package:fitness_tracker/providers/grocery/groceries_provider.dart';
 import 'package:fitness_tracker/providers/workout/user_exercises.dart';
 import 'package:flutter/material.dart';
 import 'package:health/health.dart';
@@ -34,6 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
   late UserNutritionFoodModel userNutritionHistory;
   late UserNutritionFoodModel userCustomFood;
   late UserNutritionFoodModel userRecipes;
+  late List<GroceryItem> groceryList;
 
   Future<void> stepsCalorieCalculator() async {
 
@@ -119,8 +122,12 @@ class _SplashScreenState extends State<SplashScreen> {
     try {userCustomFood = await GetUserCustomFood();} catch (exception) {print(exception);}
     try {userRecipes = await GetUserCustomRecipes();} catch (exception) {print("recipe");print(exception);}
 
+    try {groceryList = await GetUserGroceries();} catch (exception) {print("recipe");print(exception);}
+
     try {context.read<UserData>().setUserBioData(userData);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCalories(userData.calories);} catch (exception) {print(exception);}
+
+    try {context.read<GroceryProvider>().setGroceryList(groceryList);} catch (exception) {print(exception);}
 
     try {context.read<UserExercisesList>().inititateExerciseList(exercises);} catch (exception) {print(exception);}
     try {context.read<ExerciseList>().setCategoriesInititial(categories);} catch (exception) {print(exception);}

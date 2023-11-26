@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/helpers/diet/nutrition_tracker.dart';
 import 'package:fitness_tracker/models/diet/exercise_calories_list_item.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
+import 'package:fitness_tracker/models/groceries/grocery_item.dart';
 import 'package:fitness_tracker/models/stats/user_data_model.dart';
 import 'package:fitness_tracker/models/workout/exercise_model.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
@@ -757,6 +758,43 @@ GetUserCalories() async {
         .get();
 
     return snapshot["calories"];
+
+  } catch (exception) {
+    print(exception);
+  }
+}
+
+GetUserGroceries() async {
+  try {
+
+    print("Getting Groceries");
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('grocery-lists')
+        .doc('${firebaseAuth.currentUser?.uid.toString()}')
+        .collection('grocery-data')
+        .where(FieldPath.documentId)
+        .get();
+
+    print("Got Snapshot");
+    print(snapshot.size);
+
+    List<GroceryItem> groceryItems = [
+      for (QueryDocumentSnapshot document in snapshot.docs)
+        GroceryItem(
+            uuid: document.get("groceryData")["uuid"],
+            barcode: document.get("groceryData")["barcode"],
+            foodName: document.get("groceryData")["foodName"],
+            cupboard: document.get("groceryData")["cupboard"],
+            fridge: document.get("groceryData")["fridge"],
+            freezer: document.get("groceryData")["freezer"],
+            needed: document.get("groceryData")["needed"],
+        ),
+    ];
+
+    return groceryItems;
 
   } catch (exception) {
     print(exception);
