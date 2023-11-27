@@ -809,30 +809,27 @@ GetUserGroceries(String groceryListID) async {
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
+    final snapshot = FirebaseFirestore.instance
         .collection('grocery-lists')
         .doc(groceryListID)
         .collection('grocery-data')
         .where(FieldPath.documentId)
-        .get();
+        .snapshots()
+        .listen((event) {
 
-    print("Got Snapshot");
-    print(snapshot.size);
-
-    List<GroceryItem> groceryItems = [
-      for (QueryDocumentSnapshot document in snapshot.docs)
-        GroceryItem(
-            uuid: document.get("groceryData")["uuid"],
-            barcode: document.get("groceryData")["barcode"],
-            foodName: document.get("groceryData")["foodName"],
-            cupboard: document.get("groceryData")["cupboard"],
-            fridge: document.get("groceryData")["fridge"],
-            freezer: document.get("groceryData")["freezer"],
-            needed: document.get("groceryData")["needed"],
-        ),
-    ];
-
-    return groceryItems;
+          List<GroceryItem> groceryItems = [
+          for (QueryDocumentSnapshot document in event.docs)
+            GroceryItem(
+              uuid: document.get("groceryData")["uuid"],
+              barcode: document.get("groceryData")["barcode"],
+              foodName: document.get("groceryData")["foodName"],
+              cupboard: document.get("groceryData")["cupboard"],
+              fridge: document.get("groceryData")["fridge"],
+              freezer: document.get("groceryData")["freezer"],
+              needed: document.get("groceryData")["needed"],
+            ),
+          ];
+        });
 
   } catch (exception) {
     print(exception);

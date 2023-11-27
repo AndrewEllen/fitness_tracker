@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/providers/general/database_write.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
@@ -32,9 +34,34 @@ class GroceryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setGroceryList(List<GroceryItem> listFromDB) {
+  void setGroceryList() {
 
-    _groceryList = listFromDB;
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = FirebaseFirestore.instance
+        .collection('grocery-lists')
+        .doc(_groceryListID)
+        .collection('grocery-data')
+        .where(FieldPath.documentId)
+        .snapshots()
+        .listen((event) {
+
+      List<GroceryItem> groceryItems = [
+        for (QueryDocumentSnapshot document in event.docs)
+          GroceryItem(
+            uuid: document.get("groceryData")["uuid"],
+            barcode: document.get("groceryData")["barcode"],
+            foodName: document.get("groceryData")["foodName"],
+            cupboard: document.get("groceryData")["cupboard"],
+            fridge: document.get("groceryData")["fridge"],
+            freezer: document.get("groceryData")["freezer"],
+            needed: document.get("groceryData")["needed"],
+          ),
+      ];
+
+      _groceryList = groceryItems;
+
+    });
 
     notifyListeners();
   }

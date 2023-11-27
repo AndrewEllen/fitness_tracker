@@ -53,7 +53,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
     if (context.read<GroceryProvider>().groceryList.isEmpty) {
       try {
         List<GroceryItem> groceryList = GetUserGroceries(context.read<GroceryProvider>().groceryListID);
-        context.read<GroceryProvider>().setGroceryList(groceryList);
+        context.read<GroceryProvider>().setGroceryList();
 
       } catch (error) {
         print(error);
