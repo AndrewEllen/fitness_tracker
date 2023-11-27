@@ -258,26 +258,52 @@ void writeUserBiometric(UserDataModel userData) async {
 
 }
 
-void writeGrocery(GroceryItem groceryItem) async {
+void writeGrocery(GroceryItem groceryItem, String groceryListID) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   await FirebaseFirestore.instance
       .collection('grocery-lists')
-      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .doc(groceryListID)
       .collection('grocery-data')
       .doc(groceryItem.uuid)
       .set({"groceryData": groceryItem.toMap()});
 
 }
 
-void deleteGrocery(GroceryItem groceryItem) async {
+void writeGroceryLists(List<String> groceryLists) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .collection('grocery-data')
+      .doc("grocery-lists")
+      .set({"groceryLists": groceryLists});
+
+}
+
+void writeGroceryListID(String groceryListID) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .collection('grocery-data')
+      .doc("selected-grocery-list")
+      .set({"groceryListID": groceryListID});
+
+}
+
+void deleteGrocery(GroceryItem groceryItem, String groceryListID) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   await FirebaseFirestore.instance
       .collection('grocery-lists')
-      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .doc(groceryListID)
       .collection('grocery-data')
       .doc(groceryItem.uuid)
       .delete();

@@ -5,9 +5,32 @@ import '../../models/groceries/grocery_item.dart';
 
 class GroceryProvider with ChangeNotifier {
 
+  late String _groceryListID = "";
+
+  String get groceryListID => _groceryListID;
+
+  late List<String> _groceryLists = [];
+
+  List<String> get groceryLists => _groceryLists;
+
   late List<GroceryItem> _groceryList = [];
 
   List<GroceryItem> get groceryList => _groceryList;
+
+  void setGroceryListID(String newGroceryListID) {
+    _groceryListID = newGroceryListID;
+    writeGroceryListID(newGroceryListID);
+    notifyListeners();
+  }
+
+  void setGroceryLists(List<String> listFromDB) {
+
+    _groceryLists = listFromDB;
+
+    writeGroceryLists(listFromDB);
+
+    notifyListeners();
+  }
 
   void setGroceryList(List<GroceryItem> listFromDB) {
 
@@ -18,7 +41,7 @@ class GroceryProvider with ChangeNotifier {
 
   void deleteItemFromList(int index) {
 
-    deleteGrocery(_groceryList[index]);
+    deleteGrocery(_groceryList[index], _groceryListID);
 
     groceryList.removeAt(index);
 
@@ -60,7 +83,7 @@ class GroceryProvider with ChangeNotifier {
 
     }
 
-    writeGrocery(_groceryList[index]);
+    writeGrocery(_groceryList[index], _groceryListID);
 
     notifyListeners();
   }
@@ -79,7 +102,7 @@ class GroceryProvider with ChangeNotifier {
 
     _groceryList.add(newGroceryItem);
 
-    writeGrocery(newGroceryItem);
+    writeGrocery(newGroceryItem, _groceryListID);
 
     notifyListeners();
   }

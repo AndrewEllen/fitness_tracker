@@ -764,7 +764,45 @@ GetUserCalories() async {
   }
 }
 
-GetUserGroceries() async {
+GetUserGroceryLists() async {
+  try {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc("${firebaseAuth.currentUser?.uid.toString()}")
+        .collection('grocery-data')
+        .doc("grocery-lists")
+        .get();
+
+    return snapshot["groceryLists"];
+
+  } catch (exception) {
+    print(exception);
+  }
+}
+
+GetUserGroceryListID() async {
+  try {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc("${firebaseAuth.currentUser?.uid.toString()}")
+        .collection('grocery-data')
+        .doc("selected-grocery-list")
+        .get();
+
+    return snapshot["groceryListID"];
+
+  } catch (exception) {
+    print(exception);
+  }
+}
+
+GetUserGroceries(String groceryListID) async {
   try {
 
     print("Getting Groceries");
@@ -773,7 +811,7 @@ GetUserGroceries() async {
 
     final snapshot = await FirebaseFirestore.instance
         .collection('grocery-lists')
-        .doc('${firebaseAuth.currentUser?.uid.toString()}')
+        .doc(groceryListID)
         .collection('grocery-data')
         .where(FieldPath.documentId)
         .get();

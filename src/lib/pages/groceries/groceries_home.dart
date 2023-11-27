@@ -1,8 +1,10 @@
+import 'package:fitness_tracker/providers/general/database_get.dart';
 import 'package:fitness_tracker/providers/grocery/groceries_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../constants.dart';
 import '../../helpers/diet/nutrition_tracker.dart';
@@ -42,6 +44,22 @@ class _GroceriesHomeState extends State<GroceriesHome> {
 
   @override
   void initState() {
+
+    if (context.read<GroceryProvider>().groceryListID.isEmpty) {
+      context.read<GroceryProvider>().setGroceryListID(const Uuid().v4());
+    }
+
+
+    if (context.read<GroceryProvider>().groceryList.isEmpty) {
+      try {
+        List<GroceryItem> groceryList = GetUserGroceries(context.read<GroceryProvider>().groceryListID);
+        context.read<GroceryProvider>().setGroceryList(groceryList);
+
+      } catch (error) {
+        print(error);
+      }
+    }
+
     newItemController.text = widget.foodName;
     groceryList = context.read<GroceryProvider>().groceryList;
     _displayDropDown = widget.dropdown;
