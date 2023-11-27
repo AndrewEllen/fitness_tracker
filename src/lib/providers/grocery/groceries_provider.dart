@@ -20,6 +20,12 @@ class GroceryProvider with ChangeNotifier {
   List<GroceryItem> get groceryList => _groceryList;
 
   void setGroceryListID(String newGroceryListID) {
+
+    if (!_groceryLists.contains(newGroceryListID)) {
+      _groceryLists.add(newGroceryListID);
+      writeGroceryLists(_groceryLists);
+    }
+
     _groceryListID = newGroceryListID;
     writeGroceryListID(newGroceryListID);
     notifyListeners();

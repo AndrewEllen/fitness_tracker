@@ -723,7 +723,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                                 buttonText: "Cancel",
                                 onTap: () {
                                   setState(() {
-                                    _displayDropDown = false;
+                                    _displayDropDownChangeLink = false;
                                   });
                                 },
                               ),
