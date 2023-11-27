@@ -1,6 +1,7 @@
 import 'package:fitness_tracker/providers/general/database_get.dart';
 import 'package:fitness_tracker/providers/grocery/groceries_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,7 @@ import '../../constants.dart';
 import '../../helpers/diet/nutrition_tracker.dart';
 import '../../models/diet/food_item.dart';
 import '../../models/groceries/grocery_item.dart';
+import '../../providers/general/database_write.dart';
 import '../../providers/general/page_change_provider.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/groceries/grocery_list.dart';
@@ -26,6 +28,7 @@ class GroceriesHome extends StatefulWidget {
 
 class _GroceriesHomeState extends State<GroceriesHome> {
   late bool _displayDropDown;
+  late bool _displayDropDownChangeLink = false;
   late TextEditingController searchController = TextEditingController();
   late final searchKey = GlobalKey<FormState>();
   late List<GroceryItem> groceryList;
@@ -41,6 +44,9 @@ class _GroceriesHomeState extends State<GroceriesHome> {
 
   late final newItemKey = GlobalKey<FormState>();
   late TextEditingController newItemController = TextEditingController();
+
+  late final newListKey = GlobalKey<FormState>();
+  late TextEditingController newListController = TextEditingController();
 
   @override
   void initState() {
@@ -106,16 +112,21 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                     ),
                   ),
                 ),
-                child: const Align(
+                child: Align(
                     alignment: Alignment.topCenter,
                     child: FittedBox(
                       fit: BoxFit.fitWidth,
-                      child: Text(
-                        "Groceries",
-                        style: TextStyle(
-                          color: appSecondaryColour,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                      child: GestureDetector(
+                        onTap: () => setState(() {
+                          _displayDropDownChangeLink = true;
+                        }),
+                        child: const Text(
+                          "Groceries",
+                          style: TextStyle(
+                            color: appSecondaryColour,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                     )),
@@ -225,7 +236,6 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                                 color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () {
-                                    print(context.read<GroceryProvider>().groceryList[0].foodName);
                                     setState(() {
                                       _displayDropDown = true;
                                     });
@@ -530,13 +540,18 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                                       buttonText: "Add",
                                       onTap: () {
                                         if (newItemKey.currentState!.validate()) {
-                                          context.read<GroceryProvider>().addGroceryItem(
-                                            name: newItemController.text,
-                                            barcode: widget.foodBarcode,
-                                            cupboard: _cupboard,
-                                            fridge: _fridge,
-                                            freezer: _freezer,
-                                            needed: _needed,
+
+                                          writeGrocery(
+                                            GroceryItem(
+                                              uuid: const Uuid().v4(),
+                                              barcode: widget.foodBarcode,
+                                              foodName: newItemController.text,
+                                              cupboard: _cupboard,
+                                              fridge: _fridge,
+                                              freezer: _freezer,
+                                              needed: _needed,
+                                            ),
+                                            context.read<GroceryProvider>().groceryListID,
                                           );
 
                                           setState(() {
@@ -551,6 +566,194 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                               ),
                             ]),
                           ))
+                      : const SizedBox.shrink(),
+                  _displayDropDownChangeLink
+                      ? Positioned(
+                      top: height / 18.h,
+                      left: width / 10,
+                      right: width / 10,
+                      child: Container(
+                        height: height / 2.4.h,
+                        width: width / 1.5,
+                        margin: const EdgeInsets.all(15),
+                        decoration: const BoxDecoration(
+                          color: appTertiaryColour,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(4)),
+                        ),
+                        child: Stack(children: [
+                          Container(
+                            height: 32,
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                    width: 2, color: appQuinaryColour),
+                              ),
+                            ),
+                            child: const Align(
+                              alignment: Alignment.center,
+                              child: SizedBox(
+                                height: 24,
+                                child: Text(
+                                  "Change Grocery List",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: width / 4.5.h,
+                            left: width / 30,
+                            child: GestureDetector(
+                              onTap: () {
+                                Clipboard.setData(ClipboardData(text: context.read<GroceryProvider>().groceryListID));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Text("Copied Code To Clipboard!"),
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    margin: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context).size.height * 0.6695,
+                                      right: 20,
+                                      left: 20,
+                                    ),
+                                    dismissDirection: DismissDirection.none,
+                                    duration: const Duration(milliseconds: 700),
+                                  ),
+                                );
+                              },
+                              child: Column(
+                                children: [
+                                  const Center(
+                                    child: Text(
+                                      "Tap to Copy Code:",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      context.read<GroceryProvider>().groceryListID,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: width / 2.5.h,
+                            left: width / 30,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: appTertiaryColour,
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(4)),
+                                border: Border.all(
+                                  color: appQuarternaryColour,
+                                ),
+                              ),
+                              width: width / 1.5,
+                              height: width / 10,
+                              child: Form(
+                                key: newListKey,
+                                child: TextFormField(
+                                  controller: newListController,
+                                  cursorColor: Colors.white,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: (20),
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(
+                                      bottom: (width / 12) / 2.5,
+                                      left: 5,
+                                      right: 5,
+                                    ),
+                                    hintText: 'Grocery List ID...',
+                                    hintStyle: const TextStyle(
+                                      color: Colors.white54,
+                                      fontSize: (18),
+                                    ),
+                                    errorStyle: const TextStyle(
+                                      height: 0,
+                                    ),
+                                    focusedBorder:
+                                    const UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: appSecondaryColour,
+                                      ),
+                                    ),
+                                  ),
+                                  validator: (String? value) {
+                                    if (value!.isNotEmpty) {
+                                      return null;
+                                    }
+                                    return "";
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: 88.0.h,
+                              bottom: 18.0.h,
+                              left: 8.0,
+                              right: 8.0,
+                            ),
+                          ),
+                          Positioned(
+                            bottom: width / 42,
+                            right: width / 4.33,
+                            child: SizedBox(
+                              height: 30,
+                              child: AppButton(
+                                buttonText: "Cancel",
+                                onTap: () {
+                                  setState(() {
+                                    _displayDropDown = false;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: width / 42,
+                            right: width / 33,
+                            child: SizedBox(
+                              height: 30,
+                              child: AppButton(
+                                  buttonText: "Save",
+                                  onTap: () {
+                                    if (newListKey.currentState!.validate()) {
+
+                                      context.read<GroceryProvider>().setGroceryListID(newListController.text);
+
+                                      writeGroceryListID(newListController.text);
+
+                                      setState(() {
+                                        newListController.text = "";
+                                        _displayDropDownChangeLink = false;
+                                      });
+                                    }
+                                  }
+                              ),
+                            ),
+                          ),
+                        ]),
+                      ))
                       : const SizedBox.shrink()
                 ],
               ),

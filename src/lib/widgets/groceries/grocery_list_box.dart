@@ -1,5 +1,6 @@
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/groceries/grocery_item.dart';
+import 'package:fitness_tracker/providers/general/database_write.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -12,12 +13,10 @@ import '../../providers/grocery/groceries_provider.dart';
 class GroceryListBox extends StatefulWidget {
   const GroceryListBox({Key? key,
     required this.groceryObject,
-    required this.index,
     this.onTap,
   }) : super(key: key);
 
   final GroceryItem groceryObject;
-  final int index;
   final VoidCallback? onTap;
 
   @override
@@ -59,7 +58,20 @@ class _GroceryListBoxState extends State<GroceryListBox> {
     if (!widget.groceryObject.cupboard) {
       slidableActionList.add(
         SlidableAction(
-          onPressed: (value) => context.read<GroceryProvider>().changeItemCategory(widget.index, "cupboard"),
+            onPressed: (value) {
+              writeGrocery(
+                GroceryItem(
+                  uuid: widget.groceryObject.uuid,
+                  barcode: widget.groceryObject.barcode,
+                  foodName: widget.groceryObject.foodName,
+                  cupboard: true,
+                  fridge: false,
+                  freezer: false,
+                  needed: false,
+                ),
+                context.read<GroceryProvider>().groceryListID,
+              );
+            },
           backgroundColor: Colors.brown,
           foregroundColor: Colors.white,
           label: 'Cupboard'
@@ -69,7 +81,20 @@ class _GroceryListBoxState extends State<GroceryListBox> {
     if (!widget.groceryObject.fridge) {
       slidableActionList.add(
         SlidableAction(
-            onPressed: (value) => context.read<GroceryProvider>().changeItemCategory(widget.index, "fridge"),
+            onPressed: (value) {
+              writeGrocery(
+                GroceryItem(
+                  uuid: widget.groceryObject.uuid,
+                  barcode: widget.groceryObject.barcode,
+                  foodName: widget.groceryObject.foodName,
+                  cupboard: false,
+                  fridge: true,
+                  freezer: false,
+                  needed: false,
+                ),
+                context.read<GroceryProvider>().groceryListID,
+              );
+            },
             backgroundColor: Colors.cyan,
             foregroundColor: Colors.white,
             label: 'Fridge'
@@ -79,7 +104,20 @@ class _GroceryListBoxState extends State<GroceryListBox> {
     if (!widget.groceryObject.freezer) {
       slidableActionList.add(
         SlidableAction(
-            onPressed: (value) => context.read<GroceryProvider>().changeItemCategory(widget.index, "freezer"),
+            onPressed: (value) {
+              writeGrocery(
+                  GroceryItem(
+                      uuid: widget.groceryObject.uuid,
+                      barcode: widget.groceryObject.barcode,
+                      foodName: widget.groceryObject.foodName,
+                      cupboard: false,
+                      fridge: false,
+                      freezer: true,
+                      needed: false,
+                  ),
+                  context.read<GroceryProvider>().groceryListID,
+              );
+            },
             backgroundColor: Colors.blue,
             foregroundColor: Colors.white,
             label: 'Freezer'
@@ -89,7 +127,20 @@ class _GroceryListBoxState extends State<GroceryListBox> {
     if (!widget.groceryObject.needed) {
       slidableActionList.add(
         SlidableAction(
-            onPressed: (value) => context.read<GroceryProvider>().changeItemCategory(widget.index, "needed"),
+            onPressed: (value) {
+              writeGrocery(
+                GroceryItem(
+                  uuid: widget.groceryObject.uuid,
+                  barcode: widget.groceryObject.barcode,
+                  foodName: widget.groceryObject.foodName,
+                  cupboard: false,
+                  fridge: false,
+                  freezer: false,
+                  needed: true,
+                ),
+                context.read<GroceryProvider>().groceryListID,
+              );
+            },
             backgroundColor: Colors.green,
             foregroundColor: Colors.white,
             label: 'Needed'
@@ -115,7 +166,9 @@ class _GroceryListBoxState extends State<GroceryListBox> {
       endActionPane: ActionPane(
         motion: const DrawerMotion(),
         dismissible: DismissiblePane(
-          onDismissed: () => context.read<GroceryProvider>().deleteItemFromList(widget.index),
+          onDismissed: () {
+            deleteGrocery(widget.groceryObject, context.read<GroceryProvider>().groceryListID);
+          },
         ),
         children: [
           SlidableAction(
@@ -126,7 +179,9 @@ class _GroceryListBoxState extends State<GroceryListBox> {
               label: 'Edit'
           ),
           SlidableAction(
-              onPressed: (value) => context.read<GroceryProvider>().deleteItemFromList(widget.index),
+              onPressed: (value) {
+                deleteGrocery(widget.groceryObject, context.read<GroceryProvider>().groceryListID);
+              },
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
               icon: Icons.delete,
