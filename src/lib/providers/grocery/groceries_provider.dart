@@ -36,34 +36,33 @@ class GroceryProvider with ChangeNotifier {
 
   void setGroceryList() {
 
-    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    if (false) {
+      final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = FirebaseFirestore.instance
-        .collection('grocery-lists')
-        .doc(_groceryListID)
-        .collection('grocery-data')
-        .where(FieldPath.documentId)
-        .snapshots()
-        .listen((event) {
+      final snapshot = FirebaseFirestore.instance
+          .collection('grocery-lists')
+          .doc(_groceryListID)
+          .collection('grocery-data')
+          .where(FieldPath.documentId)
+          .snapshots()
+          .listen((event) {
 
-      List<GroceryItem> groceryItems = [
-        for (QueryDocumentSnapshot document in event.docs)
-          GroceryItem(
-            uuid: document.get("groceryData")["uuid"],
-            barcode: document.get("groceryData")["barcode"],
-            foodName: document.get("groceryData")["foodName"],
-            cupboard: document.get("groceryData")["cupboard"],
-            fridge: document.get("groceryData")["fridge"],
-            freezer: document.get("groceryData")["freezer"],
-            needed: document.get("groceryData")["needed"],
-          ),
-      ];
+        List<GroceryItem> groceryItems = [
+          for (QueryDocumentSnapshot document in event.docs)
+            GroceryItem(
+              uuid: document.get("groceryData")["uuid"],
+              barcode: document.get("groceryData")["barcode"],
+              foodName: document.get("groceryData")["foodName"],
+              cupboard: document.get("groceryData")["cupboard"],
+              fridge: document.get("groceryData")["fridge"],
+              freezer: document.get("groceryData")["freezer"],
+              needed: document.get("groceryData")["needed"],
+            ),
+        ];
 
-      _groceryList = groceryItems;
+      });
+    }
 
-    });
-
-    notifyListeners();
   }
 
   void deleteItemFromList(int index) {

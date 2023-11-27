@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_tracker/models/groceries/grocery_item.dart';
 import 'package:fitness_tracker/providers/grocery/groceries_provider.dart';
 import 'package:fitness_tracker/widgets/groceries/grocery_list_box.dart';
@@ -105,19 +106,64 @@ class _GroceryListFreezerState extends State<GroceryListFreezer> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: context.watch<GroceryProvider>().groceryList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          child: widget.groceryList[index].freezer
-              && (widget.searchCriteria.isEmpty || widget.groceryList[index].foodName.toLowerCase().contains(widget.searchCriteria))
-              ? GroceryListBox(
-            groceryObject: widget.groceryList[index],
-            index: index,
-          ) : const SizedBox.shrink(),
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('grocery-lists')
+            .doc(context.read<GroceryProvider>().groceryListID)
+            .collection('grocery-data')
+            .where(FieldPath.documentId)
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const Text('Something went wrong',style: TextStyle(color: Colors.white),);
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text("Loading",style: TextStyle(color: Colors.white),);
+          }
+          return ListView(
+            children: snapshot.data!.docs
+                .map((DocumentSnapshot document) {
+                  Map<String, dynamic> data =
+                      document.get("groceryData")! as Map<String, dynamic>;
+                  return Container(
+                    child: data["freezer"]
+                        && (widget.searchCriteria.isEmpty || data["foodName"].toLowerCase().contains(widget.searchCriteria))
+                        ? GroceryListBox(
+                      groceryObject: GroceryItem(
+                          uuid: data["uuid"],
+                          barcode: data["barcode"],
+                          foodName: data["foodName"],
+                          cupboard: data["cupboard"],
+                          fridge: data["fridge"],
+                          freezer: data["freezer"],
+                          needed: data["needed"],
+                      ),
+                      index: 0,
+                    ) : const SizedBox.shrink(),
+                  );
+                  return ListTile(
+                    title: Text(data["foodName"],style: TextStyle(color: Colors.white),),
+                    subtitle: Text(data["foodName"],style: TextStyle(color: Colors.white),),
+                  );
+            }).toList().cast(),
+          );
+
+          return ListView.builder(
+          shrinkWrap: true,
+          itemCount: context.watch<GroceryProvider>().groceryList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              child: widget.groceryList[index].freezer
+                  && (widget.searchCriteria.isEmpty || widget.groceryList[index].foodName.toLowerCase().contains(widget.searchCriteria))
+                  ? GroceryListBox(
+                groceryObject: widget.groceryList[index],
+                index: index,
+              ) : const SizedBox.shrink(),
+            );
+          },
         );
-      },
+      }
     );
   }
 }

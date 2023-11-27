@@ -52,7 +52,6 @@ class _GroceriesHomeState extends State<GroceriesHome> {
 
     if (context.read<GroceryProvider>().groceryList.isEmpty) {
       try {
-        List<GroceryItem> groceryList = GetUserGroceries(context.read<GroceryProvider>().groceryListID);
         context.read<GroceryProvider>().setGroceryList();
 
       } catch (error) {
@@ -226,6 +225,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                                 color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () {
+                                    print(context.read<GroceryProvider>().groceryList[0].foodName);
                                     setState(() {
                                       _displayDropDown = true;
                                     });
