@@ -1,4 +1,5 @@
 import 'package:fitness_tracker/exports.dart';
+import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/groceries/grocery_item.dart';
 import 'package:fitness_tracker/providers/general/database_write.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,10 @@ class GroceryListBox extends StatefulWidget {
 
 class _GroceryListBoxState extends State<GroceryListBox> {
 
+  bool _editing = false;
+  final TextEditingController editItemController = TextEditingController();
+  final GlobalKey<FormState> editKey = GlobalKey<FormState>();
+
   final ScrollController scrollController = ScrollController();
 
   ScrollToEnd() async {
@@ -46,6 +51,7 @@ class _GroceryListBoxState extends State<GroceryListBox> {
 
   @override
   void initState() {
+    editItemController.text = widget.groceryObject.foodName;
     super.initState();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => ScrollToEnd());
@@ -58,6 +64,7 @@ class _GroceryListBoxState extends State<GroceryListBox> {
     if (!widget.groceryObject.cupboard) {
       slidableActionList.add(
         SlidableAction(
+            padding: const EdgeInsets.all(1),
             onPressed: (value) {
               writeGrocery(
                 GroceryItem(
@@ -81,6 +88,7 @@ class _GroceryListBoxState extends State<GroceryListBox> {
     if (!widget.groceryObject.fridge) {
       slidableActionList.add(
         SlidableAction(
+            padding: const EdgeInsets.all(1),
             onPressed: (value) {
               writeGrocery(
                 GroceryItem(
@@ -104,6 +112,7 @@ class _GroceryListBoxState extends State<GroceryListBox> {
     if (!widget.groceryObject.freezer) {
       slidableActionList.add(
         SlidableAction(
+            padding: const EdgeInsets.all(1),
             onPressed: (value) {
               writeGrocery(
                   GroceryItem(
@@ -127,6 +136,7 @@ class _GroceryListBoxState extends State<GroceryListBox> {
     if (!widget.groceryObject.needed) {
       slidableActionList.add(
         SlidableAction(
+            padding: const EdgeInsets.all(1),
             onPressed: (value) {
               writeGrocery(
                 GroceryItem(
@@ -165,20 +175,26 @@ class _GroceryListBoxState extends State<GroceryListBox> {
       ),
       endActionPane: ActionPane(
         motion: const DrawerMotion(),
-        dismissible: DismissiblePane(
-          onDismissed: () {
-            deleteGrocery(widget.groceryObject, context.read<GroceryProvider>().groceryListID);
-          },
-        ),
+        //dismissible: DismissiblePane(
+        //  onDismissed: () {
+        //    deleteGrocery(widget.groceryObject, context.read<GroceryProvider>().groceryListID);
+         // },
+        //),
         children: [
           SlidableAction(
-              onPressed: (value) {},
+              padding: const EdgeInsets.all(1),
+              onPressed: (value) {
+                setState(() {
+                  _editing = !_editing;
+                });
+              },
               backgroundColor: Colors.green,
               foregroundColor: Colors.white,
               icon: Icons.edit,
               label: 'Edit'
           ),
           SlidableAction(
+              padding: const EdgeInsets.all(1),
               onPressed: (value) {
                 deleteGrocery(widget.groceryObject, context.read<GroceryProvider>().groceryListID);
               },
@@ -191,7 +207,7 @@ class _GroceryListBoxState extends State<GroceryListBox> {
       ),
       child: ClipRRect(
         child: Container(
-          margin: EdgeInsets.only(bottom: 8),
+          margin: const EdgeInsets.only(bottom: 8),
           height: 70.h,
           decoration: const BoxDecoration(
             color: appTertiaryColour,
@@ -215,20 +231,112 @@ class _GroceryListBoxState extends State<GroceryListBox> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
+                          padding: EdgeInsets.only(
+                            top: 9.7.h,
+                            bottom: 8.0,
+                            left: 12.0,
+                          ),
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: SizedBox(
                               width: 290.w,
-                              child: SingleChildScrollView(
+                              child: !_editing ? SingleChildScrollView(
                                 controller: scrollController,
                                 clipBehavior: Clip.hardEdge,
                                 scrollDirection: Axis.horizontal,
                                 child: Text(
-                                  widget.groceryObject.foodName,
+                                  widget.groceryObject.foodName.capitalize(),
                                   style: boldTextStyle.copyWith(
                                     color: Colors.white,
                                     fontSize: 18.h,
+                                  ),
+                                ),
+                              ) : Padding(
+                                padding: const EdgeInsets.only(
+                                  //top: 1.h,
+                                  //bottom: 8.0,
+                                  left: 8.0,
+                                  right: 8.0,
+                                ),
+                                child: SizedBox(
+                                  height: 20,
+                                  child: Form(
+                                    key: editKey,
+                                    child: TextFormField(
+                                      onTapOutside: (value) {
+
+                                        writeGrocery(
+                                          GroceryItem(
+                                              uuid: widget.groceryObject.uuid,
+                                              barcode: widget.groceryObject.barcode,
+                                              foodName: editItemController.text,
+                                              cupboard: widget.groceryObject.cupboard,
+                                              fridge: widget.groceryObject.fridge,
+                                              freezer: widget.groceryObject.freezer,
+                                              needed: widget.groceryObject.needed,
+                                          ),
+                                          context.read<GroceryProvider>().groceryListID,
+                                        );
+
+                                        setState(() {
+                                          _editing = false;
+                                        });
+                                      },
+                                      onFieldSubmitted: (value) {
+
+                                        writeGrocery(
+                                          GroceryItem(
+                                            uuid: widget.groceryObject.uuid,
+                                            barcode: widget.groceryObject.barcode,
+                                            foodName: editItemController.text,
+                                            cupboard: widget.groceryObject.cupboard,
+                                            fridge: widget.groceryObject.fridge,
+                                            freezer: widget.groceryObject.freezer,
+                                            needed: widget.groceryObject.needed,
+                                          ),
+                                          context.read<GroceryProvider>().groceryListID,
+                                        );
+
+                                        setState(() {
+                                          _editing = false;
+                                        });
+                                      },
+                                      autofocus: true,
+                                      controller: editItemController,
+                                      cursorColor: Colors.white,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: (15),
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      decoration: const InputDecoration(
+                                        contentPadding: EdgeInsets.only(
+                                          bottom: 12,
+                                          left: 5,
+                                          right: 5,
+                                        ),
+                                        hintText: 'Enter Item Name...',
+                                        hintStyle: TextStyle(
+                                          color: Colors.white54,
+                                          fontSize: (15),
+                                        ),
+                                        errorStyle: TextStyle(
+                                          height: 0,
+                                        ),
+                                        focusedBorder:
+                                        UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: appSecondaryColour,
+                                          ),
+                                        ),
+                                      ),
+                                      validator: (String? value) {
+                                        if (value!.isNotEmpty) {
+                                          return null;
+                                        }
+                                        return "";
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
@@ -236,15 +344,6 @@ class _GroceryListBoxState extends State<GroceryListBox> {
                           ),
                         ),
                         const Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: ItemLabel(
-                              item: widget.groceryObject,
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -253,12 +352,8 @@ class _GroceryListBoxState extends State<GroceryListBox> {
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Align(
                       alignment: Alignment.centerRight,
-                      child: Text(
-                        "place2",
-                        style: boldTextStyle.copyWith(
-                          color: Colors.white,
-                          fontSize: 18.h,
-                        ),
+                      child: ItemLabel(
+                        item: widget.groceryObject,
                       ),
                     ),
                   ),

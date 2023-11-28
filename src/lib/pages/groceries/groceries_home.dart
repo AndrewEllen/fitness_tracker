@@ -450,22 +450,22 @@ class _GroceriesHomeState extends State<GroceriesHome> {
                                 child: Column(
                                   children: [
                                     RadioListTile(
-                                        value: 0,
-                                        groupValue: _radioButtonValue,
-                                        onChanged: (value) {
-                                          setState(() {
-
-                                            _radioButtonValue = value!;
-                                            _cupboard = true;
-                                            _fridge = false;
-                                            _freezer = false;
-                                            _needed = false;
-
-                                          });
-                                        },
-                                      title: const Text("Cupboard"),
+                                      activeColor: appSecondaryColour,
+                                      value: 0,
+                                      groupValue: _radioButtonValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                           _radioButtonValue = value!;
+                                           _cupboard = true;
+                                           _fridge = false;
+                                           _freezer = false;
+                                           _needed = false;
+                                        });
+                                      },
+                                      title: const Text("Cupboard", style: TextStyle(color: Colors.white),),
                                     ),
                                     RadioListTile(
+                                      activeColor: appSecondaryColour,
                                       value: 1,
                                       groupValue: _radioButtonValue,
                                       onChanged: (value) {
@@ -479,9 +479,10 @@ class _GroceriesHomeState extends State<GroceriesHome> {
 
                                         });
                                       },
-                                      title: const Text("Fridge"),
+                                      title: const Text("Fridge", style: TextStyle(color: Colors.white),),
                                     ),
                                     RadioListTile(
+                                      activeColor: appSecondaryColour,
                                       value: 2,
                                       groupValue: _radioButtonValue,
                                       onChanged: (value) {
@@ -495,9 +496,10 @@ class _GroceriesHomeState extends State<GroceriesHome> {
 
                                         });
                                       },
-                                      title: const Text("Freezer"),
+                                      title: const Text("Freezer", style: TextStyle(color: Colors.white),),
                                     ),
                                     RadioListTile(
+                                      activeColor: appSecondaryColour,
                                       value: 3,
                                       groupValue: _radioButtonValue,
                                       onChanged: (value) {
@@ -511,7 +513,7 @@ class _GroceriesHomeState extends State<GroceriesHome> {
 
                                         });
                                       },
-                                      title: const Text("Needed"),
+                                      title: const Text("Needed", style: TextStyle(color: Colors.white),),
                                     ),
                                   ],
                                 ),

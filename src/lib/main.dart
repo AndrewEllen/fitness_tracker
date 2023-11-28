@@ -124,6 +124,7 @@ class _AppMainState extends State<AppMain> {
               ),
             ),
           ),
+          unselectedWidgetColor: Colors.white,
         ),
         color: appPrimaryColour,
         debugShowCheckedModeBanner: false,
