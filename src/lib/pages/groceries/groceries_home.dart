@@ -86,9 +86,10 @@ class _GroceriesHomeState extends State<GroceriesHome> {
           backgroundColor: appTertiaryColour,
           automaticallyImplyLeading: false,
           bottom: TabBar(
+            isScrollable: true,
             indicatorColor: appSecondaryColour,
             labelStyle: TextStyle(
-              fontSize: 10.w,
+              fontSize: 12.w,
             ),
             tabs: const [
               Tab(text: "All"),
