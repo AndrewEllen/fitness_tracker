@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../diet_new/diet_home.dart';
+import '../workout_new/workout_home.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class _MainPageState extends State<MainPage> {
   bool _loading = true;
 
   final pages = [
-    const WorkoutsHomePage(),
+    WorkoutHomePageNew(),
     DietHomePage(),
     const HomePage(),
     const MeasurementsHomePage(),
