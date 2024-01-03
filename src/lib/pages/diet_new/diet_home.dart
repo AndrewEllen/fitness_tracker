@@ -1,3 +1,5 @@
+import 'package:fitness_tracker/pages/groceries/groceries_home.dart';
+import 'package:fitness_tracker/widgets/general/screen_width_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:health/health.dart';
@@ -5,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import '../../constants.dart';
 import '../../providers/diet/user_nutrition_data.dart';
+import '../../providers/general/page_change_provider.dart';
 import '../../widgets/diet_new/diet_home_daily_nutrition_display.dart';
 import '../../widgets/diet_new/diet_home_exercise_display.dart';
 import '../../widgets/diet_new/diet_home_food_display.dart';
@@ -40,6 +43,7 @@ class DietHomePage extends StatelessWidget {
                     child: DailyNutritionDisplay(),
                   ),
                 ),
+
                 DietHomeFoodDisplay(
                   bigContainerMin: _smallContainerMin,
                   height: _height,
@@ -97,6 +101,11 @@ class DietHomePage extends StatelessWidget {
                   width: _width,
                   title: "Water",
 
+                ),
+
+                ScreenWidthButton(
+                  label: "Groceries List",
+                  onTap: () => context.read<PageChange>().changePageCache(GroceriesHome()),
                 ),
 
                 SizedBox(

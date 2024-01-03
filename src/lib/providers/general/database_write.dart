@@ -11,6 +11,7 @@ import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
 
 import '../../models/diet/food_item.dart';
+import '../../models/groceries/grocery_item.dart';
 
 void UpdateUserDocumentCategories(List<String> categories) async {
 
@@ -254,5 +255,57 @@ void writeUserBiometric(UserDataModel userData) async {
       .collection("bioData")
       .doc("bioData")
       .set({"bioData": userData.toMap()});
+
+}
+
+void writeGrocery(GroceryItem groceryItem, String groceryListID) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('grocery-lists')
+      .doc(groceryListID)
+      .collection('grocery-data')
+      .doc(groceryItem.uuid)
+      .set({"groceryData": groceryItem.toMap()});
+
+}
+
+void writeGroceryLists(List<String> groceryLists) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .collection('grocery-data')
+      .doc("grocery-lists")
+      .set({"groceryLists": groceryLists});
+
+}
+
+void writeGroceryListID(String groceryListID) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .collection('grocery-data')
+      .doc("selected-grocery-list")
+      .set({"groceryListID": groceryListID});
+
+}
+
+void deleteGrocery(GroceryItem groceryItem, String groceryListID) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('grocery-lists')
+      .doc(groceryListID)
+      .collection('grocery-data')
+      .doc(groceryItem.uuid)
+      .delete();
 
 }
