@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../constants.dart';
+import '../../widgets/workout_new/home_page_routines_list.dart';
+import '../../widgets/workout_new/workout_daily_tracker.dart';
+import '../../widgets/workout_new/workout_home_stats_dropdown.dart';
 
 class WorkoutHomePageNew extends StatefulWidget {
   const WorkoutHomePageNew({Key? key}) : super(key: key);
@@ -22,13 +25,14 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
           return true;
         },
         child: SingleChildScrollView(
-          child: Column(children: [
-            Container(
-              color: appTertiaryColour,
-              width: double.maxFinite,
-              height: 200.h,
-            ),
-          ],
+          child: Column(
+            children: [
+              WorkoutDailyTracker(),
+              SizedBox(height: 14.h),
+              workoutHomeStatsDropdown(),
+              SizedBox(height: 14.h),
+              HomePageRoutinesList(),
+            ],
           ),
         ),
       ),
