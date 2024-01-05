@@ -175,14 +175,26 @@ class WorkoutProvider with ChangeNotifier {
     if (_exerciseList.any((value) => value.exerciseName == exerciseNameToCheck)) {
       return true;
     } else {
-      return false;
+
+      _exerciseList.add(
+
+        ExerciseModel(
+            exerciseName: exerciseNameToCheck,
+            exerciseTrackingData: RepsWeightStatsMeasurement(
+                measurementName: exerciseNameToCheck,
+                dailyLogs: []
+            ),
+        ),
+
+      );
+
+      return true;
     }
 
   }
 
 
   void addNewLog(ExerciseModel newLog) {
-    print(newLog.exerciseTrackingData.dailyLogs);
 
     _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == newLog.exerciseName)] = newLog;
 

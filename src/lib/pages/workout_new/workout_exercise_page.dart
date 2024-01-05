@@ -91,30 +91,42 @@ class WorkoutExercisePage extends StatelessWidget {
                           ]
                         };
 
-                        print(DateFormat("dd/MM/yyyy").parse(exercise.exerciseTrackingData.dailyLogs[0]["measurementDate"]));
-                        print(DateFormat("dd/MM/yyyy").parse(newLog["measurementDate"]));
+                        try {
 
-                        if (
-                        DateFormat("dd/MM/yyyy").parse(exercise.exerciseTrackingData.dailyLogs[0]["measurementDate"])
-                            == DateFormat("dd/MM/yyyy").parse(newLog["measurementDate"])
-                        ) {
+                          if (
+                          DateFormat("dd/MM/yyyy").parse(exercise.exerciseTrackingData.dailyLogs[0]["measurementDate"])
+                              == DateFormat("dd/MM/yyyy").parse(newLog["measurementDate"])
+                          ) {
 
-                          print("same");
+                            exercise.exerciseTrackingData.dailyLogs[0]["weightValues"].insert(0, newLog["weightValues"][0]);
+                            exercise.exerciseTrackingData.dailyLogs[0]["repValues"].insert(0, newLog["repValues"][0]);
+                            exercise.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"].insert(0, newLog["measurementTimeStamp"][0]);
 
-                          exercise.exerciseTrackingData.dailyLogs[0]["weightValues"].insert(0, newLog["weightValues"][0]);
-                          exercise.exerciseTrackingData.dailyLogs[0]["repValues"].insert(0, newLog["repValues"][0]);
-                          exercise.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"].insert(0, newLog["measurementTimeStamp"][0]);
+                          } else {
 
-                        } else {
+                            exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
 
-                          print("higher");
+                          }
 
-                          exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
+                          context.read<WorkoutProvider>().addNewLog(exercise);
+
+                        } catch (e) {
+                          debugPrint(e.toString());
+
+                          try {
+                            exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
+
+                            context.read<WorkoutProvider>().addNewLog(exercise);
+
+                          } catch (e) {
+
+                            debugPrint(e.toString());
+
+                          }
 
                         }
 
 
-                        context.read<WorkoutProvider>().addNewLog(exercise);
 
                       },
                       child: Text("Save Log"),
