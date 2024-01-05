@@ -6,11 +6,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/workout/routines_model.dart';
+import '../../widgets/workout_new/incremental_counter.dart';
 import '../../widgets/workout_new/routine_page_exercise_list.dart';
 
 class WorkoutExercisePage extends StatelessWidget {
   WorkoutExercisePage({Key? key, required this.exercise}) : super(key: key);
   ExerciseModel exercise;
+
+  final TextEditingController weightController = TextEditingController(text: "10");
+  final TextEditingController repsController = TextEditingController(text: "6");
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +41,39 @@ class WorkoutExercisePage extends StatelessWidget {
                   ),
                 ),
               ),
+
+              Container(
+                margin: EdgeInsets.only(bottom: 14.h),
+                color: appTertiaryColour,
+                width: double.maxFinite,
+                height: 200.h,
+                child: Column(
+                  children: [
+                    Center(
+                      child: Text(
+                        "Log",
+                        style: boldTextStyle.copyWith(fontSize: 18),
+                      ),
+                    ),
+
+                    IncrementalCounter(
+                      inputController: weightController,
+                      suffix: "Kg",
+                      label: "Weight *",
+                      smallButtons: true,
+                    ),
+
+                    IncrementalCounter(
+                      inputController: repsController,
+                      suffix: "Reps",
+                      label: "Reps *",
+                      smallButtons: false,
+                    ),
+
+                  ],
+                ),
+              ),
+
               ListView.builder(
                 shrinkWrap: true,
                 itemCount: exercise.exerciseTrackingData.repValues.length,
