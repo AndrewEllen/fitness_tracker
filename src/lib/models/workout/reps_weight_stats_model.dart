@@ -2,20 +2,14 @@ class RepsWeightStatsMeasurement {
   Map<String, dynamic> toMap() {
     return {
       'measurementName': measurementName,
-      'weightValues': weightValues,
-      'repValues': repValues,
-      'measurementDate': measurementDates,
+      'dailyLogs': dailyLogs,
     };
   }
   RepsWeightStatsMeasurement({
     required this.measurementName,
-    required this.weightValues,
-    required this.repValues,
-    required this.measurementDates,
+    required this.dailyLogs,
   });
 
   String measurementName;
-  List<double> weightValues;
-  List<double> repValues;
-  List<String> measurementDates;
+  List<Map> dailyLogs;
 }

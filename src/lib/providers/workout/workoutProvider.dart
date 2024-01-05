@@ -76,27 +76,33 @@ class WorkoutProvider with ChangeNotifier {
         exerciseName: "Test Exercise 5",
         exerciseTrackingData: RepsWeightStatsMeasurement(
               measurementName: "Test Exercise 5",
-              weightValues: [
-                16,
-                14,
-                14,
-                12,
-                12,
-              ],
-              repValues: [
-                8,
-                10,
-                10,
-                12,
-                12,
-              ],
-              measurementDates: [
-                "05/01/2024",
-                "04/01/2024",
-                "03/01/2024",
-                "02/01/2024",
-                "01/01/2024",
-              ],
+            dailyLogs: [
+
+              {
+                "measurementDate": "15/11/2023",
+                "weightValues": [
+                  16,
+                  14,
+                  14,
+                  12,
+                  12,
+                ],
+                "repValues": [
+                  3,
+                  5,
+                  5,
+                  7,
+                  8,
+                ],
+                "measurementTimeStamp": [
+                  "21:10",
+                  "21:05",
+                  "21:00",
+                  "20:55",
+                  "20:50",
+                ],
+              },
+            ]
           )
     ),
 
@@ -104,27 +110,59 @@ class WorkoutProvider with ChangeNotifier {
         exerciseName: "Test Exercise 6",
         exerciseTrackingData: RepsWeightStatsMeasurement(
           measurementName: "Test Exercise 6",
-          weightValues: [
-            160,
-            140,
-            140,
-            120,
-            120,
-          ],
-          repValues: [
-            3,
-            5,
-            5,
-            7,
-            8,
-          ],
-          measurementDates: [
-            "15/11/2023",
-            "14/11/2023",
-            "13/11/2023",
-            "12/11/2023",
-            "11/11/2023",
-          ],
+          dailyLogs: [
+
+            {
+              "measurementDate": "15/11/2023",
+              "weightValues": [
+                160,
+                140,
+                140,
+                120,
+                120,
+              ],
+              "repValues": [
+                3,
+                5,
+                5,
+                7,
+                8,
+              ],
+              "measurementTimeStamp": [
+                "21:10",
+                "21:05",
+                "21:00",
+                "20:55",
+                "20:50",
+              ],
+            },
+
+            {
+              "measurementDate": "14/11/2023",
+              "weightValues": [
+                150,
+                130,
+                120,
+                110,
+                100,
+              ],
+              "repValues": [
+                3,
+                5,
+                5,
+                7,
+                8,
+              ],
+              "measurementTimeStamp": [
+                "21:10",
+                "21:05",
+                "21:00",
+                "20:55",
+                "20:50",
+              ],
+            },
+
+          ]
         )
     ),
 
@@ -140,6 +178,13 @@ class WorkoutProvider with ChangeNotifier {
     } else {
       return false;
     }
+
+  }
+
+
+  void addNewLog() {
+
+
 
   }
 

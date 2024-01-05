@@ -13,7 +13,8 @@ class WorkoutExercisePage extends StatelessWidget {
   WorkoutExercisePage({Key? key, required this.exercise}) : super(key: key);
   ExerciseModel exercise;
 
-  final TextEditingController weightController = TextEditingController(text: "10");
+  final TextEditingController weightController =
+      TextEditingController(text: "10");
   final TextEditingController repsController = TextEditingController(text: "6");
 
   @override
@@ -41,12 +42,11 @@ class WorkoutExercisePage extends StatelessWidget {
                   ),
                 ),
               ),
-
               Container(
                 margin: EdgeInsets.only(bottom: 14.h),
                 color: appTertiaryColour,
                 width: double.maxFinite,
-                height: 200.h,
+                height: 225.h,
                 child: Column(
                   children: [
                     Center(
@@ -55,50 +55,81 @@ class WorkoutExercisePage extends StatelessWidget {
                         style: boldTextStyle.copyWith(fontSize: 18),
                       ),
                     ),
-
                     IncrementalCounter(
                       inputController: weightController,
                       suffix: "Kg",
                       label: "Weight *",
                       smallButtons: true,
                     ),
-
                     IncrementalCounter(
                       inputController: repsController,
                       suffix: "Reps",
                       label: "Reps *",
                       smallButtons: false,
                     ),
-
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Text("Save Log"),
+                    ),
                   ],
                 ),
               ),
-
               ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: exercise.exerciseTrackingData.repValues.length,
+                itemCount: exercise.exerciseTrackingData.dailyLogs.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    margin: EdgeInsets.only(bottom: 10.h),
-                    width: double.maxFinite,
-                    height: 60.h,
-                    color: appTertiaryColour,
-                    child: Column(
-                      children: [
-                        Text(
-                          exercise.exerciseTrackingData.weightValues[index].toString() + " Kg",
-                          style: boldTextStyle,
+                  return Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10.h),
+                        width: double.maxFinite,
+                        height: 60.h,
+                        color: appTertiaryColour,
+                        child: Center(
+                          child: Text(
+                            exercise.exerciseTrackingData.dailyLogs[index]["measurementDate"],
+                            style: boldTextStyle,
+                          ),
                         ),
-                        Text(
-                          exercise.exerciseTrackingData.repValues[index].toString() + " Reps",
-                          style: boldTextStyle,
-                        ),
-                        Text(
-                          exercise.exerciseTrackingData.measurementDates[index],
-                          style: boldTextStyle,
-                        ),
-                      ],
-                    ),
+                      ),
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: exercise.exerciseTrackingData.dailyLogs[index]["weightValues"].length,
+                        itemBuilder: (BuildContext context, int index2) {
+                          return Container(
+                            margin: EdgeInsets.only(bottom: 10.h),
+                            width: double.maxFinite,
+                            height: 60.h,
+                            color: appTertiaryColour,
+                            child: Column(
+                              children: [
+                                Text(
+                                  exercise.exerciseTrackingData
+                                          .dailyLogs[index]["weightValues"][index2]
+                                          .toString() +
+                                      " Kg",
+                                  style: boldTextStyle,
+                                ),
+                                Text(
+                                  exercise.exerciseTrackingData
+                                          .dailyLogs[index]["repValues"][index2]
+                                          .toString() +
+                                      " Reps",
+                                  style: boldTextStyle,
+                                ),
+                                Text(
+                                  exercise.exerciseTrackingData.dailyLogs[index]
+                                      ["measurementTimeStamp"][index2],
+                                  style: boldTextStyle,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   );
                 },
               ),
