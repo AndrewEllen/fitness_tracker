@@ -1,14 +1,18 @@
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
+import 'package:fitness_tracker/models/workout/routines_model.dart';
+import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:fitness_tracker/widgets/workout_new/workout_bottom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../pages/workout_new/workout_exercise_page.dart';
 import '../../pages/workout_new/workout_routine_page.dart';
 
 class RoutinePageExerciseList extends StatefulWidget {
-  const RoutinePageExerciseList({Key? key}) : super(key: key);
+  RoutinePageExerciseList({Key? key, required this.routine}) : super(key: key);
+  RoutinesModel routine;
 
   @override
   State<RoutinePageExerciseList> createState() => _RoutinePageExerciseListState();
@@ -20,13 +24,23 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
   Widget build(BuildContext context) {
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: 10,
+      itemCount: widget.routine.exercises.length,
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
         return Padding(
           padding: EdgeInsets.only(bottom: 10.h),
           child: InkWell(
-            onTap: () => {},
+            onTap: () {
+              if (context.read<WorkoutProvider>().checkForExerciseData(widget.routine.exercises[index].exerciseName)) {
+
+                context.read<PageChange>().changePageCache(WorkoutExercisePage(
+                  exercise: context.read<WorkoutProvider>().exerciseList[
+                  context.read<WorkoutProvider>().exerciseList.indexWhere((element) => element.exerciseName == widget.routine.exercises[index].exerciseName)
+                  ],
+                ));
+
+              }
+            },
             child: Column(
               children: [
                 ListTile(
@@ -38,20 +52,20 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
                     ),
                     width: 40.h,
                     height: 40.h,
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        "B",
+                        widget.routine.exercises[index].exerciseName[0],
                         style: boldTextStyle,
                       ),
                     ),
                   ),
-                  title: const Text(
-                    "Exercise Name",
+                  title: Text(
+                    widget.routine.exercises[index].exerciseName,
                     style: boldTextStyle,
                   ),
-                  subtitle: const Text(
-                    "-7 days ago",
-                    style: TextStyle(
+                  subtitle: Text(
+                    widget.routine.exercises[index].exerciseDate,
+                    style: const TextStyle(
                         fontSize: 14,
                         color: Colors.white70,
                     ),
@@ -64,7 +78,17 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
                   ),
                 ),
                 InkWell(
-                  onTap: () => {},
+                  onTap: () {
+                    if (context.read<WorkoutProvider>().checkForExerciseData(widget.routine.exercises[index].exerciseName)) {
+
+                      context.read<PageChange>().changePageCache(WorkoutExercisePage(
+                        exercise: context.read<WorkoutProvider>().exerciseList[
+                        context.read<WorkoutProvider>().exerciseList.indexWhere((element) => element.exerciseName == widget.routine.exercises[index].exerciseName)
+                        ],
+                      ));
+
+                    }
+                  },
                   child: Ink(
                     decoration: const BoxDecoration(
                       border: Border(

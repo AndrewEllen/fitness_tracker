@@ -4,9 +4,6 @@ import 'package:fitness_tracker/models/diet/exercise_calories_list_item.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:fitness_tracker/models/groceries/grocery_item.dart';
 import 'package:fitness_tracker/models/stats/user_data_model.dart';
-import 'package:fitness_tracker/models/workout/exercise_model.dart';
-import 'package:fitness_tracker/models/workout/routines_model.dart';
-import 'package:fitness_tracker/models/workout/training_plan_model.dart';
 import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
 import 'package:fitness_tracker/providers/diet/user_nutrition_data.dart';
@@ -17,157 +14,6 @@ import 'dart:async';
 import '../../models/diet/food_data_list_item.dart';
 import '../../models/diet/food_item.dart';
 import '../../models/stats/stats_model.dart';
-
-GetPreDefinedCategories() async {
-
-  final snapshot = await FirebaseFirestore.instance
-      .collection('predefined-data')
-      .doc('predefined-categories')
-      .get();
-  final List<String> data = List<String>.from(snapshot.get("categories"));
-  return data;
-}
-
-GetPreDefinedExercises() async {
-
-  final snapshot = await FirebaseFirestore.instance
-      .collection('predefined-data')
-      .doc('predefined-exercises')
-      .get();
-
-  final _data = snapshot.get("exercises");
-  final List<Exercises> data = List<Exercises>.generate(_data.length, (int index) {
-    return Exercises(
-      exerciseName: _data[index]["exerciseName"],
-      exerciseCategory: _data[index]["exerciseCategory"],
-      uniqueID: Uuid().v4(),
-    );
-  });
-  return data;
-}
-
-GetPreDefinedRoutines() async {
-
-  final snapshot = await FirebaseFirestore.instance
-      .collection('predefined-data')
-      .doc('predefined-routines')
-      .get();
-
-  final _data = snapshot.get("routines");
-  final List<WorkoutRoutine> data = List<WorkoutRoutine>.generate(_data.length, (int index) {
-    final List<String> exercises = List<String>.generate(_data[index]["exercises"].length, (int indexExercises) {
-      return _data[index]["exercises"][indexExercises];
-    });
-    return WorkoutRoutine(
-      routineID: _data[index]["routineID"],
-      routineName: _data[index]["routineName"],
-      exercises: exercises,
-    );
-  });
-  return data;
-}
-
-GetPreDefinedTrainingPlans() async {
-
-  final snapshot = await FirebaseFirestore.instance
-      .collection('predefined-data')
-      .doc('predefined-training-plans')
-      .get();
-
-  final _data = snapshot.get("training-plans");
-  final List<TrainingPlan> data = List<TrainingPlan>.generate(_data.length, (int index) {
-    final List<String> routineIDs = List<String>.generate(_data[index]["routineIDs"].length, (int indexRoutines) {
-      return _data[index]["routineIDs"][indexRoutines];
-    });
-    return TrainingPlan(
-      trainingPlanID: _data[index]["trainingPlanID"],
-      routineIDs: routineIDs,
-      trainingPlanName: _data[index]["trainingPlanName"],
-    );
-  });
-  return data;
-}
-
-GetUserCategories() async {
-  try {
-
-    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  final snapshot = await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc("${firebaseAuth.currentUser?.uid.toString()}")
-      .collection("workout-data")
-      .doc("categories")
-      .get();
-  final List<String> data = List<String>.from(snapshot.get("categories"));
-  return data;
-
-  } catch (exception) {
-    print(exception);
-  }
-}
-
-GetUserRoutines() async {
-
-  try {
-
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  final snapshot = await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc("${firebaseAuth.currentUser?.uid.toString()}")
-      .collection("workout-data")
-      .doc("routines")
-      .get();
-
-  final _data = snapshot.get("routines");
-  final List<WorkoutRoutine> data = List<WorkoutRoutine>.generate(_data.length, (int index) {
-    final List<String> exercises = List<String>.generate(_data[index]["exercises"].length, (int indexExercises) {
-      return _data[index]["exercises"][indexExercises];
-    });
-    return WorkoutRoutine(
-      routineID: _data[index]["routineID"],
-      routineName: _data[index]["routineName"],
-      exercises: exercises,
-    );
-  });
-  return data;
-
-  } catch (exception) {
-    print(exception);
-  }
-}
-
-GetUserTrainingPlans() async {
-
-  try {
-
-    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection("workout-data")
-        .doc("training-plans")
-        .get();
-
-    final _data = snapshot.get("training-plans");
-    final List<TrainingPlan> data = List<TrainingPlan>.generate(_data.length, (int index) {
-      final List<String> routineIDs = List<String>.generate(_data[index]["routineIDs"].length, (int indexRoutines) {
-        return _data[index]["routineIDs"][indexRoutines];
-      });
-      return TrainingPlan(
-        trainingPlanID: _data[index]["trainingPlanID"],
-        routineIDs: routineIDs,
-        trainingPlanName: _data[index]["trainingPlanName"],
-      );
-    });
-    return data;
-
-  } catch (exception) {
-    print(exception);
-  }
-}
 
 GetUserDataTrainingPlan() async {
   try {
@@ -223,33 +69,6 @@ GetUserMeasurements() async {
     print(data);
     print(data[0].measurementName);
 
-    return data;
-
-  } catch (exception) {
-    print(exception);
-  }
-}
-
-GetUserExercises() async {
-  try {
-
-    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection("workout-data")
-        .doc("exercises")
-        .get();
-
-    final _data = snapshot.get("exercises");
-    final List<Exercises> data = List<Exercises>.generate(_data.length, (int index) {
-      return Exercises(
-        exerciseName: _data[index]["exerciseName"],
-        exerciseCategory: _data[index]["exerciseCategory"],
-        uniqueID: Uuid().v4(),
-      );
-    });
     return data;
 
   } catch (exception) {

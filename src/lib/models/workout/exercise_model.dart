@@ -1,18 +1,19 @@
-class Exercises {
+import 'package:fitness_tracker/models/workout/reps_weight_stats_model.dart';
+
+class ExerciseModel {
+
   Map<String, dynamic> toMap() {
     return {
       'exerciseName': exerciseName,
-      'exerciseCategory': exerciseCategory,
-      'uniqueID': uniqueID,
+      'exerciseTrackingData': exerciseTrackingData.toMap(),
     };
   }
-  Exercises({
+
+  ExerciseModel({
     required this.exerciseName,
-    required this.exerciseCategory,
-    required this.uniqueID,
+    required this.exerciseTrackingData,
   });
 
   String exerciseName;
-  String exerciseCategory;
-  String uniqueID;
+  RepsWeightStatsMeasurement exerciseTrackingData;
 }

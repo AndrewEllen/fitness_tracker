@@ -5,16 +5,12 @@ import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
 import 'package:fitness_tracker/models/groceries/grocery_item.dart';
 import 'package:fitness_tracker/models/stats/user_data_model.dart';
 import 'package:fitness_tracker/providers/grocery/groceries_provider.dart';
-import 'package:fitness_tracker/providers/workout/user_exercises.dart';
 import 'package:flutter/material.dart';
 import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/workout/exercise_model.dart';
-import '../../models/workout/routines_model.dart';
 import '../../models/stats/stats_model.dart';
-import '../../models/workout/training_plan_model.dart';
 import '../../providers/general/database_get.dart';
 import '../../providers/stats/user_data.dart';
 
@@ -27,9 +23,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late List<String> categories;
-  late List<Exercises> exercises;
-  late List<WorkoutRoutine> routines;
-  late List<TrainingPlan> trainingPlans;
   late List<StatsMeasurement> measurements;
   late UserDataModel userData;
   late UserNutritionModel userNutrition;
@@ -104,15 +97,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void fetchData() async {
-    categories = await GetPreDefinedCategories();
-    exercises = await GetPreDefinedExercises();
-    routines = await GetPreDefinedRoutines();
-    trainingPlans = await GetPreDefinedTrainingPlans();
 
-    try {exercises = await GetUserExercises();} catch (exception) {print(exception);}
-    try {categories = await GetUserCategories();} catch (exception) {print(exception);}
-    try {routines = await GetUserRoutines();} catch (exception) {print(exception);}
-    try {trainingPlans = await GetUserTrainingPlans();} catch (exception) {print(exception);}
     try {measurements = await GetUserMeasurements();} catch (exception) {print(exception);}
     try {userData = await GetUserDataTrainingPlan();} catch (exception) {print(exception);}
     try {userData = await GetUserBioData();} catch (exception) {print(exception);}
@@ -133,11 +118,6 @@ class _SplashScreenState extends State<SplashScreen> {
     try {context.read<GroceryProvider>().setGroceryLists(groceryLists);} catch (exception) {print(exception);}
     try {context.read<GroceryProvider>().setGroceryList();} catch (exception) {print(exception);}
 
-    try {context.read<UserExercisesList>().inititateExerciseList(exercises);} catch (exception) {print(exception);}
-    try {context.read<ExerciseList>().setCategoriesInititial(categories);} catch (exception) {print(exception);}
-    try {context.read<ExerciseList>().setExerciseInititial(exercises);} catch (exception) {print(exception);}
-    try {context.read<RoutinesList>().setRoutineInititial(routines);} catch (exception) {print(exception);}
-    try {context.read<TrainingPlanProvider>().setTrainingPlanInititial(trainingPlans);} catch (exception) {print(exception);}
     try {context.read<UserStatsMeasurements>().initialiseStatsMeasurements(measurements);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCurrentFoodDiary(userNutrition);} catch (exception) {print(exception);}
 

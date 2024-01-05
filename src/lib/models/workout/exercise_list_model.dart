@@ -1,15 +1,19 @@
-class Exercises {
+
+
+class ExerciseListModel {
+
   Map<String, dynamic> toMap() {
     return {
       'exerciseName': exerciseName,
-      'exerciseCategory': exerciseCategory,
+      'exerciseDate': exerciseDate,
     };
   }
-  Exercises({
+
+  ExerciseListModel({
     required this.exerciseName,
-    required this.exerciseCategory,
+    required this.exerciseDate,
   });
 
   String exerciseName;
-  String exerciseCategory;
+  String exerciseDate;
 }

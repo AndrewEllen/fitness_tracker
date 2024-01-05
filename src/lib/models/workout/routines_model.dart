@@ -1,18 +1,27 @@
-class WorkoutRoutine {
+
+
+import 'exercise_list_model.dart';
+
+class RoutinesModel {
+
   Map<String, dynamic> toMap() {
     return {
-      'routineID': routineID,
+      'routineID' : routineID,
+      'routineDate': routineDate,
       'routineName': routineName,
-      'exercises': exercises,
+      'exercises': exercises.asMap(),
     };
   }
-  WorkoutRoutine({
+
+  RoutinesModel({
     required this.routineID,
+    required this.routineDate,
     required this.routineName,
     required this.exercises,
   });
 
   String routineID;
+  String routineDate;
   String routineName;
-  List<String> exercises;
+  List<ExerciseListModel> exercises;
 }

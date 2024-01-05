@@ -6,7 +6,7 @@ import 'package:fitness_tracker/pages/general/auth_choose_login_signup.dart';
 import 'package:fitness_tracker/pages/general/splashscreen.dart';
 import 'package:fitness_tracker/providers/grocery/groceries_provider.dart';
 import 'package:fitness_tracker/providers/stats/user_data.dart';
-import 'package:fitness_tracker/providers/workout/user_exercises.dart';
+import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'exports.dart';
 import 'package:flutter/services.dart';
@@ -42,11 +42,8 @@ void main() async {
           ),
           ChangeNotifierProvider(create: (context) => PageChange()),
           ChangeNotifierProvider(create: (context) => UserNutritionData()),
-          ChangeNotifierProvider(create: (context) => ExerciseList()),
-          ChangeNotifierProvider(create: (context) => RoutinesList()),
-          ChangeNotifierProvider(create: (context) => TrainingPlanProvider()),
+          ChangeNotifierProvider(create: (context) => WorkoutProvider()),
           ChangeNotifierProvider(create: (context) => UserStatsMeasurements()),
-          ChangeNotifierProvider(create: (context) => UserExercisesList()),
           ChangeNotifierProvider(create: (context) => UserData()),
           ChangeNotifierProvider(create: (context) => GroceryProvider()),
         ],

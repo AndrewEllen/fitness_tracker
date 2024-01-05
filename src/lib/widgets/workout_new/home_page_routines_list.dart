@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../pages/workout_new/workout_routine_page.dart';
+import '../../providers/workout/workoutProvider.dart';
 
 class HomePageRoutinesList extends StatefulWidget {
   const HomePageRoutinesList({Key? key}) : super(key: key);
@@ -20,13 +21,15 @@ class _HomePageRoutinesListState extends State<HomePageRoutinesList> {
   Widget build(BuildContext context) {
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: 10,
+      itemCount: context.read<WorkoutProvider>().routinesList.length,
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
         return Padding(
           padding: EdgeInsets.only(bottom: 10.h),
           child: InkWell(
-            onTap: () => context.read<PageChange>().changePageCache(WorkoutRoutinePage()),
+            onTap: () => context.read<PageChange>().changePageCache(WorkoutRoutinePage(
+              routine: context.read<WorkoutProvider>().routinesList[index],
+            )),
             child: Column(
               children: [
                 ListTile(
@@ -38,15 +41,15 @@ class _HomePageRoutinesListState extends State<HomePageRoutinesList> {
                     ),
                     width: 40.h,
                     height: 40.h,
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        "W",
+                        context.read<WorkoutProvider>().routinesList[index].routineName[0],
                         style: boldTextStyle,
                       ),
                     ),
                   ),
-                  title: const Text(
-                    "Routine Name",
+                  title: Text(
+                    context.read<WorkoutProvider>().routinesList[index].routineName,
                     style: boldTextStyle,
                   ),
                   subtitle: const Text(
@@ -64,7 +67,9 @@ class _HomePageRoutinesListState extends State<HomePageRoutinesList> {
                   ),
                 ),
                 InkWell(
-                  onTap: () => context.read<PageChange>().changePageCache(WorkoutRoutinePage()),
+                  onTap: () => context.read<PageChange>().changePageCache(WorkoutRoutinePage(
+                    routine: context.read<WorkoutProvider>().routinesList[index],
+                  )),
                   child: Ink(
                     decoration: const BoxDecoration(
                       border: Border(

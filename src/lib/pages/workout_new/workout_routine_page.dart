@@ -1,11 +1,15 @@
 import 'package:fitness_tracker/constants.dart';
+import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
+import '../../models/workout/routines_model.dart';
 import '../../widgets/workout_new/routine_page_exercise_list.dart';
 
 class WorkoutRoutinePage extends StatelessWidget {
-  const WorkoutRoutinePage({Key? key}) : super(key: key);
+  WorkoutRoutinePage({Key? key, required this.routine}) : super(key: key);
+  RoutinesModel routine;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +31,14 @@ class WorkoutRoutinePage extends StatelessWidget {
                 height: 50.h,
                 child: Center(
                   child: Text(
-                    "Routine Name",
+                    routine.routineName,
                     style: boldTextStyle.copyWith(fontSize: 18),
                   ),
                 ),
               ),
-              RoutinePageExerciseList(),
+              RoutinePageExerciseList(
+                routine: routine,
+              ),
             ],
           ),
         ),
