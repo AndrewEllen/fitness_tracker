@@ -3,6 +3,7 @@ import 'package:fitness_tracker/models/workout/exercise_model.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/workout/routines_model.dart';
@@ -19,6 +20,7 @@ class WorkoutExercisePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<WorkoutProvider>().exerciseList;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: appPrimaryColour,
@@ -68,7 +70,53 @@ class WorkoutExercisePage extends StatelessWidget {
                       smallButtons: false,
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+
+                        Map newLog = {
+                          "measurementDate": DateFormat("dd/MM/yyy").format(DateTime.now()).toString(),
+                          "weightValues": <double>[
+
+                            double.parse(weightController.text),
+
+                          ],
+                          "repValues": <double>[
+
+                            double.parse(weightController.text),
+
+                          ],
+                          "measurementTimeStamp": <String>[
+
+                            DateFormat("HH:mm").format(DateTime.now()).toString(),
+
+                          ]
+                        };
+
+                        print(DateFormat("dd/MM/yyyy").parse(exercise.exerciseTrackingData.dailyLogs[0]["measurementDate"]));
+                        print(DateFormat("dd/MM/yyyy").parse(newLog["measurementDate"]));
+
+                        if (
+                        DateFormat("dd/MM/yyyy").parse(exercise.exerciseTrackingData.dailyLogs[0]["measurementDate"])
+                            == DateFormat("dd/MM/yyyy").parse(newLog["measurementDate"])
+                        ) {
+
+                          print("same");
+
+                          exercise.exerciseTrackingData.dailyLogs[0]["weightValues"].insert(0, newLog["weightValues"][0]);
+                          exercise.exerciseTrackingData.dailyLogs[0]["repValues"].insert(0, newLog["repValues"][0]);
+                          exercise.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"].insert(0, newLog["measurementTimeStamp"][0]);
+
+                        } else {
+
+                          print("higher");
+
+                          exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
+
+                        }
+
+
+                        context.read<WorkoutProvider>().addNewLog(exercise);
+
+                      },
                       child: Text("Save Log"),
                     ),
                   ],

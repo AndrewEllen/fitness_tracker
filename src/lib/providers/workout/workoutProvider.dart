@@ -1,4 +1,3 @@
-import 'package:fitness_tracker/models/stats/stats_model.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
 import 'package:flutter/cupertino.dart';
 import '../../models/workout/exercise_model.dart';
@@ -80,21 +79,21 @@ class WorkoutProvider with ChangeNotifier {
 
               {
                 "measurementDate": "15/11/2023",
-                "weightValues": [
+                "weightValues": <double>[
                   16,
                   14,
                   14,
                   12,
                   12,
                 ],
-                "repValues": [
+                "repValues": <double>[
                   3,
                   5,
                   5,
                   7,
                   8,
                 ],
-                "measurementTimeStamp": [
+                "measurementTimeStamp": <String>[
                   "21:10",
                   "21:05",
                   "21:00",
@@ -113,22 +112,22 @@ class WorkoutProvider with ChangeNotifier {
           dailyLogs: [
 
             {
-              "measurementDate": "15/11/2023",
-              "weightValues": [
+              "measurementDate": "04/01/2024",
+              "weightValues": <double>[
                 160,
                 140,
                 140,
                 120,
                 120,
               ],
-              "repValues": [
+              "repValues": <double>[
                 3,
                 5,
                 5,
                 7,
                 8,
               ],
-              "measurementTimeStamp": [
+              "measurementTimeStamp": <String>[
                 "21:10",
                 "21:05",
                 "21:00",
@@ -139,21 +138,21 @@ class WorkoutProvider with ChangeNotifier {
 
             {
               "measurementDate": "14/11/2023",
-              "weightValues": [
+              "weightValues": <double>[
                 150,
                 130,
                 120,
                 110,
                 100,
               ],
-              "repValues": [
+              "repValues": <double>[
                 3,
                 5,
                 5,
                 7,
                 8,
               ],
-              "measurementTimeStamp": [
+              "measurementTimeStamp": <String>[
                 "21:10",
                 "21:05",
                 "21:00",
@@ -182,9 +181,12 @@ class WorkoutProvider with ChangeNotifier {
   }
 
 
-  void addNewLog() {
+  void addNewLog(ExerciseModel newLog) {
+    print(newLog.exerciseTrackingData.dailyLogs);
 
+    _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == newLog.exerciseName)] = newLog;
 
+    notifyListeners();
 
   }
 
