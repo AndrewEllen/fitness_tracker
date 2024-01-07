@@ -6,9 +6,12 @@ import 'package:fitness_tracker/models/stats/user_data_model.dart';
 import 'package:fitness_tracker/models/stats/stats_model.dart';
 import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/diet/food_item.dart';
 import '../../models/groceries/grocery_item.dart';
+import '../../models/workout/exercise_model.dart';
+import '../../models/workout/reps_weight_stats_model.dart';
 
 
 void DeleteUserDocumentMeasurements(String documentName) async {
@@ -207,5 +210,48 @@ void deleteGrocery(GroceryItem groceryItem, String groceryListID) async {
       .collection('grocery-data')
       .doc(groceryItem.uuid)
       .delete();
+
+}
+
+void createExercise(ExerciseModel exercise) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-data')
+      .doc(exercise.exerciseName)
+      .set({
+          "exerciseName": exercise.exerciseName,
+      });
+
+}
+
+void saveExerciseLogs(ExerciseModel exercise, Map log) async {
+
+  print(log);
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  var logToSave = exercise.exerciseTrackingData.dailyLogs.where((element) => element["measurementDate"] == log["measurementDate"]);
+
+  print(logToSave);
+
+  print(log["measurementDate"].runtimeType);
+
+  //DateFormat("dd-MM-yyyy").format(DateFormat("dd/MM/yyyy").parse(log["measurementDate"]));
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-data')
+      .doc(exercise.exerciseName)
+      .collection("exercise-tracking-data")
+      .doc(DateFormat("dd-MM-yyyy").format(DateFormat("dd/MM/yyyy").parse(log["measurementDate"])).toString())
+      .set({
+        "timeStamp": DateFormat("dd/MM/yyyy").parse(log["measurementDate"]).toUtc(),
+        "data": logToSave,
+      });
 
 }

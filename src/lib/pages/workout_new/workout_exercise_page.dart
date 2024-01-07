@@ -81,7 +81,7 @@ class WorkoutExercisePage extends StatelessWidget {
                           ],
                           "repValues": <double>[
 
-                            double.parse(weightController.text),
+                            double.parse(repsController.text),
 
                           ],
                           "measurementTimeStamp": <String>[
@@ -108,7 +108,7 @@ class WorkoutExercisePage extends StatelessWidget {
 
                           }
 
-                          context.read<WorkoutProvider>().addNewLog(exercise);
+                          context.read<WorkoutProvider>().addNewLog(exercise, newLog);
 
                         } catch (e) {
                           debugPrint(e.toString());
@@ -116,7 +116,7 @@ class WorkoutExercisePage extends StatelessWidget {
                           try {
                             exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
 
-                            context.read<WorkoutProvider>().addNewLog(exercise);
+                            context.read<WorkoutProvider>().addNewLog(exercise, newLog);
 
                           } catch (e) {
 
@@ -129,7 +129,7 @@ class WorkoutExercisePage extends StatelessWidget {
 
 
                       },
-                      child: Text("Save Log"),
+                      child: const Text("Save Log"),
                     ),
                   ],
                 ),

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import '../../models/workout/exercise_model.dart';
 import '../../models/workout/reps_weight_stats_model.dart';
 import '../../models/workout/routines_model.dart';
+import '../general/database_write.dart';
 
 class WorkoutProvider with ChangeNotifier {
 
@@ -194,9 +195,14 @@ class WorkoutProvider with ChangeNotifier {
   }
 
 
-  void addNewLog(ExerciseModel newLog) {
+  void addNewLog(ExerciseModel newLog, Map newLogMap) {
 
     _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == newLog.exerciseName)] = newLog;
+
+    saveExerciseLogs(
+        _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == newLog.exerciseName)],
+        newLogMap
+    );
 
     notifyListeners();
 
