@@ -702,8 +702,10 @@ GetExerciseLogData(String exerciseName) async {
   }
 }
 
-GetMoreExerciseLogData(String exerciseName, ) async {
+GetMoreExerciseLogData(String exerciseName, String date) async {
   try {
+
+    DateTime previousDay = DateTime.parse(DateFormat("yyyy-MM-dd").format(DateFormat("dd/MM/yyyy").parse(date)).toString());
 
     print("Getting Groceries");
 
@@ -717,7 +719,7 @@ GetMoreExerciseLogData(String exerciseName, ) async {
         .collection("exercise-tracking-data")
         .orderBy("timeStamp", descending: true)
         .limit(1)
-        .where("timeStamp", isLessThanOrEqualTo: DateTime.now().toUtc())
+        .where("timeStamp", isLessThanOrEqualTo: DateTime(previousDay.year, previousDay.month, previousDay.day-1).toUtc())
         .get();
 
     Map snapshotData = snapshot.docs[0].data();

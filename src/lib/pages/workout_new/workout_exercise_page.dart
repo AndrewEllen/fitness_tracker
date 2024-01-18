@@ -197,7 +197,7 @@ class WorkoutExercisePage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
 
-
+                  context.read<WorkoutProvider>().fetchMoreExerciseData(exercise);
 
                 },
                 child: const Text("Load More"),

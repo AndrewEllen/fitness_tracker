@@ -138,20 +138,20 @@ class WorkoutProvider with ChangeNotifier {
   }
 
 
-  void fetchMoreExerciseData(String exerciseName) async {
+  void fetchMoreExerciseData(ExerciseModel exercise) async {
 
-    ExerciseModel data = await GetExerciseLogData(exerciseName);
+    print("Difference");
 
-    print(data.exerciseName);
-    print(data.exerciseTrackingData.measurementName);
-    print(data.exerciseTrackingData.dailyLogs);
-
+    ExerciseModel data = await GetMoreExerciseLogData(
+        exercise.exerciseName,
+        _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exercise.exerciseName)].exerciseTrackingData.dailyLogs.last["measurementDate"]
+    );
 
     print(_exerciseList.length);
 
-    if (_exerciseList.any((value) => value.exerciseName == exerciseName)) {
+    if (_exerciseList.any((value) => value.exerciseName == exercise.exerciseName)) {
 
-      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseTrackingData.dailyLogs.add(data.exerciseTrackingData.dailyLogs[0]);
+      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exercise.exerciseName)].exerciseTrackingData.dailyLogs.add(data.exerciseTrackingData.dailyLogs[0]);
 
     }
 
