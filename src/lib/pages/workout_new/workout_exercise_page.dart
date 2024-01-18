@@ -14,6 +14,8 @@ class WorkoutExercisePage extends StatelessWidget {
   WorkoutExercisePage({Key? key, required this.exercise}) : super(key: key);
   ExerciseModel exercise;
 
+  final RegExp removeTrailingZeros = RegExp(r'([.]*0)(?!.*\d)');
+
   final TextEditingController weightController =
       TextEditingController(text: "10");
   final TextEditingController repsController = TextEditingController(text: "6");
@@ -142,7 +144,7 @@ class WorkoutExercisePage extends StatelessWidget {
                   return Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(bottom: 10.h),
+                        margin: EdgeInsets.only(top: 10.h),
                         width: double.maxFinite,
                         height: 60.h,
                         color: appTertiaryColour,
@@ -159,30 +161,66 @@ class WorkoutExercisePage extends StatelessWidget {
                         itemCount: exercise.exerciseTrackingData.dailyLogs[index]["weightValues"].length,
                         itemBuilder: (BuildContext context, int index2) {
                           return Container(
-                            margin: EdgeInsets.only(bottom: 10.h),
+                            decoration: const BoxDecoration(
+                              color: appTertiaryColour,
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: appQuinaryColour,
+                                ),
+                                top: BorderSide(
+                                  color: appQuinaryColour,
+                                ),
+                              ),
+                            ),
                             width: double.maxFinite,
                             height: 60.h,
-                            color: appTertiaryColour,
-                            child: Column(
+
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
-                                  exercise.exerciseTrackingData
-                                          .dailyLogs[index]["weightValues"][index2]
-                                          .toString() +
-                                      " Kg",
-                                  style: boldTextStyle,
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    (exercise.exerciseTrackingData.dailyLogs[index]["weightValues"].length - index2).toString() +
+                                        " - " + exercise.exerciseTrackingData.dailyLogs[index]["measurementTimeStamp"][index2],
+                                    style: boldTextStyle,
+                                  ),
                                 ),
-                                Text(
-                                  exercise.exerciseTrackingData
-                                          .dailyLogs[index]["repValues"][index2]
-                                          .toString() +
-                                      " Reps",
-                                  style: boldTextStyle,
+                                const Spacer(flex: 3),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    exercise.exerciseTrackingData
+                                        .dailyLogs[index]["weightValues"][index2]
+                                        .toString().replaceAll(removeTrailingZeros, "") +
+                                        " Kg",
+                                    style: boldTextStyle,
+                                  ),
                                 ),
-                                Text(
-                                  exercise.exerciseTrackingData.dailyLogs[index]
-                                      ["measurementTimeStamp"][index2],
-                                  style: boldTextStyle,
+                                const Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    exercise.exerciseTrackingData
+                                        .dailyLogs[index]["repValues"][index2]
+                                        .toString().replaceAll(removeTrailingZeros, "") +
+                                        " Reps",
+                                    style: boldTextStyle,
+                                  ),
+                                ),
+                                const Spacer(flex: 3),
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Material(
+                                    type: MaterialType.transparency,
+                                    child: IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Icons.more_vert, color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
