@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../constants.dart';
+import '../../widgets/general/app_default_button.dart';
 import '../../widgets/workout_new/home_page_routines_list.dart';
 import '../../widgets/workout_new/workout_daily_tracker.dart';
 import '../../widgets/workout_new/workout_home_stats_dropdown.dart';
@@ -19,6 +20,90 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
 
   final _key = GlobalKey<ExpandableFabState>();
 
+
+  newRoutine(BuildContext context) async {
+
+    double buttonSize = 22.h;
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          insetPadding: const EdgeInsets.all(0),
+          backgroundColor: appTertiaryColour,
+          title: const Text(
+            "Create a Routine",
+            style: TextStyle(
+              color: appSecondaryColour,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              RichText(
+                text: TextSpan(text: 'Create a new ',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16.h,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(text: "Routine.",
+                      style: TextStyle(
+                        color: appSecondaryColour,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.h,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+
+              children: [
+                const Spacer(),
+                SizedBox(
+                    height: buttonSize,
+                    child: AppButton(
+                      buttonText: "Cancel",
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                ),
+                const Spacer(),
+                SizedBox(
+                    height: buttonSize,
+                    child: AppButton(
+                      primaryColor: appSecondaryColour,
+                      buttonText: "Create",
+                      onTap: () {
+
+                        Navigator.pop(context);
+                      },
+                    )
+                ),
+                const Spacer(),
+              ],
+            ),
+          ],
+        );
+      },
+    ).then((value){
+      final menuState = _key.currentState;
+      if (menuState != null) {
+        menuState.toggle();
+      }
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +112,7 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
 
-
+        key: _key,
         distance: 80.w,
         overlayStyle: ExpandableFabOverlayStyle(
           blur: 2,
@@ -70,7 +155,9 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
               child: const Icon(
                 Icons.add,
               ),
-              onPressed: () {},
+              onPressed: () => newRoutine(
+                  this.context,
+                ),
             ),
           ),
           SizedBox(
