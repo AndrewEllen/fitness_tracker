@@ -255,3 +255,43 @@ void saveExerciseLogs(ExerciseModel exercise, Map log) async {
       });
 
 }
+
+void updateLogData(ExerciseModel exercise, int index) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-data')
+      .doc(exercise.exerciseName)
+      .collection("exercise-tracking-data")
+      .doc(DateFormat("dd-MM-yyyy").format(DateFormat("dd/MM/yyyy").parse(exercise.exerciseTrackingData.dailyLogs[index]["measurementDate"])).toString())
+      .update({
+    "data": [
+      {
+      "measurementDate": exercise.exerciseTrackingData.dailyLogs[index]["measurementDate"],
+      "measurementTimeStamp": exercise.exerciseTrackingData.dailyLogs[index]["measurementTimeStamp"],
+      "repValues": exercise.exerciseTrackingData.dailyLogs[index]["repValues"],
+      "weightValues": exercise.exerciseTrackingData.dailyLogs[index]["weightValues"]
+      }
+    ],
+  });
+
+}
+
+void deleteLogData(ExerciseModel exercise, int index) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-data')
+      .doc(exercise.exerciseName)
+      .collection("exercise-tracking-data")
+      .doc(DateFormat("dd-MM-yyyy").format(DateFormat("dd/MM/yyyy").parse(exercise.exerciseTrackingData.dailyLogs[index]["measurementDate"])).toString())
+      .delete();
+
+}
+

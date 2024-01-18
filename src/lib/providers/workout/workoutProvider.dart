@@ -10,6 +10,31 @@ import '../general/database_write.dart';
 class WorkoutProvider with ChangeNotifier {
 
   late List<RoutinesModel> _routinesList = [
+
+    RoutinesModel(
+      routineID: "1",
+      routineName: "Pull Day",
+      routineDate: "05/01/2024",
+      exercises: [
+        ExerciseListModel(
+            exerciseName: "Barbell Sumo Deadlift",
+            exerciseDate: "05/01/2024"
+        ),
+        ExerciseListModel(
+            exerciseName: "Seated Machine Row",
+            exerciseDate: "01/11/2023"
+        ),
+        ExerciseListModel(
+            exerciseName: "One Arm Lat Pulldown",
+            exerciseDate: "05/12/2023"
+        ),
+        ExerciseListModel(
+            exerciseName: "Rear Delt Flys",
+            exerciseDate: "02/01/2024"
+        ),
+      ],
+    ),
+
     RoutinesModel(
       routineID: "1",
       routineName: "Test Routine 1",
@@ -111,6 +136,36 @@ class WorkoutProvider with ChangeNotifier {
 
     notifyListeners();
 
+  }
+
+
+  void deleteLog(String exerciseName, int index, int index2) {
+
+    ExerciseModel selectedExerciseData = _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)];
+
+    selectedExerciseData.exerciseTrackingData.dailyLogs[index]["measurementTimeStamp"].removeAt(index2);
+
+    selectedExerciseData.exerciseTrackingData.dailyLogs[index]["weightValues"].removeAt(index2);
+
+    selectedExerciseData.exerciseTrackingData.dailyLogs[index]["repValues"].removeAt(index2);
+
+    if (selectedExerciseData.exerciseTrackingData.dailyLogs[index]["repValues"].isEmpty) {
+
+      deleteLogData(
+        selectedExerciseData,
+        index,
+      );
+
+      selectedExerciseData.exerciseTrackingData.dailyLogs.removeAt(index);
+
+    } else {
+      updateLogData(
+          selectedExerciseData,
+          index,
+      );
+    }
+
+    notifyListeners();
   }
 
 

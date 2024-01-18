@@ -1,5 +1,7 @@
+import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../models/workout/exercise_model.dart';
@@ -93,18 +95,27 @@ class _WorkoutLogBoxState extends State<WorkoutLogBox> {
           ),
         ),
         TweenAnimationBuilder(
-          tween: Tween<double>(begin: 0.0, end: _expandPanel ? 60 : 0),
-          duration: const Duration(milliseconds: 450),
+          tween: Tween<double>(begin: 0.0, end: _expandPanel ? 40 : 0),
+          duration: const Duration(milliseconds: 250),
           builder: (context, value, _) => ClipRRect(
-            child: Container(
-              color: Colors.red,
-              height: value.h,
-              child: Center(
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Colors.white,
+            child: Material(
+              type: MaterialType.transparency,
+              child: Ink(
+                height: value.h,
+                color: Colors.red,
+                child: InkWell(
+                  onTap: () {
+                    context.read<WorkoutProvider>().deleteLog(
+                      widget.exercise.exerciseName,
+                      widget.index,
+                      widget.index2,
+                    );
+                  },
+                  child: const Center(
+                    child: Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

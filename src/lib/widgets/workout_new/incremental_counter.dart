@@ -30,7 +30,7 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
 
     if (isSmall) {
 
-      widget.inputController.text = (double.parse(widget.inputController.text) + 0.25).toString().replaceAll(removeTrailingZeros, "");
+      widget.inputController.text = (double.parse(widget.inputController.text) + 2.5).toString().replaceAll(removeTrailingZeros, "");
 
     } else {
 
@@ -48,7 +48,7 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
 
     if (isSmall) {
 
-      widget.inputController.text = (double.parse(widget.inputController.text) - 0.25).toString().replaceAll(removeTrailingZeros, "");
+      widget.inputController.text = (double.parse(widget.inputController.text) - 2.5).toString().replaceAll(removeTrailingZeros, "");
 
     } else {
 
@@ -130,7 +130,7 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
                   suffix: Text(
                     widget.suffix,
                     style: boldTextStyle.copyWith(
-                        fontSize: 18
+                        fontSize: 16
                     ),
                   ),
                 ),

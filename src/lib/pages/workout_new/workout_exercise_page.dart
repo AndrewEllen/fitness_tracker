@@ -81,60 +81,62 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                     ElevatedButton(
                       onPressed: () {
 
-                        Map newLog = {
-                          "measurementDate": DateFormat("dd/MM/yyy").format(DateTime.now()).toString(),
-                          "weightValues": <double>[
+                        if (weightController.text.isNotEmpty && repsController.text.isNotEmpty) {
+                          Map newLog = {
+                            "measurementDate": DateFormat("dd/MM/yyy").format(DateTime.now()).toString(),
+                            "weightValues": <double>[
 
-                            double.parse(weightController.text),
+                              double.parse(weightController.text),
 
-                          ],
-                          "repValues": <double>[
+                            ],
+                            "repValues": <double>[
 
-                            double.parse(repsController.text),
+                              double.parse(repsController.text),
 
-                          ],
-                          "measurementTimeStamp": <String>[
+                            ],
+                            "measurementTimeStamp": <String>[
 
-                            DateFormat("HH:mm").format(DateTime.now()).toString(),
+                              DateFormat("HH:mm").format(DateTime.now()).toString(),
 
-                          ]
-                        };
-
-                        try {
-
-                          if (
-                          DateFormat("dd/MM/yyyy").parse(widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementDate"])
-                              == DateFormat("dd/MM/yyyy").parse(newLog["measurementDate"])
-                          ) {
-
-                            widget.exercise.exerciseTrackingData.dailyLogs[0]["weightValues"].insert(0, newLog["weightValues"][0]);
-                            widget.exercise.exerciseTrackingData.dailyLogs[0]["repValues"].insert(0, newLog["repValues"][0]);
-                            widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"].insert(0, newLog["measurementTimeStamp"][0]);
-
-                          } else {
-
-                            widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
-
-                          }
-
-                          context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog);
-
-                        } catch (e) {
-                          debugPrint(e.toString());
+                            ]
+                          };
 
                           try {
-                            widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
+
+                            if (
+                            DateFormat("dd/MM/yyyy").parse(widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementDate"])
+                                == DateFormat("dd/MM/yyyy").parse(newLog["measurementDate"])
+                            ) {
+
+                              widget.exercise.exerciseTrackingData.dailyLogs[0]["weightValues"].insert(0, newLog["weightValues"][0]);
+                              widget.exercise.exerciseTrackingData.dailyLogs[0]["repValues"].insert(0, newLog["repValues"][0]);
+                              widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"].insert(0, newLog["measurementTimeStamp"][0]);
+
+                            } else {
+
+                              widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
+
+                            }
 
                             context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog);
 
                           } catch (e) {
-
                             debugPrint(e.toString());
+
+                            try {
+                              widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
+
+                              context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog);
+
+                            } catch (e) {
+
+                              debugPrint(e.toString());
+
+                            }
 
                           }
 
                         }
-
 
 
                       },
@@ -167,7 +169,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                         shrinkWrap: true,
                         itemCount: widget.exercise.exerciseTrackingData.dailyLogs[index]["weightValues"].length,
                         itemBuilder: (BuildContext context, int index2) {
-                          return WorkoutLogBox(exercise: widget.exercise, index: index, index2: index2,);
+                          return WorkoutLogBox(exercise: widget.exercise, index: index, index2: index2, key: UniqueKey(),);
                         },
                       ),
                     ],
