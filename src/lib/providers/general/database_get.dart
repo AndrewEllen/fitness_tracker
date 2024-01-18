@@ -663,8 +663,6 @@ GetUserGroceries(String groceryListID) async {
 GetExerciseLogData(String exerciseName) async {
   try {
 
-    print("Getting Groceries");
-
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
     final snapshot = await FirebaseFirestore.instance
@@ -674,24 +672,29 @@ GetExerciseLogData(String exerciseName) async {
         .doc(exerciseName)
         .collection("exercise-tracking-data")
         .orderBy("timeStamp", descending: true)
-        .limit(1)
+        .limit(7)
         .where("timeStamp", isLessThanOrEqualTo: DateTime.now().toUtc())
         .get();
 
-    Map snapshotData = snapshot.docs[0].data();
+    Map mapData(data) {
+
+      return {
+        "measurementDate": data["data"][0]["measurementDate"],
+        "measurementTimeStamp": data["data"][0]["measurementTimeStamp"],
+        "repValues": data["data"][0]["repValues"],
+        "weightValues": data["data"][0]["weightValues"]
+      };
+
+    }
 
     ExerciseModel data = ExerciseModel(
         exerciseName: exerciseName,
         exerciseTrackingData: RepsWeightStatsMeasurement(
-            measurementName: exerciseName,
-            dailyLogs: [
-              {
-                "measurementDate": snapshotData["data"][0]["measurementDate"],
-                "measurementTimeStamp": snapshotData["data"][0]["measurementTimeStamp"],
-                "repValues": snapshotData["data"][0]["repValues"],
-                "weightValues": snapshotData["data"][0]["weightValues"]
-              }
-            ],
+          measurementName: exerciseName,
+          dailyLogs: [
+            for (QueryDocumentSnapshot document in snapshot.docs)
+              mapData(document.data())
+          ],
         )
     );
 
@@ -707,7 +710,6 @@ GetMoreExerciseLogData(String exerciseName, String date) async {
 
     DateTime previousDay = DateTime.parse(DateFormat("yyyy-MM-dd").format(DateFormat("dd/MM/yyyy").parse(date)).toString());
 
-    print("Getting Groceries");
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -718,23 +720,28 @@ GetMoreExerciseLogData(String exerciseName, String date) async {
         .doc(exerciseName)
         .collection("exercise-tracking-data")
         .orderBy("timeStamp", descending: true)
-        .limit(1)
+        .limit(7)
         .where("timeStamp", isLessThanOrEqualTo: DateTime(previousDay.year, previousDay.month, previousDay.day-1).toUtc())
         .get();
 
-    Map snapshotData = snapshot.docs[0].data();
+    Map mapData(data) {
+
+      return {
+        "measurementDate": data["data"][0]["measurementDate"],
+        "measurementTimeStamp": data["data"][0]["measurementTimeStamp"],
+        "repValues": data["data"][0]["repValues"],
+        "weightValues": data["data"][0]["weightValues"]
+      };
+
+    }
 
     ExerciseModel data = ExerciseModel(
         exerciseName: exerciseName,
         exerciseTrackingData: RepsWeightStatsMeasurement(
           measurementName: exerciseName,
           dailyLogs: [
-            {
-              "measurementDate": snapshotData["data"][0]["measurementDate"],
-              "measurementTimeStamp": snapshotData["data"][0]["measurementTimeStamp"],
-              "repValues": snapshotData["data"][0]["repValues"],
-              "weightValues": snapshotData["data"][0]["weightValues"]
-            }
+            for (QueryDocumentSnapshot document in snapshot.docs)
+              mapData(document.data())
           ],
         )
     );

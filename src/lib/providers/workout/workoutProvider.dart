@@ -116,22 +116,12 @@ class WorkoutProvider with ChangeNotifier {
 
   void fetchExerciseData(String exerciseName) async {
 
-    ExerciseModel data = await GetExerciseLogData(exerciseName);
+    if (_exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseTrackingData.dailyLogs.isEmpty) {
 
-    print(data.exerciseName);
-    print(data.exerciseTrackingData.measurementName);
-    print(data.exerciseTrackingData.dailyLogs);
-
-
-    print(_exerciseList.length);
-
-    if (_exerciseList.any((value) => value.exerciseName == exerciseName)) {
-
-      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseTrackingData.dailyLogs.add(data.exerciseTrackingData.dailyLogs[0]);
+      ExerciseModel data = await GetExerciseLogData(exerciseName);
+      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseTrackingData.dailyLogs = data.exerciseTrackingData.dailyLogs;
 
     }
-
-    print(_exerciseList);
 
     notifyListeners();
 
@@ -139,27 +129,26 @@ class WorkoutProvider with ChangeNotifier {
 
 
   void fetchMoreExerciseData(ExerciseModel exercise) async {
+    try {
+      ExerciseModel data = await GetMoreExerciseLogData(
+          exercise.exerciseName,
+          _exerciseList[_exerciseList.indexWhere((element) =>
+          element.exerciseName == exercise.exerciseName)].exerciseTrackingData
+              .dailyLogs.last["measurementDate"]
+      );
 
-    print("Difference");
 
-    ExerciseModel data = await GetMoreExerciseLogData(
-        exercise.exerciseName,
-        _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exercise.exerciseName)].exerciseTrackingData.dailyLogs.last["measurementDate"]
-    );
+      if (_exerciseList.any((value) =>
+      value.exerciseName == exercise.exerciseName)) {
+        _exerciseList[_exerciseList.indexWhere((element) =>
+        element.exerciseName == exercise.exerciseName)].exerciseTrackingData
+            .dailyLogs += data.exerciseTrackingData.dailyLogs;
+      }
 
-    print(_exerciseList.length);
-
-    if (_exerciseList.any((value) => value.exerciseName == exercise.exerciseName)) {
-
-      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exercise.exerciseName)].exerciseTrackingData.dailyLogs.add(data.exerciseTrackingData.dailyLogs[0]);
-
+      notifyListeners();
+    } catch (error) {
+      debugPrint(error.toString());
     }
-
-    print(_exerciseList);
-
-    notifyListeners();
-
   }
-
 
 }

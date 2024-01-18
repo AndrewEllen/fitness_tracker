@@ -149,7 +149,7 @@ class WorkoutExercisePage extends StatelessWidget {
                         child: Center(
                           child: Text(
                             exercise.exerciseTrackingData.dailyLogs[index]["measurementDate"],
-                            style: boldTextStyle,
+                            style: boldTextStyle.copyWith(fontSize: 18.h),
                           ),
                         ),
                       ),
