@@ -22,10 +22,21 @@ class WorkoutExercisePage extends StatefulWidget {
 class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
   final RegExp removeTrailingZeros = RegExp(r'([.]*0)(?!.*\d)');
 
-  final TextEditingController weightController =
-      TextEditingController(text: "10");
+  final TextEditingController weightController = TextEditingController();
 
-  final TextEditingController repsController = TextEditingController(text: "6");
+  final TextEditingController repsController = TextEditingController();
+
+  @override
+  void initState() {
+
+    weightController.text = widget.exercise.exerciseTrackingData.dailyLogs.isNotEmpty
+        ? widget.exercise.exerciseTrackingData.dailyLogs[0]["weightValues"][0].toString().replaceAll(removeTrailingZeros, "") : "10";
+
+    repsController.text = widget.exercise.exerciseTrackingData.dailyLogs.isNotEmpty
+        ? widget.exercise.exerciseTrackingData.dailyLogs[0]["repValues"][0].toString().replaceAll(removeTrailingZeros, "") : "6";
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
