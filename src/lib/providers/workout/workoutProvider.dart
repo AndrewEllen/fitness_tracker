@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
 import 'package:flutter/cupertino.dart';
 import '../../models/workout/exercise_model.dart';
 import '../../models/workout/reps_weight_stats_model.dart';
 import '../../models/workout/routines_model.dart';
+import '../general/database_get.dart';
 import '../general/database_write.dart';
 
 class WorkoutProvider with ChangeNotifier {
@@ -69,104 +71,7 @@ class WorkoutProvider with ChangeNotifier {
   List<RoutinesModel> get routinesList => _routinesList;
 
 
-
-  late final List<ExerciseModel> _exerciseList = [
-
-    ExerciseModel(
-        exerciseName: "Test Exercise 5",
-        exerciseTrackingData: RepsWeightStatsMeasurement(
-              measurementName: "Test Exercise 5",
-            dailyLogs: [
-
-              {
-                "measurementDate": "15/11/2023",
-                "weightValues": <double>[
-                  16,
-                  14,
-                  14,
-                  12,
-                  12,
-                ],
-                "repValues": <double>[
-                  3,
-                  5,
-                  5,
-                  7,
-                  8,
-                ],
-                "measurementTimeStamp": <String>[
-                  "21:10",
-                  "21:05",
-                  "21:00",
-                  "20:55",
-                  "20:50",
-                ],
-              },
-            ]
-          )
-    ),
-
-    ExerciseModel(
-        exerciseName: "Test Exercise 6",
-        exerciseTrackingData: RepsWeightStatsMeasurement(
-          measurementName: "Test Exercise 6",
-          dailyLogs: [
-
-            {
-              "measurementDate": "04/01/2024",
-              "weightValues": <double>[
-                160,
-                140,
-                140,
-                120,
-                120,
-              ],
-              "repValues": <double>[
-                3,
-                5,
-                5,
-                7,
-                8,
-              ],
-              "measurementTimeStamp": <String>[
-                "21:10",
-                "21:05",
-                "21:00",
-                "20:55",
-                "20:50",
-              ],
-            },
-
-            {
-              "measurementDate": "14/11/2023",
-              "weightValues": <double>[
-                150,
-                130,
-                120,
-                110,
-                100,
-              ],
-              "repValues": <double>[
-                3,
-                5,
-                5,
-                7,
-                8,
-              ],
-              "measurementTimeStamp": <String>[
-                "21:10",
-                "21:05",
-                "21:00",
-                "20:55",
-                "20:50",
-              ],
-            },
-
-          ]
-        )
-    ),
-
-  ];
+  late final List<ExerciseModel> _exerciseList = [];
 
   List<ExerciseModel> get exerciseList => _exerciseList;
 
@@ -208,6 +113,53 @@ class WorkoutProvider with ChangeNotifier {
 
   }
 
+
+  void fetchExerciseData(String exerciseName) async {
+
+    ExerciseModel data = await GetExerciseLogData(exerciseName);
+
+    print(data.exerciseName);
+    print(data.exerciseTrackingData.measurementName);
+    print(data.exerciseTrackingData.dailyLogs);
+
+
+    print(_exerciseList.length);
+
+    if (_exerciseList.any((value) => value.exerciseName == exerciseName)) {
+
+      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseTrackingData.dailyLogs.add(data.exerciseTrackingData.dailyLogs[0]);
+
+    }
+
+    print(_exerciseList);
+
+    notifyListeners();
+
+  }
+
+
+  void fetchMoreExerciseData(String exerciseName) async {
+
+    ExerciseModel data = await GetExerciseLogData(exerciseName);
+
+    print(data.exerciseName);
+    print(data.exerciseTrackingData.measurementName);
+    print(data.exerciseTrackingData.dailyLogs);
+
+
+    print(_exerciseList.length);
+
+    if (_exerciseList.any((value) => value.exerciseName == exerciseName)) {
+
+      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseTrackingData.dailyLogs.add(data.exerciseTrackingData.dailyLogs[0]);
+
+    }
+
+    print(_exerciseList);
+
+    notifyListeners();
+
+  }
 
 
 }

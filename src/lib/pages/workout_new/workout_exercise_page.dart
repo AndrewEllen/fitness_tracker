@@ -193,6 +193,15 @@ class WorkoutExercisePage extends StatelessWidget {
                   );
                 },
               ),
+
+              ElevatedButton(
+                onPressed: () {
+
+
+
+                },
+                child: const Text("Load More"),
+              ),
             ],
           ),
         ),

@@ -33,6 +33,8 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
             onTap: () {
               if (context.read<WorkoutProvider>().checkForExerciseData(widget.routine.exercises[index].exerciseName)) {
 
+                context.read<WorkoutProvider>().fetchExerciseData(widget.routine.exercises[index].exerciseName);
+
                 context.read<PageChange>().changePageCache(WorkoutExercisePage(
                   exercise: context.read<WorkoutProvider>().exerciseList[
                   context.read<WorkoutProvider>().exerciseList.indexWhere((element) => element.exerciseName == widget.routine.exercises[index].exerciseName)
@@ -80,6 +82,8 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
                 InkWell(
                   onTap: () {
                     if (context.read<WorkoutProvider>().checkForExerciseData(widget.routine.exercises[index].exerciseName)) {
+
+                      context.read<WorkoutProvider>().fetchExerciseData(widget.routine.exercises[index].exerciseName);
 
                       context.read<PageChange>().changePageCache(WorkoutExercisePage(
                         exercise: context.read<WorkoutProvider>().exerciseList[

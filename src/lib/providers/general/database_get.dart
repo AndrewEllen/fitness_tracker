@@ -8,12 +8,15 @@ import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
 import 'package:fitness_tracker/providers/diet/user_nutrition_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:async';
 
 import '../../models/diet/food_data_list_item.dart';
 import '../../models/diet/food_item.dart';
 import '../../models/stats/stats_model.dart';
+import '../../models/workout/exercise_model.dart';
+import '../../models/workout/reps_weight_stats_model.dart';
 
 GetUserDataTrainingPlan() async {
   try {
@@ -35,8 +38,6 @@ GetUserDataTrainingPlan() async {
 }
 
 GetUserMeasurements() async {
-
-
 
   try {
 
@@ -652,6 +653,91 @@ GetUserGroceries(String groceryListID) async {
             ),
           ];
         });
+
+  } catch (exception) {
+    print(exception);
+  }
+}
+
+
+GetExerciseLogData(String exerciseName) async {
+  try {
+
+    print("Getting Groceries");
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('workout-data')
+        .doc(exerciseName)
+        .collection("exercise-tracking-data")
+        .orderBy("timeStamp", descending: true)
+        .limit(1)
+        .where("timeStamp", isLessThanOrEqualTo: DateTime.now().toUtc())
+        .get();
+
+    Map snapshotData = snapshot.docs[0].data();
+
+    ExerciseModel data = ExerciseModel(
+        exerciseName: exerciseName,
+        exerciseTrackingData: RepsWeightStatsMeasurement(
+            measurementName: exerciseName,
+            dailyLogs: [
+              {
+                "measurementDate": snapshotData["data"][0]["measurementDate"],
+                "measurementTimeStamp": snapshotData["data"][0]["measurementTimeStamp"],
+                "repValues": snapshotData["data"][0]["repValues"],
+                "weightValues": snapshotData["data"][0]["weightValues"]
+              }
+            ],
+        )
+    );
+
+    return data;
+
+  } catch (exception) {
+    print(exception);
+  }
+}
+
+GetMoreExerciseLogData(String exerciseName, ) async {
+  try {
+
+    print("Getting Groceries");
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('workout-data')
+        .doc(exerciseName)
+        .collection("exercise-tracking-data")
+        .orderBy("timeStamp", descending: true)
+        .limit(1)
+        .where("timeStamp", isLessThanOrEqualTo: DateTime.now().toUtc())
+        .get();
+
+    Map snapshotData = snapshot.docs[0].data();
+
+    ExerciseModel data = ExerciseModel(
+        exerciseName: exerciseName,
+        exerciseTrackingData: RepsWeightStatsMeasurement(
+          measurementName: exerciseName,
+          dailyLogs: [
+            {
+              "measurementDate": snapshotData["data"][0]["measurementDate"],
+              "measurementTimeStamp": snapshotData["data"][0]["measurementTimeStamp"],
+              "repValues": snapshotData["data"][0]["repValues"],
+              "weightValues": snapshotData["data"][0]["weightValues"]
+            }
+          ],
+        )
+    );
+
+    return data;
 
   } catch (exception) {
     print(exception);
