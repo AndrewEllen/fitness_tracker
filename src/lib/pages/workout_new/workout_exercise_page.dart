@@ -9,15 +9,22 @@ import 'package:provider/provider.dart';
 import '../../models/workout/routines_model.dart';
 import '../../widgets/workout_new/incremental_counter.dart';
 import '../../widgets/workout_new/routine_page_exercise_list.dart';
+import '../../widgets/workout_new/workout_log_box.dart';
 
-class WorkoutExercisePage extends StatelessWidget {
+class WorkoutExercisePage extends StatefulWidget {
   WorkoutExercisePage({Key? key, required this.exercise}) : super(key: key);
   ExerciseModel exercise;
 
+  @override
+  State<WorkoutExercisePage> createState() => _WorkoutExercisePageState();
+}
+
+class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
   final RegExp removeTrailingZeros = RegExp(r'([.]*0)(?!.*\d)');
 
   final TextEditingController weightController =
       TextEditingController(text: "10");
+
   final TextEditingController repsController = TextEditingController(text: "6");
 
   @override
@@ -41,7 +48,7 @@ class WorkoutExercisePage extends StatelessWidget {
                 height: 50.h,
                 child: Center(
                   child: Text(
-                    exercise.exerciseName,
+                    widget.exercise.exerciseName,
                     style: boldTextStyle.copyWith(fontSize: 18),
                   ),
                 ),
@@ -96,29 +103,29 @@ class WorkoutExercisePage extends StatelessWidget {
                         try {
 
                           if (
-                          DateFormat("dd/MM/yyyy").parse(exercise.exerciseTrackingData.dailyLogs[0]["measurementDate"])
+                          DateFormat("dd/MM/yyyy").parse(widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementDate"])
                               == DateFormat("dd/MM/yyyy").parse(newLog["measurementDate"])
                           ) {
 
-                            exercise.exerciseTrackingData.dailyLogs[0]["weightValues"].insert(0, newLog["weightValues"][0]);
-                            exercise.exerciseTrackingData.dailyLogs[0]["repValues"].insert(0, newLog["repValues"][0]);
-                            exercise.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"].insert(0, newLog["measurementTimeStamp"][0]);
+                            widget.exercise.exerciseTrackingData.dailyLogs[0]["weightValues"].insert(0, newLog["weightValues"][0]);
+                            widget.exercise.exerciseTrackingData.dailyLogs[0]["repValues"].insert(0, newLog["repValues"][0]);
+                            widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"].insert(0, newLog["measurementTimeStamp"][0]);
 
                           } else {
 
-                            exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
+                            widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
 
                           }
 
-                          context.read<WorkoutProvider>().addNewLog(exercise, newLog);
+                          context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog);
 
                         } catch (e) {
                           debugPrint(e.toString());
 
                           try {
-                            exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
+                            widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
 
-                            context.read<WorkoutProvider>().addNewLog(exercise, newLog);
+                            context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog);
 
                           } catch (e) {
 
@@ -139,7 +146,7 @@ class WorkoutExercisePage extends StatelessWidget {
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: exercise.exerciseTrackingData.dailyLogs.length,
+                itemCount: widget.exercise.exerciseTrackingData.dailyLogs.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Column(
                     children: [
@@ -150,7 +157,7 @@ class WorkoutExercisePage extends StatelessWidget {
                         color: appTertiaryColour,
                         child: Center(
                           child: Text(
-                            exercise.exerciseTrackingData.dailyLogs[index]["measurementDate"],
+                            widget.exercise.exerciseTrackingData.dailyLogs[index]["measurementDate"],
                             style: boldTextStyle.copyWith(fontSize: 18.h),
                           ),
                         ),
@@ -158,73 +165,9 @@ class WorkoutExercisePage extends StatelessWidget {
                       ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: exercise.exerciseTrackingData.dailyLogs[index]["weightValues"].length,
+                        itemCount: widget.exercise.exerciseTrackingData.dailyLogs[index]["weightValues"].length,
                         itemBuilder: (BuildContext context, int index2) {
-                          return Container(
-                            decoration: const BoxDecoration(
-                              color: appTertiaryColour,
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: appQuinaryColour,
-                                ),
-                                top: BorderSide(
-                                  color: appQuinaryColour,
-                                ),
-                              ),
-                            ),
-                            width: double.maxFinite,
-                            height: 60.h,
-
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    (exercise.exerciseTrackingData.dailyLogs[index]["weightValues"].length - index2).toString() +
-                                        " - " + exercise.exerciseTrackingData.dailyLogs[index]["measurementTimeStamp"][index2],
-                                    style: boldTextStyle,
-                                  ),
-                                ),
-                                const Spacer(flex: 3),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    exercise.exerciseTrackingData
-                                        .dailyLogs[index]["weightValues"][index2]
-                                        .toString().replaceAll(removeTrailingZeros, "") +
-                                        " Kg",
-                                    style: boldTextStyle,
-                                  ),
-                                ),
-                                const Spacer(),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    exercise.exerciseTrackingData
-                                        .dailyLogs[index]["repValues"][index2]
-                                        .toString().replaceAll(removeTrailingZeros, "") +
-                                        " Reps",
-                                    style: boldTextStyle,
-                                  ),
-                                ),
-                                const Spacer(flex: 3),
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Material(
-                                    type: MaterialType.transparency,
-                                    child: IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(
-                                        Icons.more_vert, color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
+                          return WorkoutLogBox(exercise: widget.exercise, index: index, index2: index2,);
                         },
                       ),
                     ],
@@ -235,7 +178,7 @@ class WorkoutExercisePage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
 
-                  context.read<WorkoutProvider>().fetchMoreExerciseData(exercise);
+                  context.read<WorkoutProvider>().fetchMoreExerciseData(widget.exercise);
 
                 },
                 child: const Text("Load More"),
