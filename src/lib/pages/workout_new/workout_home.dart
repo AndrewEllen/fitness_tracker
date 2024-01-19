@@ -1,7 +1,9 @@
+import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../widgets/general/app_default_button.dart';
@@ -18,7 +20,9 @@ class WorkoutHomePageNew extends StatefulWidget {
 
 class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
 
-  final _key = GlobalKey<ExpandableFabState>();
+  final GlobalKey<ExpandableFabState> _key = GlobalKey<ExpandableFabState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController inputController = TextEditingController();
 
 
   newRoutine(BuildContext context) async {
@@ -41,22 +45,52 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              RichText(
-                text: TextSpan(text: 'Create a new ',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16.h,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(text: "Routine.",
-                      style: TextStyle(
-                        color: appSecondaryColour,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.h,
+              Flexible(
+                child: Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Name Required";
+                      }
+                      if(context.read<WorkoutProvider>().checkForRoutineData(value!)) {
+                        print("EXISTS");
+                        return "Routine Already Exists";
+                      }
+                      return null;
+                    },
+                    controller: inputController,
+                    cursorColor: Colors.white,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: (18),
+                    ),
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      label: Text(
+                        "Routine Name *",
+                        style: boldTextStyle.copyWith(
+                            fontSize: 14
+                        ),
+                      ),
+                      enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: appQuarternaryColour,
+                          )
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: appSecondaryColour,
+                          )
+                      ),
+                      border: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: appSecondaryColour,
+                          )
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ],
@@ -85,7 +119,14 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                       buttonText: "Create",
                       onTap: () {
 
-                        Navigator.pop(context);
+                        if (_formKey.currentState!.validate()) {
+
+                          context.read<WorkoutProvider>().createNewRoutine(inputController.text);
+                          inputController.text = "";
+
+                          Navigator.pop(context);
+                        }
+
                       },
                     )
                 ),
@@ -179,20 +220,16 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
           overscroll.disallowIndicator();
           return true;
         },
-        child: Column(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  WorkoutDailyTracker(),
-                  SizedBox(height: 14.h),
-                  workoutHomeStatsDropdown(),
-                  SizedBox(height: 14.h),
-                  HomePageRoutinesList(),
-                ],
-              ),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              WorkoutDailyTracker(),
+              SizedBox(height: 14.h),
+              workoutHomeStatsDropdown(),
+              SizedBox(height: 14.h),
+              HomePageRoutinesList(),
+            ],
+          ),
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:uuid/uuid.dart';
 import '../../models/workout/exercise_model.dart';
 import '../../models/workout/reps_weight_stats_model.dart';
 import '../../models/workout/routines_model.dart';
@@ -9,89 +10,7 @@ import '../general/database_write.dart';
 
 class WorkoutProvider with ChangeNotifier {
 
-  late List<RoutinesModel> _routinesList = [
-
-    RoutinesModel(
-      routineID: "1",
-      routineName: "Pull Day",
-      routineDate: "05/01/2024",
-      exercises: [
-        ExerciseListModel(
-            exerciseName: "Barbell Sumo Deadlift",
-            exerciseDate: "05/01/2024"
-        ),
-        ExerciseListModel(
-            exerciseName: "Seated Machine Row",
-            exerciseDate: "01/11/2023"
-        ),
-        ExerciseListModel(
-            exerciseName: "One Arm Lat Pulldown",
-            exerciseDate: "05/12/2023"
-        ),
-        ExerciseListModel(
-            exerciseName: "Rear Delt Flys",
-            exerciseDate: "02/01/2024"
-        ),
-      ],
-    ),
-
-    RoutinesModel(
-      routineID: "1",
-      routineName: "Test Routine 1",
-      routineDate: "05/01/2024",
-      exercises: [
-        ExerciseListModel(
-          exerciseName: "Test Exercise 1",
-          exerciseDate: "05/01/2024"
-        ),
-        ExerciseListModel(
-          exerciseName: "Test Exercise 2",
-            exerciseDate: "01/11/2023"
-        ),
-        ExerciseListModel(
-          exerciseName: "Test Exercise 3",
-            exerciseDate: "05/12/2023"
-        ),
-        ExerciseListModel(
-          exerciseName: "Test Exercise 4",
-            exerciseDate: "02/01/2024"
-        ),
-        ExerciseListModel(
-          exerciseName: "Test Exercise 5",
-            exerciseDate: "05/01/2024"
-        ),
-      ],
-    ),
-
-    RoutinesModel(
-      routineID: "2",
-      routineName: "Test Routine 2",
-      routineDate: "05/01/2024",
-      exercises: [
-        ExerciseListModel(
-            exerciseName: "Test Exercise 5",
-            exerciseDate: "05/01/2024"
-        ),
-        ExerciseListModel(
-            exerciseName: "Test Exercise 6",
-            exerciseDate: "01/01/2024"
-        ),
-        ExerciseListModel(
-            exerciseName: "Test Exercise 7",
-            exerciseDate: "02/01/2024"
-        ),
-        ExerciseListModel(
-            exerciseName: "Test Exercise 8",
-            exerciseDate: "03/01/2024"
-        ),
-        ExerciseListModel(
-            exerciseName: "Test Exercise 9",
-            exerciseDate: "04/01/2024"
-        ),
-      ],
-    )
-
-  ];
+  late List<RoutinesModel> _routinesList = [];
 
   List<RoutinesModel> get routinesList => _routinesList;
 
@@ -124,6 +43,46 @@ class WorkoutProvider with ChangeNotifier {
 
   }
 
+  bool checkForRoutineData(String routineNameToCheck) {
+
+    if (_routinesList.any((value) => value.routineName == routineNameToCheck)) {
+      return true;
+    }
+    return false;
+
+  }
+
+
+  void createNewRoutine(String routineName) {
+
+    RoutinesModel newRoutine = RoutinesModel(
+      routineID: const Uuid().v4().toString(),
+      routineDate: '',
+      routineName: routineName,
+      exercises: <ExerciseListModel>[],
+    );
+
+    createRoutine(newRoutine);
+
+    _routinesList.add(newRoutine);
+
+    notifyListeners();
+  }
+
+  void deleteRoutine(int index) {
+
+    deleteRoutineData(_routinesList[index].routineName);
+    _routinesList.removeAt(index);
+
+    notifyListeners();
+  }
+
+  void loadRoutineData(List<RoutinesModel> routines) {
+
+    _routinesList = routines;
+
+    notifyListeners();
+  }
 
   void addNewLog(ExerciseModel newLog, Map newLogMap) {
 

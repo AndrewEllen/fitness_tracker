@@ -6,6 +6,8 @@ import 'package:fitness_tracker/models/groceries/grocery_item.dart';
 import 'package:fitness_tracker/models/stats/user_data_model.dart';
 import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
+import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
+import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:fitness_tracker/providers/diet/user_nutrition_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -751,4 +753,46 @@ GetMoreExerciseLogData(String exerciseName, String date) async {
   } catch (exception) {
     print(exception);
   }
+}
+
+GetRoutinesData() async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  dynamic data = await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('routine-data')
+      .get();
+
+  List<ExerciseListModel> buildExerciseListObjects(data) {
+
+    if (data.isEmpty) {
+      return [];
+    }
+
+    List<ExerciseListModel> exercises =  [
+      for (Map exercise in data)
+        ExerciseListModel(
+          exerciseName: exercise["exerciseName"],
+          exerciseDate: exercise["exerciseDate"],
+        )
+    ];
+
+    return exercises;
+
+  }
+
+  List<RoutinesModel> routines = [
+    for (QueryDocumentSnapshot document in data.docs)
+      RoutinesModel(
+          routineID: document["routineID"],
+          routineDate: document["routineDate"],
+          routineName: document["routineName"],
+          exercises: buildExerciseListObjects(document["exercises"]),
+      )
+  ];
+
+  return routines;
+
 }

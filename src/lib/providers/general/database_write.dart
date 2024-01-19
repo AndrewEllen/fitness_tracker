@@ -6,6 +6,8 @@ import 'package:fitness_tracker/models/stats/user_data_model.dart';
 import 'package:fitness_tracker/models/stats/stats_model.dart';
 import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
+import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
+import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:intl/intl.dart';
 
 import '../../models/diet/food_item.dart';
@@ -291,6 +293,49 @@ void deleteLogData(ExerciseModel exercise, int index) async {
       .doc(exercise.exerciseName)
       .collection("exercise-tracking-data")
       .doc(DateFormat("dd-MM-yyyy").format(DateFormat("dd/MM/yyyy").parse(exercise.exerciseTrackingData.dailyLogs[index]["measurementDate"])).toString())
+      .delete();
+
+}
+
+void createRoutine(RoutinesModel routine) async {
+
+  mapData(data) {
+
+    return [
+      for (ExerciseListModel exerciseListData in data)
+        {
+          "exerciseName": exerciseListData.exerciseName,
+          "exerciseDate": exerciseListData.exerciseDate,
+        }
+      ];
+
+  }
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('routine-data')
+      .doc(routine.routineName)
+      .set({
+          "routineName": routine.routineName,
+          "routineDate": routine.routineDate,
+          "routineID": routine.routineID,
+          "exercises": mapData(routine.exercises),
+      });
+
+}
+
+void deleteRoutineData(String routineName) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('routine-data')
+      .doc(routineName)
       .delete();
 
 }

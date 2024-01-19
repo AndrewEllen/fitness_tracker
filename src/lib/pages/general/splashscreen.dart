@@ -4,7 +4,9 @@ import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
 import 'package:fitness_tracker/models/groceries/grocery_item.dart';
 import 'package:fitness_tracker/models/stats/user_data_model.dart';
+import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:fitness_tracker/providers/grocery/groceries_provider.dart';
+import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -31,6 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
   late UserNutritionFoodModel userRecipes;
   late String groceryListID;
   late List<String> groceryLists;
+  late List<RoutinesModel> routines;
 
   Future<void> stepsCalorieCalculator() async {
 
@@ -111,6 +114,8 @@ class _SplashScreenState extends State<SplashScreen> {
     try {groceryListID = await GetUserGroceryListID();} catch (exception) {print("recipe");print(exception);}
     try {groceryLists = await GetUserGroceryLists();} catch (exception) {print("recipe");print(exception);}
 
+    try {routines = await GetRoutinesData();} catch (exception) {print("routines");print(exception);}
+
     try {context.read<UserData>().setUserBioData(userData);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCalories(userData.calories);} catch (exception) {print(exception);}
 
@@ -124,6 +129,8 @@ class _SplashScreenState extends State<SplashScreen> {
     try {context.read<UserNutritionData>().setFoodHistory(userNutritionHistory);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCustomFood(userCustomFood);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCustomRecipes(userRecipes);} catch (exception) {print(exception);}
+
+    try {context.read<WorkoutProvider>().loadRoutineData(routines);} catch (exception) {print(exception);}
 
     try {await stepsCalorieCalculator();} catch (exception) {print(exception);}
 
