@@ -14,6 +14,9 @@ class WorkoutProvider with ChangeNotifier {
 
   List<RoutinesModel> get routinesList => _routinesList;
 
+  late List<String> _exerciseNamesList = [];
+
+  List<String> get exerciseNamesList => _exerciseNamesList;
 
   late final List<ExerciseModel> _exerciseList = [];
 
@@ -123,6 +126,13 @@ class WorkoutProvider with ChangeNotifier {
           index,
       );
     }
+
+    notifyListeners();
+  }
+
+  void loadExerciseNamesData(List<String> exerciseNames) {
+
+    _exerciseNamesList = exerciseNames;
 
     notifyListeners();
   }

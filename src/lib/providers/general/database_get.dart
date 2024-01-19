@@ -796,3 +796,19 @@ GetRoutinesData() async {
   return routines;
 
 }
+
+
+GetExerciseData() async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  dynamic data = await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('exercise-data')
+      .doc('exercise-names')
+      .get();
+
+  return List<String>.from(data['data'] as List);
+
+}
