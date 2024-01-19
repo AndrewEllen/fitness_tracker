@@ -25,6 +25,7 @@ class WorkoutRoutinePage extends StatelessWidget {
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
 
+
         key: _key,
         distance: 80.w,
         overlayStyle: ExpandableFabOverlayStyle(
@@ -68,7 +69,7 @@ class WorkoutRoutinePage extends StatelessWidget {
               child: const Icon(
                 Icons.add,
               ),
-              onPressed: () => context.read<PageChange>().changePageCache(const ExerciseSelectionPage()),
+              onPressed: () => context.read<PageChange>().changePageCache(ExerciseSelectionPage(routine: routine)),
             ),
           ),
           SizedBox(

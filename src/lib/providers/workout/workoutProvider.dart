@@ -130,6 +130,30 @@ class WorkoutProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void addExerciseToRoutine(RoutinesModel routine, List<ExerciseListModel> exercises) {
+
+    int routineIndex = _routinesList.indexOf(routine);
+
+    for (final newExercise in exercises) {
+      if (!_routinesList[routineIndex].exercises.any((routineExercises) => routineExercises.exerciseName == newExercise.exerciseName)) _routinesList[routineIndex].exercises.add(newExercise);
+    }
+
+    updateRoutineData(routine);
+
+    notifyListeners();
+
+  }
+
+  void deleteExerciseFromRoutine(int indexOfExercise, RoutinesModel routine) {
+
+    int routineIndex = _routinesList.indexOf(routine);
+
+    _routinesList[routineIndex].exercises.removeAt(indexOfExercise);
+
+    updateRoutineData(routine);
+
+  }
+
   void loadExerciseNamesData(List<String> exerciseNames) {
 
     _exerciseNamesList = exerciseNames;

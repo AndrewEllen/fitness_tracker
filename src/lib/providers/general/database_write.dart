@@ -327,6 +327,36 @@ void createRoutine(RoutinesModel routine) async {
 
 }
 
+void updateRoutineData(RoutinesModel routine) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  mapData(data) {
+
+    return [
+      for (ExerciseListModel exerciseListData in data)
+        {
+          "exerciseName": exerciseListData.exerciseName,
+          "exerciseDate": exerciseListData.exerciseDate,
+        }
+    ];
+
+  }
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('routine-data')
+      .doc(routine.routineName)
+      .update({
+    "routineName": routine.routineName,
+    "routineDate": routine.routineDate,
+    "routineID": routine.routineID,
+    "exercises": mapData(routine.exercises),
+  });
+
+}
+
 void deleteRoutineData(String routineName) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
