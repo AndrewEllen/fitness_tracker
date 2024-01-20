@@ -23,6 +23,16 @@ class WorkoutProvider with ChangeNotifier {
   List<ExerciseModel> get exerciseList => _exerciseList;
 
 
+  bool checkForExerciseName(String exerciseNameToCheck) {
+
+    if (_exerciseNamesList.any((value) => value == exerciseNameToCheck)) {
+      return true;
+    }
+    return false;
+
+  }
+
+
   bool checkForExerciseData(String exerciseNameToCheck) {
 
     if (_exerciseList.any((value) => value.exerciseName == exerciseNameToCheck)) {
@@ -139,6 +149,26 @@ class WorkoutProvider with ChangeNotifier {
     }
 
     updateRoutineData(routine);
+
+    notifyListeners();
+
+  }
+
+  void addNewExercise(String exerciseName) {
+
+    _exerciseNamesList.add(exerciseName);
+
+    updateExerciseData(_exerciseNamesList);
+
+    notifyListeners();
+
+  }
+
+  void DeleteExercise(String exerciseName) {
+
+    _exerciseNamesList.removeWhere((element) => element == exerciseName);
+
+    updateExerciseData(_exerciseNamesList);
 
     notifyListeners();
 

@@ -370,3 +370,18 @@ void deleteRoutineData(String routineName) async {
 
 }
 
+void updateExerciseData(List<String> exerciseNames) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('exercise-data')
+      .doc("exercise-names")
+      .update({
+        "data": exerciseNames,
+      });
+
+}
+
