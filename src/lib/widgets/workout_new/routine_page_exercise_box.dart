@@ -27,6 +27,10 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
 
   String daysPassedCalculator(String oldDate) {
 
+    if (oldDate.isEmpty) {
+      return "";
+    }
+
     DateTime oldDateFormatted = DateTime.parse(DateFormat("yyyy-MM-dd").format(DateFormat("dd/MM/yyyy")
         .parse(oldDate)));
 
