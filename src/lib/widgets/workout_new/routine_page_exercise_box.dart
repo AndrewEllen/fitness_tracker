@@ -7,6 +7,7 @@ import '../../constants.dart';
 import '../../pages/workout_new/workout_exercise_page.dart';
 import '../../providers/general/page_change_provider.dart';
 import '../../providers/workout/workoutProvider.dart';
+import '../general/app_default_button.dart';
 
 
 class RoutinePageExerciseBox extends StatefulWidget {
@@ -130,7 +131,41 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                     height: value.h,
                     color: Colors.red,
                     child: InkWell(
-                      onTap: () => context.read<WorkoutProvider>().deleteExerciseFromRoutine(widget.index, widget.routine),
+                      onTap: () async {
+                        bool _delete = await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: appTertiaryColour,
+                              titleTextStyle: const TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 22,
+                              ),
+                              contentTextStyle: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                              title: const Text('Do you want to remove this Exercise?'),
+                              content: const Text("It can be added again later"),
+                              actions: <Widget>[
+                                AppButton(
+                                  onTap: () => Navigator.of(context).pop(false),
+                                  buttonText: "No",
+                                ),
+                                AppButton(
+                                  onTap: () => Navigator.of(context).pop(true),
+                                  buttonText: "Yes",
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        if (_delete) {
+                          print("deleting");
+                          context.read<WorkoutProvider>().deleteExerciseFromRoutine(widget.index, widget.routine);
+                        }
+                      },
                       child: const Center(
                         child: Icon(
                           Icons.delete,

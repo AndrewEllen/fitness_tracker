@@ -23,12 +23,16 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
 
   @override
   Widget build(BuildContext context) {
+
+    context.watch<WorkoutProvider>().routinesList;
+
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       itemCount: widget.routine.exercises.length,
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
         return RoutinePageExerciseBox(
+          key: UniqueKey(),
           routine: widget.routine,
           index: index,
         );

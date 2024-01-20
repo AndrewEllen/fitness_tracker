@@ -26,6 +26,7 @@ class _HomePageRoutinesListState extends State<HomePageRoutinesList> {
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
         return RoutineBox(
+          key: UniqueKey(),
           index: index,
         );
         },

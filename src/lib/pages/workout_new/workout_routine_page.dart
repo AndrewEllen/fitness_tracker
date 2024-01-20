@@ -69,7 +69,13 @@ class WorkoutRoutinePage extends StatelessWidget {
               child: const Icon(
                 Icons.add,
               ),
-              onPressed: () => context.read<PageChange>().changePageCache(ExerciseSelectionPage(routine: routine)),
+              onPressed: () {
+                final menuState = _key.currentState;
+                if (menuState != null) {
+                  menuState.toggle();
+                }
+                context.read<PageChange>().changePageCache(ExerciseSelectionPage(routine: routine));
+              }
             ),
           ),
           SizedBox(

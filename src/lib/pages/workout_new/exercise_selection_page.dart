@@ -1,3 +1,4 @@
+import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
@@ -183,52 +184,95 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
                 itemCount: checkboxList.length,
                 itemBuilder: (BuildContext context, int index) {
 
-                  return StatefulBuilder(
-                      builder: (BuildContext context, StateSetter setState) {
+                  return Dismissible(
+                    confirmDismiss: (DismissDirection direction) async {
+                      return await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            backgroundColor: appTertiaryColour,
+                            titleTextStyle: const TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 22,
+                            ),
+                            contentTextStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                            title: const Text('Do you want to delete this Exercise?'),
+                            content: const Text("This action can't be undone"),
+                            actions: <Widget>[
+                              AppButton(
+                                onTap: () => Navigator.of(context).pop(false),
+                                buttonText: "No",
+                              ),
+                              AppButton(
+                                onTap: () => Navigator.of(context).pop(true),
+                                buttonText: "Yes",
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    direction: DismissDirection.horizontal,
+                    onDismissed: (DismissDirection direction) => context.read<WorkoutProvider>().DeleteExercise(checkboxList[index].exerciseName),
+                    key: UniqueKey(),
+                    background: Container(
+                      color: Colors.red,
+                      child: const Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
+                    ),
+                    child: StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
 
-                        if (boolIndexBackupList.contains(index)) {
+                          if (boolIndexBackupList.contains(index)) {
 
-                          checkboxList[index].isChecked = true;
+                            checkboxList[index].isChecked = true;
 
-                        }
+                          }
 
-                        if (newItem) {
-                          checkboxList.last.isChecked = true;
-                          boolIndexBackupList.add(checkboxList.length-1);
-                          setState(() {
-                            newItem = false;
-                          });
-                          scrollController.animateTo(
-                            scrollController.position.maxScrollExtent,
-                            duration: Duration(seconds: 2),
-                            curve: Curves.fastOutSlowIn,
+                          if (newItem) {
+                            checkboxList.last.isChecked = true;
+                            boolIndexBackupList.add(checkboxList.length-1);
+                            setState(() {
+                              newItem = false;
+                            });
+                            scrollController.animateTo(
+                              scrollController.position.maxScrollExtent,
+                              duration: Duration(seconds: 2),
+                              curve: Curves.fastOutSlowIn,
+                            );
+                          }
+
+                          return CheckboxListTile(
+                            key: UniqueKey(),
+                            title: Text(
+                              checkboxList[index].exerciseName,
+                              style: boldTextStyle,
+                            ),
+                            controlAffinity: ListTileControlAffinity.trailing,
+                            value: checkboxList[index].isChecked,
+                            onChanged: (value) {
+
+                              setState(() {
+                                checkboxList[index].isChecked = value!;
+                              });
+
+                              if (checkboxList[index].isChecked) {
+                                boolIndexBackupList.add(index);
+                              } else {
+                                boolIndexBackupList.removeWhere((element) => element == index);
+                              }
+
+
+                            },
                           );
                         }
-
-                        return CheckboxListTile(
-                          key: UniqueKey(),
-                          title: Text(
-                            checkboxList[index].exerciseName,
-                            style: boldTextStyle,
-                          ),
-                          controlAffinity: ListTileControlAffinity.trailing,
-                          value: checkboxList[index].isChecked,
-                          onChanged: (value) {
-
-                            setState(() {
-                              checkboxList[index].isChecked = value!;
-                            });
-
-                            if (checkboxList[index].isChecked) {
-                              boolIndexBackupList.add(index);
-                            } else {
-                              boolIndexBackupList.removeWhere((element) => element == index);
-                            }
-
-
-                          },
-                        );
-                      }
+                    ),
                   );
                 },
               ),
@@ -330,6 +374,8 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
                             });
 
                             context.read<WorkoutProvider>().addExerciseToRoutine(widget.routine, _selectedExerciseList);
+
+                            context.read<PageChange>().backPage();
 
                           },
                           buttonText: 'Add to Routine',

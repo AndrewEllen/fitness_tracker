@@ -84,6 +84,8 @@ class WorkoutProvider with ChangeNotifier {
 
   void deleteRoutine(int index) {
 
+    print(index);
+
     deleteRoutineData(_routinesList[index].routineName);
     _routinesList.removeAt(index);
 
@@ -181,6 +183,8 @@ class WorkoutProvider with ChangeNotifier {
     _routinesList[routineIndex].exercises.removeAt(indexOfExercise);
 
     updateRoutineData(routine);
+
+    notifyListeners();
 
   }
 
