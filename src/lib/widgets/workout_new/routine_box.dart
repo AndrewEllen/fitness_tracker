@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -19,8 +20,29 @@ class RoutineBox extends StatefulWidget {
 
 class _RoutineBoxState extends State<RoutineBox> {
 
-
   late bool _expandPanel = false;
+
+
+  String daysPassedCalculator(String oldDate) {
+
+    DateTime oldDateFormatted = DateTime.parse(DateFormat("yyyy-MM-dd").format(DateFormat("dd/MM/yyyy")
+        .parse(oldDate)));
+
+    DateTime newUnformatted = DateTime.now();
+
+    DateTime newDateFormatted = DateTime(newUnformatted.year, newUnformatted.month, newUnformatted.day);
+
+    String daysPassed = (newDateFormatted.difference(oldDateFormatted).inHours / 24).round().toString();
+
+    if (daysPassed == "0") {
+      return "Today";
+    }
+
+    return "-$daysPassed days ago ($oldDate)";
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +74,9 @@ class _RoutineBoxState extends State<RoutineBox> {
                 context.read<WorkoutProvider>().routinesList[widget.index].routineName,
                 style: boldTextStyle,
               ),
-              subtitle: const Text(
-                "-5 days ago",
-                style: TextStyle(
+              subtitle: Text(
+                daysPassedCalculator(context.read<WorkoutProvider>().routinesList[widget.index].routineDate),
+                style: const TextStyle(
                   fontSize: 14,
                   color: Colors.white70,
                 ),

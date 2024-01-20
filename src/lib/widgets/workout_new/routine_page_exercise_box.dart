@@ -1,6 +1,7 @@
 import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -21,7 +22,28 @@ class RoutinePageExerciseBox extends StatefulWidget {
 
 class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
 
+
   late bool _expandPanel = false;
+
+  String daysPassedCalculator(String oldDate) {
+
+    DateTime oldDateFormatted = DateTime.parse(DateFormat("yyyy-MM-dd").format(DateFormat("dd/MM/yyyy")
+        .parse(oldDate)));
+
+    DateTime newUnformatted = DateTime.now();
+
+    DateTime newDateFormatted = DateTime(newUnformatted.year, newUnformatted.month, newUnformatted.day);
+
+    String daysPassed = (newDateFormatted.difference(oldDateFormatted).inHours / 24).round().toString();
+
+    if (daysPassed == "0") {
+      return "Today";
+    }
+
+    return "-$daysPassed days ago ($oldDate)";
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +56,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
             context.read<WorkoutProvider>().fetchExerciseData(widget.routine.exercises[widget.index].exerciseName);
 
             context.read<PageChange>().changePageCache(WorkoutExercisePage(
+              routine: widget.routine,
               exercise: context.read<WorkoutProvider>().exerciseList[
               context.read<WorkoutProvider>().exerciseList.indexWhere((element) => element.exerciseName == widget.routine.exercises[widget.index].exerciseName)
               ],
@@ -64,7 +87,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                 style: boldTextStyle,
               ),
               subtitle: Text(
-                widget.routine.exercises[widget.index].exerciseDate,
+                daysPassedCalculator(widget.routine.exercises[widget.index].exerciseDate),
                 style: const TextStyle(
                   fontSize: 14,
                   color: Colors.white70,
@@ -88,6 +111,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                   context.read<WorkoutProvider>().fetchExerciseData(widget.routine.exercises[widget.index].exerciseName);
 
                   context.read<PageChange>().changePageCache(WorkoutExercisePage(
+                    routine: widget.routine,
                     exercise: context.read<WorkoutProvider>().exerciseList[
                     context.read<WorkoutProvider>().exerciseList.indexWhere((element) => element.exerciseName == widget.routine.exercises[widget.index].exerciseName)
                     ],

@@ -12,8 +12,9 @@ import '../../widgets/workout_new/routine_page_exercise_list.dart';
 import '../../widgets/workout_new/workout_log_box.dart';
 
 class WorkoutExercisePage extends StatefulWidget {
-  WorkoutExercisePage({Key? key, required this.exercise}) : super(key: key);
+  WorkoutExercisePage({Key? key, required this.exercise, required this.routine}) : super(key: key);
   ExerciseModel exercise;
+  RoutinesModel routine;
 
   @override
   State<WorkoutExercisePage> createState() => _WorkoutExercisePageState();
@@ -129,7 +130,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
 
                             }
 
-                            context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog);
+                            context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog, widget.routine);
 
                           } catch (e) {
                             debugPrint(e.toString());
@@ -137,7 +138,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                             try {
                               widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
 
-                              context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog);
+                              context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog, widget.routine);
 
                             } catch (e) {
 

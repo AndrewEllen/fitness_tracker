@@ -1,12 +1,15 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import '../../models/workout/exercise_model.dart';
 import '../../models/workout/reps_weight_stats_model.dart';
 import '../../models/workout/routines_model.dart';
 import '../general/database_get.dart';
 import '../general/database_write.dart';
+
 
 class WorkoutProvider with ChangeNotifier {
 
@@ -99,7 +102,20 @@ class WorkoutProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void addNewLog(ExerciseModel newLog, Map newLogMap) {
+  void updateExerciseDate(RoutinesModel routine, int routineID, int exerciseID) {
+
+    DateTime currentDateTime = DateTime.now();
+    String DateTimeFormatted = DateFormat("dd/MM/yyyy").format(currentDateTime);
+
+    _routinesList[routineID].routineDate = DateTimeFormatted;
+    _routinesList[routineID].exercises[exerciseID].exerciseDate = DateTimeFormatted;
+
+    updateRoutineData(_routinesList[routineID]);
+
+    notifyListeners();
+  }
+
+  void addNewLog(ExerciseModel newLog, Map newLogMap, RoutinesModel routine) {
 
     _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == newLog.exerciseName)] = newLog;
 
@@ -107,6 +123,12 @@ class WorkoutProvider with ChangeNotifier {
         _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == newLog.exerciseName)],
         newLogMap
     );
+
+    int routineID = _routinesList.indexOf(routine);
+
+    int exerciseID = _routinesList[routineID].exercises.indexWhere((element) => element.exerciseName == newLog.exerciseName);
+
+    updateExerciseDate(routine, routineID, exerciseID);
 
     notifyListeners();
 
