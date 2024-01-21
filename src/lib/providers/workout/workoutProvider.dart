@@ -249,6 +249,10 @@ class WorkoutProvider with ChangeNotifier {
 
   void addNewLog(ExerciseModel newLog, Map newLogMap, RoutinesModel routine) {
 
+    if (!_workoutStarted) {
+      startWorkout();
+    }
+
     _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == newLog.exerciseName)] = newLog;
 
     saveExerciseLogs(
