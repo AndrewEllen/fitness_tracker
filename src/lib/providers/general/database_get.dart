@@ -10,6 +10,7 @@ import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:fitness_tracker/models/workout/workout_log_exercise_data.dart';
 import 'package:fitness_tracker/models/workout/workout_log_model.dart';
+import 'package:fitness_tracker/models/workout/workout_overall_stats_model.dart';
 import 'package:fitness_tracker/providers/diet/user_nutrition_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -987,28 +988,13 @@ try {
 
 GetWorkoutOverallStats() async {
 
-  exercisesToModel(data) {
-
-    return [
-      for (Map exercise in data)
-        WorkoutLogExerciseDataModel(
-          measurementName: exercise["measurementName"],
-          routineName: exercise["routineName"],
-          reps: exercise["reps"],
-          weight: exercise["weight"],
-          timestamp: exercise["timestamp"],
-        ),
-    ];
-
-  }
-
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  dynamic data = await FirebaseFirestore.instance
+  dynamic snapshot = await FirebaseFirestore.instance
       .collection('user-data')
       .doc(firebaseAuth.currentUser!.uid)
-      .collection('current-workout-data')
-      .doc("workout")
+      .collection('workout-overall-stats')
+      .doc("stats")
       .get();
 
   dynamic parseDateTime(Timestamp? timeStamp) {
@@ -1018,14 +1004,25 @@ GetWorkoutOverallStats() async {
     }
     return null;
 
-
   }
 
-  return WorkoutLogModel(
-    startOfWorkout: parseDateTime(data["startOfWorkout"]),
-    endOfWorkout: parseDateTime(data["endOfWorkout"]),
-    exercises: exercisesToModel(data["exercises"]),
-    routineNames: List<String>.from(data["routineNames"]),
+  return WorkoutOverallStatsModel(
+    totalVolume: snapshot["totalVolume"],
+    totalReps: snapshot["totalReps"],
+    totalSets: snapshot["totalSets"],
+    totalWorkouts: snapshot["totalWorkouts"],
+    totalAverageDuration: snapshot["totalAverageDuration"],
+    totalVolumeThisYear: snapshot["totalVolumeThisYear"],
+    totalVolumeThisMonth: snapshot["totalVolumeThisMonth"],
+    totalRepsThisYear: snapshot["totalRepsThisYear"],
+    totalRepsThisMonth: snapshot["totalRepsThisMonth"],
+    totalSetsThisYear: snapshot["totalSetsThisYear"],
+    totalSetsThisMonth: snapshot["totalSetsThisMonth"],
+    totalWorkoutsThisYear: snapshot["totalWorkoutsThisYear"],
+    totalWorkoutsThisMonth: snapshot["totalWorkoutsThisMonth"],
+    averageDurationThisYear: snapshot["averageDurationThisYear"],
+    averageDurationThisMonth: snapshot["averageDurationThisMonth"],
+    lastLog: parseDateTime(snapshot["lastLog"]),
   );
 
 }

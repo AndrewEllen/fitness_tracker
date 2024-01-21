@@ -5,6 +5,7 @@ import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
 import 'package:fitness_tracker/models/groceries/grocery_item.dart';
 import 'package:fitness_tracker/models/stats/user_data_model.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
+import 'package:fitness_tracker/models/workout/workout_overall_stats_model.dart';
 import 'package:fitness_tracker/providers/grocery/groceries_provider.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
   late List<String> exercises;
   late bool workoutStarted;
   late Map workoutLogs;
+  late WorkoutOverallStatsModel workoutOverallStats;
 
   Future<void> stepsCalorieCalculator() async {
 
@@ -122,6 +124,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     try {workoutStarted = await GetWorkoutStarted();} catch (exception) {print("started");print(exception);}
     try {workoutLogs = await GetPastWorkoutData(null);} catch (exception) {print("logs");print(exception);}
+    try {workoutOverallStats = await GetWorkoutOverallStats();} catch (exception) {print("workout-stats");print(exception);}
 
     try {context.read<UserData>().setUserBioData(userData);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCalories(userData.calories);} catch (exception) {print(exception);}
@@ -142,6 +145,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     try {context.read<WorkoutProvider>().loadWorkoutStarted(workoutStarted);} catch (exception) {print(exception);}
     try {context.read<WorkoutProvider>().loadWorkoutLogs(workoutLogs);} catch (exception) {print(exception);}
+    try {context.read<WorkoutProvider>().loadOverallStats(workoutOverallStats);} catch (exception) {print(exception);}
 
 
     try {await stepsCalorieCalculator();} catch (exception) {print(exception);}
