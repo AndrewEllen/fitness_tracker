@@ -119,7 +119,7 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  timeStartedFunction(context.read<WorkoutProvider>().currentWorkout.startOfWorkout),
+                  timeStartedFunction(context.read<WorkoutProvider>().currentSelectedLog.startOfWorkout),
                   style: boldTextStyle,
                 ),
               ),
@@ -171,17 +171,26 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          const Icon(
-                                            MdiIcons.dumbbell,
-                                            color: Colors.white,
+                                          Padding(
+                                            padding: EdgeInsets.only(right: 20.w),
+                                            child: const Icon(
+                                              MdiIcons.dumbbell,
+                                              color: Colors.white,
+                                            ),
                                           ),
-                                          const Spacer(flex: 2),
-                                          Text(
-                                            workoutExerciseNamesSet[index2],
-                                            style: boldTextStyle.copyWith(
-                                                fontSize: 18),
+                                          SizedBox(
+                                            width: 260.w,
+                                            child: SingleChildScrollView(
+                                              clipBehavior: Clip.hardEdge,
+                                              scrollDirection: Axis.horizontal,
+                                              child: Text(
+                                                workoutExerciseNamesSet[index2],
+                                                style: boldTextStyle.copyWith(
+                                                    fontSize: 18),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                            ),
                                           ),
-                                          SizedBox(width: 120.w),
                                           const Spacer(flex:8),
                                         ],
                                       ),
@@ -196,28 +205,37 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
                                           padding: EdgeInsets.only(
                                               left: 24.w, top: 12.h),
                                           child: Row(
-                                            mainAxisSize: MainAxisSize.min,
+                                            //mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Expanded(
+                                              Padding(
+                                                padding: EdgeInsets.only(right: 36.w),
                                                 child: Text(
                                                   (index3 + 1).toString(),
                                                   // Use index3 for set number
                                                   style: boldTextStyle,
                                                 ),
                                               ),
-                                              const Spacer(),
-                                              Text(
-                                                filteredExercises[index3].weight.toString().replaceAll(removeTrailingZeros, "")
-                                                    .toString() + " kg x " + filteredExercises[index3].reps.toString().replaceAll(removeTrailingZeros, "") + " reps",
-                                                style: boldTextStyle,
+                                              Padding(
+                                                padding: EdgeInsets.only(right: 36.w),
+                                                child: Text(
+                                                  filteredExercises[index3].weight.toString().replaceAll(removeTrailingZeros, "")
+                                                      .toString() + " kg x " + filteredExercises[index3].reps.toString().replaceAll(removeTrailingZeros, "") + " reps",
+                                                  style: boldTextStyle,
+                                                  textAlign: TextAlign.left,
+                                                ),
                                               ),
-                                              const Spacer(flex:6),
-                                              Text(
-                                                filteredExercises[index3].timestamp
-                                                    .toString(),
-                                                style: boldTextStyle,
+                                              Spacer(),
+                                              Padding(
+                                                padding: EdgeInsets.only(right: 48.w),
+                                                child: Text(
+                                                  filteredExercises[index3].timestamp
+                                                      .toString(),
+                                                  style: boldTextStyle,
+                                                  textAlign: TextAlign.right,
+                                                ),
                                               ),
-                                              const Spacer(flex: 2),
                                             ],
                                           ),
                                         );
