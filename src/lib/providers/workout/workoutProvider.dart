@@ -1,12 +1,14 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
+import 'package:fitness_tracker/models/workout/workout_log_exercise_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import '../../models/workout/exercise_model.dart';
 import '../../models/workout/reps_weight_stats_model.dart';
 import '../../models/workout/routines_model.dart';
+import '../../models/workout/workout_log_model.dart';
 import '../general/database_get.dart';
 import '../general/database_write.dart';
 
@@ -25,6 +27,17 @@ class WorkoutProvider with ChangeNotifier {
 
   List<ExerciseModel> get exerciseList => _exerciseList;
 
+  late bool _workoutStarted = false;
+  late DateTime _startOfWorkout;
+  late DateTime _endOfWorkout;
+
+  bool get workoutStarted => _workoutStarted;
+  DateTime get startOfWorkout => _startOfWorkout;
+  DateTime get endOfWorkout => _endOfWorkout;
+
+  late WorkoutLogModel _currentWorkout;
+
+  WorkoutLogModel get currentWorkout => _currentWorkout;
 
   bool checkForExerciseName(String exerciseNameToCheck) {
 
@@ -68,6 +81,43 @@ class WorkoutProvider with ChangeNotifier {
 
   }
 
+  void loadWorkoutStarted(bool workoutStartedValue) async {
+
+    _workoutStarted = workoutStartedValue;
+
+    if (_workoutStarted) {
+
+      _currentWorkout = await GetCurrentWorkoutData();
+
+    }
+
+    notifyListeners();
+  }
+
+  void startWorkout() {
+
+    _startOfWorkout = DateTime.now();
+    _workoutStarted = true;
+
+    _currentWorkout = WorkoutLogModel(
+        startOfWorkout: startOfWorkout,
+        exercises: [],
+    );
+
+    writeWorkoutStarted(_workoutStarted, _currentWorkout);
+
+    notifyListeners();
+
+  }
+
+  void endWorkout(DateTime endOfWorkout) {
+
+    _workoutStarted = false;
+    writeWorkoutStarted(_workoutStarted, null);
+
+    notifyListeners();
+
+  }
 
   void createNewRoutine(String routineName) {
 
@@ -115,6 +165,31 @@ class WorkoutProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateWorkoutExerciseLogs(ExerciseModel newLog) {
+
+    print("adding");
+
+    print(newLog.exerciseName.runtimeType);
+    print(newLog.exerciseTrackingData.dailyLogs[0]["repValues"][0].runtimeType);
+    print(newLog.exerciseTrackingData.dailyLogs[0]["weightValues"][0].runtimeType);
+    print(newLog.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"][0].runtimeType);
+
+    _currentWorkout.exercises.add(
+      WorkoutLogExerciseDataModel(
+        measurementName: newLog.exerciseName,
+        reps: newLog.exerciseTrackingData.dailyLogs[0]["repValues"][0],
+        weight: newLog.exerciseTrackingData.dailyLogs[0]["weightValues"][0],
+        timestamp: newLog.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"][0],
+      ),
+    );
+
+    print("added");
+
+    updateCurrentWorkout(_currentWorkout);
+
+    notifyListeners();
+  }
+
   void addNewLog(ExerciseModel newLog, Map newLogMap, RoutinesModel routine) {
 
     _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == newLog.exerciseName)] = newLog;
@@ -131,6 +206,14 @@ class WorkoutProvider with ChangeNotifier {
     updateExerciseDate(routine, routineID, exerciseID);
 
     notifyListeners();
+
+    try {
+      if (_workoutStarted) {
+        updateWorkoutExerciseLogs(newLog);
+      }
+    } catch (error) {
+      debugPrint(error.toString());
+    }
 
   }
 

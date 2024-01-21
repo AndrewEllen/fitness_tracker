@@ -14,6 +14,7 @@ import '../../models/diet/food_item.dart';
 import '../../models/groceries/grocery_item.dart';
 import '../../models/workout/exercise_model.dart';
 import '../../models/workout/reps_weight_stats_model.dart';
+import '../../models/workout/workout_log_model.dart';
 
 
 void DeleteUserDocumentMeasurements(String documentName) async {
@@ -382,6 +383,49 @@ void updateExerciseData(List<String> exerciseNames) async {
       .update({
         "data": exerciseNames,
       });
+
+}
+
+void writeWorkoutStarted(bool workoutStarted, WorkoutLogModel? workout) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('current-workout-data')
+      .doc("started")
+      .set({
+        "started": workoutStarted,
+      });
+
+  if (workout != null) {
+    await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('current-workout-data')
+        .doc("workout")
+        .set(workout.toMap());
+  }
+
+}
+
+void updateCurrentWorkout(WorkoutLogModel workoutLog) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('current-workout-data')
+      .doc("workout")
+      .update(workoutLog.toMap());
+
+}
+
+void finalizeWorkout() async {
+
+
 
 }
 

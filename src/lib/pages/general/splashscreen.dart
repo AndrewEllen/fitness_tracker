@@ -35,6 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
   late List<String> groceryLists;
   late List<RoutinesModel> routines;
   late List<String> exercises;
+  late bool workoutStarted;
 
   Future<void> stepsCalorieCalculator() async {
 
@@ -118,6 +119,8 @@ class _SplashScreenState extends State<SplashScreen> {
     try {routines = await GetRoutinesData();} catch (exception) {print("routines");print(exception);}
     try {exercises = await GetExerciseData();} catch (exception) {print("exercises");print(exception);}
 
+    try {workoutStarted = await GetWorkoutStarted();} catch (exception) {print("started");print(exception);}
+
     try {context.read<UserData>().setUserBioData(userData);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCalories(userData.calories);} catch (exception) {print(exception);}
 
@@ -134,6 +137,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
     try {context.read<WorkoutProvider>().loadRoutineData(routines);} catch (exception) {print(exception);}
     try {context.read<WorkoutProvider>().loadExerciseNamesData(exercises);} catch (exception) {print(exception);}
+
+    try {context.read<WorkoutProvider>().loadWorkoutStarted(workoutStarted);} catch (exception) {print(exception);}
+
 
     try {await stepsCalorieCalculator();} catch (exception) {print(exception);}
 

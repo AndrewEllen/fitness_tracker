@@ -8,8 +8,11 @@ import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
+import 'package:fitness_tracker/models/workout/workout_log_exercise_data.dart';
+import 'package:fitness_tracker/models/workout/workout_log_model.dart';
 import 'package:fitness_tracker/providers/diet/user_nutrition_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:async';
@@ -810,5 +813,82 @@ GetExerciseData() async {
       .get();
 
   return List<String>.from(data['data'] as List);
+
+}
+
+GetWorkoutStarted() async {
+
+  try {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    dynamic snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('current-workout-data')
+        .where("started", isEqualTo: true)
+        .get();
+
+    dynamic data = [
+      for (QueryDocumentSnapshot document in snapshot.docs)
+        document.data()
+    ];
+
+    return data[0]["started"];
+
+
+  } catch (error) {
+
+    debugPrint(error.toString());
+
+    return false;
+
+  }
+
+
+}
+
+GetCurrentWorkoutData() async {
+
+  exercisesToModel(data) {
+
+    print(data);
+
+    return [
+      for (Map exercise in data)
+        WorkoutLogExerciseDataModel(
+          measurementName: exercise["measurementName"],
+          reps: exercise["reps"],
+          weight: exercise["weight"],
+          timestamp: exercise["timestamp"],
+        ),
+      ];
+    
+  }
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  dynamic data = await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('current-workout-data')
+      .doc("workout")
+      .get();
+  
+  dynamic parseDateTime(Timestamp? timeStamp) {
+
+    if (timeStamp != null) {
+      return timeStamp.toDate();
+    }
+    return null;
+
+    
+  }
+
+  return WorkoutLogModel(
+      startOfWorkout: parseDateTime(data["startOfWorkout"]),
+      endOfWorkout: parseDateTime(data["endOfWorkout"]),
+      exercises: exercisesToModel(data["exercises"]),
+  );
 
 }
