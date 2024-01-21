@@ -9,6 +9,7 @@ import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../models/diet/food_item.dart';
 import '../../models/groceries/grocery_item.dart';
@@ -423,9 +424,19 @@ void updateCurrentWorkout(WorkoutLogModel workoutLog) async {
 
 }
 
-void finalizeWorkout() async {
+void finalizeWorkout(WorkoutLogModel workoutLog) async {
 
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-log-data')
+      .doc(const Uuid().v4().toString())
+      .set({
+          "data": workoutLog.toMap(),
+          "time-stamp": DateTime.now().toUtc(),
+      });
 
 }
 

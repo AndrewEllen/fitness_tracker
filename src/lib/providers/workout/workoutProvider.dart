@@ -15,6 +15,14 @@ import '../general/database_write.dart';
 
 class WorkoutProvider with ChangeNotifier {
 
+  dynamic _lastWorkoutLogDocument;
+
+  dynamic get lastWorkoutLogDocument => _lastWorkoutLogDocument;
+
+  late List<WorkoutLogModel> _workoutLogs = [];
+
+  List<WorkoutLogModel> get workoutLogs => _workoutLogs;
+
   late List<RoutinesModel> _routinesList = [];
 
   List<RoutinesModel> get routinesList => _routinesList;
@@ -81,6 +89,36 @@ class WorkoutProvider with ChangeNotifier {
 
   }
 
+  void UpdateLastWorkoutLogDocument(dynamic document) {
+
+    _lastWorkoutLogDocument = document;
+
+  }
+
+  void loadWorkoutLogs(Map workoutLogs) {
+
+    print("logs");
+    print(workoutLogs["workoutLogs"]);
+
+    _workoutLogs.addAll(workoutLogs["workoutLogs"]);
+    _lastWorkoutLogDocument = workoutLogs["lastDoc"];
+
+    print("fin");
+
+    notifyListeners();
+  }
+
+  void loadMoreWorkoutLogs() async {
+
+    Map workoutLogs = await GetPastWorkoutData(_lastWorkoutLogDocument);
+
+    _workoutLogs.addAll(workoutLogs["workoutLogs"]);
+    _lastWorkoutLogDocument = workoutLogs["lastDoc"];
+
+    notifyListeners();
+
+  }
+
   void loadWorkoutStarted(bool workoutStartedValue) async {
 
     _workoutStarted = workoutStartedValue;
@@ -100,8 +138,9 @@ class WorkoutProvider with ChangeNotifier {
     _workoutStarted = true;
 
     _currentWorkout = WorkoutLogModel(
-        startOfWorkout: startOfWorkout,
-        exercises: [],
+      startOfWorkout: startOfWorkout,
+      exercises: [],
+      routineNames: [],
     );
 
     writeWorkoutStarted(_workoutStarted, _currentWorkout);
@@ -113,7 +152,21 @@ class WorkoutProvider with ChangeNotifier {
   void endWorkout(DateTime endOfWorkout) {
 
     _workoutStarted = false;
+    _currentWorkout.endOfWorkout = endOfWorkout;
+
+    if (_currentWorkout.exercises.isNotEmpty) {
+      finalizeWorkout(_currentWorkout);
+    }
+
+    _workoutLogs.add(_currentWorkout);
+
     writeWorkoutStarted(_workoutStarted, null);
+
+    _currentWorkout = WorkoutLogModel(
+      startOfWorkout: DateTime.now(),
+      exercises: [],
+      routineNames: [],
+    );
 
     notifyListeners();
 
@@ -165,14 +218,12 @@ class WorkoutProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateWorkoutExerciseLogs(ExerciseModel newLog) {
+  void updateWorkoutExerciseLogs(ExerciseModel newLog, RoutinesModel routine) {
 
-    print("adding");
 
-    print(newLog.exerciseName.runtimeType);
-    print(newLog.exerciseTrackingData.dailyLogs[0]["repValues"][0].runtimeType);
-    print(newLog.exerciseTrackingData.dailyLogs[0]["weightValues"][0].runtimeType);
-    print(newLog.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"][0].runtimeType);
+    _currentWorkout.routineNames.add(routine.routineName);
+    _currentWorkout.routineNames = _currentWorkout.routineNames.toSet().toList();
+
 
     _currentWorkout.exercises.add(
       WorkoutLogExerciseDataModel(
@@ -182,8 +233,6 @@ class WorkoutProvider with ChangeNotifier {
         timestamp: newLog.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"][0],
       ),
     );
-
-    print("added");
 
     updateCurrentWorkout(_currentWorkout);
 
@@ -209,7 +258,7 @@ class WorkoutProvider with ChangeNotifier {
 
     try {
       if (_workoutStarted) {
-        updateWorkoutExerciseLogs(newLog);
+        updateWorkoutExerciseLogs(newLog, routine);
       }
     } catch (error) {
       debugPrint(error.toString());

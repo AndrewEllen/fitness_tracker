@@ -1,5 +1,6 @@
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_log_page.dart';
+import 'package:fitness_tracker/pages/workout_new/workout_routines_home.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
@@ -206,13 +207,37 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
           SizedBox(
             width: 46.w,
             child: FloatingActionButton(
+              tooltip: "View Past Workouts",
+              backgroundColor: appSecondaryColour,
+              heroTag: null,
+              child: const Icon(
+                MdiIcons.clipboardClock,
+              ),
+              onPressed: () {
+                final menuState = _key.currentState;
+                if (menuState != null) {
+                  menuState.toggle();
+                }
+                context.read<PageChange>().changePageCache(WorkoutRoutinesHome());
+              },
+            ),
+          ),
+          SizedBox(
+            width: 46.w,
+            child: FloatingActionButton(
               tooltip: "View Current Workout",
               backgroundColor: appSecondaryColour,
               heroTag: null,
               child: const Icon(
                 Icons.access_time_outlined,
               ),
-              onPressed: () => context.read<PageChange>().changePageCache(WorkoutLogPage()),
+              onPressed: () {
+                final menuState = _key.currentState;
+                if (menuState != null) {
+                  menuState.toggle();
+                }
+                context.read<PageChange>().changePageCache(WorkoutLogPage());
+              },
             ),
           ),
         ],

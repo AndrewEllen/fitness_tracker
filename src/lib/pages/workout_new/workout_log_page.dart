@@ -24,10 +24,19 @@ class WorkoutLogPage extends StatefulWidget {
 class _WorkoutLogPageState extends State<WorkoutLogPage> {
   final RegExp removeTrailingZeros = RegExp(r'([.]*0)(?!.*\d)');
 
-  String totalVolume(WorkoutLogModel workoutLog) {
+  String totalVolume(WorkoutLogModel? workoutLog) {
 
+    if (workoutLog == null) {
+      return "0";
+    }
 
-    return "placehold";
+    double volume = 0;
+
+    for (WorkoutLogExerciseDataModel exerciseData in workoutLog.exercises) {
+      volume += exerciseData.weight * exerciseData.reps;
+    }
+
+    return volume.toString().replaceAll(removeTrailingZeros, "");
   }
 
   String timeStartedFunction(DateTime time) {
@@ -106,13 +115,13 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
                   ),
 
                   context.read<WorkoutProvider>().workoutStarted ? WorkoutLogTopStatsBox(
-                    dataToDisplay: DateTime.now().difference(workout!.startOfWorkout).inMinutes.toString(),
+                    dataToDisplay: totalVolume(workout),
                     title: "Volume",
                     noMargin: true,
                   ) : WorkoutLogTopStatsBox(
                     dataToDisplay: "0",
-                    title: "Duration",
-                    bottomText: "Minutes",
+                    title: "Volume",
+                    noMargin: true,
                   ) ,
 
                   context.read<WorkoutProvider>().workoutStarted ? WorkoutLogTopStatsBox(

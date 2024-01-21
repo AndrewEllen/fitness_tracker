@@ -852,8 +852,6 @@ GetCurrentWorkoutData() async {
 
   exercisesToModel(data) {
 
-    print(data);
-
     return [
       for (Map exercise in data)
         WorkoutLogExerciseDataModel(
@@ -886,9 +884,99 @@ GetCurrentWorkoutData() async {
   }
 
   return WorkoutLogModel(
-      startOfWorkout: parseDateTime(data["startOfWorkout"]),
-      endOfWorkout: parseDateTime(data["endOfWorkout"]),
-      exercises: exercisesToModel(data["exercises"]),
+    startOfWorkout: parseDateTime(data["startOfWorkout"]),
+    endOfWorkout: parseDateTime(data["endOfWorkout"]),
+    exercises: exercisesToModel(data["exercises"]),
+    routineNames: data["routineNames"],
   );
+
+}
+
+GetPastWorkoutData(dynamic? document) async {
+try {
+
+  //DateTime previousDay = DateTime.parse(DateFormat("yyyy-MM-dd").format(DateFormat("dd/MM/yyyy").parse(date)).toString());
+
+  exercisesToModel(data) {
+
+    print(data[0]["measurementName"]);
+
+    return [
+      for (Map exercise in data)
+        WorkoutLogExerciseDataModel(
+          measurementName: exercise["measurementName"],
+          reps: exercise["reps"],
+          weight: exercise["weight"],
+          timestamp: exercise["timestamp"],
+        ),
+    ];
+
+  }
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  dynamic snapshot;
+
+  if (document != null) {
+
+    print("More data");
+
+    snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('workout-log-data')
+        .orderBy("timeStamp", descending: true)
+        .limit(7)
+        .where("timeStamp", isLessThanOrEqualTo: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toUtc())
+        .startAfterDocument(document)
+        .get();
+    
+  } else {
+
+    print("Less data");
+
+    snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('workout-log-data')
+        .orderBy("time-stamp", descending: true)
+        .limit(7)
+        .where("time-stamp", isLessThanOrEqualTo: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day+1).toUtc())
+        .get();
+    
+  }
+
+  dynamic parseDateTime(Timestamp? timeStamp) {
+
+    if (timeStamp != null) {
+      return timeStamp.toDate();
+    }
+    return null;
+
+  }
+
+  return {
+    "workoutLogs": <WorkoutLogModel>[
+
+    for (dynamic document in snapshot.docs)
+      WorkoutLogModel(
+        startOfWorkout: parseDateTime(document.data()["data"]["startOfWorkout"]),
+        endOfWorkout: parseDateTime(document.data()["data"]["endOfWorkout"]),
+        exercises: exercisesToModel(document.data()["data"]["exercises"]),
+        routineNames: document.data()["data"]["routineNames"],
+      )
+  ],
+    "lastDoc": snapshot.docs.last,
+  };
+
+
+
+
+} catch (error) {
+
+  debugPrint(error.toString());
+  print("error");
+
+}
 
 }
