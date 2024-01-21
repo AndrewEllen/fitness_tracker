@@ -948,6 +948,8 @@ try {
 
   dynamic parseDateTime(Timestamp? timeStamp) {
 
+    print("timestamp");
+
     if (timeStamp != null) {
       return timeStamp.toDate();
     }
@@ -956,7 +958,7 @@ try {
   }
 
   return {
-    "workoutLogs": <WorkoutLogModel>[
+    "workoutLogs": [
 
     for (dynamic document in snapshot.docs)
       WorkoutLogModel(

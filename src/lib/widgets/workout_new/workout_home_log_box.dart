@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../pages/workout_new/workout_routine_page.dart';
+import '../../pages/workout_new/workout_selected_log_page.dart';
 import '../../providers/general/page_change_provider.dart';
 import '../../providers/workout/workoutProvider.dart';
 import '../general/app_default_button.dart';
@@ -51,7 +52,12 @@ class _WorkoutHomeLogBoxState extends State<WorkoutHomeLogBox> {
     return Padding(
       padding: EdgeInsets.only(bottom: 10.h),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+
+          context.read<WorkoutProvider>().selectLog(widget.index);
+          context.read<PageChange>().changePageCache(SelectedWorkoutLogPage());
+
+        },
         child: Column(
           children: [
             ListTile(
@@ -65,7 +71,7 @@ class _WorkoutHomeLogBoxState extends State<WorkoutHomeLogBox> {
                 height: 40.h,
                 child: Center(
                   child: Text(
-                    "",
+                    context.read<WorkoutProvider>().workoutLogs[widget.index].routineNames[0][0],
                     style: boldTextStyle,
                   ),
                 ),
@@ -83,7 +89,12 @@ class _WorkoutHomeLogBoxState extends State<WorkoutHomeLogBox> {
               ),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+
+                context.read<WorkoutProvider>().selectLog(widget.index);
+                context.read<PageChange>().changePageCache(SelectedWorkoutLogPage());
+
+              },
               child: Ink(
                 decoration: const BoxDecoration(
                   border: Border(

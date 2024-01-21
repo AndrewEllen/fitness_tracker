@@ -15,7 +15,7 @@ class WorkoutLogModel {
     return {
       'startOfWorkout': startOfWorkout,
       'endOfWorkout': endOfWorkout,
-      'endOfWorkout': routineNames,
+      'routineNames': routineNames,
       'exercises': mapDataA(exercises),
     };
   }

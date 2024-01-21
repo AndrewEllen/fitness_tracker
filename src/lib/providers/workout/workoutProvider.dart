@@ -19,6 +19,10 @@ class WorkoutProvider with ChangeNotifier {
 
   dynamic get lastWorkoutLogDocument => _lastWorkoutLogDocument;
 
+  late WorkoutLogModel _currentSelectedLog;
+
+  WorkoutLogModel get currentSelectedLog => _currentSelectedLog;
+
   late List<WorkoutLogModel> _workoutLogs = [];
 
   List<WorkoutLogModel> get workoutLogs => _workoutLogs;
@@ -93,6 +97,10 @@ class WorkoutProvider with ChangeNotifier {
 
     _lastWorkoutLogDocument = document;
 
+  }
+
+  void selectLog(int index) {
+    _currentSelectedLog = _workoutLogs[index];
   }
 
   void loadWorkoutLogs(Map workoutLogs) {
