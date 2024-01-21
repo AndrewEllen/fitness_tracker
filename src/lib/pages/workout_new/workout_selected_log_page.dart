@@ -86,9 +86,13 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
                 width: double.maxFinite,
                 height: 50.h,
                 child: Center(
-                  child: Text(
-                    "Current Workout",
-                    style: boldTextStyle.copyWith(fontSize: 18),
+                  child: SingleChildScrollView(
+                    clipBehavior: Clip.hardEdge,
+                    scrollDirection: Axis.horizontal,
+                    child: Text(
+                      workoutRoutineNamesSet.join(", "),
+                      style: boldTextStyle.copyWith(fontSize: 18),
+                    ),
                   ),
                 ),
               ),
@@ -129,7 +133,7 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
                 child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: workoutExerciseNamesSet.length,
+                    itemCount: workoutRoutineNamesSet.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

@@ -50,155 +50,163 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
           overscroll.disallowIndicator();
           return true;
         },
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 14.h),
-                color: appTertiaryColour,
-                width: double.maxFinite,
-                height: 50.h,
-                child: Center(
-                  child: Text(
-                    widget.exercise.exerciseName,
-                    style: boldTextStyle.copyWith(fontSize: 18),
-                  ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              margin: EdgeInsets.only(bottom: 14.h),
+              color: appTertiaryColour,
+              width: double.maxFinite,
+              height: 50.h,
+              child: Center(
+                child: Text(
+                  widget.exercise.exerciseName,
+                  style: boldTextStyle.copyWith(fontSize: 18),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(bottom: 14.h),
-                color: appTertiaryColour,
-                width: double.maxFinite,
-                height: 225.h,
-                child: Column(
-                  children: [
-                    Center(
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 14.h),
+              color: appTertiaryColour,
+              width: double.maxFinite,
+              height: 320.h,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(top:8.h),
                       child: Text(
                         "Log",
                         style: boldTextStyle.copyWith(fontSize: 18),
                       ),
                     ),
-                    IncrementalCounter(
-                      inputController: weightController,
-                      suffix: "Kg",
-                      label: "Weight *",
-                      smallButtons: true,
-                    ),
-                    IncrementalCounter(
-                      inputController: repsController,
-                      suffix: "Reps",
-                      label: "Reps *",
-                      smallButtons: false,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
+                  ),
+                  IncrementalCounter(
+                    inputController: weightController,
+                    suffix: "Kg",
+                    label: "Weight *",
+                    smallButtons: true,
+                  ),
+                  IncrementalCounter(
+                    inputController: repsController,
+                    suffix: "Reps",
+                    label: "Reps *",
+                    smallButtons: false,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
 
-                        if (weightController.text.isNotEmpty && repsController.text.isNotEmpty) {
-                          Map newLog = {
-                            "measurementDate": DateFormat("dd/MM/yyy").format(DateTime.now()).toString(),
-                            "weightValues": <double>[
+                      if (weightController.text.isNotEmpty && repsController.text.isNotEmpty) {
+                        Map newLog = {
+                          "measurementDate": DateFormat("dd/MM/yyy").format(DateTime.now()).toString(),
+                          "weightValues": <double>[
 
-                              double.parse(weightController.text),
+                            double.parse(weightController.text),
 
-                            ],
-                            "repValues": <double>[
+                          ],
+                          "repValues": <double>[
 
-                              double.parse(repsController.text),
+                            double.parse(repsController.text),
 
-                            ],
-                            "measurementTimeStamp": <String>[
+                          ],
+                          "measurementTimeStamp": <String>[
 
-                              DateFormat("HH:mm").format(DateTime.now()).toString(),
+                            DateFormat("HH:mm").format(DateTime.now()).toString(),
 
-                            ]
-                          };
+                          ]
+                        };
+
+                        try {
+
+                          if (
+                          DateFormat("dd/MM/yyyy").parse(widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementDate"])
+                              == DateFormat("dd/MM/yyyy").parse(newLog["measurementDate"])
+                          ) {
+
+                            widget.exercise.exerciseTrackingData.dailyLogs[0]["weightValues"].insert(0, newLog["weightValues"][0]);
+                            widget.exercise.exerciseTrackingData.dailyLogs[0]["repValues"].insert(0, newLog["repValues"][0]);
+                            widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"].insert(0, newLog["measurementTimeStamp"][0]);
+
+                          } else {
+
+                            widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
+
+                          }
+
+                          context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog, widget.routine);
+
+                        } catch (e) {
+                          debugPrint(e.toString());
 
                           try {
-
-                            if (
-                            DateFormat("dd/MM/yyyy").parse(widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementDate"])
-                                == DateFormat("dd/MM/yyyy").parse(newLog["measurementDate"])
-                            ) {
-
-                              widget.exercise.exerciseTrackingData.dailyLogs[0]["weightValues"].insert(0, newLog["weightValues"][0]);
-                              widget.exercise.exerciseTrackingData.dailyLogs[0]["repValues"].insert(0, newLog["repValues"][0]);
-                              widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"].insert(0, newLog["measurementTimeStamp"][0]);
-
-                            } else {
-
-                              widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
-
-                            }
+                            widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
 
                             context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog, widget.routine);
 
                           } catch (e) {
+
                             debugPrint(e.toString());
-
-                            try {
-                              widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
-
-                              context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog, widget.routine);
-
-                            } catch (e) {
-
-                              debugPrint(e.toString());
-
-                            }
 
                           }
 
                         }
 
+                      }
 
-                      },
-                      child: const Text("Save Log"),
-                    ),
-                  ],
-                ),
+
+                    },
+                    child: const Text("Save Log"),
+                  ),
+                ],
               ),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: widget.exercise.exerciseTrackingData.dailyLogs.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 10.h),
-                        width: double.maxFinite,
-                        height: 60.h,
-                        color: appTertiaryColour,
-                        child: Center(
-                          child: Text(
-                            widget.exercise.exerciseTrackingData.dailyLogs[index]["measurementDate"],
-                            style: boldTextStyle.copyWith(fontSize: 18.h),
+            ),
+            Expanded(
+              child: ListView(
+                children: [
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: widget.exercise.exerciseTrackingData.dailyLogs.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 10.h),
+                            width: double.maxFinite,
+                            height: 60.h,
+                            color: appTertiaryColour,
+                            child: Center(
+                              child: Text(
+                                widget.exercise.exerciseTrackingData.dailyLogs[index]["measurementDate"],
+                                style: boldTextStyle.copyWith(fontSize: 18.h),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: widget.exercise.exerciseTrackingData.dailyLogs[index]["weightValues"].length,
-                        itemBuilder: (BuildContext context, int index2) {
-                          return WorkoutLogBox(exercise: widget.exercise, index: index, index2: index2, key: UniqueKey(),);
-                        },
-                      ),
-                    ],
-                  );
-                },
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: widget.exercise.exerciseTrackingData.dailyLogs[index]["weightValues"].length,
+                            itemBuilder: (BuildContext context, int index2) {
+                              return WorkoutLogBox(exercise: widget.exercise, index: index, index2: index2, key: UniqueKey(),);
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+
+                      context.read<WorkoutProvider>().fetchMoreExerciseData(widget.exercise);
+
+                    },
+                    child: const Text("Load More"),
+                  ),
+                ],
               ),
-
-              ElevatedButton(
-                onPressed: () {
-
-                  context.read<WorkoutProvider>().fetchMoreExerciseData(widget.exercise);
-
-                },
-                child: const Text("Load More"),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

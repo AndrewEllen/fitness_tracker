@@ -1,3 +1,4 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/workout/exercise_model.dart';
@@ -99,25 +100,31 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: FloatingActionButton(
-          backgroundColor: appSecondaryColour,
-          onPressed: () => context.read<WorkoutProvider>().workoutStarted ?
-          {
-            if (context.read<WorkoutProvider>().currentWorkout.exercises.isNotEmpty) {
-              context.read<WorkoutProvider>().endWorkout(DateTime.now()),
-              context.read<WorkoutProvider>().selectLog(0),
-              context.read<PageChange>().changePageRemovePreviousCache(SelectedWorkoutLogPage()),
-            } else {
-              context.read<WorkoutProvider>().endWorkout(DateTime.now()),
-              context.read<PageChange>().changePageRemovePreviousCache(WorkoutHomePageNew()),
-            }
+        child: AvatarGlow(
+          glowCount:
+          3,
+          glowColor: context.watch<WorkoutProvider>().workoutStarted ? appSenaryColour : appSecondaryColour,
+          glowRadiusFactor: 0.7,
+          child: FloatingActionButton(
+            backgroundColor: context.watch<WorkoutProvider>().workoutStarted ? appSenaryColour : appSecondaryColour,
+            onPressed: () => context.read<WorkoutProvider>().workoutStarted ?
+            {
+              if (context.read<WorkoutProvider>().currentWorkout.exercises.isNotEmpty) {
+                context.read<WorkoutProvider>().endWorkout(DateTime.now()),
+                context.read<WorkoutProvider>().selectLog(0),
+                context.read<PageChange>().changePageRemovePreviousCache(SelectedWorkoutLogPage()),
+              } else {
+                context.read<WorkoutProvider>().endWorkout(DateTime.now()),
+                context.read<PageChange>().changePageRemovePreviousCache(WorkoutHomePageNew()),
+              }
 
-          } : {
-            context.read<WorkoutProvider>().startWorkout(),
-            context.read<PageChange>().backPage(),
-          },
-          child: Icon(
-            context.read<WorkoutProvider>().workoutStarted ? Icons.save : Icons.timer,
+            } : {
+              context.read<WorkoutProvider>().startWorkout(),
+              context.read<PageChange>().backPage(),
+            },
+            child: Icon(
+                workoutRoutineNamesSet.isEmpty ? Icons.stop : context.read<WorkoutProvider>().workoutStarted ? Icons.save : Icons.timer,
+            ),
           ),
         ),
       ),
@@ -182,12 +189,12 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
                 ),
               ) : const SizedBox.shrink(),
 
-              context.read<WorkoutProvider>().workoutStarted ? Padding(
+              Padding(
                 padding: EdgeInsets.only(top: 32.h),
                 child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: workoutExerciseNamesSet.length,
+                    itemCount: workoutRoutineNamesSet.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,17 +236,26 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          const Icon(
-                                            MdiIcons.dumbbell,
-                                            color: Colors.white,
+                                          Padding(
+                                            padding: EdgeInsets.only(right: 20.w),
+                                            child: const Icon(
+                                              MdiIcons.dumbbell,
+                                              color: Colors.white,
+                                            ),
                                           ),
-                                          const Spacer(flex: 2),
-                                          Text(
-                                            workoutExerciseNamesSet[index2],
-                                            style: boldTextStyle.copyWith(
-                                                fontSize: 18),
+                                          SizedBox(
+                                            width: 260.w,
+                                            child: SingleChildScrollView(
+                                              clipBehavior: Clip.hardEdge,
+                                              scrollDirection: Axis.horizontal,
+                                              child: Text(
+                                                workoutExerciseNamesSet[index2],
+                                                style: boldTextStyle.copyWith(
+                                                    fontSize: 18),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                            ),
                                           ),
-                                          SizedBox(width: 120.w),
                                           const Spacer(flex:8),
                                         ],
                                       ),
@@ -254,28 +270,37 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
                                           padding: EdgeInsets.only(
                                               left: 24.w, top: 12.h),
                                           child: Row(
-                                            mainAxisSize: MainAxisSize.min,
+                                            //mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Expanded(
+                                              Padding(
+                                                padding: EdgeInsets.only(right: 36.w),
                                                 child: Text(
                                                   (index3 + 1).toString(),
                                                   // Use index3 for set number
                                                   style: boldTextStyle,
                                                 ),
                                               ),
-                                              const Spacer(),
-                                              Text(
-                                                filteredExercises[index3].weight.toString().replaceAll(removeTrailingZeros, "")
-                                                    .toString() + " kg x " + filteredExercises[index3].reps.toString().replaceAll(removeTrailingZeros, "") + " reps",
-                                                style: boldTextStyle,
+                                              Padding(
+                                                padding: EdgeInsets.only(right: 36.w),
+                                                child: Text(
+                                                  filteredExercises[index3].weight.toString().replaceAll(removeTrailingZeros, "")
+                                                      .toString() + " kg x " + filteredExercises[index3].reps.toString().replaceAll(removeTrailingZeros, "") + " reps",
+                                                  style: boldTextStyle,
+                                                  textAlign: TextAlign.left,
+                                                ),
                                               ),
-                                              const Spacer(flex:6),
-                                              Text(
-                                                filteredExercises[index3].timestamp
-                                                    .toString(),
-                                                style: boldTextStyle,
+                                              Spacer(),
+                                              Padding(
+                                                padding: EdgeInsets.only(right: 48.w),
+                                                child: Text(
+                                                  filteredExercises[index3].timestamp
+                                                      .toString(),
+                                                  style: boldTextStyle,
+                                                  textAlign: TextAlign.right,
+                                                ),
                                               ),
-                                              const Spacer(flex: 2),
                                             ],
                                           ),
                                         );
@@ -291,8 +316,8 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
                         ],
                       );
                     }
-        ),
-              ) : const SizedBox.shrink(),
+                ),
+              ),
         ]
       )
     ),
