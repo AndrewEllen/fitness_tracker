@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -28,6 +29,18 @@ class _WorkoutRoutinesHomeState extends State<WorkoutRoutinesHome> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Container(
+                margin: EdgeInsets.only(bottom: 14.h),
+                color: appTertiaryColour,
+                width: double.maxFinite,
+                height: 50.h,
+                child: Center(
+                  child: Text(
+                    "Workout Logs",
+                    style: boldTextStyle.copyWith(fontSize: 18),
+                  ),
+                ),
+              ),
               WorkoutLogPageList(),
               ElevatedButton(
                 onPressed: () {

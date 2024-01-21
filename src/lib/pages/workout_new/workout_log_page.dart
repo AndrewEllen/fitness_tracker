@@ -125,6 +125,7 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+
               Container(
                 margin: EdgeInsets.only(bottom: 14.h),
                 color: appTertiaryColour,

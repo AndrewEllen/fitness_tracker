@@ -925,9 +925,8 @@ try {
         .collection('user-data')
         .doc(firebaseAuth.currentUser!.uid)
         .collection('workout-log-data')
-        .orderBy("timeStamp", descending: true)
+        .orderBy("time-stamp", descending: true)
         .limit(7)
-        .where("timeStamp", isLessThanOrEqualTo: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toUtc())
         .startAfterDocument(document)
         .get();
     
@@ -968,7 +967,7 @@ try {
         routineNames: List<String>.from(document.data()["data"]["routineNames"]),
       )
   ],
-    "lastDoc": snapshot.docs.last,
+    "lastDoc": snapshot.docs.isEmpty ? document : snapshot.docs.last,
   };
 
 
