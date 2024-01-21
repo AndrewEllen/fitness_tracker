@@ -958,14 +958,14 @@ try {
   }
 
   return {
-    "workoutLogs": [
+    "workoutLogs": <WorkoutLogModel>[
 
     for (dynamic document in snapshot.docs)
       WorkoutLogModel(
         startOfWorkout: parseDateTime(document.data()["data"]["startOfWorkout"]),
         endOfWorkout: parseDateTime(document.data()["data"]["endOfWorkout"]),
         exercises: exercisesToModel(document.data()["data"]["exercises"]),
-        routineNames: document.data()["data"]["routineNames"],
+        routineNames: List<String>.from(document.data()["data"]["routineNames"]),
       )
   ],
     "lastDoc": snapshot.docs.last,
@@ -974,9 +974,10 @@ try {
 
 
 
-} catch (error) {
+} catch (error, stacktrace) {
 
   debugPrint(error.toString());
+  debugPrint(stacktrace.toString());
   print("error");
 
 }
