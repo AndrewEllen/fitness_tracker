@@ -7,14 +7,14 @@ import '../../constants.dart';
 import '../../providers/workout/workoutProvider.dart';
 import '../../widgets/workout_new/workout_log_page_list.dart';
 
-class WorkoutRoutinesHome extends StatefulWidget {
-  WorkoutRoutinesHome({Key? key}) : super(key: key);
+class WorkoutLogsHome extends StatefulWidget {
+  WorkoutLogsHome({Key? key}) : super(key: key);
 
   @override
-  State<WorkoutRoutinesHome> createState() => _WorkoutRoutinesHomeState();
+  State<WorkoutLogsHome> createState() => _WorkoutLogsHomeState();
 }
 
-class _WorkoutRoutinesHomeState extends State<WorkoutRoutinesHome> {
+class _WorkoutLogsHomeState extends State<WorkoutLogsHome> {
 
   @override
   Widget build(BuildContext context) {

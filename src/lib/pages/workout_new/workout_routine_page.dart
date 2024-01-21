@@ -1,6 +1,7 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_log_page.dart';
+import 'package:fitness_tracker/pages/workout_new/workout_logs_home.dart';
 import 'package:fitness_tracker/providers/general/page_change_provider.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
@@ -92,6 +93,26 @@ class WorkoutRoutinePage extends StatelessWidget {
                 }
                 context.read<PageChange>().changePageCache(ExerciseSelectionPage(routine: routine));
               }
+            ),
+          ),
+          SizedBox(
+            width: 46.w,
+            child: FloatingActionButton(
+              tooltip: "View Past Workouts",
+              backgroundColor: appSecondaryColour,
+              heroTag: null,
+              child: const Icon(
+                MdiIcons.clipboardClock,
+              ),
+              onPressed: () {
+                final menuState = _key.currentState;
+                if (menuState != null) {
+                  menuState.toggle();
+                }
+                context
+                    .read<PageChange>()
+                    .changePageCache(WorkoutLogsHome());
+              },
             ),
           ),
           SizedBox(

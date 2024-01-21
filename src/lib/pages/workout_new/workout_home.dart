@@ -1,7 +1,7 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_log_page.dart';
-import 'package:fitness_tracker/pages/workout_new/workout_routines_home.dart';
+import 'package:fitness_tracker/pages/workout_new/workout_logs_home.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
@@ -223,7 +223,7 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                 }
                 context
                     .read<PageChange>()
-                    .changePageCache(WorkoutRoutinesHome());
+                    .changePageCache(WorkoutLogsHome());
               },
             ),
           ),
