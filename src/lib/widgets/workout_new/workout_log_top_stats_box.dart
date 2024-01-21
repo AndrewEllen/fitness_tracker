@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../constants.dart';
 
@@ -23,7 +24,7 @@ class WorkoutLogTopStatsBox extends StatelessWidget {
               width: 2,
             )
         ),
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
         margin: EdgeInsets.only(
           left: noMargin ? 0 : 12,
           right: noMargin ? 0 : 12,
@@ -36,10 +37,10 @@ class WorkoutLogTopStatsBox extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.only(top:8.0.h, bottom:8.0.h),
               child: Text(
                 dataToDisplay,
-                style: smallFont ? bigMiddleFont ? boldTextStyle.copyWith(fontSize: 20) : boldTextStyle.copyWith(fontSize: 10) : boldTextStyle,
+                style: smallFont ? bigMiddleFont ? boldTextStyle.copyWith(fontSize: 18) : boldTextStyle.copyWith(fontSize: 10) : boldTextStyle,
                 textAlign: TextAlign.center,
               ),
             ),

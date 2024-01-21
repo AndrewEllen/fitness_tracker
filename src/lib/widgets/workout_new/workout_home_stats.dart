@@ -8,6 +8,13 @@ class WorkoutHomeStatsBox extends StatelessWidget {
   WorkoutHomeStatsBox({Key? key, required this.value}) : super(key: key);
   late double value;
 
+  String displayDuration(Duration duration) {
+    String negativeSign = duration.isNegative ? '-' : '';
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60).abs());
+    return "$negativeSign${twoDigits(duration.inHours)}h $twoDigitMinutes m";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -120,7 +127,8 @@ class WorkoutHomeStatsBox extends StatelessWidget {
               children: [
 
                 WorkoutLogTopStatsBox(
-                  dataToDisplay: context.read<WorkoutProvider>().workoutOverallStatsModel.totalAverageDuration.toString(),
+                  dataToDisplay:
+                  displayDuration(Duration(seconds: context.read<WorkoutProvider>().workoutOverallStatsModel.totalAverageDuration)),
                   title: "Avg.\nWorkout\nTime",
                   bottomText: "All Time",
                   smallFont: true,
@@ -128,7 +136,8 @@ class WorkoutHomeStatsBox extends StatelessWidget {
                 ),
 
                 WorkoutLogTopStatsBox(
-                  dataToDisplay: context.read<WorkoutProvider>().workoutOverallStatsModel.averageDurationThisMonth.toString(),
+                  dataToDisplay:
+                  displayDuration(Duration(seconds: context.read<WorkoutProvider>().workoutOverallStatsModel.averageDurationThisMonth)),
                   title: "Avg.\nWorkout\nTime",
                   bottomText: "This Month",
                   smallFont: true,
@@ -137,7 +146,8 @@ class WorkoutHomeStatsBox extends StatelessWidget {
                 ),
 
                 WorkoutLogTopStatsBox(
-                  dataToDisplay: context.read<WorkoutProvider>().workoutOverallStatsModel.averageDurationThisYear.toString(),
+                  dataToDisplay:
+                  displayDuration(Duration(seconds: context.read<WorkoutProvider>().workoutOverallStatsModel.averageDurationThisYear)),
                   title: "Avg.\nWorkout\nTime",
                   bottomText: "This Year",
                   smallFont: true,

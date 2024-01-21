@@ -984,3 +984,48 @@ try {
 }
 
 }
+
+GetWorkoutOverallStats() async {
+
+  exercisesToModel(data) {
+
+    return [
+      for (Map exercise in data)
+        WorkoutLogExerciseDataModel(
+          measurementName: exercise["measurementName"],
+          routineName: exercise["routineName"],
+          reps: exercise["reps"],
+          weight: exercise["weight"],
+          timestamp: exercise["timestamp"],
+        ),
+    ];
+
+  }
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  dynamic data = await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('current-workout-data')
+      .doc("workout")
+      .get();
+
+  dynamic parseDateTime(Timestamp? timeStamp) {
+
+    if (timeStamp != null) {
+      return timeStamp.toDate();
+    }
+    return null;
+
+
+  }
+
+  return WorkoutLogModel(
+    startOfWorkout: parseDateTime(data["startOfWorkout"]),
+    endOfWorkout: parseDateTime(data["endOfWorkout"]),
+    exercises: exercisesToModel(data["exercises"]),
+    routineNames: List<String>.from(data["routineNames"]),
+  );
+
+}

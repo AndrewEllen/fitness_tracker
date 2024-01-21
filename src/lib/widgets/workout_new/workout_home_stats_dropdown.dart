@@ -52,7 +52,7 @@ class _workoutHomeStatsDropdownState extends State<workoutHomeStatsDropdown> {
           ),
         ),
         TweenAnimationBuilder(
-          tween: Tween<double>(begin: 0.0, end: _expandPanel ? 700.h : 0),
+          tween: Tween<double>(begin: 0.0, end: _expandPanel ? 680.h : 0),
           duration: const Duration(milliseconds: 250),
           builder: (context, value, _) => ClipRRect(
             child: WorkoutHomeStatsBox(value: value),
