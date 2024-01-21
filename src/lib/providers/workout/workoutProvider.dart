@@ -164,9 +164,8 @@ class WorkoutProvider with ChangeNotifier {
 
     if (_currentWorkout.exercises.isNotEmpty) {
       finalizeWorkout(_currentWorkout);
+      _workoutLogs.add(_currentWorkout);
     }
-
-    _workoutLogs.add(_currentWorkout);
 
     writeWorkoutStarted(_workoutStarted, null);
 

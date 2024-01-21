@@ -1,3 +1,4 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_log_page.dart';
 import 'package:fitness_tracker/providers/general/page_change_provider.dart';
@@ -34,14 +35,28 @@ class WorkoutRoutinePage extends StatelessWidget {
         ),
 
 
-        openButtonBuilder: RotateFloatingActionButtonBuilder(
-          child: const Icon(
-            Icons.menu,
-          ),
-          fabSize: ExpandableFabSize.regular,
-          foregroundColor: Colors.white,
-          backgroundColor: appSenaryColour,
-          shape: const CircleBorder(),
+        openButtonBuilder: FloatingActionButtonBuilder(
+          size: 16.w,
+          builder: (BuildContext context, void Function()? onPressed,
+              Animation<double> progress) {
+            return AvatarGlow(
+              glowCount: context.watch<WorkoutProvider>().workoutStarted ? 3 : 0,
+              glowColor: Colors.red,
+              glowRadiusFactor: 0.3,
+              child: Material(
+                color: appSenaryColour,
+                elevation: 8.0,
+                shape: const CircleBorder(),
+                child: Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: const Icon(
+                    Icons.menu,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            );
+          },
         ),
         closeButtonBuilder: FloatingActionButtonBuilder(
           size: 46.w,
@@ -83,10 +98,23 @@ class WorkoutRoutinePage extends StatelessWidget {
             width: 46.w,
             child: FloatingActionButton(
               tooltip: "View Current Workout",
-              backgroundColor: appSecondaryColour,
+              backgroundColor: context.watch<WorkoutProvider>().workoutStarted
+                  ? appSenaryColour
+                  : appSecondaryColour,
               heroTag: null,
-              child: const Icon(
-                Icons.access_time_outlined,
+              child: AvatarGlow(
+                glowCount:
+                context.watch<WorkoutProvider>().workoutStarted ? 3 : 0,
+                glowColor: Colors.red,
+                glowRadiusFactor: 0.7,
+                child: const Material(
+                  type: MaterialType.transparency,
+                  elevation: 8.0,
+                  shape: CircleBorder(),
+                  child: Icon(
+                    Icons.access_time_outlined,
+                  ),
+                ),
               ),
               onPressed: () {
                 final menuState = _key.currentState;

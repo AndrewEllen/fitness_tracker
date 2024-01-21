@@ -887,7 +887,7 @@ GetCurrentWorkoutData() async {
     startOfWorkout: parseDateTime(data["startOfWorkout"]),
     endOfWorkout: parseDateTime(data["endOfWorkout"]),
     exercises: exercisesToModel(data["exercises"]),
-    routineNames: data["routineNames"],
+    routineNames: List<String>.from(data["routineNames"]),
   );
 
 }

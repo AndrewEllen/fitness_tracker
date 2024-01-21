@@ -1,7 +1,10 @@
 import 'package:fitness_tracker/constants.dart';
+import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/workout/exercise_model.dart';
 import 'package:fitness_tracker/models/workout/workout_log_exercise_data.dart';
 import 'package:fitness_tracker/models/workout/workout_log_model.dart';
+import 'package:fitness_tracker/pages/workout_new/workout_home.dart';
+import 'package:fitness_tracker/pages/workout_new/workout_selected_log_page.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -71,7 +74,11 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
     context.watch<WorkoutProvider>().workoutStarted;
 
     List workoutExerciseNamesSet = [];
-    WorkoutLogModel? workout = null;
+    WorkoutLogModel workout = WorkoutLogModel(
+      startOfWorkout: DateTime.now(),
+      exercises: [],
+      routineNames: [],
+    );
 
     try {
       workout = context.read<WorkoutProvider>().currentWorkout;
@@ -125,7 +132,7 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
                   ) ,
 
                   context.read<WorkoutProvider>().workoutStarted ? WorkoutLogTopStatsBox(
-                    dataToDisplay: DateTime.now().difference(workout!.startOfWorkout).inMinutes.toString(),
+                    dataToDisplay: DateTime.now().difference(workout.startOfWorkout).inMinutes.toString(),
                     title: "Duration",
                     bottomText: "Minutes",
                   ) : WorkoutLogTopStatsBox(
@@ -191,7 +198,20 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
 
               ElevatedButton(
                 onPressed: () => context.read<WorkoutProvider>().workoutStarted ?
-                context.read<WorkoutProvider>().endWorkout(DateTime.now()) : context.read<WorkoutProvider>().startWorkout(),
+                {
+                  if (context.read<WorkoutProvider>().currentWorkout.exercises.isNotEmpty) {
+                    context.read<WorkoutProvider>().endWorkout(DateTime.now()),
+                    context.read<WorkoutProvider>().selectLog(context.read<WorkoutProvider>().workoutLogs.length-1),
+                    context.read<PageChange>().changePageRemovePreviousCache(SelectedWorkoutLogPage()),
+                  } else {
+                    context.read<WorkoutProvider>().endWorkout(DateTime.now()),
+                    context.read<PageChange>().changePageRemovePreviousCache(WorkoutHomePageNew()),
+                  }
+
+                } : {
+                  context.read<WorkoutProvider>().startWorkout(),
+                  context.read<PageChange>().backPage(),
+                },
                 child: Text(context.read<WorkoutProvider>().workoutStarted ? "Finish Workout" : "Start Workout"),
               ),
             ],

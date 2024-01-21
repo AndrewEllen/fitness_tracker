@@ -1,3 +1,4 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_log_page.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_routines_home.dart';
@@ -22,14 +23,11 @@ class WorkoutHomePageNew extends StatefulWidget {
 }
 
 class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
-
-  final GlobalKey<ExpandableFabState> _key = GlobalKey<ExpandableFabState>();
+  late GlobalKey<ExpandableFabState> _key = GlobalKey<ExpandableFabState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController inputController = TextEditingController();
 
-
   newRoutine(BuildContext context) async {
-
     double buttonSize = 22.h;
 
     await showDialog(
@@ -56,7 +54,9 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                       if (value!.isEmpty) {
                         return "Name Required";
                       }
-                      if(context.read<WorkoutProvider>().checkForRoutineData(value!)) {
+                      if (context
+                          .read<WorkoutProvider>()
+                          .checkForRoutineData(value!)) {
                         print("EXISTS");
                         return "Routine Already Exists";
                       }
@@ -73,25 +73,20 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                       isDense: true,
                       label: Text(
                         "Routine Name *",
-                        style: boldTextStyle.copyWith(
-                            fontSize: 14
-                        ),
+                        style: boldTextStyle.copyWith(fontSize: 14),
                       ),
                       enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: appQuarternaryColour,
-                          )
-                      ),
+                        color: appQuarternaryColour,
+                      )),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: appSecondaryColour,
-                          )
-                      ),
+                        color: appSecondaryColour,
+                      )),
                       border: const OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: appSecondaryColour,
-                          )
-                      ),
+                        color: appSecondaryColour,
+                      )),
                     ),
                   ),
                 ),
@@ -102,7 +97,6 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-
               children: [
                 const Spacer(),
                 SizedBox(
@@ -112,8 +106,7 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                       onTap: () {
                         Navigator.pop(context);
                       },
-                    )
-                ),
+                    )),
                 const Spacer(),
                 SizedBox(
                     height: buttonSize,
@@ -121,25 +114,23 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                       primaryColor: appSecondaryColour,
                       buttonText: "Create",
                       onTap: () {
-
                         if (_formKey.currentState!.validate()) {
-
-                          context.read<WorkoutProvider>().createNewRoutine(inputController.text);
+                          context
+                              .read<WorkoutProvider>()
+                              .createNewRoutine(inputController.text);
                           inputController.text = "";
 
                           Navigator.pop(context);
                         }
-
                       },
-                    )
-                ),
+                    )),
                 const Spacer(),
               ],
             ),
           ],
         );
       },
-    ).then((value){
+    ).then((value) {
       final menuState = _key.currentState;
       if (menuState != null) {
         menuState.toggle();
@@ -147,30 +138,42 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
+    //_key = GlobalKey<ExpandableFabState>();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: appPrimaryColour,
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
-
         key: _key,
         distance: 80.w,
         overlayStyle: ExpandableFabOverlayStyle(
           blur: 2,
         ),
-
-
-        openButtonBuilder: RotateFloatingActionButtonBuilder(
-          child: const Icon(
-            Icons.menu,
-          ),
-          fabSize: ExpandableFabSize.regular,
-          foregroundColor: Colors.white,
-          backgroundColor: appSenaryColour,
-          shape: const CircleBorder(),
+        openButtonBuilder: FloatingActionButtonBuilder(
+          size: 16.w,
+          builder: (BuildContext context, void Function()? onPressed,
+              Animation<double> progress) {
+            return AvatarGlow(
+              glowCount: context.watch<WorkoutProvider>().workoutStarted ? 3 : 0,
+              glowColor: Colors.red,
+              glowRadiusFactor: 0.3,
+              child: Material(
+                color: appSenaryColour,
+                elevation: 8.0,
+                shape: const CircleBorder(),
+                child: Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: const Icon(
+                    Icons.menu,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            );
+          },
         ),
         closeButtonBuilder: FloatingActionButtonBuilder(
           size: 46.w,
@@ -200,8 +203,8 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                 Icons.add,
               ),
               onPressed: () => newRoutine(
-                  this.context,
-                ),
+                this.context,
+              ),
             ),
           ),
           SizedBox(
@@ -218,7 +221,9 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                 if (menuState != null) {
                   menuState.toggle();
                 }
-                context.read<PageChange>().changePageCache(WorkoutRoutinesHome());
+                context
+                    .read<PageChange>()
+                    .changePageCache(WorkoutRoutinesHome());
               },
             ),
           ),
@@ -226,10 +231,23 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
             width: 46.w,
             child: FloatingActionButton(
               tooltip: "View Current Workout",
-              backgroundColor: appSecondaryColour,
+              backgroundColor: context.watch<WorkoutProvider>().workoutStarted
+                  ? appSenaryColour
+                  : appSecondaryColour,
               heroTag: null,
-              child: const Icon(
-                Icons.access_time_outlined,
+              child: AvatarGlow(
+                glowCount:
+                    context.watch<WorkoutProvider>().workoutStarted ? 3 : 0,
+                glowColor: Colors.red,
+                glowRadiusFactor: 0.7,
+                child: const Material(
+                  type: MaterialType.transparency,
+                  elevation: 8.0,
+                  shape: CircleBorder(),
+                  child: Icon(
+                    Icons.access_time_outlined,
+                  ),
+                ),
               ),
               onPressed: () {
                 final menuState = _key.currentState;

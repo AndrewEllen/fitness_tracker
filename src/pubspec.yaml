@@ -58,6 +58,7 @@ dependencies:
   permission_handler: ^11.0.1
   flutter_expandable_fab: ^2.0.0
   flutter_slidable: ^3.0.1
+  avatar_glow: ^3.0.1
 
 dev_dependencies:
 
