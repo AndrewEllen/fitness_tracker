@@ -182,113 +182,117 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
                 ),
               ) : const SizedBox.shrink(),
 
-              context.read<WorkoutProvider>().workoutStarted ? ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: workoutExerciseNamesSet.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 24.0),
-                          child: Text(
-                            workoutRoutineNamesSet[index],
-                            style: boldTextStyle.copyWith(
-                              fontSize: 24,
+              context.read<WorkoutProvider>().workoutStarted ? Padding(
+                padding: EdgeInsets.only(top: 32.h),
+                child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: workoutExerciseNamesSet.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 24.w),
+                            child: Text(
+                              workoutRoutineNamesSet[index],
+                              style: boldTextStyle.copyWith(
+                                fontSize: 24,
+                              ),
                             ),
                           ),
-                        ),
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: workoutExerciseNamesSet.length,
-                          itemBuilder: (BuildContext context, int index2) {
-                            List<
-                                WorkoutLogExerciseDataModel> filteredExercises = workout!
-                                .exercises
-                                .where((exercise) =>
-                            exercise.routineName ==
-                                workoutRoutineNamesSet[index] &&
-                                exercise.measurementName ==
-                                    workoutExerciseNamesSet[index2] &&
-                                exercise.measurementName.isNotEmpty)
-                                .toList();
+                          Padding(
+                            padding: const EdgeInsets.only(left: 18.0),
+                            child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: workoutExerciseNamesSet.length,
+                              itemBuilder: (BuildContext context, int index2) {
+                                List<
+                                    WorkoutLogExerciseDataModel> filteredExercises = workout!
+                                    .exercises
+                                    .where((exercise) =>
+                                exercise.routineName ==
+                                    workoutRoutineNamesSet[index] &&
+                                    exercise.measurementName ==
+                                        workoutExerciseNamesSet[index2] &&
+                                    exercise.measurementName.isNotEmpty)
+                                    .toList();
 
-                            return filteredExercises.isNotEmpty
-                                ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 24.w, top: 12.h),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(
-                                        MdiIcons.dumbbell,
-                                        color: Colors.white,
-                                      ),
-                                      SizedBox(width: 24.w),
-                                      Text(
-                                        workoutExerciseNamesSet[index2],
-                                        style: boldTextStyle.copyWith(
-                                            fontSize: 18),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: filteredExercises.length,
-                                  itemBuilder: (BuildContext context,
-                                      int index3) {
-                                    return Padding(
+                                return filteredExercises.isNotEmpty
+                                    ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
                                       padding: EdgeInsets.only(
-                                          left: 24.w, top: 12.h),
+                                          left: 24.w, top: 24.h),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
+                                          const Icon(
+                                            MdiIcons.dumbbell,
+                                            color: Colors.white,
+                                          ),
+                                          const Spacer(flex: 2),
                                           Text(
-                                            (index3 + 1).toString(),
-                                            // Use index3 for set number
-                                            style: boldTextStyle,
+                                            workoutExerciseNamesSet[index2],
+                                            style: boldTextStyle.copyWith(
+                                                fontSize: 18),
                                           ),
-                                          SizedBox(width: 50.w),
-                                          Text(
-                                            filteredExercises[index3].reps
-                                                .toString() + " reps",
-                                            style: boldTextStyle,
-                                          ),
-                                          Text(
-                                            filteredExercises[index3].weight
-                                                .toString() + " kg",
-                                            style: boldTextStyle,
-                                          ),
-                                          Text(
-                                            filteredExercises[index3].timestamp
-                                                .toString(),
-                                            style: boldTextStyle,
-                                          ),
-                                          SizedBox(
-                                            height: 10.h,
-                                          ),
+                                          SizedBox(width: 120.w),
+                                          const Spacer(flex:8),
                                         ],
                                       ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            )
-                                : const SizedBox.shrink();
-                          },
-                        ),
-                        SizedBox(height: 30.h),
-                      ],
-                    );
-                  }
-        ) : const SizedBox.shrink(),
+                                    ),
+                                    ListView.builder(
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: filteredExercises.length,
+                                      itemBuilder: (BuildContext context,
+                                          int index3) {
+                                        return Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 24.w, top: 12.h),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  (index3 + 1).toString(),
+                                                  // Use index3 for set number
+                                                  style: boldTextStyle,
+                                                ),
+                                              ),
+                                              const Spacer(),
+                                              Text(
+                                                filteredExercises[index3].weight.toString().replaceAll(removeTrailingZeros, "")
+                                                    .toString() + " kg x " + filteredExercises[index3].reps.toString().replaceAll(removeTrailingZeros, "") + " reps",
+                                                style: boldTextStyle,
+                                              ),
+                                              const Spacer(flex:6),
+                                              Text(
+                                                filteredExercises[index3].timestamp
+                                                    .toString(),
+                                                style: boldTextStyle,
+                                              ),
+                                              const Spacer(flex: 2),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                )
+                                    : const SizedBox.shrink();
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 30.h),
+                        ],
+                      );
+                    }
+        ),
+              ) : const SizedBox.shrink(),
         ]
       )
     ),
