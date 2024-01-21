@@ -41,28 +41,12 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
 
   String timeStartedFunction(DateTime time) {
 
-    String stringToDisplay = "Time Started: ";
+    String stringToDisplay = "Workout Date: ";
 
-    String date;
+    String date = DateFormat("dd/MM/yyyy").format(time).toString();
+    String timeOfDay = DateFormat("hh:mm a").format(time).toString();
 
-    if (time.day == DateTime.now().day && time.month == DateTime.now().month && time.year == DateTime.now().year) {
-      date = "Today";
-    } else {
-      date = DateFormat("dd/MM/y").format(time).toString();
-    }
-
-    Duration timePassedDuration = DateTime.now().difference(time);
-    String timePassedString;
-
-    if (timePassedDuration.inHours != 0) {
-      timePassedString = DateTime.now().difference(time).inHours.toString() + " Hours ago";
-    } else if (timePassedDuration.inMinutes != 0) {
-      timePassedString = DateTime.now().difference(time).inMinutes.toString() + " Minutes ago";
-    } else {
-      timePassedString = DateTime.now().difference(time).inSeconds.toString() + " Seconds ago";
-    }
-
-    return stringToDisplay + date + " - " + timePassedString;
+    return stringToDisplay + date + " at " + timeOfDay;
   }
 
 
