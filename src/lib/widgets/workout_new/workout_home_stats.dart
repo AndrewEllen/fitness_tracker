@@ -21,7 +21,8 @@ class WorkoutHomeStatsBox extends StatelessWidget {
       height: value,
       width: double.maxFinite,
       color: appTertiaryColour,
-      child: Column(
+      child: ListView(
+        physics: const NeverScrollableScrollPhysics(),
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 12.0),

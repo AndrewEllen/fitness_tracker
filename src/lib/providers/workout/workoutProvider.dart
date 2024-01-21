@@ -201,25 +201,25 @@ class WorkoutProvider with ChangeNotifier {
         && _workoutOverallStatsModel.lastLog.year == currentDate.year
     ) {
 
-      _workoutOverallStatsModel.totalWorkoutsThisMonth;
-      _workoutOverallStatsModel.totalVolumeThisMonth;
-      _workoutOverallStatsModel.totalRepsThisMonth;
-      _workoutOverallStatsModel.totalSetsThisMonth;
-      _workoutOverallStatsModel.averageDurationThisMonth;
+      _workoutOverallStatsModel.totalWorkoutsThisMonth = 0;
+      _workoutOverallStatsModel.totalVolumeThisMonth = 0;
+      _workoutOverallStatsModel.totalRepsThisMonth = 0;
+      _workoutOverallStatsModel.totalSetsThisMonth = 0;
+      _workoutOverallStatsModel.averageDurationThisMonth = 0;
 
     } else if (_workoutOverallStatsModel.lastLog.year < currentDate.year) {
 
-      _workoutOverallStatsModel.totalWorkoutsThisYear;
-      _workoutOverallStatsModel.totalVolumeThisYear;
-      _workoutOverallStatsModel.totalRepsThisYear;
-      _workoutOverallStatsModel.totalSetsThisYear;
-      _workoutOverallStatsModel.averageDurationThisYear;
+      _workoutOverallStatsModel.totalWorkoutsThisYear = 0;
+      _workoutOverallStatsModel.totalVolumeThisYear = 0;
+      _workoutOverallStatsModel.totalRepsThisYear = 0;
+      _workoutOverallStatsModel.totalSetsThisYear = 0;
+      _workoutOverallStatsModel.averageDurationThisYear = 0;
 
-      _workoutOverallStatsModel.totalWorkoutsThisMonth;
-      _workoutOverallStatsModel.totalVolumeThisMonth;
-      _workoutOverallStatsModel.totalRepsThisMonth;
-      _workoutOverallStatsModel.totalSetsThisMonth;
-      _workoutOverallStatsModel.averageDurationThisMonth;
+      _workoutOverallStatsModel.totalWorkoutsThisMonth = 0;
+      _workoutOverallStatsModel.totalVolumeThisMonth = 0;
+      _workoutOverallStatsModel.totalRepsThisMonth = 0;
+      _workoutOverallStatsModel.totalSetsThisMonth = 0;
+      _workoutOverallStatsModel.averageDurationThisMonth = 0;
 
     }
 
