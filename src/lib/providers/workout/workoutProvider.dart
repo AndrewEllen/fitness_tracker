@@ -282,6 +282,23 @@ class WorkoutProvider with ChangeNotifier {
 
     ExerciseModel selectedExerciseData = _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)];
 
+    try {
+      if (_workoutStarted) {
+
+        _currentWorkout.exercises.removeAt(_currentWorkout.exercises.lastIndexWhere((element) =>
+        element.measurementName == exerciseName
+            && element.reps == selectedExerciseData.exerciseTrackingData.dailyLogs[index]["repValues"][index2]
+            && element.weight == selectedExerciseData.exerciseTrackingData.dailyLogs[index]["weightValues"][index2]
+            && element.timestamp == selectedExerciseData.exerciseTrackingData.dailyLogs[index]["measurementTimeStamp"][index2]
+        ));
+
+        updateCurrentWorkout(_currentWorkout);
+
+      }
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+
     selectedExerciseData.exerciseTrackingData.dailyLogs[index]["measurementTimeStamp"].removeAt(index2);
 
     selectedExerciseData.exerciseTrackingData.dailyLogs[index]["weightValues"].removeAt(index2);
@@ -302,19 +319,6 @@ class WorkoutProvider with ChangeNotifier {
           selectedExerciseData,
           index,
       );
-    }
-
-    if (_workoutStarted) {
-
-      _currentWorkout.exercises.removeAt(_currentWorkout.exercises.lastIndexWhere((element) =>
-          element.measurementName == exerciseName
-          && element.reps == selectedExerciseData.exerciseTrackingData.dailyLogs[index]["repValues"][index2]
-          && element.weight == selectedExerciseData.exerciseTrackingData.dailyLogs[index]["weightValues"][index2]
-          && element.timestamp == selectedExerciseData.exerciseTrackingData.dailyLogs[index]["measurementTimeStamp"][index2]
-      ));
-
-      updateCurrentWorkout(_currentWorkout);
-
     }
 
     notifyListeners();
