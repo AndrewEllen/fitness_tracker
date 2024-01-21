@@ -64,20 +64,27 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
 
   @override
   Widget build(BuildContext context) {
+
+    int smallButtonFlex = 2;
+    int bigButtonFlex = 7;
+
     return Container(
       margin: const EdgeInsets.all(8),
-      width: widget.smallButtons ? 300.w : 205.w,
+      //width: widget.smallButtons ? 300.w : 205.w,
       height: 55.h,
       child: Row(
         children: [
+          Spacer(flex: widget.smallButtons ? smallButtonFlex : bigButtonFlex),
           widget.smallButtons ? Material(
             type: MaterialType.transparency,
             shape: const CircleBorder(),
             clipBehavior: Clip.antiAlias,
             child: IconButton(
+              padding: EdgeInsets.zero,
               onPressed: () => decrementCounter(true),
               icon: const Icon(
                 MdiIcons.minus,
+                size: 36,
               ),
             ),
           ) : const SizedBox.shrink(),
@@ -86,13 +93,17 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
             shape: const CircleBorder(),
             clipBehavior: Clip.antiAlias,
             child: IconButton(
+              padding: EdgeInsets.zero,
               onPressed: () => decrementCounter(false),
               icon: const Icon(
-                MdiIcons.minusCircleOutline,
+                MdiIcons.minusCircle,
+                size: 40,
               ),
             ),
           ),
-          Flexible(
+          const Spacer(),
+          Expanded(
+            flex: 12,
             child: Form(
               child: TextFormField(
                 controller: widget.inputController,
@@ -137,14 +148,17 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
               ),
             ),
           ),
+          const Spacer(),
           Material(
             type: MaterialType.transparency,
             shape: const CircleBorder(),
             clipBehavior: Clip.antiAlias,
             child: IconButton(
+              padding: EdgeInsets.zero,
               onPressed: () => incrementCounter(false),
               icon: const Icon(
-                Icons.add_circle_outline,
+                Icons.add_circle,
+                size: 40,
               ),
             ),
           ),
@@ -153,12 +167,15 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
             shape: const CircleBorder(),
             clipBehavior: Clip.antiAlias,
             child: IconButton(
+              padding: EdgeInsets.zero,
               onPressed: () => incrementCounter(true),
               icon: const Icon(
                 Icons.add,
+                size: 36,
               ),
             ),
           ) : const SizedBox.shrink(),
+          Spacer(flex: widget.smallButtons ? smallButtonFlex : bigButtonFlex),
         ],
       ),
     );

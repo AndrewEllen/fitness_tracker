@@ -245,7 +245,7 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                   elevation: 8.0,
                   shape: CircleBorder(),
                   child: Icon(
-                    Icons.access_time_outlined,
+                    Icons.access_time,
                   ),
                 ),
               ),
