@@ -101,7 +101,7 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
           {
             if (context.read<WorkoutProvider>().currentWorkout.exercises.isNotEmpty) {
               context.read<WorkoutProvider>().endWorkout(DateTime.now()),
-              context.read<WorkoutProvider>().selectLog(context.read<WorkoutProvider>().workoutLogs.length-1),
+              context.read<WorkoutProvider>().selectLog(0),
               context.read<PageChange>().changePageRemovePreviousCache(SelectedWorkoutLogPage()),
             } else {
               context.read<WorkoutProvider>().endWorkout(DateTime.now()),
@@ -113,7 +113,7 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
             context.read<PageChange>().backPage(),
           },
           child: Icon(
-            Icons.save,
+            context.read<WorkoutProvider>().workoutStarted ? Icons.save : Icons.timer,
           ),
         ),
       ),

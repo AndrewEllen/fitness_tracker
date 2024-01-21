@@ -19,7 +19,11 @@ class WorkoutProvider with ChangeNotifier {
 
   dynamic get lastWorkoutLogDocument => _lastWorkoutLogDocument;
 
-  late WorkoutLogModel _currentSelectedLog;
+  late WorkoutLogModel _currentSelectedLog = WorkoutLogModel(
+      startOfWorkout: startOfWorkout,
+      exercises: [],
+      routineNames: [],
+  );
 
   WorkoutLogModel get currentSelectedLog => _currentSelectedLog;
 
@@ -40,14 +44,18 @@ class WorkoutProvider with ChangeNotifier {
   List<ExerciseModel> get exerciseList => _exerciseList;
 
   late bool _workoutStarted = false;
-  late DateTime _startOfWorkout;
-  late DateTime _endOfWorkout;
+  late DateTime _startOfWorkout = DateTime.now();
+  late DateTime _endOfWorkout = DateTime.now();
 
   bool get workoutStarted => _workoutStarted;
   DateTime get startOfWorkout => _startOfWorkout;
   DateTime get endOfWorkout => _endOfWorkout;
 
-  late WorkoutLogModel _currentWorkout;
+  late WorkoutLogModel _currentWorkout = WorkoutLogModel(
+      startOfWorkout: startOfWorkout,
+      exercises: [],
+      routineNames: [],
+  );
 
   WorkoutLogModel get currentWorkout => _currentWorkout;
 
@@ -101,6 +109,7 @@ class WorkoutProvider with ChangeNotifier {
 
   void selectLog(int index) {
     _currentSelectedLog = _workoutLogs[index];
+    notifyListeners();
   }
 
   void loadWorkoutLogs(Map workoutLogs) {
@@ -163,8 +172,14 @@ class WorkoutProvider with ChangeNotifier {
     _currentWorkout.endOfWorkout = endOfWorkout;
 
     if (_currentWorkout.exercises.isNotEmpty) {
+
+      _currentWorkout.routineNames = {
+        for(WorkoutLogExerciseDataModel exercise in _currentWorkout.exercises)
+          exercise.routineName!
+      }.toList();
+
       finalizeWorkout(_currentWorkout);
-      _workoutLogs.add(_currentWorkout);
+      _workoutLogs.insert(0, _currentWorkout);
     }
 
     writeWorkoutStarted(_workoutStarted, null);
@@ -227,17 +242,13 @@ class WorkoutProvider with ChangeNotifier {
 
   void updateWorkoutExerciseLogs(ExerciseModel newLog, RoutinesModel routine) {
 
-
-    _currentWorkout.routineNames.add(routine.routineName);
-    _currentWorkout.routineNames = _currentWorkout.routineNames.toSet().toList();
-
-
     _currentWorkout.exercises.add(
       WorkoutLogExerciseDataModel(
         measurementName: newLog.exerciseName,
         reps: newLog.exerciseTrackingData.dailyLogs[0]["repValues"][0],
         weight: newLog.exerciseTrackingData.dailyLogs[0]["weightValues"][0],
         timestamp: newLog.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"][0],
+        routineName: routine.routineName,
       ),
     );
 

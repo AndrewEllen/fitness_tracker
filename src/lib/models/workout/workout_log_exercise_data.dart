@@ -14,9 +14,11 @@ class WorkoutLogExerciseDataModel {
     required this.reps,
     required this.weight,
     required this.timestamp,
+    this.routineName,
   });
 
   String measurementName;
+  String? routineName;
   double reps;
   double weight;
   String timestamp;
