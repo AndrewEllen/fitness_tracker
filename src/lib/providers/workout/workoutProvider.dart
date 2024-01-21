@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
 import 'package:fitness_tracker/models/workout/workout_log_exercise_data.dart';
+import 'package:fitness_tracker/models/workout/workout_overall_stats_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
@@ -18,6 +19,29 @@ class WorkoutProvider with ChangeNotifier {
   dynamic _lastWorkoutLogDocument;
 
   dynamic get lastWorkoutLogDocument => _lastWorkoutLogDocument;
+
+
+  late WorkoutOverallStatsModel _workoutOverallStatsModel = WorkoutOverallStatsModel(
+      totalVolume: 0,
+      totalReps: 0,
+      totalSets: 0,
+      totalWorkouts: 0,
+      totalAverageDuration: 0,
+      totalVolumeThisYear: 0,
+      totalVolumeThisMonth: 0,
+      totalRepsThisYear: 0,
+      totalRepsThisMonth: 0,
+      totalSetsThisYear: 0,
+      totalSetsThisMonth: 0,
+      totalWorkoutsThisYear: 0,
+      totalWorkoutsThisMonth: 0,
+      averageDurationThisYear: 0,
+      averageDurationThisMonth: 0,
+      lastLog: DateTime.now(),
+  );
+
+  WorkoutOverallStatsModel get workoutOverallStatsModel => _workoutOverallStatsModel;
+
 
   late WorkoutLogModel _currentSelectedLog = WorkoutLogModel(
       startOfWorkout: startOfWorkout,
@@ -166,6 +190,99 @@ class WorkoutProvider with ChangeNotifier {
 
   }
 
+  void loadOverallStats(WorkoutOverallStatsModel stats) {
+
+    _workoutOverallStatsModel = stats;
+
+    DateTime currentDate = DateTime.now();
+
+    if (
+    _workoutOverallStatsModel.lastLog.month < currentDate.month
+        && _workoutOverallStatsModel.lastLog.year == currentDate.year
+    ) {
+
+      _workoutOverallStatsModel.totalWorkoutsThisMonth;
+      _workoutOverallStatsModel.totalVolumeThisMonth;
+      _workoutOverallStatsModel.totalRepsThisMonth;
+      _workoutOverallStatsModel.totalSetsThisMonth;
+      _workoutOverallStatsModel.averageDurationThisMonth;
+
+    } else if (_workoutOverallStatsModel.lastLog.year < currentDate.year) {
+
+      _workoutOverallStatsModel.totalWorkoutsThisYear;
+      _workoutOverallStatsModel.totalVolumeThisYear;
+      _workoutOverallStatsModel.totalRepsThisYear;
+      _workoutOverallStatsModel.totalSetsThisYear;
+      _workoutOverallStatsModel.averageDurationThisYear;
+
+      _workoutOverallStatsModel.totalWorkoutsThisMonth;
+      _workoutOverallStatsModel.totalVolumeThisMonth;
+      _workoutOverallStatsModel.totalRepsThisMonth;
+      _workoutOverallStatsModel.totalSetsThisMonth;
+      _workoutOverallStatsModel.averageDurationThisMonth;
+
+    }
+
+    notifyListeners();
+  }
+
+  void calculateOverallStats() {
+
+    DateTime currentDate = DateTime.now();
+
+    double volume = 0;
+    double reps = 0;
+    double sets = 0;
+    int workoutDuration = _currentWorkout.endOfWorkout!.difference(_currentWorkout.startOfWorkout).inSeconds;
+
+    for (WorkoutLogExerciseDataModel exerciseData in _currentWorkout.exercises) {
+      volume += exerciseData.weight * exerciseData.reps;
+    }
+    for (WorkoutLogExerciseDataModel exerciseData in _currentWorkout.exercises) {
+      reps += exerciseData.reps;
+    }
+    for (WorkoutLogExerciseDataModel exerciseData in _currentWorkout.exercises) {
+      sets += 1;
+    }
+
+    _workoutOverallStatsModel.totalAverageDuration = (
+        ((_workoutOverallStatsModel.totalAverageDuration * _workoutOverallStatsModel.totalWorkouts) + workoutDuration)
+            / (_workoutOverallStatsModel.totalWorkouts+1)
+    ).round();
+
+    _workoutOverallStatsModel.averageDurationThisMonth = (
+        ((_workoutOverallStatsModel.averageDurationThisMonth * _workoutOverallStatsModel.totalWorkoutsThisMonth) + workoutDuration)
+            / (_workoutOverallStatsModel.totalWorkoutsThisMonth+1)
+    ).round();
+
+    _workoutOverallStatsModel.averageDurationThisYear = (
+        ((_workoutOverallStatsModel.averageDurationThisYear * _workoutOverallStatsModel.totalWorkoutsThisYear) + workoutDuration)
+            / (_workoutOverallStatsModel.totalWorkoutsThisYear+1)
+    ).round();
+
+    _workoutOverallStatsModel.totalVolume += volume;
+    _workoutOverallStatsModel.totalVolumeThisMonth += volume;
+    _workoutOverallStatsModel.totalVolumeThisYear += volume;
+
+    _workoutOverallStatsModel.totalReps += reps.round();
+    _workoutOverallStatsModel.totalRepsThisMonth += reps.round();
+    _workoutOverallStatsModel.totalRepsThisYear += reps.round();
+
+    _workoutOverallStatsModel.totalSets += sets.round();
+    _workoutOverallStatsModel.totalSetsThisMonth += sets.round();
+    _workoutOverallStatsModel.totalSetsThisYear += sets.round();
+
+    _workoutOverallStatsModel.totalWorkouts += 1;
+    _workoutOverallStatsModel.totalWorkoutsThisMonth += 1;
+    _workoutOverallStatsModel.totalWorkoutsThisYear += 1;
+
+    _workoutOverallStatsModel.lastLog = currentDate;
+
+    saveOverallStats(_workoutOverallStatsModel);
+
+    notifyListeners();
+  }
+
   void endWorkout(DateTime endOfWorkout) {
 
     _workoutStarted = false;
@@ -177,6 +294,8 @@ class WorkoutProvider with ChangeNotifier {
         for(WorkoutLogExerciseDataModel exercise in _currentWorkout.exercises)
           exercise.routineName!
       }.toList();
+
+      calculateOverallStats();
 
       finalizeWorkout(_currentWorkout);
       _workoutLogs.insert(0, _currentWorkout);

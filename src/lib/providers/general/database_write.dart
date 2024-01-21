@@ -16,6 +16,7 @@ import '../../models/groceries/grocery_item.dart';
 import '../../models/workout/exercise_model.dart';
 import '../../models/workout/reps_weight_stats_model.dart';
 import '../../models/workout/workout_log_model.dart';
+import '../../models/workout/workout_overall_stats_model.dart';
 
 
 void DeleteUserDocumentMeasurements(String documentName) async {
@@ -437,6 +438,21 @@ void finalizeWorkout(WorkoutLogModel workoutLog) async {
           "data": workoutLog.toMap(),
           "time-stamp": DateTime.now().toUtc(),
       });
+
+}
+
+void saveOverallStats(WorkoutOverallStatsModel stats) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-overall-stats')
+      .doc("stats")
+      .set(
+        stats.toMap(),
+      );
 
 }
 
