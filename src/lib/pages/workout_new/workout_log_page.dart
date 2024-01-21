@@ -92,6 +92,31 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: appPrimaryColour,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: FloatingActionButton(
+          backgroundColor: appSecondaryColour,
+          onPressed: () => context.read<WorkoutProvider>().workoutStarted ?
+          {
+            if (context.read<WorkoutProvider>().currentWorkout.exercises.isNotEmpty) {
+              context.read<WorkoutProvider>().endWorkout(DateTime.now()),
+              context.read<WorkoutProvider>().selectLog(context.read<WorkoutProvider>().workoutLogs.length-1),
+              context.read<PageChange>().changePageRemovePreviousCache(SelectedWorkoutLogPage()),
+            } else {
+              context.read<WorkoutProvider>().endWorkout(DateTime.now()),
+              context.read<PageChange>().changePageRemovePreviousCache(WorkoutHomePageNew()),
+            }
+
+          } : {
+            context.read<WorkoutProvider>().startWorkout(),
+            context.read<PageChange>().backPage(),
+          },
+          child: Icon(
+            Icons.save,
+          ),
+        ),
+      ),
       body: NotificationListener<OverscrollIndicatorNotification>(
         onNotification: (overscroll) {
           overscroll.disallowIndicator();
@@ -153,6 +178,7 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
               ) : const SizedBox.shrink(),
 
               context.read<WorkoutProvider>().workoutStarted ? ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: workoutExerciseNamesSet.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -163,6 +189,7 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
                           style: boldTextStyle,
                         ),
                         ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: workout!.exercises.length,
                           itemBuilder: (BuildContext context, int index2) {
@@ -195,25 +222,7 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
                     );
                 }
               ) : const SizedBox.shrink(),
-
-              ElevatedButton(
-                onPressed: () => context.read<WorkoutProvider>().workoutStarted ?
-                {
-                  if (context.read<WorkoutProvider>().currentWorkout.exercises.isNotEmpty) {
-                    context.read<WorkoutProvider>().endWorkout(DateTime.now()),
-                    context.read<WorkoutProvider>().selectLog(context.read<WorkoutProvider>().workoutLogs.length-1),
-                    context.read<PageChange>().changePageRemovePreviousCache(SelectedWorkoutLogPage()),
-                  } else {
-                    context.read<WorkoutProvider>().endWorkout(DateTime.now()),
-                    context.read<PageChange>().changePageRemovePreviousCache(WorkoutHomePageNew()),
-                  }
-
-                } : {
-                  context.read<WorkoutProvider>().startWorkout(),
-                  context.read<PageChange>().backPage(),
-                },
-                child: Text(context.read<WorkoutProvider>().workoutStarted ? "Finish Workout" : "Start Workout"),
-              ),
+              SizedBox(height: 70.h),
             ],
           ),
         ),

@@ -304,6 +304,19 @@ class WorkoutProvider with ChangeNotifier {
       );
     }
 
+    if (_workoutStarted) {
+
+      _currentWorkout.exercises.removeAt(_currentWorkout.exercises.lastIndexWhere((element) =>
+          element.measurementName == exerciseName
+          && element.reps == selectedExerciseData.exerciseTrackingData.dailyLogs[index]["repValues"][index2]
+          && element.weight == selectedExerciseData.exerciseTrackingData.dailyLogs[index]["weightValues"][index2]
+          && element.timestamp == selectedExerciseData.exerciseTrackingData.dailyLogs[index]["measurementTimeStamp"][index2]
+      ));
+
+      updateCurrentWorkout(_currentWorkout);
+
+    }
+
     notifyListeners();
   }
 

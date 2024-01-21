@@ -137,6 +137,7 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
               ),
 
               ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: workoutExerciseNamesSet.length,
                   itemBuilder: (BuildContext context, int index) {
