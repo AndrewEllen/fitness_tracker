@@ -74,6 +74,7 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
     context.watch<WorkoutProvider>().workoutStarted;
 
     List workoutExerciseNamesSet = [];
+    List workoutRoutineNamesSet = [];
     WorkoutLogModel workout = WorkoutLogModel(
       startOfWorkout: DateTime.now(),
       exercises: [],
@@ -82,6 +83,9 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
 
     try {
       workout = context.read<WorkoutProvider>().currentWorkout;
+
+      workoutRoutineNamesSet = {for (WorkoutLogExerciseDataModel exercise in workout.exercises)
+        exercise.routineName}.toList();
 
       workoutExerciseNamesSet = {for (WorkoutLogExerciseDataModel exercise in workout.exercises)
         exercise.measurementName}.toList();
@@ -184,50 +188,111 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
                   itemCount: workoutExerciseNamesSet.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          workoutExerciseNamesSet[index],
-                          style: boldTextStyle,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 24.0),
+                          child: Text(
+                            workoutRoutineNamesSet[index],
+                            style: boldTextStyle.copyWith(
+                              fontSize: 24,
+                            ),
+                          ),
                         ),
                         ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: workout!.exercises.length,
+                          itemCount: workoutExerciseNamesSet.length,
                           itemBuilder: (BuildContext context, int index2) {
-                            return workout!.exercises[index2].measurementName == workoutExerciseNamesSet[index] ? Column(
-                              mainAxisSize: MainAxisSize.min,
+                            List<
+                                WorkoutLogExerciseDataModel> filteredExercises = workout!
+                                .exercises
+                                .where((exercise) =>
+                            exercise.routineName ==
+                                workoutRoutineNamesSet[index] &&
+                                exercise.measurementName ==
+                                    workoutExerciseNamesSet[index2] &&
+                                exercise.measurementName.isNotEmpty)
+                                .toList();
+
+                            return filteredExercises.isNotEmpty
+                                ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(
-                                  height: 10.h,
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 24.w, top: 12.h),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        MdiIcons.dumbbell,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(width: 24.w),
+                                      Text(
+                                        workoutExerciseNamesSet[index2],
+                                        style: boldTextStyle.copyWith(
+                                            fontSize: 18),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                Text(
-                                  workout!.exercises[index2].reps.toString() + " reps",
-                                  style: boldTextStyle,
+                                ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: filteredExercises.length,
+                                  itemBuilder: (BuildContext context,
+                                      int index3) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 24.w, top: 12.h),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            (index3 + 1).toString(),
+                                            // Use index3 for set number
+                                            style: boldTextStyle,
+                                          ),
+                                          SizedBox(width: 50.w),
+                                          Text(
+                                            filteredExercises[index3].reps
+                                                .toString() + " reps",
+                                            style: boldTextStyle,
+                                          ),
+                                          Text(
+                                            filteredExercises[index3].weight
+                                                .toString() + " kg",
+                                            style: boldTextStyle,
+                                          ),
+                                          Text(
+                                            filteredExercises[index3].timestamp
+                                                .toString(),
+                                            style: boldTextStyle,
+                                          ),
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
                                 ),
-                                Text(
-                                  workout!.exercises[index2].weight.toString() + " kg",
-                                  style: boldTextStyle,
-                                ),
-                                Text(
-                                  workout!.exercises[index2].timestamp.toString(),
-                                  style: boldTextStyle,
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                )
                               ],
-                            ) : const SizedBox.shrink();
+                            )
+                                : const SizedBox.shrink();
                           },
                         ),
+                        SizedBox(height: 30.h),
                       ],
                     );
-                }
-              ) : const SizedBox.shrink(),
-              SizedBox(height: 70.h),
-            ],
-          ),
-        ),
-      ),
+                  }
+        ) : const SizedBox.shrink(),
+        ]
+      )
+    ),
+    ),
     );
   }
 }

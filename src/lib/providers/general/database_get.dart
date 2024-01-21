@@ -856,6 +856,7 @@ GetCurrentWorkoutData() async {
       for (Map exercise in data)
         WorkoutLogExerciseDataModel(
           measurementName: exercise["measurementName"],
+          routineName: exercise["routineName"],
           reps: exercise["reps"],
           weight: exercise["weight"],
           timestamp: exercise["timestamp"],
@@ -905,6 +906,7 @@ try {
       for (Map exercise in data)
         WorkoutLogExerciseDataModel(
           measurementName: exercise["measurementName"],
+          routineName: exercise["routineName"],
           reps: exercise["reps"],
           weight: exercise["weight"],
           timestamp: exercise["timestamp"],

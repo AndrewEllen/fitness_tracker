@@ -4,6 +4,7 @@ class WorkoutLogExerciseDataModel {
   Map<String, dynamic> toMap() {
     return {
       'measurementName': measurementName,
+      'routineName': routineName,
       'reps': reps,
       'weight': weight,
       'timestamp': timestamp,
@@ -11,14 +12,14 @@ class WorkoutLogExerciseDataModel {
   }
   WorkoutLogExerciseDataModel({
     required this.measurementName,
+    required this.routineName,
     required this.reps,
     required this.weight,
     required this.timestamp,
-    this.routineName,
   });
 
   String measurementName;
-  String? routineName;
+  String routineName;
   double reps;
   double weight;
   String timestamp;
