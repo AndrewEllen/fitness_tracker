@@ -111,3 +111,11 @@ extension ExtendedIterable<E> on Iterable<E> {
     forEach((e) => f(e, i++));
   }
 }
+
+//https://stackoverflow.com/questions/59423310/remove-list-from-another-list-in-dart
+extension WhereNotInExt<T> on Iterable<T> {
+  Iterable<T> whereNotIn(Iterable<T> reject) {
+    final rejectSet = reject.toSet();
+    return where((el) => !rejectSet.contains(el));
+  }
+}

@@ -59,6 +59,8 @@ dependencies:
   flutter_expandable_fab: ^2.0.0
   flutter_slidable: ^3.0.1
   avatar_glow: ^3.0.1
+  easy_debounce: ^2.0.3
+  text_analysis: ^1.0.0+2
 
 dev_dependencies:
 

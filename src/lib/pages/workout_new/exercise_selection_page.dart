@@ -1,10 +1,13 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:fitness_tracker/exports.dart';
+import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:text_analysis/extensions.dart';
 
 import '../../constants.dart';
 import '../../models/workout/exercise_list_checkbox.dart';
@@ -32,6 +35,68 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
 
   //Creates a list of the index of checked items for when new item is added (and wipes the list for some reason)
   List<int> boolIndexBackupList = [];
+
+  List<String> searchList = [];
+
+  void searchForExercise(String value) {
+
+    List<String> sortListBySimilarity(List<Map> similarityMap) {
+
+      print(similarityMap);
+      // Sorting the list in descending order based on the values of the map items
+      similarityMap.sort((a, b) => (b.values.first as num).compareTo(a.values.first as num));
+
+      // Extracting the keys from the sorted list of maps
+      List<String> orderedList = similarityMap.map((map) => map.keys.first.toString()).toList();
+
+      return orderedList;
+    }
+
+    List<String> checkSimilarity(String searchWord, String searchItem) {
+      List<Map> _wordsSimilarity = [];
+
+      for(String searchWord in searchWord.split(" ")) {
+
+        for(String itemWord in searchItem.split(" ")) {
+          double _similarity = searchWord.jaccardSimilarity(itemWord);
+          if (_similarity > 0.42) {
+
+            _wordsSimilarity.add({
+              searchItem: _similarity
+            });
+
+            return sortListBySimilarity(_wordsSimilarity);
+          }
+
+        }
+      }
+      return [];
+    }
+
+    List<String> internalSearchList = [];
+
+    List<String> listToSearch = context.read<WorkoutProvider>().exerciseNamesList;
+
+    if (value.isNotEmpty) {
+
+      for (var item in listToSearch) {
+
+        if (item.toLowerCase().contains(value.toLowerCase())) {
+          internalSearchList.add(item);
+
+        } else {
+
+          internalSearchList.addAll(checkSimilarity(value, item));
+
+        }
+      }
+    }
+
+    setState(() {
+      searchList = internalSearchList;
+    });
+
+  }
 
 
   newExercise(BuildContext context) async {
@@ -181,7 +246,7 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
                 padding: EdgeInsets.only(top:110.h),
                 shrinkWrap: true,
                 controller: scrollController,
-                itemCount: checkboxList.length,
+                itemCount: searchController.text.isNotEmpty ? searchList.length : checkboxList.length,
                 itemBuilder: (BuildContext context, int index) {
 
                   return Dismissible(
@@ -251,7 +316,7 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
                           return CheckboxListTile(
                             key: UniqueKey(),
                             title: Text(
-                              checkboxList[index].exerciseName,
+                              searchList.isNotEmpty ? searchList[index] : checkboxList[index].exerciseName,
                               style: boldTextStyle,
                             ),
                             controlAffinity: ListTileControlAffinity.trailing,
@@ -338,6 +403,11 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
                                   color: appSecondaryColour,
                                 )
                             ),
+                          ),
+                          onChanged: (value) => EasyDebounce.debounce(
+                            "levenshteinDistanceDebouncerExercise",
+                            const Duration(milliseconds: 200),
+                                () => searchForExercise(value)
                           ),
                         ),
                       ),

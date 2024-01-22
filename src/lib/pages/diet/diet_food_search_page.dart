@@ -1,9 +1,13 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:text_analysis/extensions.dart';
+import 'package:text_analysis/text_analysis.dart';
+import 'package:text_analysis/extensions.dart';
 
 import '../../constants.dart';
 import '../../helpers/diet/nutrition_tracker.dart';
@@ -118,7 +122,43 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
   void SearchFoodHistory(String value) {
 
-    print("searching");
+
+    List<Map> sortListBySimilarity(List<Map> similarityMap) {
+
+      // Create a new list with the same elements and then sort it
+      List<Map<dynamic, dynamic>> sortedList = List<Map<dynamic, dynamic>>.from(similarityMap);
+      sortedList.sort((a, b) => (b.values.first as num).compareTo(a.values.first as num));
+
+      return sortedList;
+    }
+
+    List<Map> checkSimilarity(String searchWord, String searchItem, String barcode, String foodServings, String foodServingsSize) {
+      List<Map> _wordsSimilarity = [];
+
+      for(String searchWord in searchWord.split(" ")) {
+
+        for(String itemWord in searchItem.split(" ")) {
+          double _similarity = searchWord.jaccardSimilarity(itemWord);
+          if (_similarity > 0.42) {
+
+            _wordsSimilarity.add({
+              searchItem: _similarity,
+              "foodListItemName": searchItem,
+              "barcode": barcode,
+              "foodServing": foodServings,
+              "foodServingSize": foodServingsSize,
+            });
+
+            return sortListBySimilarity(_wordsSimilarity);
+          }
+
+        }
+      }
+      return [];
+    }
+
+
+
 
     foodHistory = context.read<UserNutritionData>().userNutritionHistory;
     customFood = context.read<UserNutritionData>().userNutritionCustomFood;
@@ -154,13 +194,28 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
         if (item.toLowerCase().contains(value.toLowerCase())) {
 
-          print(item);
-
           foodHistorySearch.foodListItemNames.add(foodHistory.foodListItemNames[index]);
           foodHistorySearch.barcodes.add(foodHistory.barcodes[index]);
           foodHistorySearch.foodServings.add(foodHistory.foodServings[index]);
           foodHistorySearch.foodServingSize.add(foodHistory.foodServingSize[index]);
 
+        } else {
+          List<Map> internalSearchList = checkSimilarity(
+              value,
+              item,
+              foodHistory.barcodes[index],
+              foodHistory.foodServings[index],
+              foodHistory.foodServingSize[index],
+          );
+
+          if (internalSearchList.isNotEmpty) {
+
+            foodHistorySearch.foodListItemNames.add(internalSearchList[0]["foodListItemName"]);
+            foodHistorySearch.barcodes.add(internalSearchList[0]["barcode"]);
+            foodHistorySearch.foodServings.add(internalSearchList[0]["foodServing"]);
+            foodHistorySearch.foodServingSize.add(internalSearchList[0]["foodServingSize"]);
+
+          }
         }
 
       });
@@ -169,13 +224,28 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
         if (item.toLowerCase().contains(value.toLowerCase())) {
 
-          print(item);
-
           customRecipeSearch.foodListItemNames.add(customRecipes.foodListItemNames[index]);
           customRecipeSearch.barcodes.add(customRecipes.barcodes[index]);
           customRecipeSearch.foodServings.add(customRecipes.foodServings[index]);
           customRecipeSearch.foodServingSize.add(customRecipes.foodServingSize[index]);
 
+        } else {
+          List<Map> internalSearchList = checkSimilarity(
+            value,
+            item,
+            customRecipes.barcodes[index],
+            customRecipes.foodServings[index],
+            customRecipes.foodServingSize[index],
+          );
+
+          if (internalSearchList.isNotEmpty) {
+
+            customRecipeSearch.foodListItemNames.add(internalSearchList[0]["foodListItemName"]);
+            customRecipeSearch.barcodes.add(internalSearchList[0]["barcode"]);
+            customRecipeSearch.foodServings.add(internalSearchList[0]["foodServing"]);
+            customRecipeSearch.foodServingSize.add(internalSearchList[0]["foodServingSize"]);
+
+          }
         }
 
       });
@@ -184,13 +254,28 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
         if (item.toLowerCase().contains(value.toLowerCase())) {
 
-          print(item);
-
           customFoodSearch.foodListItemNames.add(customFood.foodListItemNames[index]);
           customFoodSearch.barcodes.add(customFood.barcodes[index]);
           customFoodSearch.foodServings.add(customFood.foodServings[index]);
           customFoodSearch.foodServingSize.add(customFood.foodServingSize[index]);
 
+        } else {
+          List<Map> internalSearchList = checkSimilarity(
+            value,
+            item,
+            customFood.barcodes[index],
+            customFood.foodServings[index],
+            customFood.foodServingSize[index],
+          );
+
+          if (internalSearchList.isNotEmpty) {
+
+            customFoodSearch.foodListItemNames.add(internalSearchList[0]["foodListItemName"]);
+            customFoodSearch.barcodes.add(internalSearchList[0]["barcode"]);
+            customFoodSearch.foodServings.add(internalSearchList[0]["foodServing"]);
+            customFoodSearch.foodServingSize.add(internalSearchList[0]["foodServingSize"]);
+
+          }
         }
 
       });
@@ -225,7 +310,6 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
         newFoodItem = await CheckFoodBarcode(barcode);
         recipe = newFoodItem.recipe;
       }
-
     }
 
 
@@ -377,7 +461,11 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      onChanged: (value) => SearchFoodHistory(value),
+                      onChanged: (value) => EasyDebounce.debounce(
+                          "levenshteinDistanceDebouncerExercise",
+                          const Duration(milliseconds: 200),
+                              () => SearchFoodHistory(value)
+                      ),
                       onTapOutside: (value) => FocusManager.instance.primaryFocus?.unfocus(),
                       onFieldSubmitted: (value) => SearchOFFbyString(value),
                     ),
