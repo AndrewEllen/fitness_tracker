@@ -6,14 +6,20 @@ class ExerciseModel {
     return {
       'exerciseName': exerciseName,
       'exerciseTrackingData': exerciseTrackingData.toMap(),
+      'category': category,
+      'exerciseTrackingType': exerciseTrackingType,
     };
   }
 
   ExerciseModel({
     required this.exerciseName,
     required this.exerciseTrackingData,
+    this.category,
+    this.exerciseTrackingType = 0,
   });
 
   String exerciseName;
   RepsWeightStatsMeasurement exerciseTrackingData;
+  String? category;
+  int? exerciseTrackingType;
 }

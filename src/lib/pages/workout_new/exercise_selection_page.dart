@@ -2,6 +2,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
+import 'package:fitness_tracker/pages/workout_new/new_exercise_page.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
 import 'package:flutter/material.dart';
@@ -462,9 +463,7 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
                           clipBehavior: Clip.antiAlias,
                           child: IconButton(
                             padding: EdgeInsets.zero,
-                            onPressed: () => newExercise(
-                              this.context,
-                            ),
+                            onPressed: () => context.read<PageChange>().changePageCache(NewExercisePage()),
                             icon: const Icon(
                               Icons.add_box
                             ),

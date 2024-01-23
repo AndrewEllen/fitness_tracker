@@ -460,7 +460,8 @@ class WorkoutProvider with ChangeNotifier {
 
     if (routine.exercises.isNotEmpty) {
       for (final newExercise in exercises) {
-        if (!_routinesList[routineIndex].exercises.any((routineExercises) => routineExercises.exerciseName == newExercise.exerciseName)) _routinesList[routineIndex].exercises.add(newExercise);
+        if (!_routinesList[routineIndex].exercises.any((routineExercises)
+        => routineExercises.exerciseName == newExercise.exerciseName)) _routinesList[routineIndex].exercises.add(newExercise);
       }
     } else {
       _routinesList[routineIndex].exercises = exercises;
