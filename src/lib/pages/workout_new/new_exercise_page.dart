@@ -27,6 +27,15 @@ class _NewExercisePageState extends State<NewExercisePage> {
   @override
   Widget build(BuildContext context) {
 
+
+    ///todo change search function code to my own
+    ///style page and put drop down in better spot
+    ///add second drop down for category types
+    ///add third drop down for exercise types
+    ///add code to add them to the exercise object and save the new exercise on the list as well as adding it to the selection page
+
+
+
     items = context.read<WorkoutProvider>().exerciseNamesList;
 
     return Scaffold(
