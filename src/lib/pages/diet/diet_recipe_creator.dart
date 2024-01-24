@@ -45,6 +45,8 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
 
   void AddToRecipe() {
 
+    servingsController.text = double.tryParse(servingsController.text) == null ? "0" : servingsController.text;
+
     if (currentRecipe.foodData.servings.isNotEmpty && currentRecipe.recipeFoodList.isNotEmpty && foodNameController.text.isNotEmpty) {
 
       print(widget.category);

@@ -47,6 +47,10 @@ class _FoodNutritionListFormFieldState extends State<FoodNutritionListFormField>
 
   void SaveServings () {
 
+    if (widget.numbersOnly) {
+      widget.controller.text = double.tryParse(widget.controller.text) == null ? "" : widget.controller.text;
+    }
+
     if (focusNode.hasPrimaryFocus) {
       if (widget.servings & widget.recipe) {
         context.read<UserNutritionData>().updateRecipeServings(widget.controller.text);
