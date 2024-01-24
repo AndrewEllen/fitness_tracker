@@ -167,6 +167,12 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
                   ),
                 ),
                 onTap: () => widget.inputController.selection = TextSelection(baseOffset: 0, extentOffset: widget.inputController.value.text.length),
+                onEditingComplete: () {
+                  widget.inputController.text = double.tryParse(widget.inputController.text) == null ? "0" : widget.inputController.text;
+                },
+                onTapOutside: (value) {
+                  widget.inputController.text = double.tryParse(widget.inputController.text) == null ? "0" : widget.inputController.text;
+                },
               ),
             ),
           ),

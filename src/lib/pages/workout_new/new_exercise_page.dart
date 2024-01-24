@@ -63,7 +63,7 @@ class _NewExercisePageState extends State<NewExercisePage> {
               DropdownButtonHideUnderline(
                 child: DropdownButton2<String>(
                   isExpanded: true,
-                  hint: Text(
+                  hint: const Text(
                     'Select Item',
                     style: TextStyle(
                       fontSize: 14,
