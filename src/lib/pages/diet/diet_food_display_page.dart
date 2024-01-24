@@ -14,6 +14,7 @@ import '../../providers/general/database_get.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/diet/diet_list_header_box.dart';
 import '../../widgets/diet/food_nutrition_list_formfield.dart';
+import '../../widgets/general/incremental_counter.dart';
 import '../diet_new/diet_home.dart';
 import 'diet_recipe_creator.dart';
 import 'food_nutrition_list_edit.dart';
@@ -123,6 +124,9 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
 
   void AddToDiary() {
 
+    servingsController.text = double.tryParse(servingsController.text) == null ? "0" : servingsController.text;
+    servingSizeController.text = double.tryParse(servingSizeController.text) == null ? "0" : servingSizeController.text;
+
       if (widget.editDiary && currentFoodItem.foodName.isNotEmpty &&
           currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
           (servingsController.text != "-" && servingsController.text.isNotEmpty) &&
@@ -191,6 +195,21 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
     }
   }
 
+  void SaveServings() {
+
+    servingsController.text = double.tryParse(servingsController.text) == null ? "0" : servingsController.text;
+    servingSizeController.text = double.tryParse(servingSizeController.text) == null ? "0" : servingSizeController.text;
+
+    print(servingsController.text);
+    print(servingSizeController.text);
+
+    if (currentFoodItem.recipe) {
+      context.read<UserNutritionData>().updateRecipeServings(servingsController.text);
+    }
+    context.read<UserNutritionData>().updateCurrentFoodItemServings(servingsController.text);
+    context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSizeController.text);
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -219,7 +238,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
           ScreenWidthContainer(
             minHeight: _bigContainerMin,
             maxHeight: _bigContainerMin*4,
-            height: _height * 0.33,
+            height: _height * 0.38,
             margin: 0,
             child: ListView(
               children: [
@@ -229,33 +248,37 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   largeTitle: true,
                   color: Colors.white,
                 ),
-                FoodNutritionListFormField(
-                  servings: true,
-                  controller: servingsController,
-                  secondaryController: servingSizeController,
-                  formKey: servingskey,
-                  width: _width,
-                  formName: "Servings",
-                  centerForm: true,
-                  noUnits: true,
+
+                Builder(
+                  builder: (context) {
+                    return IncrementalCounter(
+                      inputController: servingsController,
+                      suffix: '',
+                      label: 'No. Of Servings*',
+                      smallButtons: true,
+                      function: () => SaveServings(),
+                      bigIncrementAmount: 1,
+                      smallIncrementAmount: 0.5,
+                    );
+                  }
                 ),
-                FoodNutritionListFormField(
-                  servingSize: true,
-                  controller: servingSizeController,
-                  secondaryController: servingsController,
-                  formKey: servingSizekey,
-                  width: _width,
-                  formName: "Serving Size",
-                  centerForm: true,
-                  units: "g",
+                IncrementalCounter(
+                  inputController: servingSizeController,
+                  suffix: '',
+                  label: 'Weight of Serving*',
+                  smallButtons: true,
+                  function: () => SaveServings(),
+                  bigIncrementAmount: 10,
+                  smallIncrementAmount: 1,
                 ),
+
                 Padding(
                   padding: EdgeInsets.all(_height/120),
                   child: Container(
                     padding: const EdgeInsets.all(6),
                     margin: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(5),
                       border: Border.all(
                         width: 1,
                         color: appSecondaryColour,

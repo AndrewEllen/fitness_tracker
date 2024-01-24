@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/workout/routines_model.dart';
 import '../../providers/general/page_change_provider.dart';
-import '../../widgets/workout_new/incremental_counter.dart';
+import '../../widgets/general/incremental_counter.dart';
 import '../../widgets/workout_new/routine_page_exercise_list.dart';
 import '../../widgets/workout_new/workout_log_box.dart';
 

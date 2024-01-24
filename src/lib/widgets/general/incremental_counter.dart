@@ -3,14 +3,20 @@ import 'package:fitness_tracker/exports.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 
 class IncrementalCounter extends StatefulWidget {
-  const IncrementalCounter({Key? key, required this.inputController, required this.suffix, required this.label, required this.smallButtons}) : super(key: key);
+  const IncrementalCounter({Key? key,
+    required this.inputController, required this.suffix, required this.label,
+    required this.smallButtons, this.function, this.bigIncrementAmount = 1, this.smallIncrementAmount = 2.5}) : super(key: key);
   final TextEditingController inputController;
   final String suffix;
   final String label;
   final bool smallButtons;
+  final VoidCallback? function;
+  final double bigIncrementAmount;
+  final double smallIncrementAmount;
 
 
   @override
@@ -25,39 +31,54 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
     FilteringTextInputFormatter.allow(RegExp("[0-9.]")),
   ];
 
-
   void incrementCounter(bool isSmall) {
+
+    if (widget.inputController.text.isEmpty) {
+      widget.inputController.text = "0";
+    }
 
     if (isSmall) {
 
-      widget.inputController.text = (double.parse(widget.inputController.text) + 2.5).toString().replaceAll(removeTrailingZeros, "");
+      widget.inputController.text = (double.parse(widget.inputController.text) + widget.smallIncrementAmount).toString().replaceAll(removeTrailingZeros, "");
 
     } else {
 
-      widget.inputController.text = (double.parse(widget.inputController.text) + 1).toString().replaceAll(removeTrailingZeros, "");
+      widget.inputController.text = (double.parse(widget.inputController.text) + widget.bigIncrementAmount).toString().replaceAll(removeTrailingZeros, "");
 
     }
 
     if (double.parse(widget.inputController.text) < 0) {
       widget.inputController.text = "0";
+    }
+
+    if (widget.function != null) {
+      widget.function!();
     }
 
   }
 
   void decrementCounter(bool isSmall) {
 
+    if (widget.inputController.text.isEmpty) {
+      widget.inputController.text = "0";
+    }
+
     if (isSmall) {
 
-      widget.inputController.text = (double.parse(widget.inputController.text) - 2.5).toString().replaceAll(removeTrailingZeros, "");
+      widget.inputController.text = (double.parse(widget.inputController.text) - widget.smallIncrementAmount).toString().replaceAll(removeTrailingZeros, "");
 
     } else {
 
-      widget.inputController.text = (double.parse(widget.inputController.text) - 1).toString().replaceAll(removeTrailingZeros, "");
+      widget.inputController.text = (double.parse(widget.inputController.text) - widget.bigIncrementAmount).toString().replaceAll(removeTrailingZeros, "");
 
     }
 
     if (double.parse(widget.inputController.text) < 0) {
       widget.inputController.text = "0";
+    }
+
+    if (widget.function != null) {
+      widget.function!();
     }
 
   }
@@ -145,6 +166,7 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
                     ),
                   ),
                 ),
+                onTap: () => widget.inputController.selection = TextSelection(baseOffset: 0, extentOffset: widget.inputController.value.text.length),
               ),
             ),
           ),

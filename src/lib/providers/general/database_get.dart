@@ -24,6 +24,23 @@ import '../../models/stats/stats_model.dart';
 import '../../models/workout/exercise_model.dart';
 import '../../models/workout/reps_weight_stats_model.dart';
 
+
+String checkIfValidNumber(String value) {
+
+  return double.tryParse(value) == null ? "1" : value;
+
+}
+
+List<String> checkIfValidNumberList(List<String> valueList) {
+
+  return [
+    for (String item in valueList)
+      double.tryParse(item) == null ? "1" : item
+  ];
+
+}
+
+
 GetUserDataTrainingPlan() async {
   try {
 
@@ -246,7 +263,6 @@ GetUserNutritionData(String date) async {
 
     final Map _data = snapshot.get("nutrition-data");
 
-
     Future<List<ListFoodItem>> ToListFoodItem (_data) async {
       try {
 
@@ -255,8 +271,8 @@ GetUserNutritionData(String date) async {
           return ListFoodItem(
             category: _data[index]["category"] ?? "",
             barcode: _data[index]["barcode"] ?? "",
-            foodServingSize: _data[index]["foodServingSize"] ?? "",
-            foodServings: _data[index]["foodServings"] ?? "",
+            foodServingSize: checkIfValidNumber(_data[index]["foodServingSize"]) ?? "",
+            foodServings: checkIfValidNumber(_data[index]["foodServings"]) ?? "",
             foodItemData: FoodDefaultData(),
             recipe: _data[index]["recipe"] as bool,
           );
@@ -351,8 +367,8 @@ GetUserNutritionHistory() async {
     return UserNutritionFoodModel(
       barcodes: List<String>.from(_data["barcodes"] as List),
       foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
-      foodServings: List<String>.from(_data["foodServings"] as List),
-      foodServingSize: List<String>.from(_data["foodServingSize"] as List),
+      foodServings: checkIfValidNumberList(List<String>.from(_data["foodServings"] as List)),
+      foodServingSize: checkIfValidNumberList(List<String>.from(_data["foodServingSize"] as List)),
       recipe: List<bool>.from(_data["recipe"] as List),
     );
 
@@ -378,8 +394,8 @@ GetUserCustomFood() async {
     return UserNutritionFoodModel(
       barcodes: List<String>.from(_data["barcodes"] as List),
       foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
-      foodServings: List<String>.from(_data["foodServings"] as List),
-      foodServingSize: List<String>.from(_data["foodServingSize"] as List),
+      foodServings: checkIfValidNumberList(List<String>.from(_data["foodServings"] as List)),
+      foodServingSize: checkIfValidNumberList(List<String>.from(_data["foodServingSize"] as List)),
       recipe: List<bool>.generate(_data["barcodes"].length, (index) => false),
     );
 
@@ -405,8 +421,8 @@ GetUserCustomRecipes() async {
     return UserNutritionFoodModel(
       barcodes: List<String>.from(_data["barcodes"] as List),
       foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
-      foodServings: List<String>.from(_data["foodServings"] as List),
-      foodServingSize: List<String>.from(_data["foodServingSize"] as List),
+      foodServings: checkIfValidNumberList(List<String>.from(_data["foodServings"] as List)),
+      foodServingSize: checkIfValidNumberList(List<String>.from(_data["foodServingSize"] as List)),
       recipe: List<bool>.generate(_data["barcodes"].length, (index) => true),
     );
 

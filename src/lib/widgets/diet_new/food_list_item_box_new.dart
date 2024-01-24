@@ -25,17 +25,20 @@ class _FoodListItemBoxNewState extends State<FoodListItemBoxNew> {
 
     await Future.delayed(const Duration(milliseconds: 700), (){});
 
-    await scrollController.animateTo(
-      scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 700),
-      curve: Curves.easeOut,
-    );
+    if (scrollController.hasClients) {
+      await scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 700),
+        curve: Curves.easeOut,
+      );
 
-    await scrollController.animateTo(
-      scrollController.position.minScrollExtent,
-      duration: const Duration(milliseconds: 700),
-      curve: Curves.easeOut,
-    );
+      await scrollController.animateTo(
+        scrollController.position.minScrollExtent,
+        duration: const Duration(milliseconds: 700),
+        curve: Curves.easeOut,
+      );
+    }
+
   }
 
   @override
