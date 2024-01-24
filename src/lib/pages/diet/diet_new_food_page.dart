@@ -233,6 +233,9 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
 
   void SaveFoodItem() {
 
+    servingsController.text = double.tryParse(servingsController.text) == null ? "0" : servingsController.text;
+    servingSizeController.text = double.tryParse(servingSizeController.text) == null ? "0" : servingSizeController.text;
+
     //print(context.read<UserNutritionData>().foodListItemsBreakfast.last.foodItemData.foodName);
 
     print("Barcode on new food edit screen");
@@ -333,6 +336,8 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
   String ServingSizeCalculator(String valuePerOneHundred, String servingSize,
       String servings, int decimalPlaces) {
     try {
+      servingsController.text = double.tryParse(servingsController.text) == null ? "0" : servingsController.text;
+      servingSizeController.text = double.tryParse(servingSizeController.text) == null ? "0" : servingSizeController.text;
       return ((double.parse(valuePerOneHundred) / 100) *
           (double.parse(servingSize) * double.parse(servings)))
           .toStringAsFixed(decimalPlaces);
