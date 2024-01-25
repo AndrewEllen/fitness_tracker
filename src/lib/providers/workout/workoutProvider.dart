@@ -558,7 +558,7 @@ class WorkoutProvider with ChangeNotifier {
   }
 
 
-  void fetchExerciseData(String exerciseName) async {
+  fetchExerciseData(String exerciseName) async {
 
     if (_exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseTrackingData.dailyLogs.isEmpty) {
       ExerciseModel data = await GetExerciseLogData(exerciseName);

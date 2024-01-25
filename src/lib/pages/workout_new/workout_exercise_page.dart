@@ -31,16 +31,17 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
 
   final TextEditingController repsController = TextEditingController();
 
+
   @override
   void initState() {
+
+    weightController.addListener(_addressControllerListener);
 
     weightController.text = widget.exercise.exerciseTrackingData.dailyLogs.isNotEmpty
         ? widget.exercise.exerciseTrackingData.dailyLogs[0]["weightValues"][0].toString().replaceAll(removeTrailingZeros, "") : "10";
 
     repsController.text = widget.exercise.exerciseTrackingData.dailyLogs.isNotEmpty
         ? widget.exercise.exerciseTrackingData.dailyLogs[0]["repValues"][0].toString().replaceAll(removeTrailingZeros, "") : "6";
-
-    weightController.addListener(_addressControllerListener);
 
     super.initState();
   }
