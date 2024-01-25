@@ -231,13 +231,13 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                                     alignment: PlaceholderAlignment.middle,
                                     child: Icon(
                                       Icons.star,
-                                      color: context.read<WorkoutProvider>().exerciseMaxRepAndWeight.containsKey(weightController.text) ? appSenaryColour : appQuarternaryColour,
+                                      color: context.read<WorkoutProvider>().exerciseMaxRepAndWeight.containsKey(double.tryParse(weightController.text).toString().replaceAll(removeTrailingZeros, "")) ? appSenaryColour : appQuarternaryColour,
                                     ),
                                   ),
                                   TextSpan(
-                                    text: context.read<WorkoutProvider>().exerciseMaxRepAndWeight.containsKey(weightController.text)
-                                        ? " Highest reps for ${weightController.text} Kg: " + context.read<WorkoutProvider>().exerciseMaxRepAndWeight[weightController.text].toString()
-                                        : " No Data for ${weightController.text} Kg",
+                                    text: context.read<WorkoutProvider>().exerciseMaxRepAndWeight.containsKey(double.tryParse(weightController.text).toString().replaceAll(removeTrailingZeros, ""))
+                                        ? " Highest reps for ${double.tryParse(weightController.text).toString().replaceAll(removeTrailingZeros, "")} Kg: " + context.read<WorkoutProvider>().exerciseMaxRepAndWeight[double.tryParse(weightController.text).toString().replaceAll(removeTrailingZeros, "")].toString()
+                                        : double.tryParse(weightController.text) == null ? " No Weight Value" : " No Data for ${double.tryParse(weightController.text).toString().replaceAll(removeTrailingZeros, "")} Kg",
                                     style: boldTextStyle,
                                   )
                                 ],

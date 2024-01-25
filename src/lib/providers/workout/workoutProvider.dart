@@ -428,19 +428,19 @@ class WorkoutProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateMaxWeightAtRep(String weight, String reps, String exerciseName) {
+  void updateMaxWeightAtRep(String reps, String weight, String exerciseName) {
 
-    if (_exerciseMaxRepAndWeight.containsKey(reps)) {
+    if (_exerciseMaxRepAndWeight.containsKey(weight)) {
 
-      if (double.parse(weight) > double.parse(_exerciseMaxRepAndWeight[reps]!)) {
+      if (double.parse(reps) > double.parse(_exerciseMaxRepAndWeight[weight]!)) {
 
-        _exerciseMaxRepAndWeight[reps] = weight;
+        _exerciseMaxRepAndWeight[weight] = reps;
 
       }
 
     } else {
 
-      _exerciseMaxRepAndWeight[reps] = weight;
+      _exerciseMaxRepAndWeight[weight] = reps;
 
     }
 
