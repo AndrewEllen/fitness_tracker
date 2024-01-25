@@ -55,6 +55,10 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
       widget.function!();
     }
 
+    if (widget.inputController.hasListeners) {
+      widget.inputController.notifyListeners();
+    }
+
   }
 
   void decrementCounter(bool isSmall) {
@@ -79,6 +83,10 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
 
     if (widget.function != null) {
       widget.function!();
+    }
+
+    if (widget.inputController.hasListeners) {
+      widget.inputController.notifyListeners();
     }
 
   }

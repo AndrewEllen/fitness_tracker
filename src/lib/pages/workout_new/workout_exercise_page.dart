@@ -40,10 +40,26 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
     repsController.text = widget.exercise.exerciseTrackingData.dailyLogs.isNotEmpty
         ? widget.exercise.exerciseTrackingData.dailyLogs[0]["repValues"][0].toString().replaceAll(removeTrailingZeros, "") : "6";
 
+    weightController.addListener(_addressControllerListener);
+
     super.initState();
   }
+
+  void _addressControllerListener() {
+    setState(() {
+    });
+  }
+
+  @override
+  void dispose() {
+    weightController.removeListener(_addressControllerListener);
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
     context.watch<WorkoutProvider>().exerciseList;
     return Scaffold(
       appBar: AppBar(
@@ -119,77 +135,118 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                     smallButtons: false,
                   ),
                   Spacer(),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0, right: 20),
-                      child: ElevatedButton(
-                        onPressed: () {
+                  Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 10.0.h, right: 20.w),
+                          child: ElevatedButton(
+                            onPressed: () {
 
-                          if (weightController.text.isNotEmpty && repsController.text.isNotEmpty) {
-                            Map newLog = {
-                              "measurementDate": DateFormat("dd/MM/yyy").format(DateTime.now()).toString(),
-                              "weightValues": <double>[
+                              if (weightController.text.isNotEmpty && repsController.text.isNotEmpty) {
+                                Map newLog = {
+                                  "measurementDate": DateFormat("dd/MM/yyy").format(DateTime.now()).toString(),
+                                  "weightValues": <double>[
 
-                                double.parse(weightController.text),
+                                    double.parse(weightController.text),
 
-                              ],
-                              "repValues": <double>[
+                                  ],
+                                  "repValues": <double>[
 
-                                double.parse(repsController.text),
+                                    double.parse(repsController.text),
 
-                              ],
-                              "measurementTimeStamp": <String>[
+                                  ],
+                                  "measurementTimeStamp": <String>[
 
-                                DateFormat("HH:mm").format(DateTime.now()).toString(),
+                                    DateFormat("HH:mm").format(DateTime.now()).toString(),
 
-                              ]
-                            };
+                                  ]
+                                };
 
-                            try {
+                                try {
 
-                              if (
-                              DateFormat("dd/MM/yyyy").parse(widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementDate"])
-                                  == DateFormat("dd/MM/yyyy").parse(newLog["measurementDate"])
-                              ) {
+                                  if (
+                                  DateFormat("dd/MM/yyyy").parse(widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementDate"])
+                                      == DateFormat("dd/MM/yyyy").parse(newLog["measurementDate"])
+                                  ) {
 
-                                widget.exercise.exerciseTrackingData.dailyLogs[0]["weightValues"].insert(0, newLog["weightValues"][0]);
-                                widget.exercise.exerciseTrackingData.dailyLogs[0]["repValues"].insert(0, newLog["repValues"][0]);
-                                widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"].insert(0, newLog["measurementTimeStamp"][0]);
+                                    widget.exercise.exerciseTrackingData.dailyLogs[0]["weightValues"].insert(0, newLog["weightValues"][0]);
+                                    widget.exercise.exerciseTrackingData.dailyLogs[0]["repValues"].insert(0, newLog["repValues"][0]);
+                                    widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"].insert(0, newLog["measurementTimeStamp"][0]);
 
-                              } else {
+                                  } else {
 
-                                widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
+                                    widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
+
+                                  }
+
+                                  context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog, widget.routine);
+                                  context.read<WorkoutProvider>().updateMaxWeightAtRep(repsController.text, weightController.text, widget.exercise.exerciseName);
+
+                                } catch (e) {
+                                  debugPrint(e.toString());
+
+                                  try {
+                                    widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
+
+                                    context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog, widget.routine);
+                                    context.read<WorkoutProvider>().updateMaxWeightAtRep(repsController.text, weightController.text, widget.exercise.exerciseName);
+
+                                  } catch (e) {
+
+                                    debugPrint(e.toString());
+
+                                  }
+
+                                }
 
                               }
 
-                              context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog, widget.routine);
-                              context.read<WorkoutProvider>().updateMaxWeightAtRep(weightController.text, repsController.text, widget.exercise.exerciseName);
 
-                            } catch (e) {
-                              debugPrint(e.toString());
-
-                              try {
-                                widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
-
-                                context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog, widget.routine);
-                                context.read<WorkoutProvider>().updateMaxWeightAtRep(weightController.text, repsController.text, widget.exercise.exerciseName);
-
-                              } catch (e) {
-
-                                debugPrint(e.toString());
-
-                              }
-
-                            }
-
-                          }
-
-
-                        },
-                        child: const Text("Save Log"),
+                            },
+                            child: const Text("Save Log"),
+                          ),
+                        ),
                       ),
-                    ),
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 10.0.h, left: 20.w, top: 8.h),
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                              top: 2,
+                              bottom: 2,
+                              left: 6,
+                              right: 8,
+                            ),
+                            decoration: const BoxDecoration(
+                              color: appQuinaryColour,
+                              borderRadius: BorderRadius.all(Radius.circular(4))
+                            ),
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  WidgetSpan(
+                                    alignment: PlaceholderAlignment.middle,
+                                    child: Icon(
+                                      Icons.star,
+                                      color: context.read<WorkoutProvider>().exerciseMaxRepAndWeight.containsKey(weightController.text) ? appSenaryColour : appQuarternaryColour,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: context.read<WorkoutProvider>().exerciseMaxRepAndWeight.containsKey(weightController.text)
+                                        ? " Highest reps for ${weightController.text} Kg: " + context.read<WorkoutProvider>().exerciseMaxRepAndWeight[weightController.text].toString()
+                                        : " No Data for ${weightController.text} Kg",
+                                    style: boldTextStyle,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

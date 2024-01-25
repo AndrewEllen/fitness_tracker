@@ -724,7 +724,7 @@ GetExerciseLogData(String exerciseName) async {
               mapData(document.data())
           ],
         ),
-        exerciseMaxRepsAndWeight: repsAndWeightSnapshot.data() == null ? {}
+        exerciseMaxRepsAndWeight: repsAndWeightSnapshot.data()?["data"] == null ? {}
             : repsAndWeightSnapshot.data()!["data"].map<String, String>((key, value) => MapEntry<String, String>(key.toString(), value.toString()))
     );
 
