@@ -681,7 +681,6 @@ GetUserGroceries(String groceryListID) async {
   }
 }
 
-
 GetExerciseLogData(String exerciseName) async {
   try {
 
@@ -696,6 +695,13 @@ GetExerciseLogData(String exerciseName) async {
         .orderBy("timeStamp", descending: true)
         .limit(7)
         .where("timeStamp", isLessThanOrEqualTo: DateTime.now().toUtc())
+        .get();
+
+    final repsAndWeightSnapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('workout-data')
+        .doc(exerciseName)
         .get();
 
     Map mapData(data) {
@@ -717,13 +723,16 @@ GetExerciseLogData(String exerciseName) async {
             for (QueryDocumentSnapshot document in snapshot.docs)
               mapData(document.data())
           ],
-        )
+        ),
+        exerciseMaxRepsAndWeight: repsAndWeightSnapshot.data() == null ? {}
+            : repsAndWeightSnapshot.data()!["data"].map<String, String>((key, value) => MapEntry<String, String>(key.toString(), value.toString()))
     );
 
     return data;
 
-  } catch (exception) {
-    print(exception);
+  } catch (exception, stacktrace) {
+    debugPrint(exception.toString());
+    debugPrint(stacktrace.toString());
   }
 }
 
@@ -765,7 +774,8 @@ GetMoreExerciseLogData(String exerciseName, String date) async {
             for (QueryDocumentSnapshot document in snapshot.docs)
               mapData(document.data())
           ],
-        )
+        ),
+      exerciseMaxRepsAndWeight: {},
     );
 
     return data;

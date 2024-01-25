@@ -90,6 +90,7 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
 
       workoutExerciseNamesSet = {for (WorkoutLogExerciseDataModel exercise in workout.exercises)
         exercise.measurementName}.toList();
+
     } catch (error) {
       debugPrint(error.toString());
     }
@@ -123,7 +124,7 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
               context.read<PageChange>().backPage(),
             },
             child: Icon(
-                workoutRoutineNamesSet.isEmpty ? Icons.stop : context.read<WorkoutProvider>().workoutStarted ? Icons.save : Icons.timer,
+                context.read<WorkoutProvider>().workoutStarted ? workoutRoutineNamesSet.isEmpty ? Icons.stop : Icons.save : Icons.timer,
             ),
           ),
         ),

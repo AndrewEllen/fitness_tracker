@@ -14,12 +14,14 @@ class ExerciseModel {
   ExerciseModel({
     required this.exerciseName,
     required this.exerciseTrackingData,
+    required this.exerciseMaxRepsAndWeight,
     this.category,
     this.exerciseTrackingType = 0,
   });
 
   String exerciseName;
   RepsWeightStatsMeasurement exerciseTrackingData;
+  Map<String, String> exerciseMaxRepsAndWeight;
   String? category;
   int? exerciseTrackingType;
 }

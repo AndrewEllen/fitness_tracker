@@ -261,6 +261,23 @@ void saveExerciseLogs(ExerciseModel exercise, Map log) async {
 
 }
 
+
+
+void saveExerciseMaxRepsAtWeight(String exerciseName, Map maxWeightAtReps) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-data')
+      .doc(exerciseName)
+      .set({"data": maxWeightAtReps});
+
+}
+
+
+
 void updateLogData(ExerciseModel exercise, int index) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;

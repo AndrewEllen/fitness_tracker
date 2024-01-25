@@ -164,6 +164,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                               }
 
                               context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog, widget.routine);
+                              context.read<WorkoutProvider>().updateMaxWeightAtRep(weightController.text, repsController.text, widget.exercise.exerciseName);
 
                             } catch (e) {
                               debugPrint(e.toString());
@@ -172,6 +173,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                                 widget.exercise.exerciseTrackingData.dailyLogs.insert(0, newLog);
 
                                 context.read<WorkoutProvider>().addNewLog(widget.exercise, newLog, widget.routine);
+                                context.read<WorkoutProvider>().updateMaxWeightAtRep(weightController.text, repsController.text, widget.exercise.exerciseName);
 
                               } catch (e) {
 

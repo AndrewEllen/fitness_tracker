@@ -20,6 +20,10 @@ class WorkoutProvider with ChangeNotifier {
 
   dynamic get lastWorkoutLogDocument => _lastWorkoutLogDocument;
 
+  Map<String, String> _exerciseMaxRepAndWeight = {};
+
+  Map<String, String> get exerciseMaxRepAndWeight => _exerciseMaxRepAndWeight;
+
 
   late WorkoutOverallStatsModel _workoutOverallStatsModel = WorkoutOverallStatsModel(
       totalVolume: 0,
@@ -107,6 +111,7 @@ class WorkoutProvider with ChangeNotifier {
                 measurementName: exerciseNameToCheck,
                 dailyLogs: []
             ),
+          exerciseMaxRepsAndWeight: {},
         ),
 
       );
@@ -408,6 +413,44 @@ class WorkoutProvider with ChangeNotifier {
   }
 
 
+
+
+
+
+
+
+  void setMaxWeightAtRep(Map<String, String> exerciseMaxRepAndWeight) {
+
+    _exerciseMaxRepAndWeight = exerciseMaxRepAndWeight;
+
+    print(_exerciseMaxRepAndWeight);
+
+    notifyListeners();
+  }
+
+  void updateMaxWeightAtRep(String weight, String reps, String exerciseName) {
+
+    if (_exerciseMaxRepAndWeight.containsKey(reps)) {
+
+      if (double.parse(weight) > double.parse(_exerciseMaxRepAndWeight[reps]!)) {
+
+        _exerciseMaxRepAndWeight[reps] = weight;
+
+      }
+
+    } else {
+
+      _exerciseMaxRepAndWeight[reps] = weight;
+
+    }
+
+    saveExerciseMaxRepsAtWeight(exerciseName, _exerciseMaxRepAndWeight);
+    _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseMaxRepsAndWeight = _exerciseMaxRepAndWeight;
+
+    notifyListeners();
+
+  }
+
   void deleteLog(String exerciseName, int index, int index2) {
 
     ExerciseModel selectedExerciseData = _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)];
@@ -518,11 +561,11 @@ class WorkoutProvider with ChangeNotifier {
   void fetchExerciseData(String exerciseName) async {
 
     if (_exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseTrackingData.dailyLogs.isEmpty) {
-
       ExerciseModel data = await GetExerciseLogData(exerciseName);
       _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseTrackingData.dailyLogs = data.exerciseTrackingData.dailyLogs;
-
+      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseMaxRepsAndWeight = data.exerciseMaxRepsAndWeight;
     }
+    setMaxWeightAtRep(_exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseMaxRepsAndWeight);
 
     notifyListeners();
 
