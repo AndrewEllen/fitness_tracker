@@ -1,4 +1,6 @@
 
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
 import 'package:fitness_tracker/models/workout/workout_log_exercise_data.dart';
@@ -443,6 +445,8 @@ class WorkoutProvider with ChangeNotifier {
       _exerciseMaxRepAndWeight[weight] = reps;
 
     }
+
+    _exerciseMaxRepAndWeight = SplayTreeMap<String,String>.from(_exerciseMaxRepAndWeight, (a, b) => a.compareTo(b));
 
     saveExerciseMaxRepsAtWeight(exerciseName, _exerciseMaxRepAndWeight);
     _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseMaxRepsAndWeight = _exerciseMaxRepAndWeight;

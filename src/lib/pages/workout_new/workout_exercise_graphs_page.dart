@@ -139,6 +139,7 @@ class _ExerciseGraphsPageState extends State<ExerciseGraphsPage> {
           return true;
         },
         child: HorizontalBarChart(
+          label: "Max Reps Per Weight",
           values: context.read<WorkoutProvider>().exerciseMaxRepAndWeight,
         ),
       ),

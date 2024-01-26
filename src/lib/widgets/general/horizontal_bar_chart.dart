@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HorizontalBarChart extends StatefulWidget {
-  HorizontalBarChart({Key? key, required this.values}) : super(key: key);
+  HorizontalBarChart({Key? key, required this.values, required this.label}) : super(key: key);
   Map values;
+  String label;
 
   @override
   State<HorizontalBarChart> createState() => _HorizontalBarChartState();
@@ -20,7 +21,7 @@ class _HorizontalBarChartState extends State<HorizontalBarChart> {
   double getWidth(double barValue) {
 
     if (barValue > maxValue) {
-      return 1;
+      return 10;
     }
 
     return (barValue/maxValue);
@@ -33,24 +34,74 @@ class _HorizontalBarChartState extends State<HorizontalBarChart> {
     bars = widget.values.entries.map((entry) => BarModel(label: entry.key.toString(), value: double.parse(entry.value))).toList();
     maxValue = widget.values.entries.map((entry) => double.parse(entry.value)).toList().reduce(max);
 
-    return Padding(
-      padding: const EdgeInsets.all(18.0),
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: bars.length,
-        itemBuilder: (BuildContext context, int index) {
-          return FractionallySizedBox(
-            alignment: Alignment.centerLeft,
-            widthFactor: getWidth(bars[index].value),
-            child: Container(
-              margin: const EdgeInsets.only(top: 14),
-              decoration: const BoxDecoration(
-                color: appSecondaryColour,
-              ),
-              height: 14,
+    return Container(
+      color: appTertiaryColour,
+      child: ListView(
+        children: [
+          SizedBox(height: 10.h),
+
+          Text(
+            widget.label,
+            style: boldTextStyle.copyWith(
+              fontSize: 24
             ),
-          );
-        },
+          ),
+
+          Divider(
+            height: 25.h,
+            thickness: 2,
+            color: appQuinaryColour,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 12.w),
+            child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: bars.length+1,
+              itemBuilder: (BuildContext context, int index) {
+                return index == bars.length ? const SizedBox(height: 50) : Container(
+                  margin: EdgeInsets.only(top: 18),
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 10),
+                        width: 50,
+                        child: Text(
+                          bars[index].label + " Kg",
+                          style: boldTextStyle,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 280.w,
+                        child: FractionallySizedBox(
+                          alignment: Alignment.centerLeft,
+                          widthFactor: getWidth(bars[index].value),
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            decoration: const BoxDecoration(
+                              color: appSecondaryColour,
+                            ),
+                            height: 24,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Text(
+                                  bars[index].value.round().toString(),
+                                  style: boldTextStyle,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
