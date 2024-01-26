@@ -17,49 +17,65 @@ class HorizontalBarChart extends StatefulWidget {
 class _HorizontalBarChartState extends State<HorizontalBarChart> {
 
   late List<BarModel> bars;
+  late double realMaxValue;
   late double maxValue;
+  late double minValue;
 
   double getWidth(double barValue) {
+    double scalingFactor = 1;
 
-    if (barValue > maxValue) {
-      return 1;
+    if (maxValue/minValue > 30) {
+      scalingFactor = 1 + (minValue/maxValue)*30;
     }
 
-    return (barValue/maxValue);
+    if (barValue >= realMaxValue) {
+      return 1;
+    } else if (barValue > maxValue) {
+      return 0.99;
+    }
+
+    double fractionalValue = barValue/maxValue;
+
+    if (fractionalValue < 0.08) {
+      return 0.08;
+    }
+
+    if (barValue < realMaxValue) {
+      return fractionalValue-0.025;//*scalingFactor;
+    }
+
+    return fractionalValue;
 
   }
 
   double getRealisticMaxValue(List<double> items) {
+    items.sort();
 
-    items.sort((b, a) => a.compareTo(b));
+    // Calculate Q1 and Q3
+    int length = items.length;
+    int q1Index = (length / 4).floor();
+    int q3Index = (3 * length / 4).floor();
 
-    double actualMax = items[0];
+    double q1 = items[q1Index];
+    double q3 = items[q3Index];
 
-    print(items);
+    // Calculate the interquartile range (IQR)
+    double iqr = q3 - q1;
 
-    double realisticMax = 0;
+    // Define a multiplier to set the threshold for outliers (e.g., 1.5 times the IQR)
+    double outlierMultiplier = 1.5;
 
-    int loopChecks = 0;
+    // Calculate the lower and upper bounds for outliers
+    double lowerBound = q1 - outlierMultiplier * iqr;
+    double upperBound = q3 + outlierMultiplier * iqr;
 
-    double loopMax = actualMax;
+    // Filter out values outside the outlier bounds
+    List<double> filteredValues = items.where((value) => value >= lowerBound && value <= upperBound).toList();
 
-    for (double item in items) {
-      if (item == actualMax) {
-        continue;
-      }
-      if (loopMax/item >= 10) {
-        print(item);
-        loopMax = item;
-      }
+    // Find the maximum value in the filtered list
+    double realisticMax = filteredValues.isNotEmpty ? filteredValues.reduce(max) : 0;
 
-      if (loopChecks > 3 || loopChecks == items.length-2) {
-        print("break");
-        realisticMax += loopMax;
-        break;
-      }
-      loopChecks += 1;
-    }
-
+    print(realisticMax);
     return realisticMax;
   }
 
@@ -68,7 +84,9 @@ class _HorizontalBarChartState extends State<HorizontalBarChart> {
 
     bars = widget.values.entries.map((entry) => BarModel(label: entry.key.toString(), value: double.parse(entry.value))).toList();
     List<double> barValues = widget.values.entries.map((entry) => double.parse(entry.value)).toList();
+    realMaxValue = barValues.reduce(max);
     maxValue = getRealisticMaxValue(barValues);
+    minValue = barValues.reduce(min);
 
     return Container(
       color: appTertiaryColour,
