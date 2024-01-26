@@ -486,3 +486,15 @@ void saveDayTracking(Map<String, dynamic> daysWorkedOut) async {
 
 }
 
+void SaveDailyStreak(Map<String, dynamic> dailyStreak) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('user-data')
+      .doc("daily-streak")
+      .set(dailyStreak);
+
+}

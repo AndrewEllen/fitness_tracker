@@ -22,6 +22,13 @@ class WorkoutProvider with ChangeNotifier {
 
   dynamic get lastWorkoutLogDocument => _lastWorkoutLogDocument;
 
+  late Map<String, dynamic> _dailyStreak = {
+    "lastDate": DateTime.now(),
+    "dailyStreak": 0,
+  };
+
+  dynamic get dailyStreak => _dailyStreak;
+
   late Map<String, dynamic> _weekDayExerciseTracker = {
     "lastDate": DateTime.now(),
     "Monday": false,

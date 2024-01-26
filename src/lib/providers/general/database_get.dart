@@ -1079,3 +1079,30 @@ GetWeekdayExerciseTracking() async {
   return snapshotMap;
 
 }
+
+GetDailyStreak() async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  dynamic snapshot = await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('user-data')
+      .doc("daily-streak")
+      .get();
+
+  dynamic parseDateTime(Timestamp? timeStamp) {
+
+    if (timeStamp != null) {
+      return timeStamp.toDate();
+    }
+    return null;
+
+  }
+
+  Map<String, dynamic> snapshotMap = Map<String, dynamic>.from(snapshot.data());
+  snapshotMap["lastDate"] = parseDateTime(snapshotMap["lastDate"]);
+
+  return snapshotMap;
+
+}

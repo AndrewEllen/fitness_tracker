@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitness_tracker/providers/general/general_data_provider.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
@@ -155,21 +156,31 @@ class _HomePageState extends State<HomePage> {
                       Container(
                         margin: const EdgeInsets.only(top:16),
                         child: ScreenWidthContainer(
-                          minHeight: _bigContainerMin * 0.96,
-                          maxHeight: _bigContainerMin * 1.5,
-                          height: _height * 0.3,
+                          minHeight: 80.h,
+                          maxHeight: 80.h,
+                          height: 80.h,
                           margin: _margin/2,
                           child: Column(
                             children: [
                               Container(
                                 margin: const EdgeInsets.only(top: 2),
                                 child: const Text(
-                                  "Workout Volume Daily (Kg)",
+                                  "Daily Streak",
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
                                 ),
                               ),
+                              const Spacer(),
+                              Center(
+                                child: Text(
+                                  context.read<GeneralDataProvider>().dailyStreak["dailyStreak"].toString() + " Days Streak",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              const Spacer(),
                             ],
                           ),
                         ),

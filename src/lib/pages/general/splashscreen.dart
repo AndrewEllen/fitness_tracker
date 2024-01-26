@@ -6,6 +6,7 @@ import 'package:fitness_tracker/models/groceries/grocery_item.dart';
 import 'package:fitness_tracker/models/stats/user_data_model.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:fitness_tracker/models/workout/workout_overall_stats_model.dart';
+import 'package:fitness_tracker/providers/general/general_data_provider.dart';
 import 'package:fitness_tracker/providers/grocery/groceries_provider.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
   late Map workoutLogs;
   late WorkoutOverallStatsModel workoutOverallStats;
   late Map<String, dynamic> weekdayTrackingValues;
+  late Map<String, dynamic> dailyStreak;
 
   Future<void> stepsCalorieCalculator() async {
 
@@ -106,6 +108,39 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void fetchData() async {
+
+    try {dailyStreak = await GetDailyStreak();} catch (exception) {print(exception);}
+
+    try {
+
+      print("DIFFERENCE IN HOURS");
+      print(DateTime.now().difference(dailyStreak["lastDate"]).inHours);
+
+      if (DateTime.now().difference(dailyStreak["lastDate"]).inHours > 23
+          && DateTime.now().difference(dailyStreak["lastDate"]).inHours < 50) {
+
+        try {context.read<GeneralDataProvider>().updateDailyStreak(dailyStreak);} catch (exception) {print(exception);}
+
+      } else if (DateTime.now().difference(dailyStreak["lastDate"]).inHours >= 0
+          && DateTime.now().difference(dailyStreak["lastDate"]).inHours <= 23) {
+
+        try {context.read<GeneralDataProvider>().setDailyStreak(dailyStreak);} catch (exception) {print(exception);}
+      } else {
+        try {context.read<GeneralDataProvider>().setDailyStreak(<String, dynamic>{
+          "lastDate": DateTime.now(),
+          "dailyStreak": 0,
+        });} catch (exception) {print(exception);}
+      }
+
+    } catch (exception) {
+
+      try {context.read<GeneralDataProvider>().setDailyStreak(<String, dynamic>{
+      "lastDate": DateTime.now(),
+      "dailyStreak": 0,
+      });} catch (exception) {print(exception);}
+
+      debugPrint(exception.toString());
+    }
 
     try {measurements = await GetUserMeasurements();} catch (exception) {print(exception);}
     try {userData = await GetUserDataTrainingPlan();} catch (exception) {print(exception);}
