@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:collection/collection.dart';
 
 import 'package:fitness_tracker/constants.dart';
 import 'package:flutter/material.dart';
@@ -21,18 +22,53 @@ class _HorizontalBarChartState extends State<HorizontalBarChart> {
   double getWidth(double barValue) {
 
     if (barValue > maxValue) {
-      return 10;
+      return 1;
     }
 
     return (barValue/maxValue);
 
   }
 
+  double getRealisticMaxValue(List<double> items) {
+
+    items.sort((b, a) => a.compareTo(b));
+
+    double actualMax = items[0];
+
+    print(items);
+
+    double realisticMax = 0;
+
+    int loopChecks = 0;
+
+    double loopMax = actualMax;
+
+    for (double item in items) {
+      if (item == actualMax) {
+        continue;
+      }
+      if (loopMax/item >= 10) {
+        print(item);
+        loopMax = item;
+      }
+
+      if (loopChecks > 3 || loopChecks == items.length-2) {
+        print("break");
+        realisticMax += loopMax;
+        break;
+      }
+      loopChecks += 1;
+    }
+
+    return realisticMax;
+  }
+
   @override
   Widget build(BuildContext context) {
 
     bars = widget.values.entries.map((entry) => BarModel(label: entry.key.toString(), value: double.parse(entry.value))).toList();
-    maxValue = widget.values.entries.map((entry) => double.parse(entry.value)).toList().reduce(max);
+    List<double> barValues = widget.values.entries.map((entry) => double.parse(entry.value)).toList();
+    maxValue = getRealisticMaxValue(barValues);
 
     return Container(
       color: appTertiaryColour,
@@ -85,7 +121,7 @@ class _HorizontalBarChartState extends State<HorizontalBarChart> {
                             child: Align(
                               alignment: Alignment.centerRight,
                               child: Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
+                                padding: const EdgeInsets.only(right: 8.0, left: 2.5),
                                 child: Text(
                                   bars[index].value.round().toString(),
                                   style: boldTextStyle,
