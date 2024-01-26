@@ -89,7 +89,7 @@ class _HorizontalBarChartState extends State<HorizontalBarChart> {
     minValue = barValues.reduce(min);
 
     return Container(
-      color: appTertiaryColour,
+      //color: appTertiaryColour,
       child: ListView(
         children: [
           SizedBox(height: 10.h),
@@ -104,20 +104,29 @@ class _HorizontalBarChartState extends State<HorizontalBarChart> {
             ),
           ),
 
-          Divider(
-            height: 25.h,
-            thickness: 2,
-            color: appQuinaryColour,
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 12.w),
+          SizedBox(height: 30.h),
+
+          Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment(0, 1),
+                    colors: [
+                      appPrimaryColour,
+                      appSenaryColourDark,
+                      appPrimaryColour,
+                    ]
+                )
+            ),
             child: ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: bars.length+1,
               itemBuilder: (BuildContext context, int index) {
                 return index == bars.length ? const SizedBox(height: 50) : Container(
+                  padding: EdgeInsets.only(left: 12.w),
                   margin: EdgeInsets.only(top: 18),
+
                   child: Row(
                     children: [
                       Container(
@@ -135,10 +144,11 @@ class _HorizontalBarChartState extends State<HorizontalBarChart> {
                           widthFactor: getWidth(bars[index].value),
                           child: Container(
                             alignment: Alignment.centerLeft,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               color: appSecondaryColour,
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                            height: 24,
+                            height: 22,
                             child: Align(
                               alignment: Alignment.centerRight,
                               child: Padding(
