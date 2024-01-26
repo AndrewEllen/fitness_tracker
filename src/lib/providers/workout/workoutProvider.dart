@@ -423,9 +423,8 @@ class WorkoutProvider with ChangeNotifier {
 
   void setMaxWeightAtRep(Map<String, String> exerciseMaxRepAndWeight) {
 
-    _exerciseMaxRepAndWeight = exerciseMaxRepAndWeight;
+    _exerciseMaxRepAndWeight = SplayTreeMap<String,String>.from(exerciseMaxRepAndWeight, (a, b) => double.parse(a).compareTo(double.parse(b)));
 
-    print(_exerciseMaxRepAndWeight);
 
     notifyListeners();
   }
@@ -446,7 +445,7 @@ class WorkoutProvider with ChangeNotifier {
 
     }
 
-    _exerciseMaxRepAndWeight = SplayTreeMap<String,String>.from(_exerciseMaxRepAndWeight, (a, b) => a.compareTo(b));
+    _exerciseMaxRepAndWeight = SplayTreeMap<String,String>.from(exerciseMaxRepAndWeight, (a, b) => double.parse(a).compareTo(double.parse(b)));
 
     saveExerciseMaxRepsAtWeight(exerciseName, _exerciseMaxRepAndWeight);
     _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseMaxRepsAndWeight = _exerciseMaxRepAndWeight;
