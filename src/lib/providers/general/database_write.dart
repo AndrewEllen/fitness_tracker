@@ -473,3 +473,16 @@ void saveOverallStats(WorkoutOverallStatsModel stats) async {
 
 }
 
+void saveDayTracking(Map<String, dynamic> daysWorkedOut) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('current-workout-data')
+      .doc("week-days-worked")
+      .set(daysWorkedOut);
+
+}
+

@@ -1,5 +1,7 @@
+import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import 'daily_tracker_circle.dart';
@@ -12,6 +14,7 @@ class WorkoutDailyTracker extends StatefulWidget {
 }
 
 class _WorkoutDailyTrackerState extends State<WorkoutDailyTracker> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,13 +36,13 @@ class _WorkoutDailyTrackerState extends State<WorkoutDailyTracker> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              WorkoutTrackerCircle(size: 40.w, text: "Mo", workoutComplete: false,),
-              WorkoutTrackerCircle(size: 40.w, text: "Tu", workoutComplete: false,),
-              WorkoutTrackerCircle(size: 40.w, text: "We", workoutComplete: false,),
-              WorkoutTrackerCircle(size: 40.w, text: "Th", workoutComplete: false,),
-              WorkoutTrackerCircle(size: 40.w, text: "Fr", workoutComplete: true,),
-              WorkoutTrackerCircle(size: 40.w, text: "Sa", workoutComplete: false,),
-              WorkoutTrackerCircle(size: 40.w, text: "Su", workoutComplete: false,),
+              WorkoutTrackerCircle(size: 40.w, text: "Monday", workoutComplete: context.read<WorkoutProvider>().weekDayExerciseTracker,),
+              WorkoutTrackerCircle(size: 40.w, text: "Tuesday", workoutComplete: context.read<WorkoutProvider>().weekDayExerciseTracker,),
+              WorkoutTrackerCircle(size: 40.w, text: "Wednesday", workoutComplete: context.read<WorkoutProvider>().weekDayExerciseTracker,),
+              WorkoutTrackerCircle(size: 40.w, text: "Thursday", workoutComplete: context.read<WorkoutProvider>().weekDayExerciseTracker,),
+              WorkoutTrackerCircle(size: 40.w, text: "Friday", workoutComplete: context.read<WorkoutProvider>().weekDayExerciseTracker,),
+              WorkoutTrackerCircle(size: 40.w, text: "Saturday", workoutComplete: context.read<WorkoutProvider>().weekDayExerciseTracker,),
+              WorkoutTrackerCircle(size: 40.w, text: "Sunday", workoutComplete: context.read<WorkoutProvider>().weekDayExerciseTracker,),
             ],
           ),
           const Spacer(flex: 6),

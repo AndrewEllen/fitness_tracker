@@ -39,6 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
   late bool workoutStarted;
   late Map workoutLogs;
   late WorkoutOverallStatsModel workoutOverallStats;
+  late Map<String, dynamic> weekdayTrackingValues;
 
   Future<void> stepsCalorieCalculator() async {
 
@@ -125,6 +126,7 @@ class _SplashScreenState extends State<SplashScreen> {
     try {workoutStarted = await GetWorkoutStarted();} catch (exception) {print("started");print(exception);}
     try {workoutLogs = await GetPastWorkoutData(null);} catch (exception) {print("logs");print(exception);}
     try {workoutOverallStats = await GetWorkoutOverallStats();} catch (exception) {print("workout-stats");print(exception);}
+    try {weekdayTrackingValues = await GetWeekdayExerciseTracking();} catch (exception) {print("weekday-tracking");print(exception);}
 
     try {context.read<UserData>().setUserBioData(userData);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCalories(userData.calories);} catch (exception) {print(exception);}
@@ -146,6 +148,7 @@ class _SplashScreenState extends State<SplashScreen> {
     try {context.read<WorkoutProvider>().loadWorkoutStarted(workoutStarted);} catch (exception) {print(exception);}
     try {context.read<WorkoutProvider>().loadWorkoutLogs(workoutLogs);} catch (exception) {print(exception);}
     try {context.read<WorkoutProvider>().loadOverallStats(workoutOverallStats);} catch (exception) {print(exception);}
+    try {context.read<WorkoutProvider>().loadWeekdayExerciseTracking(weekdayTrackingValues);} catch (exception) {print(exception);}
 
 
     try {await stepsCalorieCalculator();} catch (exception) {print(exception);}

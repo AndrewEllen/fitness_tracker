@@ -5,7 +5,7 @@ class WorkoutTrackerCircle extends StatefulWidget {
   WorkoutTrackerCircle({Key? key, required this.size, required this.text, required this.workoutComplete}) : super(key: key);
   final double size;
   final String text;
-  final bool workoutComplete;
+  final Map workoutComplete;
 
   @override
   State<WorkoutTrackerCircle> createState() => _WorkoutTrackerCircleState();
@@ -17,13 +17,13 @@ class _WorkoutTrackerCircleState extends State<WorkoutTrackerCircle> {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: widget.workoutComplete ? appSenaryColour : appQuarternaryColour,
+        color: widget.workoutComplete[widget.text] == true ? appSenaryColour : appQuarternaryColour,
       ),
       width: widget.size,
       height: widget.size,
       child: Center(
         child: Text(
-          widget.text,
+          widget.text.substring(0, 2),
           style: boldTextStyle,
         ),
       ),

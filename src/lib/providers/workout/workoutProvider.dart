@@ -22,6 +22,19 @@ class WorkoutProvider with ChangeNotifier {
 
   dynamic get lastWorkoutLogDocument => _lastWorkoutLogDocument;
 
+  late Map<String, dynamic> _weekDayExerciseTracker = {
+    "lastDate": DateTime.now(),
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": false,
+    "Sunday": false,
+  };
+
+  dynamic get weekDayExerciseTracker => _weekDayExerciseTracker;
+
   Map<String, String> _exerciseMaxRepAndWeight = {};
 
   Map<String, String> get exerciseMaxRepAndWeight => _exerciseMaxRepAndWeight;
@@ -290,12 +303,63 @@ class WorkoutProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void loadWeekdayExerciseTracking(Map<String, dynamic> weekdayTrackingValues) {
+
+    ///https://stackoverflow.com/questions/49393231/how-to-get-day-of-year-week-of-year-from-a-datetime-dart-object
+
+    int numOfWeeks(int year) {
+      DateTime dec28 = DateTime(year, 12, 28);
+      int dayOfDec28 = int.parse(DateFormat("D").format(dec28));
+      return ((dayOfDec28 - dec28.weekday + 10) / 7).floor();
+    }
+
+    int weekNumber(DateTime date) {
+      int dayOfYear = int.parse(DateFormat("D").format(date));
+      int woy =  ((dayOfYear - date.weekday + 10) / 7).floor();
+      if (woy < 1) {
+        woy = numOfWeeks(date.year - 1);
+      } else if (woy > numOfWeeks(date.year)) {
+        woy = 1;
+      }
+      return woy;
+    }
+
+    print(weekdayTrackingValues["lastDate"]);
+    print(weekNumber(weekdayTrackingValues["lastDate"]));
+
+    if ((weekNumber(weekdayTrackingValues["lastDate"]) < weekNumber(DateTime.now()))
+        || (weekNumber(weekdayTrackingValues["lastDate"]) != 52
+          && DateTime.now().year > weekdayTrackingValues["lastDate"].year)) {
+
+      weekdayTrackingValues = {
+        "lastDate": weekdayTrackingValues["lastDate"],
+        "Monday": false,
+        "Tuesday": false,
+        "Wednesday": false,
+        "Thursday": false,
+        "Friday": false,
+        "Saturday": false,
+        "Sunday": false,
+      };
+
+    }
+
+    _weekDayExerciseTracker = weekdayTrackingValues;
+
+    notifyListeners();
+
+  }
+
   void endWorkout(DateTime endOfWorkout) {
 
     _workoutStarted = false;
     _currentWorkout.endOfWorkout = endOfWorkout;
 
     if (_currentWorkout.exercises.isNotEmpty) {
+
+      _weekDayExerciseTracker[DateFormat('EEEE').format(DateTime.now())] = true;
+      _weekDayExerciseTracker["lastDate"] = DateTime.now();
+      saveDayTracking(_weekDayExerciseTracker);
 
       _currentWorkout.routineNames = {
         for(WorkoutLogExerciseDataModel exercise in _currentWorkout.exercises)
@@ -413,12 +477,6 @@ class WorkoutProvider with ChangeNotifier {
     }
 
   }
-
-
-
-
-
-
 
 
   void setMaxWeightAtRep(Map<String, String> exerciseMaxRepAndWeight) {
