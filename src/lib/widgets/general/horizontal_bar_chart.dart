@@ -107,7 +107,7 @@ class _HorizontalBarChartState extends State<HorizontalBarChart> {
           SizedBox(height: 30.h),
 
           Container(
-            decoration: const BoxDecoration(
+            /*decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment(0, 1),
@@ -117,7 +117,7 @@ class _HorizontalBarChartState extends State<HorizontalBarChart> {
                       appPrimaryColour,
                     ]
                 )
-            ),
+            ),*/
             child: ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
