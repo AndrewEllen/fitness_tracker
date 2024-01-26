@@ -2,10 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as chartColour;
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/constants.dart';
-import 'package:fitness_tracker/widgets/home/home_bar_chart.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -49,7 +47,7 @@ class _HomePageState extends State<HomePage> {
       proteinProgress,
       fatProgress,
       carbohydratesProgress;
-  late List<dailyWorkoutVolume> workoutData;
+
   late String currentWorkoutName;
 
 
@@ -126,44 +124,6 @@ class _HomePageState extends State<HomePage> {
       streakColour = streakColourGrey;
     }
 
-    workoutData = [
-      dailyWorkoutVolume(
-        routine: "Monday",
-        volume: 8145,
-        barChartColour: chartColour.ColorUtil.fromDartColor(appSecondaryColour),
-      ),
-      dailyWorkoutVolume(
-        routine: "Tuesday",
-        volume: 12656,
-        barChartColour: chartColour.ColorUtil.fromDartColor(appSecondaryColour),
-      ),
-      dailyWorkoutVolume(
-        routine: "Wednesday",
-        volume: 10653,
-        barChartColour: chartColour.ColorUtil.fromDartColor(appSecondaryColour),
-      ),
-      dailyWorkoutVolume(
-        routine: "Thursday",
-        volume: 8145,
-        barChartColour: chartColour.ColorUtil.fromDartColor(appSecondaryColour),
-      ),
-      dailyWorkoutVolume(
-        routine: "Friday",
-        volume: 9453,
-        barChartColour: chartColour.ColorUtil.fromDartColor(appSecondaryColour),
-      ),
-      dailyWorkoutVolume(
-        routine: "Saturday",
-        volume: 14593,
-        barChartColour: chartColour.ColorUtil.fromDartColor(appSecondaryColour),
-      ),
-      dailyWorkoutVolume(
-        routine: "Sunday",
-        volume: 13592,
-        barChartColour: chartColour.ColorUtil.fromDartColor(appSecondaryColour),
-      ),
-    ];
-
     _loading = false;
 
     super.initState();
@@ -209,11 +169,6 @@ class _HomePageState extends State<HomePage> {
                                     color: Colors.white,
                                   ),
                                 ),
-                              ),
-                              HomeBarChart(
-                                chartWorkoutData: workoutData,
-                                chartHeight: ((_height / 100) * 23.2),
-                                chartWidth: ((_width / 100) * 97),
                               ),
                             ],
                           ),

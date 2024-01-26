@@ -145,6 +145,7 @@ class _MainPageState extends State<MainPage> {
                     height: 70.h,
                     elevation: 10,
                     shadowColor: Colors.black,
+                    surfaceTintColor: Colors.transparent,
                     indicatorColor: appSecondaryColour,
                     labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
                     selectedIndex: _currentNavigatorIndex,

@@ -104,7 +104,8 @@ class _AppMainState extends State<AppMain> {
         scaffoldMessengerKey: _scaffoldKey,
         title: 'FIT',
         theme: ThemeData(
-          fontFamily: 'Impact',
+          useMaterial3: false,
+          //fontFamily: 'Impact',
           iconTheme: const IconThemeData(
             color: appSecondaryColour,
           ),
