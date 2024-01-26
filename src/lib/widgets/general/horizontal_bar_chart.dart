@@ -94,10 +94,13 @@ class _HorizontalBarChartState extends State<HorizontalBarChart> {
         children: [
           SizedBox(height: 10.h),
 
-          Text(
-            widget.label,
-            style: boldTextStyle.copyWith(
-              fontSize: 24
+          Padding(
+            padding: EdgeInsets.only(left: 12.w),
+            child: Text(
+              widget.label,
+              style: boldTextStyle.copyWith(
+                fontSize: 24
+              ),
             ),
           ),
 

@@ -129,6 +129,7 @@ class _ExerciseGraphsPageState extends State<ExerciseGraphsPage> {
       );
     }
 
+    Map data = context.read<WorkoutProvider>().exerciseMaxRepAndWeight;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -138,9 +139,14 @@ class _ExerciseGraphsPageState extends State<ExerciseGraphsPage> {
           overscroll.disallowIndicator();
           return true;
         },
-        child: HorizontalBarChart(
+        child: data.isEmpty ? const Center(
+          child: Text(
+            "No data yet",
+            style: boldTextStyle,
+          ),
+        ) : HorizontalBarChart(
           label: "Max Reps Per Weight",
-          values: context.read<WorkoutProvider>().exerciseMaxRepAndWeight,
+          values: data,
         ),
       ),
     );
