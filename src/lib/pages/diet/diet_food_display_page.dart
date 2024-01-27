@@ -56,6 +56,13 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    servingsController.dispose();
+    servingSizeController.dispose();
+    super.dispose();
+  }
+
   void InitializeControllers() {
 
     currentFoodItem = context.read<UserNutritionData>().currentFoodItem;
@@ -213,7 +220,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
   @override
   Widget build(BuildContext context) {
 
-    context.watch<UserNutritionData>().currentFoodItem;
+    //context.watch<UserNutritionData>().currentFoodItem;
 
     InitializeControllers();
 
@@ -223,18 +230,16 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
     double _height = 851.h;
     double _width = 393.w;
 
-    print(widget.category);
-
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: appPrimaryColour,
         body: NotificationListener<OverscrollIndicatorNotification>(
         onNotification: (overscroll) {
-      overscroll.disallowIndicator();
-      return true;
-    },
-      child: ListView(
-        children: [
+          overscroll.disallowIndicator();
+          return true;
+        },
+          child: ListView(
+          children: [
           ScreenWidthContainer(
             minHeight: _bigContainerMin,
             maxHeight: _bigContainerMin*4,
@@ -249,18 +254,14 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   color: Colors.white,
                 ),
 
-                Builder(
-                  builder: (context) {
-                    return IncrementalCounter(
-                      inputController: servingsController,
-                      suffix: '',
-                      label: 'No. Of Servings*',
-                      smallButtons: true,
-                      function: () => SaveServings(),
-                      bigIncrementAmount: 1,
-                      smallIncrementAmount: 0.5,
-                    );
-                  }
+                IncrementalCounter(
+                  inputController: servingsController,
+                  suffix: '',
+                  label: 'No. Of Servings*',
+                  smallButtons: true,
+                  function: () => SaveServings(),
+                  bigIncrementAmount: 1,
+                  smallIncrementAmount: 0.5,
                 ),
                 IncrementalCounter(
                   inputController: servingSizeController,

@@ -1398,8 +1398,6 @@ class UserNutritionData with ChangeNotifier {
     _userNutritionCustomRecipes.foodServings.add(servings);
     _userNutritionCustomRecipes.foodServingSize.add(servingSize);
 
-    print(_userNutritionCustomRecipes.barcodes.length);
-
     UpdateUserCustomRecipeData(userNutritionCustomRecipes);
 
     notifyListeners();

@@ -42,6 +42,12 @@ class _FoodListItemBoxNewState extends State<FoodListItemBoxNew> {
   }
 
   @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance

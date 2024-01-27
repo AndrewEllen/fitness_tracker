@@ -531,32 +531,52 @@ GetFoodDataFromFirebaseRecipe(String barcode) async {
   }
 }
 
-
 GetRecipeFoodList(List<ListFoodItem> foodList) async {
+
+  List<List<String>> splitList(List<String> list, int chunkSize) {
+    List<List<String>> result = [];
+
+    for (int i = 0; i < list.length; i += chunkSize) {
+      int end = (i + chunkSize < list.length) ? i + chunkSize : list.length;
+      result.add(list.sublist(i, end));
+    }
+
+    return result;
+  }
+
+  List<String> recipeBarcodeList = List.generate(foodList.length, (index) => foodList[index].barcode);
+
+  List<List<String>> recipeBarcodeListofLists = splitList(recipeBarcodeList, 10);
+
+  List<FoodItem> foodItemDataComplete = [];
 
   try{
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('food-data')
-        .where(FieldPath.documentId, whereIn: List.generate(foodList.length, (index) => foodList[index].barcode))
-        .get();
+    for (List<String> barcodes in recipeBarcodeListofLists) {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('food-data')
+          .where(FieldPath.documentId, whereIn: barcodes)
+          .get();
 
-    List<FoodItem> foodItemData = [
-      for (QueryDocumentSnapshot document in snapshot.docs)
-        ConvertToFoodItem(document.get("food-data"), firebase: true)
-          ..firebaseItem = true,
-    ];
+      List<FoodItem> foodItemData = [
+        for (QueryDocumentSnapshot document in snapshot.docs)
+          ConvertToFoodItem(document.get("food-data"), firebase: true)
+            ..firebaseItem = true,
+      ];
 
-    final foodListMap = {for (final food in foodItemData) food.barcode : food};
-    for (final food in foodList) {
-      ///TODO Implement null check
-      food.foodItemData = foodListMap[food.barcode]!;
+      foodItemDataComplete.addAll(foodItemData);
     }
 
-    return foodList;
+      final foodListMap = {for (final food in foodItemDataComplete) food.barcode : food};
+      for (final food in foodList) {
+        ///TODO Implement null check
+        food.foodItemData = foodListMap[food.barcode]!;
+      }
+
+      return foodList;
 
   } catch (exception) {
-    print("nutrition failed");
+    print("Recipe fetch failed");
     print(exception);
 
   }

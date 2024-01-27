@@ -31,6 +31,10 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
     FilteringTextInputFormatter.allow(RegExp("[0-9.]")),
   ];
 
+
+  final FocusNode textFieldFocusNode = FocusNode();
+
+
   void incrementCounter(bool isSmall) {
 
     if (widget.inputController.text.isEmpty) {
@@ -135,6 +139,7 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
             flex: 12,
             child: Form(
               child: TextFormField(
+                focusNode: textFieldFocusNode,
                 controller: widget.inputController,
                 keyboardType: TextInputType.number,
                 inputFormatters: textInputFormatter,
@@ -183,11 +188,13 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
                   FocusManager.instance.primaryFocus?.unfocus();
                 },
                 onTapOutside: (value) {
-                  widget.inputController.text = double.tryParse(widget.inputController.text) == null ? "0" : widget.inputController.text;
-                  if (widget.function != null) {
-                    widget.function!();
+                  if (textFieldFocusNode.hasFocus) {
+                    widget.inputController.text = double.tryParse(widget.inputController.text) == null ? "0" : widget.inputController.text;
+                    if (widget.function != null) {
+                      widget.function!();
+                    }
+                    FocusManager.instance.primaryFocus?.unfocus();
                   }
-                  FocusManager.instance.primaryFocus?.unfocus();
                 },
               ),
             ),
