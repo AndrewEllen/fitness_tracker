@@ -611,7 +611,7 @@ class UserNutritionData with ChangeNotifier {
       _userNutritionHistory.foodServingSize.insert(0, servingSize);
       _userNutritionHistory.recipe.insert(0, recipe);
 
-      if (_userNutritionHistory.barcodes.length > 50) {
+      if (_userNutritionHistory.barcodes.length > 150) {
         _userNutritionHistory.barcodes.removeLast();
         _userNutritionHistory.foodListItemNames.removeLast();
         _userNutritionHistory.foodServings.removeLast();

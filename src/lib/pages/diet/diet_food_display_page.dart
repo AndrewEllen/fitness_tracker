@@ -498,7 +498,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.cholesterol,
                   width: _width,
                   title: "Cholesterol",
-                  units: "g",
+                  units: "mg",
                 ),
 
                 DietListHeaderBox(

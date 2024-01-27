@@ -210,7 +210,7 @@ class ExtraNutritionBars extends StatelessWidget {
           progress: context.watch<UserNutritionData>().cholesterol,
           goal: context.watch<UserNutritionData>().cholesterolGoal,
 
-          units: "g",
+          units: "mg",
           excludeColourChange: false,
         ),
         Container(

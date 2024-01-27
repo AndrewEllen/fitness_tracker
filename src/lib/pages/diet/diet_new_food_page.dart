@@ -494,7 +494,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     formKey: cholesterolKey,
                     width: _width,
                     formName: "Cholesterol",
-                    units: "g",
+                    units: "mg",
                   ),
                   DietListHeaderBox(
                     width: _width,
