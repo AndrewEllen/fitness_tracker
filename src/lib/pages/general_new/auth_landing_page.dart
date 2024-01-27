@@ -44,7 +44,7 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.all(40.0),
+        //color: appPrimaryColour.withOpacity(0.4),
         child: Column(
           children: [
             Padding(
@@ -81,7 +81,7 @@ class LandingPage extends StatelessWidget {
                               ),
                               const Spacer(),
                               Container(
-                                color: appPrimaryColour,
+                                color: Colors.transparent,
                                 padding: const EdgeInsets.only(
                                   left: 8.0,
                                   right: 8.0,
@@ -142,7 +142,7 @@ class LandingPage extends StatelessWidget {
                   child: FractionallySizedBox(
                     widthFactor: 3,
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           border: Border(
                               bottom: BorderSide(
                                   color: appTertiaryColour, width: 1))),
@@ -151,7 +151,7 @@ class LandingPage extends StatelessWidget {
                 ),
                 const Spacer(),
                 Container(
-                  color: appPrimaryColour,
+                  color: Colors.transparent,
                   padding: const EdgeInsets.only(
                     left: 8.0,
                     right: 8.0,

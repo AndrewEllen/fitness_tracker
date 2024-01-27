@@ -7,6 +7,7 @@ import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 import '../../helpers/general/numerical_range_formatter_extension.dart';
@@ -128,6 +129,15 @@ class _HomePageState extends State<HomePage> {
     _loading = false;
 
     super.initState();
+  }
+
+  Future<void> signOutUser() async {
+
+    if (await GoogleSignIn().isSignedIn()) {
+      await GoogleSignIn().disconnect();
+    }
+
+    await FirebaseAuth.instance.signOut();
   }
 
   @override
@@ -571,17 +581,7 @@ class _HomePageState extends State<HomePage> {
                       child: FittedBox(
                         child: FloatingActionButton(
                           backgroundColor: Colors.red,
-                          onPressed: () {
-                            FirebaseAuth auth = FirebaseAuth.instance;
-                            context.read<FirebaseAuthenticationService>().firebaseSignOut();
-                            auth.signOut().then((response) {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (context) => const ChooseLoginSignUp(),
-                                ),
-                              );
-                              }
-                            );
-                          },
+                          onPressed: () => signOutUser(),
                           child: const Icon(
                             Icons.logout,
                             size: 40,
