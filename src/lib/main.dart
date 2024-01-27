@@ -32,15 +32,6 @@ void main() async {
   runApp(
     MultiProvider(
         providers: [
-          Provider<FirebaseAuthenticationService>(
-            create: (_) => FirebaseAuthenticationService(FirebaseAuth.instance),
-          ),
-          StreamProvider(
-            create: (context) => context.read<FirebaseAuthenticationService>().firebaseAuthStateChanges,
-            initialData: null,
-            updateShouldNotify: (_, __) => true,
-            child: const FireBaseAuthenticationCheck(),
-          ),
           ChangeNotifierProvider(create: (context) => PageChange()),
           ChangeNotifierProvider(create: (context) => UserNutritionData()),
           ChangeNotifierProvider(create: (context) => WorkoutProvider()),
@@ -68,21 +59,6 @@ void main() async {
     systemNavigationBarColor: appTertiaryColour,
   ));
 }
-
-class FireBaseAuthenticationCheck extends StatelessWidget {
-  const FireBaseAuthenticationCheck({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final currentUser = context.watch<User?>();
-
-    if (currentUser != null) {
-      return const SplashScreen();
-    }
-    return const ChooseLoginSignUp();
-  }
-}
-
 
 class AppMain extends StatefulWidget {
   const AppMain({Key? key}) : super(key: key);
@@ -135,7 +111,7 @@ class _AppMainState extends State<AppMain> {
               child: child!,
           );
         },
-        home: const FireBaseAuthenticationCheck(),
+        home: const MainPage(),
       ),
     );
   }

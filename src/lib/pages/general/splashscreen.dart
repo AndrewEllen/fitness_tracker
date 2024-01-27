@@ -188,12 +188,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     try {await stepsCalorieCalculator();} catch (exception) {print(exception);}
 
-    setState(() {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const MainPage(),
-        ),
-      );
-    });
+    context.read<PageChange>().setDataLoadingStatus(false);
   }
 
 
