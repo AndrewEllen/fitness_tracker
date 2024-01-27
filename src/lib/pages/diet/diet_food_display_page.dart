@@ -46,7 +46,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
     context.read<UserNutritionData>().setCurrentRecipe(recipe);
     context.read<UserNutritionData>().setCurrentRecipeFood(await GetRecipeFoodList(recipe.recipeFoodList));
 
-    context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category));
+    context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category, editDiary: widget.editDiary,));
   }
 
   @override
@@ -95,7 +95,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         currentFoodItem.recipe,
       );
 
-      context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category,));
+      context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category, editDiary: widget.editDiary,));
 
     } else if (currentFoodItem.foodName.isNotEmpty &&
         currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
@@ -111,7 +111,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         currentFoodItem.recipe,
       );
 
-      context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category,));
+      context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category, editDiary: widget.editDiary,));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text(

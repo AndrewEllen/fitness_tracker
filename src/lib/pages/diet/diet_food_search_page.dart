@@ -1014,7 +1014,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                   child: InkWell(
                                     onTap: () {
                                       context.read<UserNutritionData>().resetCurrentRecipe();
-                                      context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category));
+                                      context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category, editDiary: false,));
                                     },
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
