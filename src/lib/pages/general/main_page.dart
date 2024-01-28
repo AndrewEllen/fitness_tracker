@@ -91,8 +91,6 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
 
-    readFromPrefs();
-
     if (FirebaseAuth.instance.currentUser != null) {
       checkUserVerificationStatus();
     }
@@ -109,7 +107,7 @@ class _MainPageState extends State<MainPage> {
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    context.read<PageChange>().setCaloriesCalculated(prefs.getBool('${FirebaseAuth.instance.currentUser!.uid} + userCaloriesSetup') ?? false);
+    context.read<PageChange>().setCaloriesCalculated(prefs.getBool('${FirebaseAuth.instance.currentUser?.uid} + userCaloriesSetup') ?? false);
 
   }
 
@@ -178,7 +176,10 @@ class _MainPageState extends State<MainPage> {
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          checkUserVerificationStatus();
+          if (FirebaseAuth.instance.currentUser != null) {
+            checkUserVerificationStatus();
+            readFromPrefs();
+          }
 
           if (!snapshot.hasData) {
             return LandingPage();

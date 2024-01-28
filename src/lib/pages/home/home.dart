@@ -29,6 +29,8 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> signOutUser() async {
 
+    context.read<PageChange>().setCaloriesCalculated(false);
+
     if (await GoogleSignIn().isSignedIn()) {
       await GoogleSignIn().disconnect();
     }
