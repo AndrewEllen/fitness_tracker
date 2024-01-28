@@ -165,8 +165,8 @@ class _MainPageState extends State<MainPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             checkUserVerificationStatus();
-            return context.watch<PageChange>().dataLoadingFromSplashPage ? SplashScreen() : _isUserEmailVerified
-                ? SafeArea(
+            return _isUserEmailVerified ? context.watch<PageChange>().dataLoadingFromSplashPage ? SplashScreen() :
+                SafeArea(
                     bottom: false,
                     child: WillPopScope(
                       onWillPop: _onBackKey,
@@ -237,7 +237,7 @@ class _MainPageState extends State<MainPage> {
                       ),
                     ),
                   )
-                : const UserRegistrationConfirmationEmail();
+                : UserRegistrationConfirmationEmail();
           } else {
             //resetting pageIndex if user logs out
             return LandingPage();
