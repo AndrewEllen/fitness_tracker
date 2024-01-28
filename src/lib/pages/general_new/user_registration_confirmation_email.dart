@@ -59,7 +59,7 @@ class _UserRegistrationConfirmationEmailState
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const EnterConfirmationPage(),
+            builder: (context) => EnterConfirmationPage(videoController: videoController,),
           ),
         );
       }
@@ -161,7 +161,7 @@ class _UserRegistrationConfirmationEmailState
                       ),
 
                       Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -172,7 +172,7 @@ class _UserRegistrationConfirmationEmailState
                                 fontWeight: FontWeight.bold,
                               )
                             ),
-                            const SizedBox(height: 30.0),
+                            const SizedBox(height: 20.0),
                             Text(
                               'We have sent a confirmation link to ${FirebaseAuth.instance.currentUser!.email}. Please follow the link to continue.',
                               style: const TextStyle(
@@ -184,6 +184,9 @@ class _UserRegistrationConfirmationEmailState
                             Center(
                               child: Column(
                                 children: [
+                                  SizedBox(
+                                    height: 60.h,
+                                  ),
                                   ElevatedButton(
                                     onPressed: () {
                                       if (FirebaseAuth.instance.currentUser!.emailVerified) {
@@ -191,7 +194,7 @@ class _UserRegistrationConfirmationEmailState
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => const EnterConfirmationPage(),
+                                            builder: (context) => EnterConfirmationPage(videoController: videoController,),
                                           ),
                                         );
                                       }

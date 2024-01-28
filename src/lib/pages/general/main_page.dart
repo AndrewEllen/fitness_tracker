@@ -165,7 +165,7 @@ class _MainPageState extends State<MainPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             checkUserVerificationStatus();
-            return _isUserEmailVerified ? context.watch<PageChange>().dataLoadingFromSplashPage ? SplashScreen() :
+            return false ? context.watch<PageChange>().dataLoadingFromSplashPage ? SplashScreen() :
                 SafeArea(
                     bottom: false,
                     child: WillPopScope(
