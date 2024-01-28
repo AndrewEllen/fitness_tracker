@@ -10,9 +10,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:restart_app/restart_app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../diet_new/diet_home.dart';
 import '../general_new/user_registration_confirmation_email.dart';
+import '../general_new/user_setup_calories_page.dart';
 import '../workout_new/workout_home.dart';
 
 class MainPage extends StatefulWidget {
@@ -88,6 +90,9 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
+
+    readFromPrefs();
+
     if (FirebaseAuth.instance.currentUser != null) {
       checkUserVerificationStatus();
     }
@@ -98,6 +103,14 @@ class _MainPageState extends State<MainPage> {
     //todo replace below hardcoded values with data from database
 
     super.initState();
+  }
+
+  void readFromPrefs() async {
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    context.read<PageChange>().setCaloriesCalculated(prefs.getBool('${FirebaseAuth.instance.currentUser!.uid} + userCaloriesSetup') ?? false);
+
   }
 
   void checkUserVerificationStatus() async {
@@ -161,14 +174,29 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
+          checkUserVerificationStatus();
 
-          if (snapshot.hasData) {
-            checkUserVerificationStatus();
-            return _isUserEmailVerified ? context.watch<PageChange>().dataLoadingFromSplashPage ? SplashScreen() :
-                SafeArea(
+          if (!snapshot.hasData) {
+            return LandingPage();
+          }
+
+          if (!_isUserEmailVerified) {
+            UserRegistrationConfirmationEmail();
+          }
+
+          if (!context.watch<PageChange>().caloriesCalculated) {
+            return UserSetupCaloriesPage();
+          }
+
+          if (context.watch<PageChange>().dataLoadingFromSplashPage) {
+            return const SplashScreen();
+          }
+
+            return SafeArea(
                     bottom: false,
                     child: WillPopScope(
                       onWillPop: _onBackKey,
@@ -238,12 +266,8 @@ class _MainPageState extends State<MainPage> {
                         ),
                       ),
                     ),
-                  )
-                : UserRegistrationConfirmationEmail();
-          } else {
-            //resetting pageIndex if user logs out
-            return LandingPage();
-          }
-        });
+                  );
+        }
+        );
   }
 }

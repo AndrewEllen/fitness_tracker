@@ -24,7 +24,7 @@ import '../general/main_page.dart';
 
 class UserRegistrationConfirmationEmail extends StatefulWidget {
   UserRegistrationConfirmationEmail({Key? key, this.videoController}) : super(key: key);
-  late VideoPlayerController? videoController = null;
+  late VideoPlayerController? videoController;
 
   @override
   State<UserRegistrationConfirmationEmail> createState() =>
@@ -107,6 +107,7 @@ class _UserRegistrationConfirmationEmailState
 
   @override
   Widget build(BuildContext context) {
+
     // Scaffold widget provides a basic structure for the app screen
     return Scaffold(
       body: Stack(
@@ -127,7 +128,6 @@ class _UserRegistrationConfirmationEmailState
               ),
             ),
           ),
-
 
           SizedBox.expand(
             child: BackdropFilter(

@@ -19,19 +19,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../constants.dart';
 import '../../helpers/general/numerical_range_formatter_extension.dart';
 import '../../models/stats/user_data_model.dart';
 import '../../providers/diet/user_nutrition_data.dart';
+import '../../providers/general/page_change_provider.dart';
 import '../../providers/stats/user_data.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../general/main_page.dart';
 
 class UserSetupCaloriesPage extends StatefulWidget {
-  UserSetupCaloriesPage({Key? key, required this.videoController}) : super(key: key);
-  late VideoPlayerController videoController;
+  UserSetupCaloriesPage({Key? key, this.videoController}) : super(key: key);
+  late VideoPlayerController? videoController;
 
   @override
   State<UserSetupCaloriesPage> createState() => _UserSetupCaloriesPageState();
@@ -55,8 +57,8 @@ class _UserSetupCaloriesPageState extends State<UserSetupCaloriesPage> {
   late final ageKey = GlobalKey<FormState>();
 
 
-  void calculateCalories() {
-    print("hi");
+  calculateCalories() async {
+
     if (heightController.text.isNotEmpty && weightController.text.isNotEmpty
         && ageController.text.isNotEmpty) {
       late double calories;
@@ -115,9 +117,35 @@ class _UserSetupCaloriesPageState extends State<UserSetupCaloriesPage> {
       ));
 
       context.read<UserNutritionData>().setCalories(calories.toStringAsFixed(2));
+      context.read<PageChange>().setDataLoadingStatus(false);
+
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('${FirebaseAuth.instance.currentUser!.uid} + userCaloriesSetup', true);
     }
   }
 
+
+  late VideoPlayerController videoController;
+
+  @override
+  void initState() {
+
+
+    if (widget.videoController == null) {
+      videoController = VideoPlayerController.asset("assets/FITBackgroundVideo.mp4")
+        ..initialize().then((_) {
+
+          videoController.play();
+          videoController.setLooping(true);
+
+          setState(() {});
+        });
+    } else {
+      videoController = widget.videoController!;
+    }
+
+    super.initState();
+  }
 
 
   @override
@@ -134,9 +162,9 @@ class _UserSetupCaloriesPageState extends State<UserSetupCaloriesPage> {
               fit: BoxFit.fill,
               child: SizedBox(
 
-                width: widget.videoController.value.size?.width ?? 0,
-                height: widget.videoController.value.size?.height ?? 0,
-                child: VideoPlayer(widget.videoController),
+                width: videoController.value.size?.width ?? 0,
+                height: videoController.value.size?.height ?? 0,
+                child: VideoPlayer(videoController),
 
               ),
             ),
@@ -182,7 +210,7 @@ class _UserSetupCaloriesPageState extends State<UserSetupCaloriesPage> {
                             color: Colors.white,
                             fontSize: (20),
                           ),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
                           inputFormatters: [
                             NumericalRangeFormatter(min: 1, max: 300),
                           ],
@@ -246,7 +274,7 @@ class _UserSetupCaloriesPageState extends State<UserSetupCaloriesPage> {
                             color: Colors.white,
                             fontSize: (20),
                           ),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
                           inputFormatters: [
                             NumericalRangeFormatter(min: 1, max: 800),
                           ],
@@ -310,7 +338,7 @@ class _UserSetupCaloriesPageState extends State<UserSetupCaloriesPage> {
                             color: Colors.white,
                             fontSize: (20),
                           ),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                             NumericalRangeFormatter(min: 1, max: 123),
@@ -496,14 +524,20 @@ class _UserSetupCaloriesPageState extends State<UserSetupCaloriesPage> {
                         ),
                       ),
                       AppButton(
-                        onTap: () {
+                        onTap: () async {
 
                           if (heightKey.currentState!.validate()
                                 && weightKey.currentState!.validate()
                                 && ageKey.currentState!.validate()
                           ) {
 
-                            calculateCalories();
+                            await calculateCalories();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MainPage()
+                              ),
+                            );
 
                           }
 
