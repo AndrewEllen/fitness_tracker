@@ -74,14 +74,6 @@ class _LandingPageState extends State<LandingPage> {
     super.initState();
   }
 
-
-  @override
-  void dispose() {
-    videoController.dispose();
-    super.dispose();
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

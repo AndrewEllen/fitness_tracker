@@ -23,15 +23,8 @@ class _WorkoutDailyTrackerState extends State<WorkoutDailyTracker> {
       height: 130.h,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "Workout Tracking",
-              style: boldTextStyle.copyWith(fontSize: 18),
-            ),
-          ),
-          const Spacer(),
-          Text("Last 7 days", style: boldTextStyle,),
+          const Spacer(flex: 2),
+          Text("Workouts This Week", style: boldTextStyle.copyWith(fontSize: 16),),
           const Spacer(flex: 2),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -45,7 +38,7 @@ class _WorkoutDailyTrackerState extends State<WorkoutDailyTracker> {
               WorkoutTrackerCircle(size: 40.w, text: "Sunday", workoutComplete: context.read<WorkoutProvider>().weekDayExerciseTracker,),
             ],
           ),
-          const Spacer(flex: 6),
+          const Spacer(flex: 3),
         ],
       ),
     );

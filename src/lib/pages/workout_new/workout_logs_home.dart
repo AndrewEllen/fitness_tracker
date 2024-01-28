@@ -19,6 +19,13 @@ class _WorkoutLogsHomeState extends State<WorkoutLogsHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: appTertiaryColour,
+        title: Text(
+          "Workout Logs",
+          style: boldTextStyle,
+        ),
+      ),
       resizeToAvoidBottomInset: false,
       backgroundColor: appPrimaryColour,
       body: NotificationListener<OverscrollIndicatorNotification>(
@@ -29,18 +36,6 @@ class _WorkoutLogsHomeState extends State<WorkoutLogsHome> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 14.h),
-                color: appTertiaryColour,
-                width: double.maxFinite,
-                height: 50.h,
-                child: Center(
-                  child: Text(
-                    "Workout Logs",
-                    style: boldTextStyle.copyWith(fontSize: 18),
-                  ),
-                ),
-              ),
               WorkoutLogPageList(),
               ElevatedButton(
                 onPressed: () {

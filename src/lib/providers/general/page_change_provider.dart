@@ -10,6 +10,10 @@ class PageChange with ChangeNotifier {
 
   bool get dataLoadingFromSplashPage => _dataLoadingFromSplashPage;
 
+  late bool _caloriesGoalCalculated = true;
+
+  bool get caloriesGoalCalculated => _caloriesGoalCalculated;
+
   Widget _pageWidget = DietHomePage();
   List<Widget> _pageWidgetCache = [DietHomePage()];
   int _pageWidgetCacheIndex = 0;
@@ -25,7 +29,10 @@ class PageChange with ChangeNotifier {
   bool get confirmation => _confirmation;
 
   void setDataLoadingStatus(bool _dataLoaded) {
-    _dataLoadingFromSplashPage = _dataLoaded;
+
+    if (_caloriesGoalCalculated) {
+      _dataLoadingFromSplashPage = _dataLoaded;
+    }
 
     notifyListeners();
   }

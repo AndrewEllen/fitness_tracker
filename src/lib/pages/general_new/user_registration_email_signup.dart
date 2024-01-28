@@ -1,3 +1,4 @@
+import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/helpers/home/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'user_registration_confirmation_email.dart';
@@ -49,6 +50,7 @@ class UserRegistrationEmailSignup extends StatelessWidget {
                     key: validatorKey,
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
+                    style: boldTextStyle,
                     decoration: const InputDecoration(
                       labelText: 'Email',
                       labelStyle: TextStyle(color: Colors.grey),

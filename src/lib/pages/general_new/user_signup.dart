@@ -224,7 +224,7 @@ class _SignupPageState extends State<SignupPage> {
                                 color: Colors.red,
                               )
                           ),
-                          errorBorder: const UnderlineInputBorder(
+                          errorBorder: const OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Colors.red,
                             ),

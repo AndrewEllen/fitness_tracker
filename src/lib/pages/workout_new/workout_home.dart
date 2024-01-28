@@ -143,6 +143,13 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
     //_key = GlobalKey<ExpandableFabState>();
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: appTertiaryColour,
+        title: Text(
+          "Workout Tracking",
+          style: boldTextStyle,
+        ),
+      ),
       resizeToAvoidBottomInset: false,
       backgroundColor: appPrimaryColour,
       floatingActionButtonLocation: ExpandableFab.location,

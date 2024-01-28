@@ -96,6 +96,13 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: appTertiaryColour,
+        title: const Text(
+          "Current Workout Log",
+          style: boldTextStyle,
+        ),
+      ),
       resizeToAvoidBottomInset: false,
       backgroundColor: appPrimaryColour,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -138,18 +145,7 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
           child: Column(
             children: [
 
-              Container(
-                margin: EdgeInsets.only(bottom: 14.h),
-                color: appTertiaryColour,
-                width: double.maxFinite,
-                height: 50.h,
-                child: Center(
-                  child: Text(
-                    "Current Workout",
-                    style: boldTextStyle.copyWith(fontSize: 18),
-                  ),
-                ),
-              ),
+              SizedBox(height: 12.h,),
 
               Row(
                 children: [

@@ -70,6 +70,13 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: appTertiaryColour,
+        title: Text(
+          workoutRoutineNamesSet.join(", "),
+          style: boldTextStyle,
+        ),
+      ),
       resizeToAvoidBottomInset: false,
       backgroundColor: appPrimaryColour,
       body: NotificationListener<OverscrollIndicatorNotification>(
@@ -80,23 +87,7 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 14.h),
-                color: appTertiaryColour,
-                width: double.maxFinite,
-                height: 50.h,
-                child: Center(
-                  child: SingleChildScrollView(
-                    clipBehavior: Clip.hardEdge,
-                    scrollDirection: Axis.horizontal,
-                    child: Text(
-                      workoutRoutineNamesSet.join(", "),
-                      style: boldTextStyle.copyWith(fontSize: 18),
-                    ),
-                  ),
-                ),
-              ),
-
+              SizedBox(height: 12.h),
               Row(
                 children: [
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/constants.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -32,6 +33,29 @@ class _MeasurementsHomePageState extends State<MeasurementsHomePage> {
     double _smallContainerMin = 95.h;
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: appTertiaryColour,
+        title: const Text(
+          "Measurements",
+          style: boldTextStyle,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 12.0),
+        child: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              _displayDropDown = true;
+            });
+          },
+          backgroundColor: appSenaryColour,
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
+      ),
       backgroundColor: appPrimaryColour,
       body: NotificationListener<OverscrollIndicatorNotification>(
         onNotification: (overscroll) {
@@ -43,6 +67,7 @@ class _MeasurementsHomePageState extends State<MeasurementsHomePage> {
             ListView(
               shrinkWrap: true,
               children: [
+                SizedBox(height: 12.h),
                 ConstrainedBox(
                   constraints: BoxConstraints(
                     maxHeight: _height/1.25,
@@ -66,24 +91,6 @@ class _MeasurementsHomePageState extends State<MeasurementsHomePage> {
                           index: index,
                         );
                     },
-                  ),
-                ),
-                ScreenWidthContainer(
-                  minHeight: _smallContainerMin * 0.2,
-                  maxHeight: _smallContainerMin * 1.5,
-                  height: (_height / 100) * 6,
-                  margin: _margin / 1.5,
-                  child: FractionallySizedBox(
-                    heightFactor: 1,
-                    widthFactor: 1,
-                    child: AppButton(
-                      buttonText: "Add New Measurement",
-                      onTap: () {
-                        setState(() {
-                          _displayDropDown = true;
-                        });
-                      },
-                    ),
                   ),
                 ),
               ],

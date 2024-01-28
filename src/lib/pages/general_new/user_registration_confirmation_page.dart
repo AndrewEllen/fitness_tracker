@@ -12,6 +12,7 @@ import 'dart:ui';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/helpers/home/phone_validator.dart';
+import 'package:fitness_tracker/pages/general_new/user_setup_calories_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_player/video_player.dart';
@@ -46,7 +47,7 @@ class _EnterConfirmationPageState extends State<EnterConfirmationPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const MainPage(),
+            builder: (context) => UserSetupCaloriesPage(videoController: widget.videoController),
           ),
         );
       }
@@ -242,7 +243,7 @@ class _EnterConfirmationPageState extends State<EnterConfirmationPage> {
                                   onPressed: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const MainPage(),
+                                      builder: (context) => UserSetupCaloriesPage(videoController: widget.videoController),
                                     ),
                                   ),
                                   child: Text('Skip phone registration', style: boldTextStyle.copyWith(color: appSecondaryColour),), // Text displayed
