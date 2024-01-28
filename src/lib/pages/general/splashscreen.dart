@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/diet/user__foods_model.dart';
@@ -10,9 +13,11 @@ import 'package:fitness_tracker/providers/general/general_data_provider.dart';
 import 'package:fitness_tracker/providers/grocery/groceries_provider.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../models/stats/stats_model.dart';
 import '../../providers/general/database_get.dart';
@@ -191,7 +196,6 @@ class _SplashScreenState extends State<SplashScreen> {
     context.read<PageChange>().setDataLoadingStatus(false);
   }
 
-
   @override
   void initState() {
     fetchData();
@@ -205,30 +209,26 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: appPrimaryColour,
       body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              margin: EdgeInsets.only(top: (_height/100)*20),
-              child: const Text(
-                "FIT",
-                style: TextStyle(
-                  color: appSecondaryColour,
-                  fontSize: 60,
-                  letterSpacing: 3,
-                  fontWeight: FontWeight.w400,
+              children: [
+
+                SizedBox.expand(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                      child: Center(
+                        child: AvatarGlow(
+                          glowRadiusFactor: 0.2,
+                          glowCount: 2,
+                          glowColor: appSecondaryColour,
+                          child: Image.asset(
+                            'assets/logo/applogonobg.png',
+                            height: 80.0.h,
+                          ),
+                        ),
+                      ),
+                    ),
                 ),
-              ),
-            ),
-          ),
-          const Align(
-            alignment: Alignment.center,
-            child: CircularProgressIndicator(
-              color: appSecondaryColour,
-            ),
-          ),
-        ],
-      ),
+              ],
+            )
     );
   }
 }

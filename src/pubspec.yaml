@@ -64,6 +64,7 @@ dependencies:
   sign_in_button: ^3.2.0
   google_sign_in: ^6.2.1
   video_player: ^2.8.2
+  restart_app: ^1.2.1
 
 dev_dependencies:
 
