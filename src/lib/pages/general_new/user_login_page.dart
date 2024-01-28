@@ -294,7 +294,7 @@ class _LoginPageState extends State<LoginPage> {
                                   },
                                   child: const Text('Log In'),
                                 ) : const SizedBox.shrink(),
-                                SizedBox(height: _phoneSignin ? 18.0 : 70),
+                                SizedBox(height: _phoneSignin ? 18.0 : _showPasswordBox ? 70 : 180),
                                 const Text(
                                   'Forgot Password?',
                                   textAlign: TextAlign.center,

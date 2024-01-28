@@ -286,7 +286,7 @@ class _LandingPageState extends State<LandingPage> {
                               child: const Text(
                                 'Sign Up',
                                 style: TextStyle(
-                                  color: Colors.blue,
+                                  color: appSecondaryColour,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
