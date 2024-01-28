@@ -165,10 +165,6 @@ class _MainPageState extends State<MainPage> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
 
-          if (FirebaseAuth.instance.currentUser == null && context.read<PageChange>().dataLoadingFromSplashPage == false) {
-            Restart.restartApp();
-          }
-
           if (snapshot.hasData) {
             checkUserVerificationStatus();
             return _isUserEmailVerified ? context.watch<PageChange>().dataLoadingFromSplashPage ? SplashScreen() :
