@@ -9,6 +9,7 @@ import 'package:fitness_tracker/exports.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:restart_app/restart_app.dart';
 
 import '../diet_new/diet_home.dart';
 import '../general_new/user_registration_confirmation_email.dart';
@@ -163,6 +164,11 @@ class _MainPageState extends State<MainPage> {
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
+
+          if (FirebaseAuth.instance.currentUser == null && context.read<PageChange>().dataLoadingFromSplashPage == false) {
+            Restart.restartApp();
+          }
+
           if (snapshot.hasData) {
             checkUserVerificationStatus();
             return _isUserEmailVerified ? context.watch<PageChange>().dataLoadingFromSplashPage ? SplashScreen() :

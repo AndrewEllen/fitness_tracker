@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-import 'package:restart_app/restart_app.dart';
 
 import '../../helpers/general/numerical_range_formatter_extension.dart';
 import '../../helpers/general/firebase_auth_service.dart';
@@ -139,7 +138,6 @@ class _HomePageState extends State<HomePage> {
     }
 
     await FirebaseAuth.instance.signOut();
-    Restart.restartApp();
   }
 
   @override
