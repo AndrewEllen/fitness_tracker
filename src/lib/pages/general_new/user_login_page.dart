@@ -7,16 +7,23 @@ I don't forget.
 -Lewis
  */
 
+import 'dart:ui';
+
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:fitness_tracker/helpers/home/email_validator.dart';
 import 'package:fitness_tracker/helpers/home/phone_validator.dart';
 import 'package:fitness_tracker/pages/general_new/user_signup.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../constants.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  LoginPage({Key? key, required this.videoController}) : super(key: key);
+  late VideoPlayerController videoController;
+
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -96,176 +103,190 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        backgroundColor: Colors.blue,
-      ),
-      body: Column(
-        children: [
-          Expanded( // Added Expanded
-            child: SingleChildScrollView( // Added SingleChildScrollView
-              child: Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    const SizedBox(height: 80.0),
-                    Image.asset(
-                      'assets/logo.png',
-                      height: 80.0,
-                    ),
-                    const SizedBox(height: 40.0),
-                    TextFormField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      key: userNameKey,
-                      controller: userNameController,
-                      decoration: InputDecoration(
-                        labelText: signInLabelText,
-                        labelStyle: _showPasswordBox ? boldTextStyle.copyWith(
-                          color: signInColour,
-                        ): null,
-                        errorStyle: boldTextStyle.copyWith(
-                          color: Colors.red,
-                        ),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: signInColour,
-                          )
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: signInColour,
-                          )
-                        ),
-                        focusedErrorBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.red,
-                            )
-                        ),
-                        errorBorder: const UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                      onChanged: (value) {
-                        if (value.isValidEmail()) {
-                          setState(() {
-                            signInColour = Colors.green;
-                            signInLabelText = "Logging in with Email";
-                            _phoneSignin = false;
-                            _showPasswordBox = true;
-                          });
-                        }
-                        else if (value.isValidPhoneNumber()) {
-                          setState(() {
-                            signInColour = Colors.green;
-                            signInLabelText = "Logging in with Mobile Number";
-                            _phoneSignin = true;
-                            _showPasswordBox = true;
-                          });
-                        }
-                        else if (value.isEmpty) {
-                          setState(() {
-                            signInColour = appSecondaryColour;
-                            signInLabelText = "Login with Email or Mobile Number";
-                            _phoneSignin = false;
-                            _showPasswordBox = false;
-                          });
-                        }
-                        else {
-                          setState(() {
-                            signInColour = Colors.red;
-                            signInLabelText = "Login with Email or Mobile Number";
-                            _phoneSignin = false;
-                            _showPasswordBox = false;
-                          });
-                        }
-                      },
-                      validator: (value) {
-                        if (value!.isNotEmpty && !(value.isValidPhoneNumber() || value.isValidEmail())) {
-                          return "Invalid Email or Mobile Number";
-                        }
-                        return null;
-                      }
-                    ),
-                    const SizedBox(height: 16.0),
-                    _phoneSignin ? ElevatedButton(
-                      onPressed: () async {
-                        requestSMS();
-                      },
-                      child: const Text('Request SMS Code'),
-                    ) : const SizedBox.shrink(),
-                    _showPasswordBox ? TextFormField(
-                      key: passwordKey,
-                      controller: passwordController,
-                      obscureText: !_phoneSignin,
-                      decoration: InputDecoration(
-                        labelText: _phoneSignin ? "SMS Code" : 'Password',
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: appSecondaryColour,
-                            )
-                        ),
-                      ),
-                    ) : const SizedBox.shrink(),
-                    const SizedBox(height: 16.0),
-                    ElevatedButton(
-                      onPressed: () async {
-                        signInUser(context);
-                      },
-                      child: const Text('Log In'),
-                    ),
-                    const SizedBox(height: 16.0),
-                    const Text(
-                      'Forgot Password?',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 24.0),
-                  ],
+      body: NotificationListener<OverscrollIndicatorNotification>(
+        onNotification: (overscroll) {
+          overscroll.disallowIndicator();
+          return true;
+        },
+        child: Stack(
+          children: [
+
+            SizedBox.expand(
+
+              child: FittedBox(
+
+                fit: BoxFit.fill,
+                child: SizedBox(
+
+                  width: widget.videoController.value.size?.width ?? 0,
+                  height: widget.videoController.value.size?.height ?? 0,
+                  child: VideoPlayer(widget.videoController),
+
                 ),
               ),
             ),
-          ),
-          Padding( // This stays at the bottom
-            padding: const EdgeInsets.only(bottom: 20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text('Don\'t have an account?'),
-                const SizedBox(width: 4.0),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SignupPage(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'Sign Up',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.w600,
+
+            SizedBox.expand(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                child: Center(
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      left: 30.w,
+                      right: 30.w,
+                    ),
+                    decoration: BoxDecoration(
+                      color: appPrimaryColour.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    width: 320.w,
+                    height: 490.h,
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20.0),
+                          child: SingleChildScrollView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AvatarGlow(
+                                  glowRadiusFactor: 0.2,
+                                  glowCount: 2,
+                                  glowColor: appSecondaryColour,
+                                  child: Image.asset(
+                                    'assets/logo/applogonobg.png',
+                                    height: 80.0.h,
+                                  ),
+                                ),
+                                const SizedBox(height: 40.0),
+                                TextFormField(
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    key: userNameKey,
+                                    controller: userNameController,
+                                    decoration: InputDecoration(
+                                      labelText: signInLabelText,
+                                      labelStyle: _showPasswordBox ? boldTextStyle.copyWith(
+                                        color: signInColour,
+                                      ): boldTextStyle.copyWith(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                      ),
+                                      errorStyle: boldTextStyle.copyWith(
+                                        color: Colors.red,
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: signInColour,
+                                          )
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: signInColour,
+                                          )
+                                      ),
+                                      focusedErrorBorder: const OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Colors.red,
+                                          )
+                                      ),
+                                      errorBorder: const UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                    onChanged: (value) {
+                                      if (value.isValidEmail()) {
+                                        setState(() {
+                                          signInColour = appSecondaryColour;
+                                          signInLabelText = "Logging in with Email";
+                                          _phoneSignin = false;
+                                          _showPasswordBox = true;
+                                        });
+                                      }
+                                      else if (value.isValidPhoneNumber()) {
+                                        setState(() {
+                                          signInColour = appSecondaryColour;
+                                          signInLabelText = "Logging in with Mobile Number";
+                                          _phoneSignin = true;
+                                          _showPasswordBox = true;
+                                        });
+                                      }
+                                      else if (value.isEmpty) {
+                                        setState(() {
+                                          signInColour = appSecondaryColour;
+                                          signInLabelText = "Login with Email or Mobile Number";
+                                          _phoneSignin = false;
+                                          _showPasswordBox = false;
+                                        });
+                                      }
+                                      else {
+                                        setState(() {
+                                          signInColour = Colors.red;
+                                          signInLabelText = "Login with Email or Mobile Number";
+                                          _phoneSignin = false;
+                                          _showPasswordBox = false;
+                                        });
+                                      }
+                                    },
+                                    validator: (value) {
+                                      if (value!.isNotEmpty && !(value.isValidPhoneNumber() || value.isValidEmail())) {
+                                        return "Invalid Email or Mobile Number";
+                                      }
+                                      return null;
+                                    }
+                                ),
+
+                                const SizedBox(height: 16.0),
+                                _phoneSignin ? ElevatedButton(
+                                  onPressed: () async {
+                                    requestSMS();
+                                  },
+                                  child: const Text('Request SMS Code'),
+                                ) : const SizedBox.shrink(),
+                                _showPasswordBox ? TextFormField(
+                                  key: passwordKey,
+                                  controller: passwordController,
+                                  obscureText: !_phoneSignin,
+                                  decoration: InputDecoration(
+                                    labelText: _phoneSignin ? "SMS Code" : 'Password',
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: appSecondaryColour,
+                                        )
+                                    ),
+                                  ),
+                                ) : const SizedBox.shrink(),
+                                const SizedBox(height: 16.0),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    signInUser(context);
+                                  },
+                                  child: const Text('Log In'),
+                                ),
+                                const SizedBox(height: 12.0),
+                                const Text(
+                                  'Forgot Password?',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

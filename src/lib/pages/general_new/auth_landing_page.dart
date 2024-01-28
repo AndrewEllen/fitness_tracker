@@ -133,7 +133,7 @@ class _LandingPageState extends State<LandingPage> {
                                 glowCount: 2,
                                 glowColor: appSecondaryColour,
                                 child: Image.asset(
-                                  'assets/logo/applogo.png',
+                                  'assets/logo/applogonobg.png',
                                   height: 80.0.h,
                                 ),
                               ),
@@ -160,11 +160,11 @@ class _LandingPageState extends State<LandingPage> {
                                         const Spacer(),
                                         Container(
                                           color: Colors.transparent,
-                                          padding: const EdgeInsets.only(
-                                            left: 8.0,
-                                            right: 8.0,
+                                          padding: EdgeInsets.only(
+                                            left: 8.0.w,
+                                            right: 8.0.w,
                                           ),
-                                          margin: const EdgeInsets.all(8.0),
+                                          margin: EdgeInsets.all(8.0.w),
                                           child: Text(
                                             "SIGN IN",
                                             style: boldTextStyle.copyWith(
@@ -177,10 +177,12 @@ class _LandingPageState extends State<LandingPage> {
                                           child: FractionallySizedBox(
                                             widthFactor: 3,
                                             child: Container(
-                                              decoration: BoxDecoration(
+                                              decoration: const BoxDecoration(
                                                   border: Border(
                                                       bottom: BorderSide(
-                                                          color: appQuarternaryColour, width: 2))),
+                                                          color: appQuarternaryColour, width: 2),
+                                                  ),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -196,7 +198,7 @@ class _LandingPageState extends State<LandingPage> {
                                       onPressed: () => Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => const LoginPage(),
+                                          builder: (context) => LoginPage(videoController: videoController,),
                                         ),
                                       ),
                                     ),
@@ -223,16 +225,18 @@ class _LandingPageState extends State<LandingPage> {
                                 decoration: const BoxDecoration(
                                     border: Border(
                                         bottom: BorderSide(
-                                            color: appQuarternaryColour, width: 2))),
+                                            color: appQuarternaryColour, width: 2),
+                                    ),
+                                ),
                               ),
                             ),
                           ),
                           const Spacer(),
                           Container(
                             color: Colors.transparent,
-                            padding: const EdgeInsets.only(
-                              left: 8.0,
-                              right: 8.0,
+                            padding: EdgeInsets.only(
+                              left: 8.0.w,
+                              right: 8.0.w,
                             ),
                             margin: const EdgeInsets.all(8.0),
                             child: Text(
@@ -259,8 +263,8 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                       Padding( // This stays at the bottom
                         padding: EdgeInsets.only(
-                          top: 20.0,
-                          bottom: 20.0,
+                          top: 20.0.h,
+                          bottom: 20.0.h,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -269,7 +273,7 @@ class _LandingPageState extends State<LandingPage> {
                               'Don\'t have an account?',
                               style: boldTextStyle.copyWith(fontWeight: FontWeight.w500),
                             ),
-                            const SizedBox(width: 4.0),
+                            SizedBox(width: 4.0.w),
                             GestureDetector(
                               onTap: () {
                                 Navigator.push(
