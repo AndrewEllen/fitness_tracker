@@ -96,6 +96,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   late Color signInColour = appSecondaryColour;
+  late bool _error = false;
   late bool _phoneSignin = false;
   late bool _showPasswordBox = false;
   late String signInLabelText = "Sign in with Email or Mobile Number";
@@ -145,36 +146,47 @@ class _LoginPageState extends State<LoginPage> {
                       shrinkWrap: true,
                       children: [
                         Padding(
+                          padding: EdgeInsets.only(top: 30.0.h, bottom: 30.h),
+                          child: AvatarGlow(
+                            glowRadiusFactor: 0.2,
+                            glowCount: 2,
+                            glowColor: appSecondaryColour,
+                            child: Image.asset(
+                              'assets/logo/applogonobg.png',
+                              height: 80.0.h,
+                            ),
+                          ),
+                        ),
+                        Padding(
                           padding: const EdgeInsets.only(bottom: 20.0),
                           child: SingleChildScrollView(
                             physics: const NeverScrollableScrollPhysics(),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                AvatarGlow(
-                                  glowRadiusFactor: 0.2,
-                                  glowCount: 2,
-                                  glowColor: appSecondaryColour,
-                                  child: Image.asset(
-                                    'assets/logo/applogonobg.png',
-                                    height: 80.0.h,
-                                  ),
-                                ),
-                                const SizedBox(height: 40.0),
+                                const SizedBox(height: 10.0),
                                 TextFormField(
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
                                     key: userNameKey,
                                     controller: userNameController,
+                                    style: boldTextStyle,
+                                    cursorColor: appSecondaryColour,
                                     decoration: InputDecoration(
                                       labelText: signInLabelText,
-                                      labelStyle: _showPasswordBox ? boldTextStyle.copyWith(
+                                      labelStyle: _error ? boldTextStyle.copyWith(
                                         color: signInColour,
-                                      ): boldTextStyle.copyWith(
+                                        fontSize: 14,
+                                      ) : boldTextStyle.copyWith(
                                         color: Colors.white,
                                         fontSize: 14,
                                       ),
                                       errorStyle: boldTextStyle.copyWith(
                                         color: Colors.red,
+                                      ),
+                                      enabledBorder: const OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: appQuarternaryColour,
+                                          )
                                       ),
                                       border: OutlineInputBorder(
                                           borderSide: BorderSide(
@@ -202,6 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                                         setState(() {
                                           signInColour = appSecondaryColour;
                                           signInLabelText = "Logging in with Email";
+                                          _error = true;
                                           _phoneSignin = false;
                                           _showPasswordBox = true;
                                         });
@@ -210,6 +223,7 @@ class _LoginPageState extends State<LoginPage> {
                                         setState(() {
                                           signInColour = appSecondaryColour;
                                           signInLabelText = "Logging in with Mobile Number";
+                                          _error = true;
                                           _phoneSignin = true;
                                           _showPasswordBox = true;
                                         });
@@ -218,6 +232,7 @@ class _LoginPageState extends State<LoginPage> {
                                         setState(() {
                                           signInColour = appSecondaryColour;
                                           signInLabelText = "Login with Email or Mobile Number";
+                                          _error = false;
                                           _phoneSignin = false;
                                           _showPasswordBox = false;
                                         });
@@ -226,6 +241,7 @@ class _LoginPageState extends State<LoginPage> {
                                         setState(() {
                                           signInColour = Colors.red;
                                           signInLabelText = "Login with Email or Mobile Number";
+                                          _error = true;
                                           _phoneSignin = false;
                                           _showPasswordBox = false;
                                         });
@@ -239,39 +255,51 @@ class _LoginPageState extends State<LoginPage> {
                                     }
                                 ),
 
-                                const SizedBox(height: 16.0),
+                                SizedBox(height: _phoneSignin ? 8.0 : 16.0),
                                 _phoneSignin ? ElevatedButton(
                                   onPressed: () async {
                                     requestSMS();
                                   },
                                   child: const Text('Request SMS Code'),
                                 ) : const SizedBox.shrink(),
+                                _phoneSignin ? SizedBox(height: _phoneSignin ? 8.0 : 16.0) : const SizedBox.shrink(),
                                 _showPasswordBox ? TextFormField(
                                   key: passwordKey,
                                   controller: passwordController,
                                   obscureText: !_phoneSignin,
+                                  style: boldTextStyle,
+                                  cursorColor: appSecondaryColour,
                                   decoration: InputDecoration(
                                     labelText: _phoneSignin ? "SMS Code" : 'Password',
-                                    focusedBorder: OutlineInputBorder(
+                                    labelStyle: boldTextStyle.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                    ),
+                                    enabledBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: appQuarternaryColour,
+                                        )
+                                    ),
+                                    focusedBorder: const OutlineInputBorder(
                                         borderSide: BorderSide(
                                           color: appSecondaryColour,
                                         )
                                     ),
                                   ),
                                 ) : const SizedBox.shrink(),
-                                const SizedBox(height: 16.0),
-                                ElevatedButton(
+                                _showPasswordBox ? const SizedBox(height: 6.0) : const SizedBox.shrink(),
+                                _showPasswordBox || _phoneSignin ? ElevatedButton(
                                   onPressed: () async {
                                     signInUser(context);
                                   },
                                   child: const Text('Log In'),
-                                ),
-                                const SizedBox(height: 12.0),
+                                ) : const SizedBox.shrink(),
+                                SizedBox(height: _phoneSignin ? 18.0 : 70),
                                 const Text(
                                   'Forgot Password?',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    color: Colors.blue,
+                                    color: appSecondaryColour,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
