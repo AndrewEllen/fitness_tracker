@@ -14,7 +14,7 @@ class WorkoutBottomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.only(
+      borderRadius: const BorderRadius.only(
         bottomRight: Radius.circular(10),
         bottomLeft: Radius.circular(10),
       ),
