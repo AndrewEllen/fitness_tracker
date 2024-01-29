@@ -42,8 +42,6 @@ class _HomePageState extends State<HomePage> {
 
   double fireScalingFactor(int dailyStreak) {
 
-    dailyStreak = 31;
-
     double scalingFactor = ((log(0.5*(dailyStreak+8)) / log(10))/0.6)-0.3;
     debugPrint("scalingFactor");
     debugPrint(scalingFactor.toString());
@@ -131,6 +129,11 @@ class _HomePageState extends State<HomePage> {
               minBlurRadius: 0,
               maxBlurRadius: 0,
               offsetFactor: 0.015,
+            ),
+            lightConfig: const LightConfig(
+              color: Color.fromRGBO(255, 246, 163, 0.0),
+              minIntensity: 0,
+              maxIntensity: 0.3,
             ),
             childLayout: ChildLayout(
 
