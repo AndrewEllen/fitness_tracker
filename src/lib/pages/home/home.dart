@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'dart:math';
 
 import '../../helpers/general/numerical_range_formatter_extension.dart';
 import '../../helpers/general/firebase_auth_service.dart';
@@ -17,6 +18,7 @@ import '../../providers/general/database_write.dart';
 import '../../providers/stats/user_data.dart';
 import '../general/auth_choose_login_signup.dart';
 import '../general/calculate_calories_page.dart';
+import "package:fitness_tracker/helpers/general/custom_icons.dart";
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -36,6 +38,15 @@ class _HomePageState extends State<HomePage> {
     }
 
     await FirebaseAuth.instance.signOut();
+  }
+
+  double fireScalingFactor(int dailyStreak) {
+
+    double scalingFactor = ((log(0.5*(dailyStreak+8)) / log(10))/1.4)+0.4;
+    print("scalingFactor");
+    print(scalingFactor);
+
+    return scalingFactor;
   }
 
   @override
@@ -102,34 +113,51 @@ class _HomePageState extends State<HomePage> {
               children: [
                 ListView(
                     children: [
-                      Container(
-                        margin: const EdgeInsets.only(top:16),
-                        child: ScreenWidthContainer(
-                          minHeight: 80.h,
-                          maxHeight: 80.h,
-                          height: 80.h,
-                          margin: _margin/2,
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: 300.h,
+                        ),
+                        child: Container(
+                          color: appTertiaryColour,
                           child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Container(
-                                margin: const EdgeInsets.only(top: 2),
-                                child: const Text(
-                                  "Daily Streak",
-                                  style: TextStyle(
-                                    color: Colors.white,
+                              SizedBox(height: 20.h),
+                              Stack(
+                                children: [
+                                  Center(
+                                    child: Icon(
+                                      MyFlutterApp.campfire,
+                                      color: streakColourOrange,
+                                      size: 60.h*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"]),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              const Spacer(),
-                              Center(
-                                child: Text(
-                                  context.read<GeneralDataProvider>().dailyStreak["dailyStreak"].toString() + " Days Streak",
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  Positioned.fill(
+                                    child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(top: 38.h*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"])),
+                                        child: Text(
+                                          context.read<GeneralDataProvider>().dailyStreak["dailyStreak"].toString(),
+                                          style: boldTextStyle.copyWith(
+                                            color: Colors.white,
+                                            fontSize: 18*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"]),
+                                            shadows: [
+                                              const Shadow(
+                                                offset: Offset(01.0, 2.0),
+                                                blurRadius: 3.0,
+                                                color: Colors.black,
+                                              ),
+                                            ]
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
+
+                                ],
                               ),
-                              const Spacer(),
+                              SizedBox(height: 20.h),
                             ],
                           ),
                         ),

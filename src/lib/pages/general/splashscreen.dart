@@ -118,34 +118,43 @@ class _SplashScreenState extends State<SplashScreen> {
 
     try {
 
-      print("DIFFERENCE IN HOURS");
-      print(DateTime.now().difference(dailyStreak["lastDate"]).inHours);
+      DateTime now = DateTime.now();
+      DateTime then = dailyStreak["lastDate"];
 
-      if (DateTime.now().difference(dailyStreak["lastDate"]).inHours > 23
-          && DateTime.now().difference(dailyStreak["lastDate"]).inHours < 50) {
+      if (DateTime(now.year, now.month, now.day) == DateTime(then.year, then.month, then.day)) {
 
-        try {context.read<GeneralDataProvider>().updateDailyStreak(dailyStreak);} catch (exception) {print(exception);}
-
-      } else if (DateTime.now().difference(dailyStreak["lastDate"]).inHours >= 0
-          && DateTime.now().difference(dailyStreak["lastDate"]).inHours <= 23) {
+        debugPrint("today");
 
         try {context.read<GeneralDataProvider>().setDailyStreak(dailyStreak);} catch (exception) {print(exception);}
+
+      } else if (DateTime(now.year, now.month, now.day) == DateTime(then.year, then.month, then.day+1)) {
+
+        debugPrint("new day");
+        try {context.read<GeneralDataProvider>().updateDailyStreak(dailyStreak);} catch (exception) {print(exception);}
+
+      } else if (
+        (
+            DateTime(now.year, now.month, now.day, now.hour)
+                .difference(
+                DateTime(then.year, then.month, then.day, then.hour+24)
+            )
+        ).inHours <= 13
+      ) {
+
+        debugPrint("new day (within 13 hours)");
+        try {context.read<GeneralDataProvider>().updateDailyStreak(dailyStreak);} catch (exception) {print(exception);}
+
       } else {
+
+        debugPrint("Streak lost");
         try {context.read<GeneralDataProvider>().setDailyStreak(<String, dynamic>{
           "lastDate": DateTime.now(),
           "dailyStreak": 0,
         });} catch (exception) {print(exception);}
+
       }
+    } catch (exception) {print(exception);}
 
-    } catch (exception) {
-
-      try {context.read<GeneralDataProvider>().setDailyStreak(<String, dynamic>{
-      "lastDate": DateTime.now(),
-      "dailyStreak": 0,
-      });} catch (exception) {print(exception);}
-
-      debugPrint(exception.toString());
-    }
 
     try {measurements = await GetUserMeasurements();} catch (exception) {print(exception);}
     try {userData = await GetUserDataTrainingPlan();} catch (exception) {print(exception);}
