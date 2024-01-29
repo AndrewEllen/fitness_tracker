@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
             ),
             borderRadius: BorderRadius.circular(30),
             tiltConfig: const TiltConfig(
-              enableSensorRevert: false,
+              enableSensorRevert: true,
               sensorFactor: 5,
               angle: 20,
               leaveDuration: Duration(seconds: 2),
