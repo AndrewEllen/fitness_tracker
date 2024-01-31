@@ -17,6 +17,7 @@ const Color appSenaryColourDark = Color.fromRGBO(87, 0, 78, 1.0);
 const Color textColour = Colors.white;
 
 const Color streakColourOrange = Colors.deepOrange;
+const Color streakColourOrangeDark = Color.fromRGBO(173, 57, 21, 1.0);
 const Color streakColourGrey = Colors.grey;
 
 const BoxDecoration homeBoxDecoration = BoxDecoration(

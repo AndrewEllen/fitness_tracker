@@ -5,6 +5,15 @@ import '../../pages/diet/diet_recipe_creator.dart';
 import '../../pages/diet_new/diet_home.dart';
 
 class PageChange with ChangeNotifier {
+
+  late bool _dataLoadingFromSplashPage = true;
+
+  bool get dataLoadingFromSplashPage => _dataLoadingFromSplashPage;
+
+  late bool _caloriesCalculated = false;
+
+  bool get caloriesCalculated => _caloriesCalculated;
+
   Widget _pageWidget = DietHomePage();
   List<Widget> _pageWidgetCache = [DietHomePage()];
   int _pageWidgetCacheIndex = 0;
@@ -18,6 +27,20 @@ class PageChange with ChangeNotifier {
   late bool _confirmation = false;
 
   bool get confirmation => _confirmation;
+
+  void setCaloriesCalculated(bool _dataLoaded) {
+
+    _caloriesCalculated = _dataLoaded;
+
+    notifyListeners();
+  }
+
+  void setDataLoadingStatus(bool _dataLoaded) {
+
+    _dataLoadingFromSplashPage = _dataLoaded;
+
+    notifyListeners();
+  }
 
   void changePageRemovePreviousCache(Widget newPage) {
     _pageWidget = newPage;

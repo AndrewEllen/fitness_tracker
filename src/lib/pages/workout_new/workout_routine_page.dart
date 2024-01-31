@@ -23,6 +23,13 @@ class WorkoutRoutinePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: appTertiaryColour,
+        title: Text(
+          routine.routineName,
+          style: boldTextStyle,
+        ),
+      ),
       resizeToAvoidBottomInset: false,
       backgroundColor: appPrimaryColour,
       floatingActionButtonLocation: ExpandableFab.location,
@@ -154,24 +161,8 @@ class WorkoutRoutinePage extends StatelessWidget {
           return true;
         },
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 14.h),
-                color: appTertiaryColour,
-                width: double.maxFinite,
-                height: 50.h,
-                child: Center(
-                  child: Text(
-                    routine.routineName,
-                    style: boldTextStyle.copyWith(fontSize: 18),
-                  ),
-                ),
-              ),
-              RoutinePageExerciseList(
-                routine: routine,
-              ),
-            ],
+          child: RoutinePageExerciseList(
+            routine: routine,
           ),
         ),
       ),

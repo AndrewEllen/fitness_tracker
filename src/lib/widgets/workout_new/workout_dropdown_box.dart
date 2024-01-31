@@ -24,7 +24,7 @@ class _WorkoutDropdownBoxState extends State<WorkoutDropdownBox> {
     return DropdownButtonHideUnderline(
       child: DropdownButton2<String>(
         isExpanded: true,
-        hint: Text(
+        hint: const Text(
           'Select Item',
           style: TextStyle(
             fontSize: 14,

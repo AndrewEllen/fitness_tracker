@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/diet/user__foods_model.dart';
@@ -10,9 +13,11 @@ import 'package:fitness_tracker/providers/general/general_data_provider.dart';
 import 'package:fitness_tracker/providers/grocery/groceries_provider.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../models/stats/stats_model.dart';
 import '../../providers/general/database_get.dart';
@@ -113,34 +118,43 @@ class _SplashScreenState extends State<SplashScreen> {
 
     try {
 
-      print("DIFFERENCE IN HOURS");
-      print(DateTime.now().difference(dailyStreak["lastDate"]).inHours);
+      DateTime now = DateTime.now();
+      DateTime then = dailyStreak["lastDate"];
 
-      if (DateTime.now().difference(dailyStreak["lastDate"]).inHours > 23
-          && DateTime.now().difference(dailyStreak["lastDate"]).inHours < 50) {
+      if (DateTime(now.year, now.month, now.day) == DateTime(then.year, then.month, then.day)) {
 
-        try {context.read<GeneralDataProvider>().updateDailyStreak(dailyStreak);} catch (exception) {print(exception);}
-
-      } else if (DateTime.now().difference(dailyStreak["lastDate"]).inHours >= 0
-          && DateTime.now().difference(dailyStreak["lastDate"]).inHours <= 23) {
+        debugPrint("today");
 
         try {context.read<GeneralDataProvider>().setDailyStreak(dailyStreak);} catch (exception) {print(exception);}
+
+      } else if (DateTime(now.year, now.month, now.day) == DateTime(then.year, then.month, then.day+1)) {
+
+        debugPrint("new day");
+        try {context.read<GeneralDataProvider>().updateDailyStreak(dailyStreak);} catch (exception) {print(exception);}
+
+      } else if (
+        (
+            DateTime(now.year, now.month, now.day, now.hour)
+                .difference(
+                DateTime(then.year, then.month, then.day, then.hour+24)
+            )
+        ).inHours <= 13
+      ) {
+
+        debugPrint("new day (within 13 hours)");
+        try {context.read<GeneralDataProvider>().updateDailyStreak(dailyStreak);} catch (exception) {print(exception);}
+
       } else {
+
+        debugPrint("Streak lost");
         try {context.read<GeneralDataProvider>().setDailyStreak(<String, dynamic>{
           "lastDate": DateTime.now(),
           "dailyStreak": 0,
         });} catch (exception) {print(exception);}
+
       }
+    } catch (exception) {print(exception);}
 
-    } catch (exception) {
-
-      try {context.read<GeneralDataProvider>().setDailyStreak(<String, dynamic>{
-      "lastDate": DateTime.now(),
-      "dailyStreak": 0,
-      });} catch (exception) {print(exception);}
-
-      debugPrint(exception.toString());
-    }
 
     try {measurements = await GetUserMeasurements();} catch (exception) {print(exception);}
     try {userData = await GetUserDataTrainingPlan();} catch (exception) {print(exception);}
@@ -188,14 +202,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
     try {await stepsCalorieCalculator();} catch (exception) {print(exception);}
 
-    setState(() {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const MainPage(),
-        ),
-      );
-    });
+    context.read<PageChange>().setDataLoadingStatus(false);
   }
-
 
   @override
   void initState() {
@@ -210,30 +218,26 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: appPrimaryColour,
       body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              margin: EdgeInsets.only(top: (_height/100)*20),
-              child: const Text(
-                "FIT",
-                style: TextStyle(
-                  color: appSecondaryColour,
-                  fontSize: 60,
-                  letterSpacing: 3,
-                  fontWeight: FontWeight.w400,
+              children: [
+
+                SizedBox.expand(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                      child: Center(
+                        child: AvatarGlow(
+                          glowRadiusFactor: 0.2,
+                          glowCount: 2,
+                          glowColor: appSecondaryColour,
+                          child: Image.asset(
+                            'assets/logo/applogonobg.png',
+                            height: 80.0.h,
+                          ),
+                        ),
+                      ),
+                    ),
                 ),
-              ),
-            ),
-          ),
-          const Align(
-            alignment: Alignment.center,
-            child: CircularProgressIndicator(
-              color: appSecondaryColour,
-            ),
-          ),
-        ],
-      ),
+              ],
+            )
     );
   }
 }
