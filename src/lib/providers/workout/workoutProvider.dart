@@ -295,10 +295,14 @@ class WorkoutProvider with ChangeNotifier {
     int workoutDuration = _currentWorkout.endOfWorkout!.difference(_currentWorkout.startOfWorkout).inSeconds;
 
     for (WorkoutLogExerciseDataModel exerciseData in _currentWorkout.exercises) {
-      volume += exerciseData.weight * exerciseData.reps;
+      if (exerciseData.type == 0) {
+        volume += exerciseData.weight * exerciseData.reps;
+      }
     }
     for (WorkoutLogExerciseDataModel exerciseData in _currentWorkout.exercises) {
-      reps += exerciseData.reps;
+      if (exerciseData.type == 0) {
+        reps += exerciseData.reps;
+      }
     }
     for (WorkoutLogExerciseDataModel exerciseData in _currentWorkout.exercises) {
       sets += 1;
