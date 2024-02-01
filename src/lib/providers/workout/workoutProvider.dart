@@ -115,13 +115,23 @@ class WorkoutProvider with ChangeNotifier {
 
   bool checkForExerciseName(String exerciseNameToCheck) {
 
-    if (_exerciseNamesList.any((value) => value == exerciseNameToCheck)) {
+    if (_exerciseNamesList.any((value) => value.toLowerCase() == exerciseNameToCheck.toLowerCase())) {
       return true;
     }
     return false;
 
   }
 
+  bool checkForExerciseCategory(String? categoryNameToCheck) {
+
+    if (categoryNameToCheck != null) {
+      if (_categoriesNamesList.any((value) => value.toLowerCase() == categoryNameToCheck.toLowerCase())) {
+        return true;
+      }
+    }
+    return false;
+
+  }
 
   bool checkForExerciseData(String exerciseNameToCheck) {
 
@@ -166,7 +176,7 @@ class WorkoutProvider with ChangeNotifier {
 
     updateExerciseData(_exerciseNamesList);
 
-    if (!_categoriesNamesList.contains(newExercise.category) && newExercise.category != null) {
+    if (!checkForExerciseCategory(newExercise.category) && newExercise.category != null) {
       _categoriesNamesList.add(newExercise.category!);
       updateCategoriesData(_categoriesNamesList);
     }
