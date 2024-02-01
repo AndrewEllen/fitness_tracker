@@ -55,8 +55,10 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
   }
 
   void _addressControllerListener() {
-    setState(() {
-    });
+    if (num.tryParse(weightController.text) != null) {
+      setState(() {
+      });
+    }
   }
 
   @override
@@ -169,13 +171,14 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                           suffix: widget.exercise.type == 0 ? "Kg" : "Km",
                           label: widget.exercise.type == 0 ? "Weight *" : "Distance *",
                           smallButtons: true,
+                          smallIncrementAmount: 0.1,
                         ),
                         IncrementalCounter(
                           inputController: repsController,
                           suffix: widget.exercise.type == 0 ? "Reps" : "Mins",
-                          label: "Time *",
+                          label: widget.exercise.type == 0 ?  "Reps *" : "Time *",
                           smallButtons: widget.exercise.type == 0 ? false : true,
-                          smallIncrementAmount: 1,
+                          smallIncrementAmount: .5,
                           bigIncrementAmount: 5,
                         ),
                         Spacer(),
