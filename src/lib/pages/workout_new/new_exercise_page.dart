@@ -75,6 +75,7 @@ class _NewExercisePageState extends State<NewExercisePage> {
                       child: DropDownForm(
                         formController: exerciseController,
                         formKey: exerciseKey,
+                        listOfItems: context.read<WorkoutProvider>().exerciseNamesList,
                       ),
                     ),
 

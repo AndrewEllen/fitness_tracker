@@ -6,11 +6,11 @@ import 'package:text_analysis/extensions.dart';
 import '../../providers/workout/workoutProvider.dart';
 
 class DropDownForm extends StatefulWidget {
-  const DropDownForm({Key? key, required this.formController, required this.formKey}) : super(key: key);
+  const DropDownForm({Key? key, required this.formController, required this.formKey, required this.listOfItems}) : super(key: key);
 
   final TextEditingController formController;
   final GlobalKey<FormState> formKey;
-
+  final List<String> listOfItems;
 
   @override
   State<DropDownForm> createState() => _DropDownFormState();
@@ -59,7 +59,7 @@ class _DropDownFormState extends State<DropDownForm> {
 
     List<String> internalSearchList = [];
 
-    List<String> listToSearch = context.read<WorkoutProvider>().exerciseNamesList;
+    List<String> listToSearch = widget.listOfItems;
 
     if (value.isNotEmpty) {
 
@@ -106,12 +106,12 @@ class _DropDownFormState extends State<DropDownForm> {
                     color: appSecondaryColour,
                   )
               ),
-              border: OutlineInputBorder(
+              border: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: appSecondaryColour,
                   )
               ),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: appSecondaryColour,
                   )
@@ -133,11 +133,6 @@ class _DropDownFormState extends State<DropDownForm> {
                 _displayDropdown = true;
               });
           },
-          onTapOutside: (value) {
-              setState(() {
-                _displayDropdown = false;
-              });
-          },
           onFieldSubmitted: (value) {
 
             setState(() {
@@ -146,21 +141,52 @@ class _DropDownFormState extends State<DropDownForm> {
           },
         ),
         ListView.builder(
-          itemCount: _displayDropdown ? searchList.isNotEmpty ? searchList.length : context.read<WorkoutProvider>().exerciseNamesList.length : 0,
+          itemCount: _displayDropdown ? searchList.isNotEmpty ? searchList.length : widget.listOfItems.length : 0,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            print(searchList);
             return Container(
               padding: const EdgeInsets.all(8),
               decoration: const BoxDecoration(
                 color: appQuinaryColour,
               ),
-              child: searchList.isEmpty ? Text(
-                context.read<WorkoutProvider>().exerciseNamesList[index],
-                style: boldTextStyle,
-              ) : Text(
-                searchList[index],
-                style: boldTextStyle,
+              child: Material(
+                type: MaterialType.transparency,
+                child: searchList.isEmpty ? Ink(
+                  child: InkWell(
+                    onTap: () {
+
+                      widget.formController.text = widget.listOfItems[index];
+                      print(widget.listOfItems[index]);
+
+                      setState(() {
+                        _displayDropdown = false;
+                      });
+
+
+                    },
+                    child: Text(
+                      widget.listOfItems[index],
+                      style: boldTextStyle,
+                    ),
+                  ),
+                ) : Ink(
+                  child: InkWell(
+                  onTap: () {
+
+                    widget.formController.text = searchList[index];
+                    print(searchList[index]);
+
+                    setState(() {
+                      _displayDropdown = false;
+                    });
+
+                    },
+                    child: Text(
+                      searchList[index],
+                      style: boldTextStyle,
+                    ),
+                  ),
+                ),
               ),
             );
           },
