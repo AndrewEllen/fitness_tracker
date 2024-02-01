@@ -27,6 +27,8 @@ class _DropDownFormState extends State<DropDownForm> {
 
   List<String> searchList = [];
 
+  final formFocusNode = FocusNode();
+
   void searchForExercise(String value) {
 
     List<String> sortListBySimilarity(List<Map> similarityMap) {
@@ -94,6 +96,9 @@ class _DropDownFormState extends State<DropDownForm> {
         setState(() {
           _displayDropdown = false;
         });
+        if (formFocusNode.hasFocus) {
+          formFocusNode.unfocus();
+        }
       },
       child: Column(
         children: [
@@ -103,6 +108,7 @@ class _DropDownFormState extends State<DropDownForm> {
               controller: widget.formController,
               style: boldTextStyle,
               cursorColor: appSecondaryColour,
+              focusNode: formFocusNode,
               decoration: InputDecoration(
                 labelText: widget.label,
                 labelStyle: boldTextStyle.copyWith(
@@ -114,7 +120,7 @@ class _DropDownFormState extends State<DropDownForm> {
                 ),
                 enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: appSecondaryColour,
+                      color: appQuarternaryColour,
                     )
                 ),
                 border: const OutlineInputBorder(
@@ -145,62 +151,71 @@ class _DropDownFormState extends State<DropDownForm> {
                 });
             },
             onFieldSubmitted: (value) {
-      
               setState(() {
                 _displayDropdown = false;
               });
             },
           ),
-          ListView.builder(
-            itemCount: _displayDropdown ? searchList.isNotEmpty ? searchList.length : widget.listOfItems.length : 0,
-            shrinkWrap: true,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                  color: appQuinaryColour,
-                ),
-                child: Material(
-                  type: MaterialType.transparency,
-                  child: searchList.isEmpty ? Ink(
-                    child: InkWell(
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                color: appQuinaryColour
+            ),
+            child: ListView.builder(
+              itemCount: _displayDropdown ? searchList.isNotEmpty ? searchList.length : widget.listOfItems.length : 0,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: searchList.isEmpty ? Ink(
+                      child: InkWell(
+                        onTap: () {
+
+                          widget.formController.text = widget.listOfItems[index];
+                          print(widget.listOfItems[index]);
+
+                          setState(() {
+                            _displayDropdown = false;
+                          });
+
+                          if (formFocusNode.hasFocus) {
+                            formFocusNode.unfocus();
+                          }
+
+                        },
+                        child: Text(
+                          widget.listOfItems[index],
+                          style: boldTextStyle,
+                        ),
+                      ),
+                    ) : Ink(
+                      child: InkWell(
                       onTap: () {
-      
-                        widget.formController.text = widget.listOfItems[index];
-                        print(widget.listOfItems[index]);
-      
+
+                        widget.formController.text = searchList[index];
+                        print(searchList[index]);
+
                         setState(() {
                           _displayDropdown = false;
                         });
-      
-      
-                      },
-                      child: Text(
-                        widget.listOfItems[index],
-                        style: boldTextStyle,
-                      ),
-                    ),
-                  ) : Ink(
-                    child: InkWell(
-                    onTap: () {
-      
-                      widget.formController.text = searchList[index];
-                      print(searchList[index]);
-      
-                      setState(() {
-                        _displayDropdown = false;
-                      });
-      
-                      },
-                      child: Text(
-                        searchList[index],
-                        style: boldTextStyle,
+
+                        if (formFocusNode.hasFocus) {
+                          formFocusNode.unfocus();
+                        }
+
+                        },
+                        child: Text(
+                          searchList[index],
+                          style: boldTextStyle,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ],
       ),

@@ -28,6 +28,8 @@ class _NewExercisePageState extends State<NewExercisePage> {
   final GlobalKey<FormState> categoriesKey = GlobalKey<FormState>();
   final TextEditingController categoriesController = TextEditingController();
 
+  late int dropDownMenuValue;
+
   late List<String> items;
 
 
@@ -76,7 +78,7 @@ class _NewExercisePageState extends State<NewExercisePage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 50.0, right: 50.0),
                       child: DropDownForm(
-                        label: "Search Exercises...",
+                        label: "Search Exercises *",
                         formController: exerciseController,
                         formKey: exerciseKey,
                         listOfItems: context.read<WorkoutProvider>().exerciseNamesList,
@@ -86,10 +88,74 @@ class _NewExercisePageState extends State<NewExercisePage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 20, left: 50.0, right: 50.0),
                       child: DropDownForm(
-                        label: "Search Categories...",
+                        label: "Search Categories *",
                         formController: categoriesController,
                         formKey: categoriesKey,
                         listOfItems: context.read<WorkoutProvider>().exerciseNamesList,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20, left: 50.0, right: 50.0),
+                      child: DropdownMenu(
+                        initialSelection: 0,
+                        enableSearch: false,
+                        requestFocusOnTap: false,
+                        width: 295.w,
+                        label: const Text(
+                          "Select Exercise Type *",
+                          style: boldTextStyle,
+                        ),
+                        textStyle: boldTextStyle,
+                        menuStyle: MenuStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(appQuinaryColour),
+                        ),
+                        trailingIcon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.white,
+                        ),
+                        selectedTrailingIcon: const Icon(
+                          Icons.arrow_drop_up,
+                          color: Colors.white,
+                        ),
+                        inputDecorationTheme: const InputDecorationTheme(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: appQuarternaryColour,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: appSecondaryColour,
+                              )
+                          ),
+                        ),
+                        dropdownMenuEntries: [
+
+                          DropdownMenuEntry(
+                              value: 0,
+                              label: "Weight and Reps",
+                              style: ButtonStyle(
+                                textStyle: MaterialStateProperty.all<TextStyle>(boldTextStyle),
+                                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                              ),
+                          ),
+                          DropdownMenuEntry(
+                              value: 1,
+                              label: "Distance and Time",
+                              style: ButtonStyle(
+                                textStyle: MaterialStateProperty.all<TextStyle>(boldTextStyle),
+                                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                              ),
+                          ),
+                        ],
+                        onSelected: (value) {
+                          if (value != null) {
+                            setState(() {
+                              dropDownMenuValue = value;
+                            });
+                          }
+                        },
                       ),
                     ),
 
