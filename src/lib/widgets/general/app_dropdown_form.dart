@@ -10,12 +10,14 @@ class DropDownForm extends StatefulWidget {
     required this.formKey,
     required this.listOfItems,
     required this.label,
+    this.validate = true,
   }) : super(key: key);
 
   final TextEditingController formController;
   final GlobalKey<FormState> formKey;
   final List<String> listOfItems;
   final String label;
+  final bool validate;
 
   @override
   State<DropDownForm> createState() => _DropDownFormState();
@@ -154,6 +156,9 @@ class _DropDownFormState extends State<DropDownForm> {
               });
             },
             validator: (value) {
+                if (!widget.validate) {
+                  return null;
+                }
                 if (value!.isEmpty) {
                   return "";
                 }

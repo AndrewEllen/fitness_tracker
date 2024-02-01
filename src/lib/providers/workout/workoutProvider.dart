@@ -152,6 +152,15 @@ class WorkoutProvider with ChangeNotifier {
 
   }
 
+  void AddNewWorkout(ExerciseModel newExercise) {
+
+    _exerciseList.add(newExercise);
+
+    createNewExercise(newExercise);
+
+    notifyListeners();
+  }
+
   void UpdateLastWorkoutLogDocument(dynamic document) {
 
     _lastWorkoutLogDocument = document;

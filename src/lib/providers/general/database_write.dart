@@ -218,7 +218,7 @@ void deleteGrocery(GroceryItem groceryItem, String groceryListID) async {
 
 }
 
-void createExercise(ExerciseModel exercise) async {
+void createNewExercise(ExerciseModel exercise) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -228,7 +228,9 @@ void createExercise(ExerciseModel exercise) async {
       .collection('workout-data')
       .doc(exercise.exerciseName)
       .set({
-          "exerciseName": exercise.exerciseName,
+        "category": exercise.category,
+        "type": exercise.type,
+        "exerciseTrackingType": exercise.exerciseTrackingType,
       });
 
 }
@@ -261,8 +263,6 @@ void saveExerciseLogs(ExerciseModel exercise, Map log) async {
 
 }
 
-
-
 void saveExerciseMaxRepsAtWeight(String exerciseName, Map maxWeightAtReps) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -275,8 +275,6 @@ void saveExerciseMaxRepsAtWeight(String exerciseName, Map maxWeightAtReps) async
       .set({"data": maxWeightAtReps});
 
 }
-
-
 
 void updateLogData(ExerciseModel exercise, int index) async {
 

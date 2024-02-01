@@ -1020,15 +1020,13 @@ try {
   };
 
 
+  } catch (error, stacktrace) {
 
+    debugPrint(error.toString());
+    debugPrint(stacktrace.toString());
+    print("error");
 
-} catch (error, stacktrace) {
-
-  debugPrint(error.toString());
-  debugPrint(stacktrace.toString());
-  print("error");
-
-}
+  }
 
 }
 

@@ -7,6 +7,7 @@ class ExerciseModel {
       'exerciseName': exerciseName,
       'exerciseTrackingData': exerciseTrackingData.toMap(),
       'category': category,
+      'type': type,
       'exerciseTrackingType': exerciseTrackingType,
     };
   }
@@ -16,6 +17,7 @@ class ExerciseModel {
     required this.exerciseTrackingData,
     required this.exerciseMaxRepsAndWeight,
     this.category,
+    this.type = 0,
     this.exerciseTrackingType = 0,
   });
 
@@ -23,5 +25,6 @@ class ExerciseModel {
   RepsWeightStatsMeasurement exerciseTrackingData;
   Map<String, String> exerciseMaxRepsAndWeight;
   String? category;
+  int? type;
   int? exerciseTrackingType;
 }
