@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../constants.dart';
 import '../../providers/general/page_change_provider.dart';
 import '../../widgets/general/app_default_button.dart';
+import '../../widgets/general/app_dropdown_form.dart';
 
 
 class NewExercisePage extends StatefulWidget {
@@ -21,8 +22,8 @@ class _NewExercisePageState extends State<NewExercisePage> {
   String? selectedValue;
   bool _newAdded = false;
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController textEditingController = TextEditingController();
+  final GlobalKey<FormState> exerciseKey = GlobalKey<FormState>();
+  final TextEditingController exerciseController = TextEditingController();
 
   late List<String> items;
 
@@ -69,7 +70,13 @@ class _NewExercisePageState extends State<NewExercisePage> {
                 child: Column(
                   children: [
 
-                    
+                    Padding(
+                      padding: const EdgeInsets.only(left: 50.0, right: 50.0),
+                      child: DropDownForm(
+                        formController: exerciseController,
+                        formKey: exerciseKey,
+                      ),
+                    ),
 
                     SizedBox(
                       height: 100.h,

@@ -85,7 +85,7 @@ class WorkoutProvider with ChangeNotifier {
 
   List<RoutinesModel> get routinesList => _routinesList;
 
-  late List<String> _exerciseNamesList = [];
+  late List<String> _exerciseNamesList = ["test", "exercise", "jogging"];
 
   List<String> get exerciseNamesList => _exerciseNamesList;
 
