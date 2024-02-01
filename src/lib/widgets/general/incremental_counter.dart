@@ -43,11 +43,11 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
 
     if (isSmall) {
 
-      widget.inputController.text = (double.parse(widget.inputController.text) + widget.smallIncrementAmount).toString().replaceAll(removeTrailingZeros, "");
+      widget.inputController.text = (double.parse(widget.inputController.text) + widget.smallIncrementAmount).toStringAsFixed(2).replaceFirst(RegExp(r'\.?0*$'), '');
 
     } else {
 
-      widget.inputController.text = (double.parse(widget.inputController.text) + widget.bigIncrementAmount).toString().replaceAll(removeTrailingZeros, "");
+      widget.inputController.text = (double.parse(widget.inputController.text) + widget.bigIncrementAmount).toStringAsFixed(2).replaceFirst(RegExp(r'\.?0*$'), '');
 
     }
 
@@ -73,11 +73,11 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
 
     if (isSmall) {
 
-      widget.inputController.text = (double.parse(widget.inputController.text) - widget.smallIncrementAmount).toString().replaceAll(removeTrailingZeros, "");
+      widget.inputController.text = (double.parse(widget.inputController.text) - widget.smallIncrementAmount).toStringAsFixed(2).replaceFirst(RegExp(r'\.?0*$'), '');
 
     } else {
 
-      widget.inputController.text = (double.parse(widget.inputController.text) - widget.bigIncrementAmount).toString().replaceAll(removeTrailingZeros, "");
+      widget.inputController.text = (double.parse(widget.inputController.text) - widget.bigIncrementAmount).toStringAsFixed(2).replaceFirst(RegExp(r'\.?0*$'), '');
 
     }
 

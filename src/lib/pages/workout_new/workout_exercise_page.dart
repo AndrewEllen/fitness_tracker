@@ -194,7 +194,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                           suffix: widget.exercise.type == 0 ? "Kg" : "Km",
                           label: widget.exercise.type == 0 ? "Weight *" : "Distance *",
                           smallButtons: true,
-                          smallIncrementAmount: 0.1,
+                          smallIncrementAmount: widget.exercise.type == 0 ? 2.5 : 0.1,
                         ),
                         IncrementalCounter(
                           inputController: repsController,
@@ -202,7 +202,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                           label: widget.exercise.type == 0 ?  "Reps *" : "Time *",
                           smallButtons: widget.exercise.type == 0 ? false : true,
                           smallIncrementAmount: .5,
-                          bigIncrementAmount: 5,
+                          bigIncrementAmount: widget.exercise.type == 0 ? 1 : 5,
                         ),
                         widget.exercise.type == 1 ? Theme(
                           data: ThemeData(
