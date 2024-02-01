@@ -68,6 +68,29 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
   }
 
 
+  Widget sliderText(double value) {
+
+    if (value >= 1 && value <= 2.5) {
+      return const Text(
+        "Normal Breathing: Could have a conversation or sing",
+        style: boldTextStyle,
+      );
+    } else if (value > 2.5 && value <= 6.5) {
+      return const Text(
+        "Heavy Breathing: Could have a short conversation",
+        style: boldTextStyle,
+      );
+    } else {
+      return const Text(
+        "Short of Breath: Could only speak in short sentences",
+        style: boldTextStyle,
+      );
+    }
+  }
+
+
+  double intensitySlider = 4.0;
+
   @override
   Widget build(BuildContext context) {
 
@@ -165,7 +188,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                             ),
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         IncrementalCounter(
                           inputController: weightController,
                           suffix: widget.exercise.type == 0 ? "Kg" : "Km",
@@ -181,7 +204,29 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                           smallIncrementAmount: .5,
                           bigIncrementAmount: 5,
                         ),
-                        Spacer(),
+                        widget.exercise.type == 1 ? Theme(
+                          data: ThemeData(
+                            sliderTheme: const SliderThemeData(
+                              showValueIndicator: ShowValueIndicator.always
+                            )
+                          ),
+                          child: Slider(
+                            value: intensitySlider,
+                            onChanged: (double value) {
+                              setState(() {
+                                intensitySlider = value;
+                              });
+                            },
+                            min: 1,
+                            max: 8,
+                            //divisions: 14,
+                            label: ((intensitySlider*2).floorToDouble()/2).toString(),
+                            activeColor: appSecondaryColour,
+                            inactiveColor: appSecondaryColourDark,
+                          ),
+                        ) : const SizedBox.shrink(),
+                        widget.exercise.type == 1 ? sliderText(intensitySlider) : const SizedBox.shrink(),
+                        const Spacer(),
                         Stack(
                           children: [
                             Align(
@@ -209,6 +254,11 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
 
                                           DateFormat("HH:mm").format(DateTime.now()).toString(),
 
+                                        ],
+                                        "intensityValues": <double>[
+
+                                          intensitySlider
+
                                         ]
                                       };
 
@@ -222,6 +272,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                                           widget.exercise.exerciseTrackingData.dailyLogs[0]["weightValues"].insert(0, newLog["weightValues"][0]);
                                           widget.exercise.exerciseTrackingData.dailyLogs[0]["repValues"].insert(0, newLog["repValues"][0]);
                                           widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"].insert(0, newLog["measurementTimeStamp"][0]);
+                                          widget.exercise.exerciseTrackingData.dailyLogs[0]["intensityValues"].insert(0, newLog["intensityValues"][0]);
                                           widget.exercise.type = newLog["type"];
 
                                         } else {

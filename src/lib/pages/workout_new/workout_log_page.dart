@@ -37,6 +37,7 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
     double volume = 0;
 
     for (WorkoutLogExerciseDataModel exerciseData in workoutLog.exercises) {
+      print(exerciseData.intensityNumber);
       if (exerciseData.type == 0) {
         volume += exerciseData.weight * exerciseData.reps;
       }
@@ -74,6 +75,9 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
 
   @override
   Widget build(BuildContext context) {
+
+
+
     context.watch<WorkoutProvider>().workoutStarted;
 
     List workoutExerciseNamesSet = [];

@@ -1,6 +1,7 @@
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
+import 'package:fitness_tracker/models/workout/workout_log_exercise_data.dart';
 import 'package:fitness_tracker/models/workout/workout_log_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -11,6 +12,7 @@ import '../../models/diet/food_item.dart';
 import '../../models/diet/user__foods_model.dart';
 import '../../models/diet/user_nutrition_model.dart';
 import '../general/database_write.dart';
+import '../stats/user_data.dart';
 
 //[LO3.7.3.5]
 //Processes the data for the food items retrieved
@@ -1103,7 +1105,21 @@ class UserNutritionData with ChangeNotifier {
 
   void addCardioCalories(WorkoutLogModel completedWorkout) {
 
-    double MET = ;
+    double userWeight = double.parse(UserData().userData.weight);
+
+    double caloriesBurnedPerMinute = (3.5*userWeight)/200;
+
+    List<double> caloriesBurnedList = [];
+
+    for (WorkoutLogExerciseDataModel exercise in completedWorkout.exercises) {
+      if (exercise.type == 1) {
+
+        //double speedInMetersPerMinute = ()/()
+
+      }
+    }
+
+
 
     notifyListeners();
   }
