@@ -158,7 +158,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
     try {measurements = await GetUserMeasurements();} catch (exception) {print(exception);}
-    try {userData = await GetUserDataTrainingPlan();} catch (exception) {print(exception);}
+    //try {userData = await GetUserDataTrainingPlan();} catch (exception) {print(exception);}
     try {userData = await GetUserBioData();} catch (exception) {print(exception);}
     print("Fetching nutrition");
     try {userNutrition = await GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString());} catch (exception) {print(exception);}
@@ -181,6 +181,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     try {context.read<UserData>().setUserBioData(userData);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCalories(userData.calories);} catch (exception) {print(exception);}
+    try {context.read<UserNutritionData>().setUserWeight(double.parse(userData.weight));} catch (exception) {print(exception);}
 
     try {context.read<GroceryProvider>().setGroceryListID(groceryListID);} catch (exception) {print(exception);}
     try {context.read<GroceryProvider>().setGroceryLists(groceryLists);} catch (exception) {print(exception);}

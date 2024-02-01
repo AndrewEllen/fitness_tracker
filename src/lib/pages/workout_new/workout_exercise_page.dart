@@ -89,7 +89,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
   }
 
 
-  double intensitySlider = 4.0;
+  double intensitySlider = 5;
 
   @override
   Widget build(BuildContext context) {

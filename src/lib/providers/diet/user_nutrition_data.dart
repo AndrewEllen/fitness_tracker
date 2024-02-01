@@ -113,6 +113,10 @@ class UserNutritionData with ChangeNotifier {
   //late List<ListFoodItem> _foodListItemsDinner = [];
   //late List<ListFoodItem> _foodListItemsSnacks = [];
 
+  late double _userWeight;
+
+  double get userWeight => _userWeight;
+
   late UserNutritionModel _userDailyNutrition = UserNutritionModel(
     date: DateTime(DateTime
         .now()
@@ -1103,9 +1107,17 @@ class UserNutritionData with ChangeNotifier {
 
   }
 
+  void setUserWeight(double userWeight) {
+    print("USER WEIEIEIIEIEIEIEIGHT");
+    print(userWeight);
+    _userWeight = userWeight;
+    print(_userWeight);
+    print(_userWeight.runtimeType);
+    notifyListeners();
+  }
+
   void addCardioCalories(WorkoutLogModel completedWorkout) {
 
-    double userWeight = double.parse(UserData().userData.weight);
 
     double caloriesBurnedPerMinute = (3.5*userWeight)/200;
 
@@ -1114,10 +1126,11 @@ class UserNutritionData with ChangeNotifier {
     for (WorkoutLogExerciseDataModel exercise in completedWorkout.exercises) {
       if (exercise.type == 1) {
 
-        //double speedInMetersPerMinute = ()/()
+        caloriesBurnedList.add(1.58*((exercise.intensityNumber!*caloriesBurnedPerMinute)*exercise.reps));
 
       }
     }
+    print(caloriesBurnedList);
 
 
 

@@ -410,7 +410,6 @@ class WorkoutProvider with ChangeNotifier {
           exercise.routineName!
       }.toList();
 
-      UserNutritionData().addCardioCalories(_currentWorkout);
       calculateOverallStats();
 
       ///todo add calorie calculations for cardio

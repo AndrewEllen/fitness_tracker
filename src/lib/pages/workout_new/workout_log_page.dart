@@ -37,7 +37,7 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
     double volume = 0;
 
     for (WorkoutLogExerciseDataModel exerciseData in workoutLog.exercises) {
-      print(exerciseData.intensityNumber);
+      //print(exerciseData.intensityNumber);
       if (exerciseData.type == 0) {
         volume += exerciseData.weight * exerciseData.reps;
       }
@@ -75,7 +75,6 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
 
   @override
   Widget build(BuildContext context) {
-
 
 
     context.watch<WorkoutProvider>().workoutStarted;
@@ -124,6 +123,7 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
             onPressed: () => context.read<WorkoutProvider>().workoutStarted ?
             {
               if (context.read<WorkoutProvider>().currentWorkout.exercises.isNotEmpty) {
+                context.read<UserNutritionData>().addCardioCalories(context.read<WorkoutProvider>().currentWorkout),
                 context.read<WorkoutProvider>().endWorkout(DateTime.now()),
                 context.read<WorkoutProvider>().selectLog(0),
                 context.read<PageChange>().changePageRemovePreviousCache(SelectedWorkoutLogPage()),
