@@ -1126,7 +1126,6 @@ class UserNutritionData with ChangeNotifier {
   }
 
   void addCardioCalories(WorkoutLogModel completedWorkout) {
-
     double calculateMET(String exerciseName, double speed, double intensity) {
       if (exerciseName == "jogging") {
         return 7;
@@ -1198,9 +1197,34 @@ class UserNutritionData with ChangeNotifier {
       }
     }
 
-    double oneMET = (3.5*_userWeight)/200;
+    double totalCalories(List<double> caloriesList) {
+      double totalCalorieCount = 0;
+      for (double calories in caloriesList) {
+        totalCalorieCount += calories;
+      }
+      return totalCalorieCount;
+    }
+
+    int calculateTimeDifference(String firstTime, String secondTime) {
+
+      List<String> firstTimeSplit = firstTime.split(":");
+      List<String> secondTimeSplit = secondTime.split(":");
+
+      DateTime now = DateTime.now();
+
+      DateTime firstTimeDateTime = DateTime(now.year, now.month, now.day).add(
+          Duration(hours: int.parse(firstTimeSplit[0]), minutes: int.parse(firstTimeSplit[1])));
+      DateTime secondTimeDateTime = DateTime(now.year, now.month, now.day).add(
+          Duration(hours: int.parse(secondTimeSplit[0]), minutes: int.parse(secondTimeSplit[1])));
+
+      return secondTimeDateTime.difference(firstTimeDateTime).inMinutes;
+    }
 
     List<double> caloriesBurnedList = [];
+
+    String firstSet = "";
+    String lastSet = "";
+    double weightsCalories = 0;
 
     for (WorkoutLogExerciseDataModel exercise in completedWorkout.exercises) {
       if (exercise.type == 1) {
@@ -1214,12 +1238,39 @@ class UserNutritionData with ChangeNotifier {
 
       } else if(exercise.type == 0) {
 
-        double MET = calculateMET("", 0, 5);
-        caloriesBurnedList.add(MET * 3.5 * _userWeight / 200);
+        if (firstSet.isEmpty) {
+          firstSet = exercise.timestamp;
+        }
+        lastSet = exercise.timestamp;
 
       }
     }
-    print(caloriesBurnedList);
+
+    if (firstSet.isNotEmpty) {
+      weightsCalories = ((3 * 3.5 * _userWeight / 200) * calculateTimeDifference(firstSet, lastSet));
+      foodListItemsExercise.add(
+        ListExerciseItem(
+          name: "FIT Tracked Resistance",
+          category: 'exercise',
+          calories: weightsCalories.toStringAsFixed(0),
+          extraInfoField: completedWorkout.routineNames.join(","),
+          hideDelete: false,
+        ),
+      );
+    }
+
+    if (caloriesBurnedList.isNotEmpty) {
+      foodListItemsExercise.add(
+        ListExerciseItem(
+          name: "FIT Tracked Cardio",
+          category: 'exercise',
+          calories: totalCalories(caloriesBurnedList).toStringAsFixed(0),
+          extraInfoField: completedWorkout.routineNames.join(","),
+          hideDelete: false,
+        ),
+      );
+    }
+
 
 
 
