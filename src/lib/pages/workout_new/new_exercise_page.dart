@@ -56,7 +56,19 @@ class _NewExercisePageState extends State<NewExercisePage> {
       "Hamstrings",
       "Calves",
       "Cardio"
-    ] + context.read<WorkoutProvider>().categoriesNamesList;
+    ];
+
+    for (String exercise in context.read<WorkoutProvider>().exerciseNamesList) {
+      if (!exerciseList.contains(exercise)) {
+        exerciseList.add(exercise);
+      }
+    }
+
+    for (String category in context.read<WorkoutProvider>().categoriesNamesList) {
+      if (!categoriesList.contains(category)) {
+        categoriesList.add(category);
+      }
+    }
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
