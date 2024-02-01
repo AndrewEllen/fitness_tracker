@@ -70,12 +70,12 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
 
   Widget sliderText(double value) {
 
-    if (value >= 1 && value <= 2.5) {
+    if (value >= 1 && value <= 3.5) {
       return const Text(
         "Normal Breathing: Could have a conversation or sing",
         style: boldTextStyle,
       );
-    } else if (value > 2.5 && value <= 6.5) {
+    } else if (value > 3.5 && value <= 7.5) {
       return const Text(
         "Heavy Breathing: Could have a short conversation",
         style: boldTextStyle,
@@ -218,7 +218,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                               });
                             },
                             min: 1,
-                            max: 8,
+                            max: 10,
                             //divisions: 14,
                             label: ((intensitySlider*2).floorToDouble()/2).toString(),
                             activeColor: appSecondaryColour,

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
@@ -114,8 +116,8 @@ class UserNutritionData with ChangeNotifier {
   //late List<ListFoodItem> _foodListItemsSnacks = [];
 
   late double _userWeight;
-
-  double get userWeight => _userWeight;
+  late double _userAge;
+  late double _userGender;
 
   late UserNutritionModel _userDailyNutrition = UserNutritionModel(
     date: DateTime(DateTime
@@ -1108,25 +1110,53 @@ class UserNutritionData with ChangeNotifier {
   }
 
   void setUserWeight(double userWeight) {
-    print("USER WEIEIEIIEIEIEIEIGHT");
-    print(userWeight);
     _userWeight = userWeight;
-    print(_userWeight);
-    print(_userWeight.runtimeType);
-    notifyListeners();
+  }
+
+  void setUserAge(double userAge) {
+    _userAge = userAge;
+  }
+
+  void setUserGender(double userGender) {
+    _userGender = userGender;
   }
 
   void addCardioCalories(WorkoutLogModel completedWorkout) {
 
+    double genderConstant(double gender) {
+      switch(gender) {
+        case 0: return 108.844;
+        case 1: return 100.5;
+        default: return 108.844;
+      }
+    }
 
-    double caloriesBurnedPerMinute = (3.5*userWeight)/200;
+    double VO2Resting = (3.5*_userWeight)/200;
 
     List<double> caloriesBurnedList = [];
 
     for (WorkoutLogExerciseDataModel exercise in completedWorkout.exercises) {
       if (exercise.type == 1) {
 
-        caloriesBurnedList.add(1.58*((exercise.intensityNumber!*caloriesBurnedPerMinute)*exercise.reps));
+        ///Using weight and reps as distance and time because the code existed already
+        double averageSpeed = (exercise.weight/exercise.reps);
+        print(averageSpeed);
+
+        double averageHeartRateEstimate = (208 - (_userAge * 0.7)) * (exercise.intensityNumber!/10);
+
+        double VO2ActiveEstimate = genderConstant(_userGender)
+            - (0.1636 * _userWeight)
+            - (1.438 * exercise.reps)
+            - (0.1928 * averageHeartRateEstimate);
+
+        print(VO2ActiveEstimate);
+
+        double METestimate = VO2ActiveEstimate / 3.5;
+
+        print(METestimate);
+
+
+        caloriesBurnedList.add(1*1*exercise.reps);
 
       }
     }

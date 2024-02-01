@@ -182,6 +182,8 @@ class _SplashScreenState extends State<SplashScreen> {
     try {context.read<UserData>().setUserBioData(userData);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCalories(userData.calories);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setUserWeight(double.parse(userData.weight));} catch (exception) {print(exception);}
+    try {context.read<UserNutritionData>().setUserAge(double.parse(userData.age));} catch (exception) {print(exception);}
+    try {context.read<UserNutritionData>().setUserGender(double.parse(userData.biologicalSex));} catch (exception) {print(exception);}
 
     try {context.read<GroceryProvider>().setGroceryListID(groceryListID);} catch (exception) {print(exception);}
     try {context.read<GroceryProvider>().setGroceryLists(groceryLists);} catch (exception) {print(exception);}
