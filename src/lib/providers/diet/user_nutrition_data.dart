@@ -1210,6 +1210,16 @@ class UserNutritionData with ChangeNotifier {
       List<String> firstTimeSplit = firstTime.split(":");
       List<String> secondTimeSplit = secondTime.split(":");
 
+      double firstTimeDouble = double.parse(firstTimeSplit[0]);
+      double secondTimeDouble = double.parse(secondTimeSplit[0]);
+
+      if (firstTimeDouble > secondTimeDouble) {
+
+        double dif = 0 + secondTimeDouble;
+        secondTimeSplit[0] = (24 + dif).toString();
+
+      }
+
       DateTime now = DateTime.now();
 
       DateTime firstTimeDateTime = DateTime(now.year, now.month, now.day).add(
@@ -1247,7 +1257,7 @@ class UserNutritionData with ChangeNotifier {
     }
 
     if (firstSet.isNotEmpty) {
-      weightsCalories = ((3 * 3.5 * _userWeight / 200) * calculateTimeDifference(firstSet, lastSet));
+      weightsCalories = 200 * (calculateTimeDifference(firstSet, lastSet)/60);
       foodListItemsExercise.add(
         ListExerciseItem(
           name: "FIT Tracked Resistance",
