@@ -1271,8 +1271,11 @@ class UserNutritionData with ChangeNotifier {
       );
     }
 
-
-
+    if (caloriesBurnedList.isNotEmpty || firstSet.isNotEmpty) {
+      calculateMacros();
+      notifyListeners();
+      UpdateUserNutritionalData(_userDailyNutrition);
+    }
 
     notifyListeners();
   }
