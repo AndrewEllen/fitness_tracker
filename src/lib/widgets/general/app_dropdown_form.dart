@@ -170,7 +170,7 @@ class _DropDownFormState extends State<DropDownForm> {
           ),
           ConstrainedBox(
             constraints: BoxConstraints(
-              maxHeight: 200.h,
+              maxHeight: 240.h,
             ),
             child: Container(
               decoration: BoxDecoration(

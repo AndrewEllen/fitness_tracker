@@ -202,6 +202,7 @@ class _MainPageState extends State<MainPage> {
                     child: WillPopScope(
                       onWillPop: _onBackKey,
                       child: Scaffold(
+                        resizeToAvoidBottomInset: false,
                         backgroundColor: appPrimaryColour,
                         bottomNavigationBar: NavigationBarTheme(
                           data: NavigationBarThemeData(
