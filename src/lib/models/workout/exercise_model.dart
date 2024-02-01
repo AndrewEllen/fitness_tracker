@@ -18,7 +18,7 @@ class ExerciseModel {
     required this.exerciseMaxRepsAndWeight,
     this.category,
     this.type = 0,
-    this.exerciseTrackingType = 0,
+    this.exerciseTrackingType,
   });
 
   String exerciseName;

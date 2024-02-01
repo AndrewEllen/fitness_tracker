@@ -38,6 +38,11 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
   @override
   void initState() {
 
+    print(widget.exercise.exerciseName);
+    print(widget.exercise.category);
+    print(widget.exercise.type);
+    print(widget.exercise.exerciseTrackingType);
+
     weightController.addListener(_addressControllerListener);
 
     weightController.text = widget.exercise.exerciseTrackingData.dailyLogs.isNotEmpty
@@ -161,15 +166,17 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                         Spacer(),
                         IncrementalCounter(
                           inputController: weightController,
-                          suffix: "Kg",
-                          label: "Weight *",
+                          suffix: widget.exercise.type == 0 ? "Kg" : "Km",
+                          label: widget.exercise.type == 0 ? "Weight *" : "Distance *",
                           smallButtons: true,
                         ),
                         IncrementalCounter(
                           inputController: repsController,
-                          suffix: "Reps",
-                          label: "Reps *",
-                          smallButtons: false,
+                          suffix: widget.exercise.type == 0 ? "Reps" : "Mins",
+                          label: "Time *",
+                          smallButtons: widget.exercise.type == 0 ? false : true,
+                          smallIncrementAmount: 1,
+                          bigIncrementAmount: 5,
                         ),
                         Spacer(),
                         Stack(

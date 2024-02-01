@@ -671,6 +671,10 @@ class WorkoutProvider with ChangeNotifier {
       ExerciseModel data = await GetExerciseLogData(exerciseName);
       _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseTrackingData.dailyLogs = data.exerciseTrackingData.dailyLogs;
       _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseMaxRepsAndWeight = data.exerciseMaxRepsAndWeight;
+      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].type = data.type;
+      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseTrackingType = data.exerciseTrackingType;
+      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].category = data.category;
+
     }
     setMaxWeightAtRep(_exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseMaxRepsAndWeight);
 
