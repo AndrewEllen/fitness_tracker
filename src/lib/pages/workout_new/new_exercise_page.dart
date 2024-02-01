@@ -48,6 +48,8 @@ class _NewExercisePageState extends State<NewExercisePage> {
       "Bent Over Barbell Row",
       "Bent Over Dumbbell Row",
       "Cycling",
+      "Cross Trainer Machine",
+      "Elliptical Trainer Machine",
       "Stationary Bike",
       "Rowing",
       "Rowing Machine",

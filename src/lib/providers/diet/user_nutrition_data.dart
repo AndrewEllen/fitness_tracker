@@ -1192,6 +1192,15 @@ class UserNutritionData with ChangeNotifier {
         return 8.5;
       } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && intensity >= 7) {
         return 12;
+        ///CrossTrainer
+      } else if ((exerciseName == "elliptical trainer machine" || exerciseName == "cross trainer machine") && intensity >= 1 && intensity < 3) {
+        return 4;
+      } else if ((exerciseName == "elliptical trainer machine" || exerciseName == "cross trainer machine") && intensity >= 3 && intensity < 5) {
+        return 5;
+      } else if ((exerciseName == "elliptical trainer machine" || exerciseName == "cross trainer machine") && intensity >= 5 && intensity < 7) {
+        return 6.5;
+      } else if ((exerciseName == "elliptical trainer machine" || exerciseName == "cross trainer machine") && intensity >= 7) {
+        return 7.5;
       } else {
         return 3;
       }
