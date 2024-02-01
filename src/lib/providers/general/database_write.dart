@@ -256,6 +256,7 @@ void saveExerciseLogs(ExerciseModel exercise, Map log) async {
 
   var logToSave = exercise.exerciseTrackingData.dailyLogs.where((element) => element["measurementDate"] == log["measurementDate"]);
 
+  print("Saving");
   print(logToSave);
 
   print(log["measurementDate"].runtimeType);
@@ -272,6 +273,7 @@ void saveExerciseLogs(ExerciseModel exercise, Map log) async {
       .set({
         "timeStamp": DateFormat("dd/MM/yyyy").parse(log["measurementDate"]).toUtc(),
         "data": logToSave,
+        "type": exercise.type,
       });
 
 }

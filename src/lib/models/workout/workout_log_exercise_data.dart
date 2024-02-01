@@ -5,6 +5,7 @@ class WorkoutLogExerciseDataModel {
     return {
       'measurementName': measurementName,
       'routineName': routineName,
+      'type': type,
       'reps': reps,
       'weight': weight,
       'timestamp': timestamp,
@@ -13,6 +14,7 @@ class WorkoutLogExerciseDataModel {
   WorkoutLogExerciseDataModel({
     required this.measurementName,
     required this.routineName,
+    required this.type,
     required this.reps,
     required this.weight,
     required this.timestamp,
@@ -20,6 +22,7 @@ class WorkoutLogExerciseDataModel {
 
   String measurementName;
   String routineName;
+  int? type;
   double reps;
   double weight;
   String timestamp;

@@ -34,7 +34,9 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
     double volume = 0;
 
     for (WorkoutLogExerciseDataModel exerciseData in workoutLog.exercises) {
-      volume += exerciseData.weight * exerciseData.reps;
+      if (exerciseData.type == 0) {
+        volume += exerciseData.weight * exerciseData.reps;
+      }
     }
 
     return volume.toString().replaceAll(removeTrailingZeros, "");
@@ -214,9 +216,14 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
                                               ),
                                               Padding(
                                                 padding: EdgeInsets.only(right: 36.w),
-                                                child: Text(
+                                                child: filteredExercises[index3].type == 0 ? Text(
                                                   filteredExercises[index3].weight.toString().replaceAll(removeTrailingZeros, "")
                                                       .toString() + " kg x " + filteredExercises[index3].reps.toString().replaceAll(removeTrailingZeros, "") + " reps",
+                                                  style: boldTextStyle,
+                                                  textAlign: TextAlign.left,
+                                                ) : Text(
+                                                  filteredExercises[index3].weight.toString().replaceAll(removeTrailingZeros, "")
+                                                      .toString() + " km in " + filteredExercises[index3].reps.toString().replaceAll(removeTrailingZeros, "") + " mins",
                                                   style: boldTextStyle,
                                                   textAlign: TextAlign.left,
                                                 ),

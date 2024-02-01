@@ -915,6 +915,14 @@ GetWorkoutStarted() async {
 
 GetCurrentWorkoutData() async {
 
+  int returnType(int? type) {
+
+    if (type != null) {
+      return type;
+    }
+    return 0;
+  }
+
   exercisesToModel(data) {
 
     return [
@@ -922,6 +930,7 @@ GetCurrentWorkoutData() async {
         WorkoutLogExerciseDataModel(
           measurementName: exercise["measurementName"],
           routineName: exercise["routineName"],
+          type: exercise.toString().contains('type') ? returnType(exercise["type"]) : 0,
           reps: exercise["reps"],
           weight: exercise["weight"],
           timestamp: exercise["timestamp"],
@@ -949,6 +958,7 @@ GetCurrentWorkoutData() async {
     
   }
 
+
   return WorkoutLogModel(
     startOfWorkout: parseDateTime(data["startOfWorkout"]),
     endOfWorkout: parseDateTime(data["endOfWorkout"]),
@@ -961,6 +971,14 @@ GetCurrentWorkoutData() async {
 GetPastWorkoutData(dynamic? document) async {
 try {
 
+  int returnType(int? type) {
+
+    if (type != null) {
+      return type;
+    }
+    return 0;
+  }
+
   //DateTime previousDay = DateTime.parse(DateFormat("yyyy-MM-dd").format(DateFormat("dd/MM/yyyy").parse(date)).toString());
 
   exercisesToModel(data) {
@@ -972,6 +990,7 @@ try {
         WorkoutLogExerciseDataModel(
           measurementName: exercise["measurementName"],
           routineName: exercise["routineName"],
+          type: exercise.toString().contains('type') ? returnType(exercise["type"]) : 0,
           reps: exercise["reps"],
           weight: exercise["weight"],
           timestamp: exercise["timestamp"],

@@ -194,6 +194,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                                     if (weightController.text.isNotEmpty && repsController.text.isNotEmpty) {
                                       Map newLog = {
                                         "measurementDate": DateFormat("dd/MM/yyy").format(DateTime.now()).toString(),
+                                        "type": widget.exercise.type ?? 0,
                                         "weightValues": <double>[
 
                                           double.parse(weightController.text),
@@ -221,6 +222,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                                           widget.exercise.exerciseTrackingData.dailyLogs[0]["weightValues"].insert(0, newLog["weightValues"][0]);
                                           widget.exercise.exerciseTrackingData.dailyLogs[0]["repValues"].insert(0, newLog["repValues"][0]);
                                           widget.exercise.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"].insert(0, newLog["measurementTimeStamp"][0]);
+                                          widget.exercise.type = newLog["type"];
 
                                         } else {
 

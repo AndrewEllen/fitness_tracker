@@ -474,6 +474,7 @@ class WorkoutProvider with ChangeNotifier {
     _currentWorkout.exercises.add(
       WorkoutLogExerciseDataModel(
         measurementName: newLog.exerciseName,
+        type: newLog.type ?? 0,
         reps: newLog.exerciseTrackingData.dailyLogs[0]["repValues"][0],
         weight: newLog.exerciseTrackingData.dailyLogs[0]["weightValues"][0],
         timestamp: newLog.exerciseTrackingData.dailyLogs[0]["measurementTimeStamp"][0],
