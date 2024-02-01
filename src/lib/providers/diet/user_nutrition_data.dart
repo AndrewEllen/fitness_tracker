@@ -1127,7 +1127,7 @@ class UserNutritionData with ChangeNotifier {
 
   void addCardioCalories(WorkoutLogModel completedWorkout) {
 
-    double calculateMET(String exerciseName, double speed) {
+    double calculateMET(String exerciseName, double speed, double intensity) {
       if (exerciseName == "jogging") {
         return 7;
       } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 0.0 && speed < 5) {
@@ -1161,13 +1161,13 @@ class UserNutritionData with ChangeNotifier {
       } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 14) {
         return 23;
         ///In swimming intensity is used instead of speed
-      } else if (exerciseName == "swimming" && speed >= 1 && speed < 3) {
+      } else if (exerciseName == "swimming" && intensity >= 1 && intensity < 3) {
         return 6;
-      } else if (exerciseName == "swimming" && speed >= 3 && speed < 5) {
+      } else if (exerciseName == "swimming" && intensity >= 3 && intensity < 5) {
         return 8.3;
-      } else if (exerciseName == "swimming" && speed >= 5 && speed < 7) {
+      } else if (exerciseName == "swimming" && intensity >= 5 && intensity < 7) {
         return 10;
-      } else if (exerciseName == "swimming" && speed >= 7) {
+      } else if (exerciseName == "swimming" && intensity >= 7) {
         return 13.8;
       } else if (exerciseName == "swimming") {
         return 5.8;
@@ -1185,13 +1185,13 @@ class UserNutritionData with ChangeNotifier {
       } else if ((exerciseName == "cycling" || exerciseName == "stationary bike") && speed >= 20) {
         return 15.8;
         ///Rowing will use intensity instead of speed
-      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && speed >= 1 && speed < 3) {
+      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && intensity >= 1 && intensity < 3) {
         return 4.8;
-      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && speed >= 3 && speed < 5) {
+      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && intensity >= 3 && intensity < 5) {
         return 7;
-      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && speed >= 5 && speed < 7) {
+      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && intensity >= 5 && intensity < 7) {
         return 8.5;
-      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && speed >= 7) {
+      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && intensity >= 7) {
         return 12;
       } else {
         return 3;
@@ -1208,13 +1208,14 @@ class UserNutritionData with ChangeNotifier {
         ///Using weight and reps as distance and time because the code existed already
         double averageSpeedMPH = ((exercise.weight/exercise.reps)*60)/1.609;
 
-        double MET = calculateMET(exercise.measurementName.toLowerCase(), averageSpeedMPH);
+        double MET = calculateMET(exercise.measurementName.toLowerCase(), averageSpeedMPH, exercise.intensityNumber!);
 
-        //caloriesBurnedList.add(0.0175 * METestimate * _userWeight);
+        caloriesBurnedList.add((MET * 3.5 * _userWeight / 200)*exercise.reps);
 
       } else if(exercise.type == 0) {
 
-        double MET = calculateMET("weightlifting", 0);
+        double MET = calculateMET("", 0, 5);
+        caloriesBurnedList.add(MET * 3.5 * _userWeight / 200);
 
       }
     }
