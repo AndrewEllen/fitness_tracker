@@ -85,7 +85,7 @@ class WorkoutProvider with ChangeNotifier {
 
   List<RoutinesModel> get routinesList => _routinesList;
 
-  late List<String> _exerciseNamesList = ["test", "exercise", "jogging"];
+  late List<String> _exerciseNamesList = [];
 
   List<String> get exerciseNamesList => _exerciseNamesList;
 
@@ -157,6 +157,10 @@ class WorkoutProvider with ChangeNotifier {
     _exerciseList.add(newExercise);
 
     createNewExercise(newExercise);
+
+    _exerciseNamesList.add(newExercise.exerciseName);
+
+    updateExerciseData(_exerciseNamesList);
 
     notifyListeners();
   }
@@ -610,6 +614,7 @@ class WorkoutProvider with ChangeNotifier {
     _exerciseNamesList.removeWhere((element) => element == exerciseName);
 
     updateExerciseData(_exerciseNamesList);
+    deleteExercise(exerciseName);
 
     notifyListeners();
 

@@ -235,6 +235,19 @@ void createNewExercise(ExerciseModel exercise) async {
 
 }
 
+void deleteExercise(String exerciseName) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-data')
+      .doc(exerciseName)
+      .delete();
+
+}
+
 void saveExerciseLogs(ExerciseModel exercise, Map log) async {
 
   print(log);
@@ -272,7 +285,7 @@ void saveExerciseMaxRepsAtWeight(String exerciseName, Map maxWeightAtReps) async
       .doc(firebaseAuth.currentUser!.uid)
       .collection('workout-data')
       .doc(exerciseName)
-      .set({"data": maxWeightAtReps});
+      .update({"data": maxWeightAtReps});
 
 }
 

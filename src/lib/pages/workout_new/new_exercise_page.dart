@@ -233,9 +233,7 @@ class _NewExercisePageState extends State<NewExercisePage> {
                             child: AppButton(
                               onTap: () {
 
-                                if (exerciseKey.currentState!.validate()
-                                    && categoriesKey.currentState!.validate()
-                                ) {
+                                if (exerciseController.text.isNotEmpty && !context.read<WorkoutProvider>().checkForExerciseName(exerciseController.text)) {
                                   context.read<WorkoutProvider>().AddNewWorkout(
                                       ExerciseModel(
                                         exerciseName: exerciseController.text,
@@ -249,9 +247,27 @@ class _NewExercisePageState extends State<NewExercisePage> {
                                         exerciseTrackingType: typeDropDownMenuValue == 0 ? weightTypeDropDownMenuValue : null,
                                       )
                                   );
-                                }
+                                  context.read<PageChange>().backPage();
+                                } else {
 
-                                context.read<PageChange>().backPage();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text("Exercise already exists"),
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      margin: EdgeInsets.only(
+                                        bottom: MediaQuery.of(context).size.height * 0.6695,
+                                        right: 20,
+                                        left: 20,
+                                      ),
+                                      dismissDirection: DismissDirection.none,
+                                      duration: const Duration(milliseconds: 1500),
+                                    ),
+                                  );
+
+                                }
 
                               },
                               buttonText: 'Save Exercise',
