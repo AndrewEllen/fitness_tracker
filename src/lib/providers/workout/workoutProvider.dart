@@ -89,6 +89,10 @@ class WorkoutProvider with ChangeNotifier {
 
   List<String> get exerciseNamesList => _exerciseNamesList;
 
+  late List<String> _categoriesNamesList = [];
+
+  List<String> get categoriesNamesList => _categoriesNamesList;
+
   late final List<ExerciseModel> _exerciseList = [];
 
   List<ExerciseModel> get exerciseList => _exerciseList;
@@ -161,6 +165,11 @@ class WorkoutProvider with ChangeNotifier {
     _exerciseNamesList.add(newExercise.exerciseName);
 
     updateExerciseData(_exerciseNamesList);
+
+    if (!_categoriesNamesList.contains(newExercise.category) && newExercise.category != null) {
+      _categoriesNamesList.add(newExercise.category!);
+      updateCategoriesData(_categoriesNamesList);
+    }
 
     notifyListeners();
   }
@@ -639,6 +648,12 @@ class WorkoutProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void loadCategoriesNamesData(List<String> categories) {
+
+    _categoriesNamesList = categories;
+
+    notifyListeners();
+  }
 
   fetchExerciseData(String exerciseName) async {
 

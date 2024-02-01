@@ -416,6 +416,21 @@ void updateExerciseData(List<String> exerciseNames) async {
 
 }
 
+void updateCategoriesData(List<String> categoryNames) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('exercise-data')
+      .doc("category-names")
+      .set({
+    "data": categoryNames,
+  });
+
+}
+
 void writeWorkoutStarted(bool workoutStarted, WorkoutLogModel? workout) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;

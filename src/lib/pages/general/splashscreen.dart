@@ -42,6 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
   late List<String> groceryLists;
   late List<RoutinesModel> routines;
   late List<String> exercises;
+  late List<String> exerciseCategories;
   late bool workoutStarted;
   late Map workoutLogs;
   late WorkoutOverallStatsModel workoutOverallStats;
@@ -171,6 +172,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     try {routines = await GetRoutinesData();} catch (exception) {print("routines");print(exception);}
     try {exercises = await GetExerciseData();} catch (exception) {print("exercises");print(exception);}
+    try {exerciseCategories = await GetCategoriesData();} catch (exception) {print("categories");print(exception);}
 
     try {workoutStarted = await GetWorkoutStarted();} catch (exception) {print("started");print(exception);}
     try {workoutLogs = await GetPastWorkoutData(null);} catch (exception) {print("logs");print(exception);}
@@ -193,6 +195,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     try {context.read<WorkoutProvider>().loadRoutineData(routines);} catch (exception) {print(exception);}
     try {context.read<WorkoutProvider>().loadExerciseNamesData(exercises);} catch (exception) {print(exception);}
+    try {context.read<WorkoutProvider>().loadCategoriesNamesData(exerciseCategories);} catch (exception) {print(exception);}
 
     try {context.read<WorkoutProvider>().loadWorkoutStarted(workoutStarted);} catch (exception) {print(exception);}
     try {context.read<WorkoutProvider>().loadWorkoutLogs(workoutLogs);} catch (exception) {print(exception);}

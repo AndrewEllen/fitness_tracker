@@ -32,21 +32,31 @@ class _NewExercisePageState extends State<NewExercisePage> {
   late int typeDropDownMenuValue = 0;
   late int weightTypeDropDownMenuValue = 0;
 
-  late List<String> items;
 
   @override
   Widget build(BuildContext context) {
 
+    List<String> exerciseList = <String>[
+      "Bench Press",
+      "Barbell Deadlift",
+      "Sumo Barbell Deadlift",
+      "Bent Over Row"
+    ] + context.read<WorkoutProvider>().exerciseNamesList;
 
-    ///todo change search function code to my own
-    ///style page and put drop down in better spot
-    ///add second drop down for category types
-    ///add third drop down for exercise types
-    ///add code to add them to the exercise object and save the new exercise on the list as well as adding it to the selection page
-
-
-
-    items = context.read<WorkoutProvider>().exerciseNamesList;
+    List<String> categoriesList = <String>[
+      "Biceps",
+      "Triceps",
+      "Forearms",
+      "Shoulders",
+      "Chest",
+      "Back",
+      "Core",
+      "Glutes",
+      "Quads",
+      "Hamstrings",
+      "Calves",
+      "Cardio"
+    ] + context.read<WorkoutProvider>().categoriesNamesList;
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -67,6 +77,7 @@ class _NewExercisePageState extends State<NewExercisePage> {
             child: Stack(
               children: [
                 ListView(
+                  shrinkWrap: true,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 50.0, right: 50.0),
@@ -74,7 +85,7 @@ class _NewExercisePageState extends State<NewExercisePage> {
                         label: "Search Exercises *",
                         formController: exerciseController,
                         formKey: exerciseKey,
-                        listOfItems: context.read<WorkoutProvider>().exerciseNamesList,
+                        listOfItems: exerciseList,
                       ),
                     ),
 
@@ -84,7 +95,7 @@ class _NewExercisePageState extends State<NewExercisePage> {
                         label: "Search Categories",
                         formController: categoriesController,
                         formKey: categoriesKey,
-                        listOfItems: context.read<WorkoutProvider>().exerciseNamesList,
+                        listOfItems: categoriesList,
                         validate: false,
                       ),
                     ),

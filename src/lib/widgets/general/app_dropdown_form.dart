@@ -1,5 +1,6 @@
 import 'package:fitness_tracker/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:text_analysis/extensions.dart';
 
@@ -24,6 +25,8 @@ class DropDownForm extends StatefulWidget {
 }
 
 class _DropDownFormState extends State<DropDownForm> {
+
+  final ScrollController scrollController = ScrollController();
 
   bool _displayDropdown = false;
 
@@ -165,65 +168,75 @@ class _DropDownFormState extends State<DropDownForm> {
                 return null;
             },
           ),
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                color: appQuinaryColour
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: 200.h,
             ),
-            child: ListView.builder(
-              itemCount: _displayDropdown ? searchList.isNotEmpty ? searchList.length : widget.listOfItems.length : 0,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: searchList.isEmpty ? Ink(
-                      child: InkWell(
-                        onTap: () {
-
-                          widget.formController.text = widget.listOfItems[index];
-                          print(widget.listOfItems[index]);
-
-                          setState(() {
-                            _displayDropdown = false;
-                          });
-
-                          if (formFocusNode.hasFocus) {
-                            formFocusNode.unfocus();
-                          }
-
-                        },
-                        child: Text(
-                          widget.listOfItems[index],
-                          style: boldTextStyle,
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: appQuinaryColour
+              ),
+              child: _displayDropdown ? Scrollbar(
+                controller: scrollController,
+                thumbVisibility: true,
+                child: ListView.builder(
+                  controller: scrollController,
+                  itemCount: _displayDropdown ? searchList.isNotEmpty ? searchList.length : widget.listOfItems.length : 0,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      padding: const EdgeInsets.all(8),
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: searchList.isEmpty ? Ink(
+                          child: InkWell(
+                            onTap: () {
+                
+                              widget.formController.text = widget.listOfItems[index];
+                              print(widget.listOfItems[index]);
+                
+                              setState(() {
+                                _displayDropdown = false;
+                              });
+                
+                              if (formFocusNode.hasFocus) {
+                                formFocusNode.unfocus();
+                              }
+                
+                            },
+                            child: Text(
+                              widget.listOfItems[index],
+                              style: boldTextStyle,
+                            ),
+                          ),
+                        ) : Ink(
+                          child: InkWell(
+                          onTap: () {
+                
+                            widget.formController.text = searchList[index];
+                            print(searchList[index]);
+                
+                            setState(() {
+                              _displayDropdown = false;
+                            });
+                
+                            if (formFocusNode.hasFocus) {
+                              formFocusNode.unfocus();
+                            }
+                
+                            },
+                            child: Text(
+                              searchList[index],
+                              style: boldTextStyle,
+                            ),
+                          ),
                         ),
                       ),
-                    ) : Ink(
-                      child: InkWell(
-                      onTap: () {
-
-                        widget.formController.text = searchList[index];
-                        print(searchList[index]);
-
-                        setState(() {
-                          _displayDropdown = false;
-                        });
-
-                        if (formFocusNode.hasFocus) {
-                          formFocusNode.unfocus();
-                        }
-
-                        },
-                        child: Text(
-                          searchList[index],
-                          style: boldTextStyle,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
+                    );
+                  },
+                ),
+              ) : const SizedBox.shrink(),
             ),
           ),
         ],
