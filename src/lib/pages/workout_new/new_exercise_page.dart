@@ -25,6 +25,9 @@ class _NewExercisePageState extends State<NewExercisePage> {
   final GlobalKey<FormState> exerciseKey = GlobalKey<FormState>();
   final TextEditingController exerciseController = TextEditingController();
 
+  final GlobalKey<FormState> categoriesKey = GlobalKey<FormState>();
+  final TextEditingController categoriesController = TextEditingController();
+
   late List<String> items;
 
 
@@ -73,8 +76,19 @@ class _NewExercisePageState extends State<NewExercisePage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 50.0, right: 50.0),
                       child: DropDownForm(
+                        label: "Search Exercises...",
                         formController: exerciseController,
                         formKey: exerciseKey,
+                        listOfItems: context.read<WorkoutProvider>().exerciseNamesList,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20, left: 50.0, right: 50.0),
+                      child: DropDownForm(
+                        label: "Search Categories...",
+                        formController: categoriesController,
+                        formKey: categoriesKey,
                         listOfItems: context.read<WorkoutProvider>().exerciseNamesList,
                       ),
                     ),

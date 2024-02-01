@@ -6,11 +6,16 @@ import 'package:text_analysis/extensions.dart';
 import '../../providers/workout/workoutProvider.dart';
 
 class DropDownForm extends StatefulWidget {
-  const DropDownForm({Key? key, required this.formController, required this.formKey, required this.listOfItems}) : super(key: key);
+  const DropDownForm({Key? key, required this.formController,
+    required this.formKey,
+    required this.listOfItems,
+    required this.label,
+  }) : super(key: key);
 
   final TextEditingController formController;
   final GlobalKey<FormState> formKey;
   final List<String> listOfItems;
+  final String label;
 
   @override
   State<DropDownForm> createState() => _DropDownFormState();
@@ -84,114 +89,121 @@ class _DropDownFormState extends State<DropDownForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextFormField(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            key: widget.formKey,
-            controller: widget.formController,
-            style: boldTextStyle,
-            cursorColor: appSecondaryColour,
-            decoration: InputDecoration(
-              labelText: "Search Exercises...",
-              labelStyle: boldTextStyle.copyWith(
-                color: Colors.white,
-                fontSize: 14,
-              ),
-              errorStyle: boldTextStyle.copyWith(
-                color: Colors.red,
-              ),
-              enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: appSecondaryColour,
-                  )
-              ),
-              border: const OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: appSecondaryColour,
-                  )
-              ),
-              focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: appSecondaryColour,
-                  )
-              ),
-              focusedErrorBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.red,
-                  )
-              ),
-              errorBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(
+    return TapRegion(
+      onTapOutside: (value) {
+        setState(() {
+          _displayDropdown = false;
+        });
+      },
+      child: Column(
+        children: [
+          TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              key: widget.formKey,
+              controller: widget.formController,
+              style: boldTextStyle,
+              cursorColor: appSecondaryColour,
+              decoration: InputDecoration(
+                labelText: widget.label,
+                labelStyle: boldTextStyle.copyWith(
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
+                errorStyle: boldTextStyle.copyWith(
                   color: Colors.red,
                 ),
+                enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: appSecondaryColour,
+                    )
+                ),
+                border: const OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: appSecondaryColour,
+                    )
+                ),
+                focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: appSecondaryColour,
+                    )
+                ),
+                focusedErrorBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.red,
+                    )
+                ),
+                errorBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                  ),
+                ),
               ),
-            ),
-          onChanged: (value) => searchForExercise(value),
-          onTap: () {
+            onChanged: (value) => searchForExercise(value),
+            onTap: () {
+                setState(() {
+                  _displayDropdown = true;
+                });
+            },
+            onFieldSubmitted: (value) {
+      
               setState(() {
-                _displayDropdown = true;
+                _displayDropdown = false;
               });
-          },
-          onFieldSubmitted: (value) {
-
-            setState(() {
-              _displayDropdown = false;
-            });
-          },
-        ),
-        ListView.builder(
-          itemCount: _displayDropdown ? searchList.isNotEmpty ? searchList.length : widget.listOfItems.length : 0,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                color: appQuinaryColour,
-              ),
-              child: Material(
-                type: MaterialType.transparency,
-                child: searchList.isEmpty ? Ink(
-                  child: InkWell(
+            },
+          ),
+          ListView.builder(
+            itemCount: _displayDropdown ? searchList.isNotEmpty ? searchList.length : widget.listOfItems.length : 0,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                padding: const EdgeInsets.all(8),
+                decoration: const BoxDecoration(
+                  color: appQuinaryColour,
+                ),
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: searchList.isEmpty ? Ink(
+                    child: InkWell(
+                      onTap: () {
+      
+                        widget.formController.text = widget.listOfItems[index];
+                        print(widget.listOfItems[index]);
+      
+                        setState(() {
+                          _displayDropdown = false;
+                        });
+      
+      
+                      },
+                      child: Text(
+                        widget.listOfItems[index],
+                        style: boldTextStyle,
+                      ),
+                    ),
+                  ) : Ink(
+                    child: InkWell(
                     onTap: () {
-
-                      widget.formController.text = widget.listOfItems[index];
-                      print(widget.listOfItems[index]);
-
+      
+                      widget.formController.text = searchList[index];
+                      print(searchList[index]);
+      
                       setState(() {
                         _displayDropdown = false;
                       });
-
-
-                    },
-                    child: Text(
-                      widget.listOfItems[index],
-                      style: boldTextStyle,
-                    ),
-                  ),
-                ) : Ink(
-                  child: InkWell(
-                  onTap: () {
-
-                    widget.formController.text = searchList[index];
-                    print(searchList[index]);
-
-                    setState(() {
-                      _displayDropdown = false;
-                    });
-
-                    },
-                    child: Text(
-                      searchList[index],
-                      style: boldTextStyle,
+      
+                      },
+                      child: Text(
+                        searchList[index],
+                        style: boldTextStyle,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
-        ),
-      ],
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
