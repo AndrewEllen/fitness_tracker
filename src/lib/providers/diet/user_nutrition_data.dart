@@ -118,6 +118,7 @@ class UserNutritionData with ChangeNotifier {
   late double _userWeight;
   late double _userAge;
   late double _userGender;
+  late double _userActivity;
 
   late UserNutritionModel _userDailyNutrition = UserNutritionModel(
     date: DateTime(DateTime
@@ -1120,18 +1121,59 @@ class UserNutritionData with ChangeNotifier {
   void setUserGender(double userGender) {
     _userGender = userGender;
   }
+  void setUserActivity(double userActivity) {
+    _userActivity = userActivity;
+  }
 
   void addCardioCalories(WorkoutLogModel completedWorkout) {
 
-    double genderConstant(double gender) {
-      switch(gender) {
-        case 0: return 108.844;
-        case 1: return 100.5;
-        default: return 108.844;
+    double calculateMET(String exerciseName, double speed) {
+      if (exerciseName == "jogging") {
+        return 7;
+      } else if (exerciseName == "running" && speed >= 0.0 && speed < 5) {
+        return 6;
+      } else if (exerciseName == "running" && speed >= 5.0 && speed < 5.2) {
+        return 8.3;
+      } else if (exerciseName == "running" && speed >= 5.2 && speed < 6) {
+        return 9;
+      } else if (exerciseName == "running" && speed >= 6.0 && speed < 6.7) {
+        return 9.8;
+      } else if (exerciseName == "running" && speed >= 6.7 && speed < 7) {
+        return 10.5;
+      } else if (exerciseName == "running" && speed >= 7 && speed < 7.5) {
+        return 11;
+      } else if (exerciseName == "running" && speed >= 7.5 && speed < 8) {
+        return 11;
+      } else if (exerciseName == "running" && speed >= 8 && speed < 8.6) {
+        return 11;
+      } else if (exerciseName == "running" && speed >= 7.5 && speed < 8) {
+        return 11;
+      } else if (exerciseName == "running" && speed >= 7.5 && speed < 8) {
+        return 11;
+      } else if (exerciseName == "running" && speed >= 7.5 && speed < 8) {
+        return 11;
+      } else if (exerciseName == "running" && speed >= 7.5 && speed < 8) {
+        return 11;
+      } else if (exerciseName == "running" && speed >= 7.5 && speed < 8) {
+        return 11;
+      } else if (exerciseName == "running" && speed >= 7.5 && speed < 8) {
+        return 11;
+      } else if (exerciseName == "running" && speed >= 7.5 && speed < 8) {
+        return 11;
+      } else if (exerciseName == "running" && speed >= 7.5 && speed < 8) {
+        return 11;
+      } else if (exerciseName == "running" && speed >= 7.5 && speed < 8) {
+        return 11;
+      } else if (exerciseName == "running" && speed >= 7.5 && speed < 8) {
+        return 11;
+      } else if (exerciseName == "running" && speed >= 7.5 && speed < 8) {
+        return 11;
+      } else {
+        return 3;
       }
     }
 
-    double VO2Resting = (3.5*_userWeight)/200;
+    double oneMET = (3.5*_userWeight)/200;
 
     List<double> caloriesBurnedList = [];
 
@@ -1139,24 +1181,15 @@ class UserNutritionData with ChangeNotifier {
       if (exercise.type == 1) {
 
         ///Using weight and reps as distance and time because the code existed already
-        double averageSpeed = (exercise.weight/exercise.reps);
-        print(averageSpeed);
+        double averageSpeedMPH = ((exercise.weight/exercise.reps)*60)/1.609;
 
-        double averageHeartRateEstimate = (208 - (_userAge * 0.7)) * (exercise.intensityNumber!/10);
+        double MET = calculateMET(exercise.measurementName.toLowerCase(), averageSpeedMPH);
 
-        double VO2ActiveEstimate = genderConstant(_userGender)
-            - (0.1636 * _userWeight)
-            - (1.438 * exercise.reps)
-            - (0.1928 * averageHeartRateEstimate);
+        //caloriesBurnedList.add(0.0175 * METestimate * _userWeight);
 
-        print(VO2ActiveEstimate);
+      } else if(exercise.type == 0) {
 
-        double METestimate = VO2ActiveEstimate / 3.5;
-
-        print(METestimate);
-
-
-        caloriesBurnedList.add(1*1*exercise.reps);
+        double MET = calculateMET("weightlifting", 0);
 
       }
     }
