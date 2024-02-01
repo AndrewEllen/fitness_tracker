@@ -12,6 +12,7 @@ import '../../models/workout/exercise_model.dart';
 import '../../models/workout/reps_weight_stats_model.dart';
 import '../../models/workout/routines_model.dart';
 import '../../models/workout/workout_log_model.dart';
+import '../diet/user_nutrition_data.dart';
 import '../general/database_get.dart';
 import '../general/database_write.dart';
 
@@ -409,7 +410,10 @@ class WorkoutProvider with ChangeNotifier {
           exercise.routineName!
       }.toList();
 
+      UserNutritionData().addCardioCalories(_currentWorkout);
       calculateOverallStats();
+
+      ///todo add calorie calculations for cardio
 
       finalizeWorkout(_currentWorkout);
       _workoutLogs.insert(0, _currentWorkout);

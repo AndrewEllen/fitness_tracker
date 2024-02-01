@@ -1,6 +1,7 @@
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
+import 'package:fitness_tracker/models/workout/workout_log_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
@@ -1098,6 +1099,13 @@ class UserNutritionData with ChangeNotifier {
       notifyListeners();
     }
 
+  }
+
+  void addCardioCalories(WorkoutLogModel completedWorkout) {
+
+    double MET = ;
+
+    notifyListeners();
   }
 
   void addWalkingCalories(double caloriesBurned, int steps) {
