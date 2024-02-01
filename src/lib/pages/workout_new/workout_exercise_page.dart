@@ -281,10 +281,15 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                                             color: context.read<WorkoutProvider>().exerciseMaxRepAndWeight.containsKey(double.tryParse(weightController.text).toString().replaceAll(removeTrailingZeros, "")) ? appSenaryColour : appQuarternaryColour,
                                           ),
                                         ),
-                                        TextSpan(
+                                        widget.exercise.type == 0 ? TextSpan(
                                           text: context.read<WorkoutProvider>().exerciseMaxRepAndWeight.containsKey(double.tryParse(weightController.text).toString().replaceAll(removeTrailingZeros, ""))
                                               ? " Highest reps for ${double.tryParse(weightController.text).toString().replaceAll(removeTrailingZeros, "")} Kg: " + context.read<WorkoutProvider>().exerciseMaxRepAndWeight[double.tryParse(weightController.text).toString().replaceAll(removeTrailingZeros, "")].toString()
                                               : double.tryParse(weightController.text) == null ? " No Weight Value" : " No Data for ${double.tryParse(weightController.text).toString().replaceAll(removeTrailingZeros, "")} Kg",
+                                          style: boldTextStyle,
+                                        ) : TextSpan(
+                                          text: context.read<WorkoutProvider>().exerciseMaxRepAndWeight.containsKey(double.tryParse(weightController.text).toString().replaceAll(removeTrailingZeros, ""))
+                                              ? " Best time for ${double.tryParse(weightController.text).toString().replaceAll(removeTrailingZeros, "")} Km: " + context.read<WorkoutProvider>().exerciseMaxRepAndWeight[double.tryParse(weightController.text).toString().replaceAll(removeTrailingZeros, "")].toString() + " mins"
+                                              : double.tryParse(weightController.text) == null ? " No Distance Value" : " No Data for ${double.tryParse(weightController.text).toString().replaceAll(removeTrailingZeros, "")} Km",
                                           style: boldTextStyle,
                                         )
                                       ],
@@ -340,7 +345,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                 ],
               ),
 
-              ExerciseGraphsPage(),
+              ExerciseGraphsPage(type: widget.exercise.type!),
 
             ],
           ),

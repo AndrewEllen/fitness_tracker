@@ -55,22 +55,34 @@ class _WorkoutLogBoxState extends State<WorkoutLogBox> {
               const Spacer(flex: 3),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
+                child: widget.exercise.type == 0 ? Text(
                   widget.exercise.exerciseTrackingData
                       .dailyLogs[widget.index]["weightValues"][widget.index2]
                       .toString().replaceAll(removeTrailingZeros, "") +
                       " Kg",
+                  style: boldTextStyle,
+                ) : Text(
+                  widget.exercise.exerciseTrackingData
+                      .dailyLogs[widget.index]["weightValues"][widget.index2]
+                      .toString().replaceAll(removeTrailingZeros, "") +
+                      " Km",
                   style: boldTextStyle,
                 ),
               ),
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
+                child: widget.exercise.type == 0 ? Text(
                   widget.exercise.exerciseTrackingData
                       .dailyLogs[widget.index]["repValues"][widget.index2]
                       .toString().replaceAll(removeTrailingZeros, "") +
                       " Reps",
+                  style: boldTextStyle,
+                ) : Text(
+                  widget.exercise.exerciseTrackingData
+                      .dailyLogs[widget.index]["repValues"][widget.index2]
+                      .toString().replaceAll(removeTrailingZeros, "") +
+                      " Mins",
                   style: boldTextStyle,
                 ),
               ),

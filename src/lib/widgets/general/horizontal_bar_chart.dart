@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HorizontalBarChart extends StatefulWidget {
-  HorizontalBarChart({Key? key, required this.values, required this.label}) : super(key: key);
+  HorizontalBarChart({Key? key, required this.values, required this.label, required this.type}) : super(key: key);
   Map values;
   String label;
+  int type;
 
   @override
   State<HorizontalBarChart> createState() => _HorizontalBarChartState();
@@ -132,8 +133,11 @@ class _HorizontalBarChartState extends State<HorizontalBarChart> {
                       Container(
                         margin: EdgeInsets.only(right: 10),
                         width: 50,
-                        child: Text(
+                        child: widget.type == 0 ? Text(
                           bars[index].label + " Kg",
+                          style: boldTextStyle,
+                        ) : Text(
+                          bars[index].label + " Km",
                           style: boldTextStyle,
                         ),
                       ),
