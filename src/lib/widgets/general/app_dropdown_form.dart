@@ -110,13 +110,11 @@ class _DropDownFormState extends State<DropDownForm> {
               cursorColor: appSecondaryColour,
               focusNode: formFocusNode,
               decoration: InputDecoration(
+                errorStyle: TextStyle(height: 0),
                 labelText: widget.label,
                 labelStyle: boldTextStyle.copyWith(
                   color: Colors.white,
                   fontSize: 14,
-                ),
-                errorStyle: boldTextStyle.copyWith(
-                  color: Colors.red,
                 ),
                 enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
@@ -138,7 +136,7 @@ class _DropDownFormState extends State<DropDownForm> {
                       color: Colors.red,
                     )
                 ),
-                errorBorder: const UnderlineInputBorder(
+                errorBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Colors.red,
                   ),
@@ -154,6 +152,12 @@ class _DropDownFormState extends State<DropDownForm> {
               setState(() {
                 _displayDropdown = false;
               });
+            },
+            validator: (value) {
+                if (value!.isEmpty) {
+                  return "";
+                }
+                return null;
             },
           ),
           Container(
