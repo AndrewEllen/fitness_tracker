@@ -40,7 +40,14 @@ class _NewExercisePageState extends State<NewExercisePage> {
       "Bench Press",
       "Barbell Deadlift",
       "Sumo Barbell Deadlift",
-      "Bent Over Row"
+      "Bent Over Row",
+      "Cycling",
+      "Stationary Bike",
+      "Rowing",
+      "Rowing Machine",
+      "Running",
+      "Jogging",
+      "Swimming"
     ] + context.read<WorkoutProvider>().exerciseNamesList;
 
     List<String> categoriesList = <String>[

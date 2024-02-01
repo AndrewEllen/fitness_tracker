@@ -1130,35 +1130,35 @@ class UserNutritionData with ChangeNotifier {
     double calculateMET(String exerciseName, double speed) {
       if (exerciseName == "jogging") {
         return 7;
-      } else if (exerciseName == "running" && speed >= 0.0 && speed < 5) {
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 0.0 && speed < 5) {
         return 6;
-      } else if (exerciseName == "running" && speed >= 5.0 && speed < 5.2) {
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 5.0 && speed < 5.2) {
         return 8.3;
-      } else if (exerciseName == "running" && speed >= 5.2 && speed < 6) {
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 5.2 && speed < 6) {
         return 9;
-      } else if (exerciseName == "running" && speed >= 6.0 && speed < 6.7) {
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 6.0 && speed < 6.7) {
         return 9.8;
-      } else if (exerciseName == "running" && speed >= 6.7 && speed < 7) {
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 6.7 && speed < 7) {
         return 10.5;
-      } else if (exerciseName == "running" && speed >= 7 && speed < 7.5) {
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 7 && speed < 7.5) {
         return 11;
-      } else if (exerciseName == "running" && speed >= 7.5 && speed < 8) {
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 7.5 && speed < 8) {
         return 11.5;
-      } else if (exerciseName == "running" && speed >= 8 && speed < 8.6) {
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 8 && speed < 8.6) {
         return 11.8;
-      } else if (exerciseName == "running" && speed >= 8.6 && speed < 9) {
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 8.6 && speed < 9) {
         return 12.3;
-      } else if (exerciseName == "running" && speed >= 9 && speed < 10) {
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 9 && speed < 10) {
         return 12.8;
-      } else if (exerciseName == "running" && speed >= 10 && speed < 11) {
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 10 && speed < 11) {
         return 14.5;
-      } else if (exerciseName == "running" && speed >= 11 && speed < 12) {
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 11 && speed < 12) {
         return 16;
-      } else if (exerciseName == "running" && speed >= 12 && speed < 13) {
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 12 && speed < 13) {
         return 19;
-      } else if (exerciseName == "running" && speed >= 13 && speed < 14) {
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 13 && speed < 14) {
         return 19.8;
-      } else if (exerciseName == "running" && speed >= 14) {
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 14) {
         return 23;
         ///In swimming intensity is used instead of speed
       } else if (exerciseName == "swimming" && speed >= 1 && speed < 3) {
@@ -1172,18 +1172,27 @@ class UserNutritionData with ChangeNotifier {
       } else if (exerciseName == "swimming") {
         return 5.8;
         ///Cycling
-      } else if (exerciseName == "cycling" && speed >= 0.0 && speed < 10) {
+      } else if ((exerciseName == "cycling" || exerciseName == "stationary bike") && speed >= 0.0 && speed < 10) {
         return 4;
-      } else if (exerciseName == "cycling" && speed >= 10 && speed < 12) {
+      } else if ((exerciseName == "cycling" || exerciseName == "stationary bike") && speed >= 10 && speed < 12) {
         return 6.8;
-      } else if (exerciseName == "cycling" && speed >= 12 && speed < 14) {
+      } else if ((exerciseName == "cycling" || exerciseName == "stationary bike") && speed >= 12 && speed < 14) {
         return 8;
-      } else if (exerciseName == "cycling" && speed >= 14 && speed < 16) {
+      } else if ((exerciseName == "cycling" || exerciseName == "stationary bike") && speed >= 14 && speed < 16) {
         return 10;
-      } else if (exerciseName == "cycling" && speed >= 16 && speed < 20) {
+      } else if ((exerciseName == "cycling" || exerciseName == "stationary bike") && speed >= 16 && speed < 20) {
         return 12;
-      } else if (exerciseName == "cycling" && speed >= 20) {
+      } else if ((exerciseName == "cycling" || exerciseName == "stationary bike") && speed >= 20) {
         return 15.8;
+        ///Rowing will use intensity instead of speed
+      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && speed >= 1 && speed < 3) {
+        return 4.8;
+      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && speed >= 3 && speed < 5) {
+        return 7;
+      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && speed >= 5 && speed < 7) {
+        return 8.5;
+      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && speed >= 7) {
+        return 12;
       } else {
         return 3;
       }
