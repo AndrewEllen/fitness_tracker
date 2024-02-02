@@ -162,11 +162,6 @@ class _MeasurementsHomePageState extends State<MeasurementsHomePage> {
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             return StatsWidget(
-              minHeight: _bigContainerMin,
-              maxHeight: _bigContainerMin,
-              height: _bigContainerMin,
-              width: _width,
-              margin: _margin,
               index: index,
             );
           },

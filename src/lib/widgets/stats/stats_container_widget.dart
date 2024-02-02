@@ -10,20 +10,9 @@ import '../../models/stats/stats_model.dart';
 
 class StatsWidget extends StatelessWidget {
   const StatsWidget({
-    required this.minHeight,
-    required this.maxHeight,
-    required this.height,
-    required this.width,
-    required this.margin,
     required this.index,
     Key? key,
   }) : super(key: key);
-  final double
-      minHeight,
-      maxHeight,
-      height,
-      margin,
-      width;
   final int index;
 
   @override
@@ -50,71 +39,80 @@ class StatsWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: SizedBox(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 42,
-              child: Align(
-                alignment: Alignment.center,
-                child: SizedBox(
-                  height: 24.h,
-                  child: Text(
+      child: Container(
+        decoration: BoxDecoration(
+          color: appTertiaryColour,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.4),
+              blurRadius: 4,
+              offset: const Offset(0, 1)
+            ),
+          ]
+        ),
+        margin: const EdgeInsets.only(bottom: 20),
+        child: SizedBox(
+          child: Column(
+            children: [
+              AppBar(
+                backgroundColor: appTertiaryColour,
+                elevation: 1.25,
+                title: Text(
                     data[index].measurementName.toString(),
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: fontSize,
+                    style: boldTextStyle
+                ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  margin: EdgeInsets.only(
+                    left: 6.w,
+                  ),
+                  height: (337/1.34).h,
+                  child: data[index].measurementValues.isEmpty || data[index].measurementValues.length < 2  ? const Center(
+                      child: Text(
+                        "Not Enough Data to Display",
+                        style: TextStyle(
+                          color: appQuarternaryColour,
+                          fontSize: 22,
+                        ),
+                      )
+                  ) : StatsLineChart(index: index),
+                ),
+              ),
+              SizedBox(height: 15),
+              Divider(
+                color: appQuarternaryColour,
+                height: 0,
+              ),
+              Material(
+                type: MaterialType.transparency,
+                child: SizedBox(
+                  height: 30,
+                  child: Ink(
+                    child: InkWell(
+                      onTap: onTap,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Open Measurement",
+                            style: boldTextStyle.copyWith(color: appSecondaryColour),
+                          ),
+                          const Icon(
+                            Icons.keyboard_arrow_down,
+                            color: appSecondaryColour,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                margin: EdgeInsets.only(
-                  left: margin/4,
-                  right: margin*0.01,
-                ),
-                height: (337/1.34).h,
-                width: width,
-                child: data[index].measurementValues.isEmpty || data[index].measurementValues.length < 2  ? const Center(
-                    child: Text(
-                      "Not Enough Data to Display",
-                      style: TextStyle(
-                        color: appQuarternaryColour,
-                        fontSize: 22,
-                      ),
-                    )
-                ) : StatsLineChart(index: index),
-              ),
-            ),
-            SizedBox(height: 10),
-            Ink(
-              child: InkWell(
-                onTap: onTap,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Open Measurement",
-                      style: boldTextStyle.copyWith(color: appSecondaryColour),
-                    ),
-                    Icon(
-                      Icons.keyboard_arrow_down,
-                      color: appSecondaryColour,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Divider(
-              color: appQuarternaryColour,
-              height: 10,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
