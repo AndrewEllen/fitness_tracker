@@ -125,13 +125,13 @@ class _StatsLineChartState extends State<StatsLineChart> {
         drawVerticalLine: true,
         //horizontalInterval: intervalY,
         getDrawingHorizontalLine: (value) {
-          return FlLine(
+          return const FlLine(
             color: appQuarternaryColour,
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
-          return FlLine(
+          return const FlLine(
             color: appQuarternaryColour,
             strokeWidth: 1,
           );
@@ -179,12 +179,13 @@ class _StatsLineChartState extends State<StatsLineChart> {
         LineChartBarData(
           spots: chartDisplayPoints.sublist(xAxisMin.toInt(),xAxisMax.toInt()+1),
           isCurved: true,
-          curveSmoothness: 0.35,
+          curveSmoothness: 0.3,
           color: appSecondaryColour,
           barWidth: 2,
           isStrokeCapRound: true,
-          dotData: FlDotData(
-            show: true,
+          preventCurveOverShooting: true,
+          dotData: const FlDotData(
+            show: false,
           ),
           belowBarData: BarAreaData(
             show: true,
