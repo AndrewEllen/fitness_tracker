@@ -125,14 +125,14 @@ class _StatsLineChartState extends State<StatsLineChart> {
         drawVerticalLine: true,
         //horizontalInterval: intervalY,
         getDrawingHorizontalLine: (value) {
-          return const FlLine(
-            color: appQuarternaryColour,
+          return FlLine(
+            color: appQuarternaryColour.withOpacity(0.3),
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
-          return const FlLine(
-            color: appQuarternaryColour,
+          return FlLine(
+            color: appQuarternaryColour.withOpacity(0.3),
             strokeWidth: 1,
           );
         },

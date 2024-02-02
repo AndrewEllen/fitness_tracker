@@ -39,21 +39,22 @@ class StatsWidget extends StatelessWidget {
       }
     }
     double _height = 344;
-    return ScreenWidthContainer(
-        minHeight: _height,
-        maxHeight: _height,
-        height: _height,
-        margin: 0,
+
+    onTap() {
+      context.read<PageChange>().changePageCache(
+        MeasurementTrackingPage(
+          index: index,
+        ),
+      );
+    }
+
+    return GestureDetector(
+      onTap: onTap,
+      child: SizedBox(
         child: Column(
           children: [
-            Container(
-              height: 32,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 2, color: appQuinaryColour),
-                ),
-              ),
+            SizedBox(
+              height: 42,
               child: Align(
                 alignment: Alignment.center,
                 child: SizedBox(
@@ -89,37 +90,33 @@ class StatsWidget extends StatelessWidget {
                 ) : StatsLineChart(index: index),
               ),
             ),
-            Container(
-              height: 42,
-              width: double.infinity,
-              margin: EdgeInsets.only(top: (6 + margin/2)),
-              decoration: const BoxDecoration(
-                border: Border(
-                  top: BorderSide(width: 2, color: appQuinaryColour),
-                ),
-              ),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  margin: EdgeInsets.only(
-                    top: margin/2,
-                    left: margin/2,
-                    right: margin/2,
-                  ),
-                  width: double.infinity,
-                  child: AppButton(
-                      onTap: () => context.read<PageChange>().changePageCache(
-                          MeasurementTrackingPage(
-                            index: index,
-                          ),
-                      ),
-                      buttonText: "Open",
-                  ),
+            SizedBox(height: 10),
+            Ink(
+              child: InkWell(
+                onTap: onTap,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Open Measurement",
+                      style: boldTextStyle.copyWith(color: appSecondaryColour),
+                    ),
+                    Icon(
+                      Icons.keyboard_arrow_down,
+                      color: appSecondaryColour,
+                    ),
+                  ],
                 ),
               ),
             ),
+            Divider(
+              color: appQuarternaryColour,
+              height: 10,
+            ),
           ],
         ),
+      ),
     );
   }
 }
