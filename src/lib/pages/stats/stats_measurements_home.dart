@@ -23,6 +23,107 @@ class _MeasurementsHomePageState extends State<MeasurementsHomePage> {
   late final newMeasurementNameKey = GlobalKey<FormState>();
 
 
+
+  newMeasurement(BuildContext context) async {
+    double buttonSize = 22.h;
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          insetPadding: const EdgeInsets.all(0),
+          backgroundColor: appTertiaryColour,
+          title: const Text(
+            "Track New Body Measurement",
+            style: TextStyle(
+              color: appSecondaryColour,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(
+                child: Form(
+                  key: newMeasurementNameKey,
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Name Required";
+                      }
+                      return null;
+                    },
+                    controller: newMeasurementNameController,
+                    cursorColor: Colors.white,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: (18),
+                    ),
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      label: Text(
+                        "Measurement Name *",
+                        style: boldTextStyle.copyWith(fontSize: 14),
+                      ),
+                      enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: appQuarternaryColour,
+                          )),
+                      focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: appSecondaryColour,
+                          )),
+                      border: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: appSecondaryColour,
+                          )),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Spacer(),
+                SizedBox(
+                    height: buttonSize,
+                    child: AppButton(
+                      buttonText: "Cancel",
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    )),
+                const Spacer(),
+                SizedBox(
+                    height: buttonSize,
+                    child: AppButton(
+                      primaryColor: appSecondaryColour,
+                      buttonText: "Create",
+                      onTap: () {
+                        if (newMeasurementNameKey.currentState!.validate()) {
+                          context.read<UserStatsMeasurements>().addNewMeasurement(newMeasurementNameController.text, const Uuid().v4());
+                          UpdateUserDocumentMeasurements(context.read<UserStatsMeasurements>().statsMeasurement[context.read<UserStatsMeasurements>().statsMeasurement.length-1]);
+                          newMeasurementNameController.text = "";
+                          Navigator.pop(context);
+                        }
+                      },
+                    )),
+                const Spacer(),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -44,11 +145,7 @@ class _MeasurementsHomePageState extends State<MeasurementsHomePage> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 12.0),
         child: FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              _displayDropDown = true;
-            });
-          },
+          onPressed: () => newMeasurement(context),
           backgroundColor: appSenaryColour,
           child: const Icon(
             Icons.add,
