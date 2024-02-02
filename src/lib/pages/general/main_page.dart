@@ -30,13 +30,6 @@ class _MainPageState extends State<MainPage> {
 
   late bool _isUserEmailVerified = false;
 
-  final pages = [
-    WorkoutHomePageNew(),
-    DietHomePage(),
-    const HomePage(),
-    const MeasurementsHomePage(),
-  ];
-
   int _currentNavigatorIndex = 1;
   int _previousIndex = 1;
 
@@ -124,7 +117,7 @@ class _MainPageState extends State<MainPage> {
 
   navBarColor(int index) {
     print(index);
-    context.read<PageChange>().navigatorBarNavigationReset(pages, index);
+    context.read<PageChange>().navigatorBarNavigationReset(index);
     setState(() {
       _previousIndex = _currentNavigatorIndex;
       _currentNavigatorIndex = index;

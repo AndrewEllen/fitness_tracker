@@ -48,7 +48,7 @@ class _StatsEditMeasurementState extends State<StatsEditMeasurement> {
                 fontSize: 16,
               ),
               children: <TextSpan>[
-                TextSpan(text: value,
+                TextSpan(text: DateFormat('dd/MM/yy').format(DateTime.parse(value)),
                   style: const TextStyle(
                     color: Colors.red,
                     fontWeight: FontWeight.bold,

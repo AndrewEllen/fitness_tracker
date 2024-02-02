@@ -3,8 +3,16 @@ import 'package:flutter/cupertino.dart';
 
 import '../../pages/diet/diet_recipe_creator.dart';
 import '../../pages/diet_new/diet_home.dart';
+import '../../pages/workout_new/workout_home.dart';
 
 class PageChange with ChangeNotifier {
+
+  final pages = [
+    WorkoutHomePageNew(),
+    DietHomePage(),
+    const HomePage(),
+    const MeasurementsHomePage(),
+  ];
 
   late bool _navigationBarCache = true;
   bool get navigationBarCache => _navigationBarCache;
@@ -72,16 +80,18 @@ class PageChange with ChangeNotifier {
     notifyListeners();
   }
 
-  void navigatorBarNavigationReset(List<Widget> pages, int navigatorIndex) {
+  void navigatorBarNavigationReset(int navigatorIndex) {
+
+    setTransitionScale(defaultBackScale);
 
     _navigationBarCache = true;
 
     _pageWidgetCache = pages;
     _pageWidgetCacheIndex = navigatorIndex;
+
     _pageWidget = pages[navigatorIndex];
 
     debugPrint(_pageWidgetCache.toString());
-
     notifyListeners();
   }
 
@@ -92,7 +102,7 @@ class PageChange with ChangeNotifier {
       _pageWidgetCache = [_pageWidget];
     }
 
-    setTransitionScale(defaultScale);
+    setTransitionScale(defaultBackScale);
     _confirmation = false;
     _pageWidget = newPage;
 
