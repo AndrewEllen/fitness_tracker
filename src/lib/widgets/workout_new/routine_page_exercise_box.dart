@@ -49,25 +49,28 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
   }
 
 
+  onTap() {
+    if (context.read<WorkoutProvider>().checkForExerciseData(widget.routine.exercises[widget.index].exerciseName)) {
+
+      context.read<WorkoutProvider>().fetchExerciseData(widget.routine.exercises[widget.index].exerciseName);
+
+      context.read<PageChange>().changePageCache(WorkoutExercisePage(
+        routine: widget.routine,
+        exercise: context.read<WorkoutProvider>().exerciseList[
+        context.read<WorkoutProvider>().exerciseList.indexWhere((element) => element.exerciseName == widget.routine.exercises[widget.index].exerciseName)
+        ],
+      ));
+
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(bottom: 10.h),
       child: InkWell(
-        onTap: () async {
-          if (context.read<WorkoutProvider>().checkForExerciseData(widget.routine.exercises[widget.index].exerciseName)) {
-
-            await context.read<WorkoutProvider>().fetchExerciseData(widget.routine.exercises[widget.index].exerciseName);
-
-            context.read<PageChange>().changePageCache(WorkoutExercisePage(
-              routine: widget.routine,
-              exercise: context.read<WorkoutProvider>().exerciseList[
-              context.read<WorkoutProvider>().exerciseList.indexWhere((element) => element.exerciseName == widget.routine.exercises[widget.index].exerciseName)
-              ],
-            ));
-
-          }
-        },
+        onTap: onTap,
         child: Column(
           children: [
             ListTile(
@@ -109,20 +112,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
               ),
             ),
             InkWell(
-              onTap: () async {
-                if (context.read<WorkoutProvider>().checkForExerciseData(widget.routine.exercises[widget.index].exerciseName)) {
-
-                  await context.read<WorkoutProvider>().fetchExerciseData(widget.routine.exercises[widget.index].exerciseName);
-
-                  context.read<PageChange>().changePageCache(WorkoutExercisePage(
-                    routine: widget.routine,
-                    exercise: context.read<WorkoutProvider>().exerciseList[
-                    context.read<WorkoutProvider>().exerciseList.indexWhere((element) => element.exerciseName == widget.routine.exercises[widget.index].exerciseName)
-                    ],
-                  ));
-
-                }
-              },
+              onTap: onTap,
               child: Ink(
                 decoration: const BoxDecoration(
                   border: Border(

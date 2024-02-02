@@ -930,7 +930,7 @@ GetCurrentWorkoutData() async {
         WorkoutLogExerciseDataModel(
           measurementName: exercise["measurementName"],
           routineName: exercise["routineName"],
-          intensityNumber: exercise["intensityNumber"].toDouble() ?? 5.0,
+          intensityNumber: exercise["intensityNumber"] != null ? exercise["intensityNumber"].toDouble() : 5.0,
           type: exercise.toString().contains('type') ? returnType(exercise["type"]) : 0,
           reps: exercise["reps"].toDouble(),
           weight: exercise["weight"].toDouble(),
@@ -991,7 +991,7 @@ try {
         WorkoutLogExerciseDataModel(
           measurementName: exercise["measurementName"],
           routineName: exercise["routineName"],
-          intensityNumber: exercise["intensityNumber"].toDouble() ?? 5.0,
+          intensityNumber: exercise["intensityNumber"] != null ? exercise["intensityNumber"].toDouble() : 5.0,
           type: exercise.toString().contains('type') ? returnType(exercise["type"]) : 0,
           reps: exercise["reps"].toDouble(),
           weight: exercise["weight"].toDouble(),

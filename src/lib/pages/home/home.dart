@@ -43,8 +43,6 @@ class _HomePageState extends State<HomePage> {
   double fireScalingFactor(int dailyStreak) {
 
     double scalingFactor = ((log(0.5*(dailyStreak+8)) / log(10))/0.6)-0.3;
-    debugPrint("scalingFactor");
-    debugPrint(scalingFactor.toString());
 
     return scalingFactor;
   }

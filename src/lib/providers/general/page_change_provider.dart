@@ -6,6 +6,13 @@ import '../../pages/diet_new/diet_home.dart';
 
 class PageChange with ChangeNotifier {
 
+  final double defaultScale = 0.9;
+  final double defaultBackScale = 1.1;
+
+  late double _transitionScaleFactor = defaultScale;
+
+  double get transitionScaleFactor => _transitionScaleFactor;
+
   late bool _dataLoadingFromSplashPage = true;
 
   bool get dataLoadingFromSplashPage => _dataLoadingFromSplashPage;
@@ -43,6 +50,9 @@ class PageChange with ChangeNotifier {
   }
 
   void changePageRemovePreviousCache(Widget newPage) {
+
+    setTransitionScale(defaultScale);
+
     _pageWidget = newPage;
 
     _pageWidgetCache.add(_pageWidget);
@@ -56,6 +66,8 @@ class PageChange with ChangeNotifier {
 
   void changePageClearCache(Widget newPage) {
 
+    setTransitionScale(defaultScale);
+
     _confirmation = false;
 
     _pageWidget = newPage;
@@ -67,6 +79,8 @@ class PageChange with ChangeNotifier {
   }
 
   void changePageCache(Widget newPage) {
+
+    setTransitionScale(defaultScale);
 
     if (newPage.runtimeType == FoodRecipeCreator && _confirmation == false) {
       _confirmation = true;
@@ -90,7 +104,16 @@ class PageChange with ChangeNotifier {
     notifyListeners();
   }
 
+  void setTransitionScale(double scale) {
+
+    _transitionScaleFactor = scale;
+    notifyListeners();
+
+  }
+
   void backPage() {
+
+    setTransitionScale(defaultBackScale);
 
     if (_pageWidgetCache.last.runtimeType == FoodRecipeCreator) {
 
@@ -123,7 +146,7 @@ class PageChange with ChangeNotifier {
 
       notifyListeners();
     }
-
+    //setTransitionScale(0.8);
   }
 
 }

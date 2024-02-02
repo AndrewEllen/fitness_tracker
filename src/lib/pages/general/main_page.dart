@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:transitioned_indexed_stack/transitioned_indexed_stack.dart';
 
 import '../diet_new/diet_home.dart';
 import '../general_new/user_registration_confirmation_email.dart';
@@ -197,78 +198,85 @@ class _MainPageState extends State<MainPage> {
             return const SplashScreen();
           }
 
-            return SafeArea(
-                    bottom: false,
-                    child: WillPopScope(
-                      onWillPop: _onBackKey,
-                      child: Scaffold(
-                        resizeToAvoidBottomInset: false,
-                        backgroundColor: appPrimaryColour,
-                        bottomNavigationBar: NavigationBarTheme(
-                          data: NavigationBarThemeData(
-                            labelTextStyle:
-                                MaterialStateProperty.resolveWith<TextStyle>(
-                              (Set<MaterialState> states) => states
-                                      .contains(MaterialState.selected)
-                                  ? const TextStyle(color: appSecondaryColour)
-                                  : const TextStyle(color: Colors.white),
+            return Container(
+              color: appTertiaryColour,
+              child: SafeArea(
+                      bottom: false,
+                      child: WillPopScope(
+                        onWillPop: _onBackKey,
+                        child: Scaffold(
+                          resizeToAvoidBottomInset: false,
+                          backgroundColor: appPrimaryColour,
+                          bottomNavigationBar: NavigationBarTheme(
+                            data: NavigationBarThemeData(
+                              labelTextStyle:
+                                  MaterialStateProperty.resolveWith<TextStyle>(
+                                (Set<MaterialState> states) => states
+                                        .contains(MaterialState.selected)
+                                    ? const TextStyle(color: appSecondaryColour)
+                                    : const TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color.fromRGBO(0, 0, 0, 0.4),
+                                    spreadRadius: 3,
+                                    blurRadius: 4,
+                                  ),
+                                ],
+                              ),
+                              child: NavigationBar(
+                                height: 70.h,
+                                elevation: 10,
+                                shadowColor: Colors.black,
+                                surfaceTintColor: Colors.transparent,
+                                indicatorColor: appSecondaryColour,
+                                labelBehavior:
+                                    NavigationDestinationLabelBehavior.alwaysHide,
+                                selectedIndex: _currentNavigatorIndex,
+                                onDestinationSelected: (int index) =>
+                                    navBarColor(index),
+                                backgroundColor: appTertiaryColour,
+                                destinations: [
+                                  NavigationDestination(
+                                    icon: itemsUnselected[0],
+                                    selectedIcon: itemsSelected[0],
+                                    label: "Workouts",
+                                  ),
+                                  NavigationDestination(
+                                    icon: itemsUnselected[1],
+                                    selectedIcon: itemsSelected[1],
+                                    label: "Diet",
+                                  ),
+                                  NavigationDestination(
+                                    icon: itemsUnselected[2],
+                                    selectedIcon: itemsSelected[2],
+                                    label: "Home",
+                                  ),
+                                  NavigationDestination(
+                                    icon: itemsUnselected[3],
+                                    selectedIcon: itemsSelected[3],
+                                    label: "Metrics",
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color.fromRGBO(0, 0, 0, 0.4),
-                                  spreadRadius: 3,
-                                  blurRadius: 4,
-                                ),
-                              ],
-                            ),
-                            child: NavigationBar(
-                              height: 70.h,
-                              elevation: 10,
-                              shadowColor: Colors.black,
-                              surfaceTintColor: Colors.transparent,
-                              indicatorColor: appSecondaryColour,
-                              labelBehavior:
-                                  NavigationDestinationLabelBehavior.alwaysHide,
-                              selectedIndex: _currentNavigatorIndex,
-                              onDestinationSelected: (int index) =>
-                                  navBarColor(index),
-                              backgroundColor: appTertiaryColour,
-                              destinations: [
-                                NavigationDestination(
-                                  icon: itemsUnselected[0],
-                                  selectedIcon: itemsSelected[0],
-                                  label: "Workouts",
-                                ),
-                                NavigationDestination(
-                                  icon: itemsUnselected[1],
-                                  selectedIcon: itemsSelected[1],
-                                  label: "Diet",
-                                ),
-                                NavigationDestination(
-                                  icon: itemsUnselected[2],
-                                  selectedIcon: itemsSelected[2],
-                                  label: "Home",
-                                ),
-                                NavigationDestination(
-                                  icon: itemsUnselected[3],
-                                  selectedIcon: itemsSelected[3],
-                                  label: "Metrics",
-                                ),
-                              ],
-                            ),
+                          body: ScaleIndexedStack(
+                            duration: Duration(milliseconds: 100),
+                            beginScale: context.read<PageChange>().transitionScaleFactor,
+                            endScale: 1,
+                            //curve: Curves.linear,
+                            children: context.read<PageChange>().pageWidgetCache,
+                            index:
+                                context.read<PageChange>().pageWidgetCacheIndex,
                           ),
-                        ),
-                        body: IndexedStack(
-                          children: context.read<PageChange>().pageWidgetCache,
-                          index:
-                              context.watch<PageChange>().pageWidgetCacheIndex,
                         ),
                       ),
                     ),
-                  );
+            );
         }
         );
   }
