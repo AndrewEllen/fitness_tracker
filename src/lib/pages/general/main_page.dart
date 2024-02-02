@@ -35,7 +35,6 @@ class _MainPageState extends State<MainPage> {
     DietHomePage(),
     const HomePage(),
     const MeasurementsHomePage(),
-    const InformationHomePage(),
   ];
 
   int _currentNavigatorIndex = 1;
@@ -122,21 +121,20 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
+
   navBarColor(int index) {
+    print(index);
+    context.read<PageChange>().navigatorBarNavigationReset(pages, index);
     setState(() {
       _previousIndex = _currentNavigatorIndex;
       _currentNavigatorIndex = index;
-      context.read<PageChange>().changePageClearCache(pages[index]);
-
       items[_currentNavigatorIndex] = itemsSelected[_currentNavigatorIndex];
       items[_previousIndex] = itemsUnselected[_previousIndex];
     });
-
-    //_PageController.jumpToPage(_currentNavigatorIndex);
   }
 
   Future<bool> _onBackKey() async {
-    if (context.read<PageChange>().pageWidgetCacheIndex == 0) {
+    if (context.read<PageChange>().pageWidgetCacheIndex == 0 || context.read<PageChange>().navigationBarCache) {
       return (await showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -202,8 +200,9 @@ class _MainPageState extends State<MainPage> {
               color: appTertiaryColour,
               child: SafeArea(
                       bottom: false,
-                      child: WillPopScope(
-                        onWillPop: _onBackKey,
+                      child: PopScope(
+                        onPopInvoked: (value) => _onBackKey(),
+                        canPop: false,
                         child: Scaffold(
                           resizeToAvoidBottomInset: false,
                           backgroundColor: appPrimaryColour,
@@ -270,8 +269,7 @@ class _MainPageState extends State<MainPage> {
                             endScale: 1,
                             //curve: Curves.linear,
                             children: context.read<PageChange>().pageWidgetCache,
-                            index:
-                                context.read<PageChange>().pageWidgetCacheIndex,
+                            index: context.read<PageChange>().pageWidgetCacheIndex,
                           ),
                         ),
                       ),

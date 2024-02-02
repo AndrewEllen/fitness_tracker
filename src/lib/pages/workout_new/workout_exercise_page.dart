@@ -38,11 +38,6 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
   @override
   void initState() {
 
-    print(widget.exercise.exerciseName);
-    print(widget.exercise.category);
-    print(widget.exercise.type);
-    print(widget.exercise.exerciseTrackingType);
-
     weightController.addListener(_addressControllerListener);
 
     weightController.text = widget.exercise.exerciseTrackingData.dailyLogs.isNotEmpty

@@ -6,6 +6,9 @@ import '../../pages/diet_new/diet_home.dart';
 
 class PageChange with ChangeNotifier {
 
+  late bool _navigationBarCache = true;
+  bool get navigationBarCache => _navigationBarCache;
+
   final double defaultScale = 0.9;
   final double defaultBackScale = 1.1;
 
@@ -51,6 +54,11 @@ class PageChange with ChangeNotifier {
 
   void changePageRemovePreviousCache(Widget newPage) {
 
+    if (_navigationBarCache) {
+      _navigationBarCache = false;
+      _pageWidgetCache = [_pageWidget];
+    }
+
     setTransitionScale(defaultScale);
 
     _pageWidget = newPage;
@@ -60,25 +68,47 @@ class PageChange with ChangeNotifier {
 
     _pageWidgetCacheIndex = _pageWidgetCache.length - 1;
 
-    print(_pageWidgetCache);
+    debugPrint(_pageWidgetCache.toString());
+    notifyListeners();
+  }
+
+  void navigatorBarNavigationReset(List<Widget> pages, int navigatorIndex) {
+
+    _navigationBarCache = true;
+
+    _pageWidgetCache = pages;
+    _pageWidgetCacheIndex = navigatorIndex;
+    _pageWidget = pages[navigatorIndex];
+
+    debugPrint(_pageWidgetCache.toString());
+
     notifyListeners();
   }
 
   void changePageClearCache(Widget newPage) {
 
+    if (_navigationBarCache) {
+      _navigationBarCache = false;
+      _pageWidgetCache = [_pageWidget];
+    }
+
     setTransitionScale(defaultScale);
-
     _confirmation = false;
-
     _pageWidget = newPage;
 
     _pageWidgetCache = [_pageWidget];
     _pageWidgetCacheIndex = 0;
 
+    debugPrint(_pageWidgetCache.toString());
     notifyListeners();
   }
 
   void changePageCache(Widget newPage) {
+
+    if (_navigationBarCache) {
+      _navigationBarCache = false;
+      _pageWidgetCache = [_pageWidget];
+    }
 
     setTransitionScale(defaultScale);
 
@@ -94,13 +124,13 @@ class PageChange with ChangeNotifier {
     } else if (newPage != _pageWidgetCache.last) {
       _pageWidgetCache.add(newPage);
       _pageWidgetCacheIndex = _pageWidgetCache.length-1;
-      if (_pageWidgetCache.length > 5) {
-        _pageWidgetCache.removeAt(0);
-        _pageWidgetCacheIndex = _pageWidgetCache.length-1;
-      }
+      //if (_pageWidgetCache.length > 5) {
+      //  _pageWidgetCache.removeAt(0);
+      //  _pageWidgetCacheIndex = _pageWidgetCache.length-1;
+      //}
     }
 
-    print(_pageWidgetCache);
+    debugPrint(_pageWidgetCache.toString());
     notifyListeners();
   }
 
@@ -128,6 +158,7 @@ class PageChange with ChangeNotifier {
           _pageWidgetCacheIndex = _pageWidgetCache.length-1;
         }
 
+        debugPrint(_pageWidgetCache.toString());
         notifyListeners();
       } else {
         _confirmationCounter++;
@@ -144,6 +175,7 @@ class PageChange with ChangeNotifier {
         _pageWidgetCacheIndex = _pageWidgetCache.length-1;
       }
 
+      debugPrint(_pageWidgetCache.toString());
       notifyListeners();
     }
     //setTransitionScale(0.8);
