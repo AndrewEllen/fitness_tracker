@@ -52,7 +52,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
   onTap() async {
     if (context.read<WorkoutProvider>().checkForExerciseData(widget.routine.exercises[widget.index].exerciseName)) {
 
-      context.read<WorkoutProvider>().fetchExerciseData(widget.routine.exercises[widget.index].exerciseName);
+      await context.read<WorkoutProvider>().fetchExerciseData(widget.routine.exercises[widget.index].exerciseName);
 
       context.read<PageChange>().changePageCache(WorkoutExercisePage(
         routine: widget.routine,

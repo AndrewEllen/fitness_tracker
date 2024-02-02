@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 
@@ -132,7 +133,7 @@ class _UserSetupCaloriesPageState extends State<UserSetupCaloriesPage> {
 
 
     if (widget.videoController == null) {
-      videoController = VideoPlayerController.asset("assets/FITBackgroundVideo.mp4")
+      videoController = VideoPlayerController.asset("assets/FITBackgroundVideo.mp4", videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true))
         ..initialize().then((_) {
 
           videoController.play();

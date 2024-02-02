@@ -287,7 +287,7 @@ void saveExerciseMaxRepsAtWeight(String exerciseName, Map maxWeightAtReps) async
       .doc(firebaseAuth.currentUser!.uid)
       .collection('workout-data')
       .doc(exerciseName)
-      .update({"data": maxWeightAtReps});
+      .set({"data": maxWeightAtReps});
 
 }
 
@@ -302,13 +302,14 @@ void updateLogData(ExerciseModel exercise, int index) async {
       .doc(exercise.exerciseName)
       .collection("exercise-tracking-data")
       .doc(DateFormat("dd-MM-yyyy").format(DateFormat("dd/MM/yyyy").parse(exercise.exerciseTrackingData.dailyLogs[index]["measurementDate"])).toString())
-      .update({
+      .set({
     "data": [
       {
       "measurementDate": exercise.exerciseTrackingData.dailyLogs[index]["measurementDate"],
       "measurementTimeStamp": exercise.exerciseTrackingData.dailyLogs[index]["measurementTimeStamp"],
       "repValues": exercise.exerciseTrackingData.dailyLogs[index]["repValues"],
-      "weightValues": exercise.exerciseTrackingData.dailyLogs[index]["weightValues"]
+      "weightValues": exercise.exerciseTrackingData.dailyLogs[index]["weightValues"],
+      "intensityValues": exercise.exerciseTrackingData.dailyLogs[index]["intensityValues"]
       }
     ],
   });
@@ -381,7 +382,7 @@ void updateRoutineData(RoutinesModel routine) async {
       .doc(firebaseAuth.currentUser!.uid)
       .collection('routine-data')
       .doc(routine.routineName)
-      .update({
+      .set({
     "routineName": routine.routineName,
     "routineDate": routine.routineDate,
     "routineID": routine.routineID,
@@ -412,7 +413,7 @@ void updateExerciseData(List<String> exerciseNames) async {
       .doc(firebaseAuth.currentUser!.uid)
       .collection('exercise-data')
       .doc("exercise-names")
-      .update({
+      .set({
         "data": exerciseNames,
       });
 
@@ -466,7 +467,7 @@ void updateCurrentWorkout(WorkoutLogModel workoutLog) async {
       .doc(firebaseAuth.currentUser!.uid)
       .collection('current-workout-data')
       .doc("workout")
-      .update(workoutLog.toMap());
+      .set(workoutLog.toMap());
 
 }
 

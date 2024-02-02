@@ -730,7 +730,8 @@ GetExerciseLogData(String exerciseName) async {
         "measurementDate": data["data"][0]["measurementDate"],
         "measurementTimeStamp": data["data"][0]["measurementTimeStamp"],
         "repValues": data["data"][0]["repValues"],
-        "weightValues": data["data"][0]["weightValues"]
+        "weightValues": data["data"][0]["weightValues"],
+        "intensityValues": data["data"][0]["intensityValues"]
       };
 
     }
