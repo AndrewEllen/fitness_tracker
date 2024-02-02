@@ -17,7 +17,7 @@ import '../../models/stats/user_data_model.dart';
 import '../../providers/general/database_write.dart';
 import '../../providers/stats/user_data.dart';
 import '../general/auth_choose_login_signup.dart';
-import '../general/calculate_calories_page.dart';
+import '../general_new/calculate_calories_page.dart';
 import "package:fitness_tracker/helpers/general/custom_icons.dart";
 
 class HomePage extends StatefulWidget {
@@ -47,10 +47,13 @@ class _HomePageState extends State<HomePage> {
     return scalingFactor;
   }
 
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     double _margin = 15.w;
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: appTertiaryColour,
         title: const Text(
@@ -77,12 +80,15 @@ class _HomePageState extends State<HomePage> {
                 actions: [Container()],
               ),
               TextButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CalculateCaloriesPage(),
-                  ),
-                ),
+                onPressed: () {
+                  _scaffoldKey.currentState?.closeEndDrawer();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CalculateCaloriesPage(),
+                    ),
+                  );
+                },
                 child: Text(
                   "Update Calorie Goal",
                   style: boldTextStyle.copyWith(color: appSecondaryColour),

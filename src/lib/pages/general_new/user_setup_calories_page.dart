@@ -104,7 +104,7 @@ class _UserSetupCaloriesPageState extends State<UserSetupCaloriesPage> {
               - 5 * double.parse(ageController.text) + calAdjustment
       ) * bmrMult) + weightGain;
 
-      print(calories);
+      debugPrint(calories.toString());
 
       context.read<UserData>().updateUserBioData(UserDataModel(
           height: heightController.text,

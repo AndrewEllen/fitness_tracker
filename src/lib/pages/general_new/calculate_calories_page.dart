@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/providers/general/general_data_provider.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
@@ -9,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../helpers/general/numerical_range_formatter_extension.dart';
 import '../../helpers/general/firebase_auth_service.dart';
@@ -40,7 +44,7 @@ class _CalculateCaloriesPageState extends State<CalculateCaloriesPage> {
   late TextEditingController ageController = TextEditingController(text: userData.age);
   late final ageKey = GlobalKey<FormState>();
 
-  void calculateCalories() {
+  calculateCalories() async {
 
     if (heightController.text.isNotEmpty && weightController.text.isNotEmpty
         && ageController.text.isNotEmpty) {
@@ -87,7 +91,7 @@ class _CalculateCaloriesPageState extends State<CalculateCaloriesPage> {
               - 5 * double.parse(ageController.text) + calAdjustment
       ) * bmrMult) + weightGain;
 
-      print(calories);
+      debugPrint(calories.toString());
 
       context.read<UserData>().updateUserBioData(UserDataModel(
           height: heightController.text,
@@ -100,74 +104,92 @@ class _CalculateCaloriesPageState extends State<CalculateCaloriesPage> {
       ));
 
       context.read<UserNutritionData>().setCalories(calories.toStringAsFixed(2));
+
     }
   }
 
-  Future<void> signOutUser() async {
+  late VideoPlayerController videoController;
 
-    if (await GoogleSignIn().isSignedIn()) {
-      await GoogleSignIn().disconnect();
-    }
+  @override
+  void initState() {
 
-    await FirebaseAuth.instance.signOut();
+    videoController = VideoPlayerController.asset("assets/FITBackgroundVideo.mp4")
+      ..initialize().then((_) {
+
+        videoController.play();
+        videoController.setLooping(true);
+
+        setState(() {});
+      });
+
+    super.initState();
   }
 
   @override
+  void dispose() {
+    videoController.dispose();
+    super.dispose();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
-    double _width = 393.w;
-    double _height = 851.h;
-    double _margin = 15.w;
-    double _bigContainerMin = 160.h;
-    double _smallContainerMin = 95.h;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appTertiaryColour,
-        title: Text(
+        title: const Text(
           "Update Calories Goal",
           style: boldTextStyle,
         ),
       ),
-      endDrawer: Drawer(
-        backgroundColor: appPrimaryColour,
-        child: ListView(
-          children: [
-            AppBar(
-              backgroundColor: appTertiaryColour,
-              title: Text(
-                "Settings",
-                style: boldTextStyle,
-              ),
-              automaticallyImplyLeading: false,
-              actions: [Container()],
-            ),
+      body: Stack(
+        children: [
+          SizedBox.expand(
 
-            TextButton(
-              onPressed: () => signOutUser(),
-              child: Text(
-                "Logout",
-                style: boldTextStyle.copyWith(color: Colors.red),
+            child: FittedBox(
+
+              fit: BoxFit.fill,
+              child: SizedBox(
+
+                width: videoController.value.size?.width ?? 0,
+                height: videoController.value.size?.height ?? 0,
+                child: VideoPlayer(videoController),
+
               ),
             ),
-          ],
-        ),
-      ),
-      backgroundColor: appPrimaryColour,
-      body: NotificationListener<OverscrollIndicatorNotification>(
-        onNotification: (overscroll) {
-          overscroll.disallowIndicator();
-          return true;
-        },
-        child: Stack(
-          children: [
-            ListView(
-              children: [
-                ScreenWidthContainer(
-                  minHeight: _smallContainerMin,
-                  maxHeight: _smallContainerMin * 20,
-                  height: (_height / 100) * 55,
-                  margin: _margin,
-                  child: Column(
+          ),
+
+          SizedBox.expand(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+              child: Center(
+                child: Container(
+                  padding: EdgeInsets.only(
+                    left: 30.w,
+                    right: 30.w,
+                  ),
+                  decoration: BoxDecoration(
+                    color: appPrimaryColour.withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  width: 320.w,
+                  height: 600.h,
+                  child: ListView(
+                    shrinkWrap: true,
                     children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 30.0.h, bottom: 30.h),
+                        child: AvatarGlow(
+                          glowRadiusFactor: 0.2,
+                          glowCount: 2,
+                          glowColor: appSecondaryColour,
+                          child: Image.asset(
+                            'assets/logo/applogonobg.png',
+                            height: 80.0.h,
+                          ),
+                        ),
+                      ),
+
                       Form(
                         key: heightKey,
                         child: TextFormField(
@@ -177,25 +199,47 @@ class _CalculateCaloriesPageState extends State<CalculateCaloriesPage> {
                             color: Colors.white,
                             fontSize: (20),
                           ),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
                           inputFormatters: [
                             NumericalRangeFormatter(min: 1, max: 300),
                           ],
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(bottom: (_width/12)/2.5, left: 5, right: 5,),
-                            hintText: 'Height (CM)...',
-                            suffix: const Text("Cm"),
-                            hintStyle: const TextStyle(
-                              color: Colors.white54,
-                              fontSize: (18),
+                            suffix: Text(
+                              "Centimeters",
+                              style: boldTextStyle.copyWith(color: Colors.white60),
                             ),
-                            errorStyle: const TextStyle(
-                              height: 0,
+                            labelText: "Height *",
+                            labelStyle: boldTextStyle.copyWith(
+                              color: Colors.white,
+                              fontSize: 14,
                             ),
-                            focusedBorder: const UnderlineInputBorder(
+                            errorStyle: boldTextStyle.copyWith(
+                              color: Colors.red,
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: appQuarternaryColour,
+                                )
+                            ),
+                            border: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: appSecondaryColour,
+                                )
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: appSecondaryColour,
+                                )
+                            ),
+                            focusedErrorBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.red,
+                                )
+                            ),
+                            errorBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: appSecondaryColour,
+                                color: Colors.red,
                               ),
                             ),
                           ),
@@ -203,10 +247,13 @@ class _CalculateCaloriesPageState extends State<CalculateCaloriesPage> {
                             if (value!.isNotEmpty) {
                               return null;
                             }
-                            return "";
+                            return "Form Empty";
                           },
                         ),
                       ),
+
+                      SizedBox(height: 12.h),
+
                       Form(
                         key: weightKey,
                         child: TextFormField(
@@ -216,25 +263,47 @@ class _CalculateCaloriesPageState extends State<CalculateCaloriesPage> {
                             color: Colors.white,
                             fontSize: (20),
                           ),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
                           inputFormatters: [
                             NumericalRangeFormatter(min: 1, max: 800),
                           ],
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(bottom: (_width/12)/2.5, left: 5, right: 5,),
-                            hintText: 'Weight (KG)...',
-                            suffix: const Text("Kg"),
-                            hintStyle: const TextStyle(
-                              color: Colors.white54,
-                              fontSize: (18),
+                            suffix: Text(
+                              "Kilograms",
+                              style: boldTextStyle.copyWith(color: Colors.white60),
                             ),
-                            errorStyle: const TextStyle(
-                              height: 0,
+                            labelText: "Weight *",
+                            labelStyle: boldTextStyle.copyWith(
+                              color: Colors.white,
+                              fontSize: 14,
                             ),
-                            focusedBorder: const UnderlineInputBorder(
+                            errorStyle: boldTextStyle.copyWith(
+                              color: Colors.red,
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: appQuarternaryColour,
+                                )
+                            ),
+                            border: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: appSecondaryColour,
+                                )
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: appSecondaryColour,
+                                )
+                            ),
+                            focusedErrorBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.red,
+                                )
+                            ),
+                            errorBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: appSecondaryColour,
+                                color: Colors.red,
                               ),
                             ),
                           ),
@@ -242,39 +311,64 @@ class _CalculateCaloriesPageState extends State<CalculateCaloriesPage> {
                             if (value!.isNotEmpty) {
                               return null;
                             }
-                            return "";
+                            return "Form Empty";
                           },
                         ),
                       ),
+
+                      SizedBox(height: 12.h),
+
                       Form(
                         key: ageKey,
                         child: TextFormField(
+                          cursorColor: appSecondaryColour,
                           controller: ageController,
-                          cursorColor: Colors.white,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: (20),
                           ),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                             NumericalRangeFormatter(min: 1, max: 123),
                           ],
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(bottom: (_width/12)/2.5, left: 5, right: 5,),
-                            hintText: 'Age (Years)...',
-                            suffix: const Text("Years"),
-                            hintStyle: const TextStyle(
-                              color: Colors.white54,
-                              fontSize: (18),
+                            suffix: Text(
+                              "Years",
+                              style: boldTextStyle.copyWith(color: Colors.white60),
                             ),
-                            errorStyle: const TextStyle(
-                              height: 0,
+                            labelText: "Age *",
+                            labelStyle: boldTextStyle.copyWith(
+                              color: Colors.white,
+                              fontSize: 14,
                             ),
-                            focusedBorder: const UnderlineInputBorder(
+                            errorStyle: boldTextStyle.copyWith(
+                              color: Colors.red,
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: appQuarternaryColour,
+                                )
+                            ),
+                            border: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: appSecondaryColour,
+                                )
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: appSecondaryColour,
+                                )
+                            ),
+                            focusedErrorBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.red,
+                                )
+                            ),
+                            errorBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: appSecondaryColour,
+                                color: Colors.red,
                               ),
                             ),
                           ),
@@ -282,10 +376,13 @@ class _CalculateCaloriesPageState extends State<CalculateCaloriesPage> {
                             if (value!.isNotEmpty) {
                               return null;
                             }
-                            return "";
+                            return "Form Empty";
                           },
                         ),
                       ),
+
+                      SizedBox(height: 12.h),
+
                       Theme(
                         data: Theme.of(context).copyWith(
                           canvasColor: appTertiaryColour,
@@ -416,41 +513,28 @@ class _CalculateCaloriesPageState extends State<CalculateCaloriesPage> {
                         ),
                       ),
                       AppButton(
-                        onTap: calculateCalories,
-                        buttonText: "Calculate Calories",
+                        onTap: () async {
+
+                          if (heightKey.currentState!.validate()
+                              && weightKey.currentState!.validate()
+                              && ageKey.currentState!.validate()
+                          ) {
+
+                            await calculateCalories();
+                            Navigator.pop(context);
+                          }
+
+                        },
+                        buttonText: "Update Calories",
                       ),
-                      Text(
-                        "Calories: " + context.watch<UserNutritionData>().caloriesGoal.toString() + " Kcal",
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        "Protein: " + context.read<UserNutritionData>().proteinGoal.toString() + " g",
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        "Carbs: " + context.read<UserNutritionData>().carbohydratesGoal.toString() + " g",
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        "Fat: " + context.read<UserNutritionData>().fatGoal.toString() + " g",
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      const Spacer(flex: 1),
+
                     ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
