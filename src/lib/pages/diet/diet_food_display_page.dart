@@ -220,7 +220,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
   @override
   Widget build(BuildContext context) {
 
-    //context.watch<UserNutritionData>().currentFoodItem;
+    context.watch<UserNutritionData>().currentFoodItem;
 
     InitializeControllers();
 
