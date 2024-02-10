@@ -4,9 +4,10 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/pages/general/auth_choose_login_signup.dart';
 import 'package:fitness_tracker/pages/general/splashscreen.dart';
+import 'package:fitness_tracker/providers/general/general_data_provider.dart';
 import 'package:fitness_tracker/providers/grocery/groceries_provider.dart';
 import 'package:fitness_tracker/providers/stats/user_data.dart';
-import 'package:fitness_tracker/providers/workout/user_exercises.dart';
+import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'exports.dart';
 import 'package:flutter/services.dart';
@@ -31,24 +32,13 @@ void main() async {
   runApp(
     MultiProvider(
         providers: [
-          Provider<FirebaseAuthenticationService>(
-            create: (_) => FirebaseAuthenticationService(FirebaseAuth.instance),
-          ),
-          StreamProvider(
-            create: (context) => context.read<FirebaseAuthenticationService>().firebaseAuthStateChanges,
-            initialData: null,
-            updateShouldNotify: (_, __) => true,
-            child: const FireBaseAuthenticationCheck(),
-          ),
           ChangeNotifierProvider(create: (context) => PageChange()),
           ChangeNotifierProvider(create: (context) => UserNutritionData()),
-          ChangeNotifierProvider(create: (context) => ExerciseList()),
-          ChangeNotifierProvider(create: (context) => RoutinesList()),
-          ChangeNotifierProvider(create: (context) => TrainingPlanProvider()),
+          ChangeNotifierProvider(create: (context) => WorkoutProvider()),
           ChangeNotifierProvider(create: (context) => UserStatsMeasurements()),
-          ChangeNotifierProvider(create: (context) => UserExercisesList()),
           ChangeNotifierProvider(create: (context) => UserData()),
           ChangeNotifierProvider(create: (context) => GroceryProvider()),
+          ChangeNotifierProvider(create: (context) => GeneralDataProvider()),
         ],
         child: const AppMain()
     ),
@@ -69,21 +59,6 @@ void main() async {
     systemNavigationBarColor: appTertiaryColour,
   ));
 }
-
-class FireBaseAuthenticationCheck extends StatelessWidget {
-  const FireBaseAuthenticationCheck({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final currentUser = context.watch<User?>();
-
-    if (currentUser != null) {
-      return const SplashScreen();
-    }
-    return const ChooseLoginSignUp();
-  }
-}
-
 
 class AppMain extends StatefulWidget {
   const AppMain({Key? key}) : super(key: key);
@@ -107,7 +82,8 @@ class _AppMainState extends State<AppMain> {
         scaffoldMessengerKey: _scaffoldKey,
         title: 'FIT',
         theme: ThemeData(
-          fontFamily: 'Impact',
+          useMaterial3: false,
+          //fontFamily: 'Impact',
           iconTheme: const IconThemeData(
             color: appSecondaryColour,
           ),
@@ -124,6 +100,7 @@ class _AppMainState extends State<AppMain> {
               ),
             ),
           ),
+          unselectedWidgetColor: Colors.white,
         ),
         color: appPrimaryColour,
         debugShowCheckedModeBanner: false,
@@ -134,7 +111,7 @@ class _AppMainState extends State<AppMain> {
               child: child!,
           );
         },
-        home: const FireBaseAuthenticationCheck(),
+        home: const MainPage(),
       ),
     );
   }

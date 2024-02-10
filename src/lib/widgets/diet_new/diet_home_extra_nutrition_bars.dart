@@ -15,28 +15,13 @@ class DietHomeExtraNutritionBars extends StatefulWidget {
 }
 
 class _DietHomeExtraNutritionBarsState extends State<DietHomeExtraNutritionBars> {
-  double expandContainer = 0;
-
-  void onTap() {
-    updateContainerSize();
-    print(expandContainer);
-  }
-
-  void updateContainerSize() {
-    setState(() {
-      if (expandContainer > 0) {
-        expandContainer = 0;
-      } else {
-        expandContainer = 460;
-      }
-    });
-  }
+  bool expandContainer = false;
 
   @override
   Widget build(BuildContext context) {
     return TweenAnimationBuilder<double>(
-        tween: Tween<double>(begin: 0.h, end: expandContainer.h),
-        duration: const Duration(milliseconds: 500),
+        tween: Tween<double>(begin: 0.0, end: expandContainer ? 460.h : 0.0),
+        duration: const Duration(milliseconds: 250),
         builder: (context, value, _) {
           return Column(
             children: [
@@ -53,7 +38,11 @@ class _DietHomeExtraNutritionBarsState extends State<DietHomeExtraNutritionBars>
                   //bottomRight: Radius.circular(10),
                   //bottomLeft: Radius.circular(10),
                 ),
-                onTap: onTap,
+                onTap: () {
+                  setState(() {
+                    expandContainer = !expandContainer;
+                  });
+                },
                 child: Ink(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -210,7 +199,7 @@ class ExtraNutritionBars extends StatelessWidget {
           progress: context.watch<UserNutritionData>().cholesterol,
           goal: context.watch<UserNutritionData>().cholesterolGoal,
 
-          units: "g",
+          units: "mg",
           excludeColourChange: false,
         ),
         Container(

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
+import 'package:fitness_tracker/models/diet/food_data_list_item.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
+import 'package:text_analysis/extensions.dart';
 import '../../models/diet/food_item.dart';
 import '../../models/diet/user_recipes_model.dart';
 import '../../providers/general/database_get.dart';
@@ -11,7 +13,7 @@ import '../../providers/general/database_get.dart';
 
 FoodItem ConvertToFoodItem(product, {String scannedBarcode = "", bool firebase = false}) {
 
-  print("converting food");
+  //print("converting food");
 
   if (firebase) {
 
@@ -420,10 +422,50 @@ SearchByNameFirebase(String value) async {
 
 SearchByNameTriGramFirebase(String value) async {
 
+  List<Map> sortListBySimilarity(List<Map> similarityMap, removeExcess) {
+
+    List<Map<dynamic, dynamic>> filteredList = similarityMap.where((map) {
+      double value = (map.values.first);
+      if (removeExcess) {
+        return value >  0.24;
+      } else {
+        return value > 0.08;
+      }
+    }).toList();
+
+    // Sort the filtered list
+    filteredList.sort((a, b) => (b.values.first as num).compareTo(a.values.first as num));
+
+    return filteredList;
+  }
+
+  Map checkSimilarity(String searchWord, String searchItem, FoodItem foodItem) {
+    Map _wordsSimilarity = {
+      searchItem: 0,
+      "foodItem": foodItem,
+    };
+
+    for(String searchWord in searchWord.split(" ")) {
+      double _similarity = 0;
+      List<double> _similarityList = [];
+      for(String itemWord in searchItem.split(" ")) {
+        _similarity = searchWord.jaccardSimilarity(itemWord);
+        _similarityList.add(_similarity);
+      }
+
+      _similarity = _similarityList.reduce((a, b) => a + b)/ _similarityList.length;
+      _wordsSimilarity = {
+        searchItem: _similarity,
+        "foodItem": foodItem,
+      };
+    }
+    //print(_wordsSimilarity);
+    return _wordsSimilarity;
+  }
+
+
   List<FoodItem> foodItems = [];
   List<String> searchValues = value.triGram();
-
-  print(searchValues);
 
   try {
 
@@ -442,11 +484,31 @@ SearchByNameTriGramFirebase(String value) async {
 
   } catch (error) { print(error); }
 
-  List<String> splitSearchValues = value.split(" ");
+  List<FoodItem> sortedFoodItems = [];
+  List<Map> internalSearchList = [];
 
-  foodItems.removeWhere((item) => item.foodName.split(" ").highestListSimilarity(splitSearchValues) < 0.5);
+  for (FoodItem foodItem in foodItems) {
 
-  return foodItems;
+    internalSearchList.add(checkSimilarity(
+      value,
+      foodItem.foodName,
+      foodItem,
+    ));
+  }
+  if (value.split(" ").length > 1) {
+    internalSearchList = sortListBySimilarity(internalSearchList, true);
+  } else {
+    internalSearchList = sortListBySimilarity(internalSearchList, false);
+  }
+
+  for (Map item in internalSearchList) {
+
+    print(item);
+    sortedFoodItems.add(item["foodItem"]);
+
+  }
+
+  return sortedFoodItems;
 
 }
 

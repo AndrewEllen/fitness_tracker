@@ -3,8 +3,35 @@ import 'package:flutter/cupertino.dart';
 
 import '../../pages/diet/diet_recipe_creator.dart';
 import '../../pages/diet_new/diet_home.dart';
+import '../../pages/workout_new/workout_home.dart';
 
 class PageChange with ChangeNotifier {
+
+  final pages = [
+    WorkoutHomePageNew(),
+    DietHomePage(),
+    const HomePage(),
+    const MeasurementsHomePage(),
+  ];
+
+  late bool _navigationBarCache = true;
+  bool get navigationBarCache => _navigationBarCache;
+
+  final double defaultScale = 0.9;
+  final double defaultBackScale = 1.1;
+
+  late double _transitionScaleFactor = defaultScale;
+
+  double get transitionScaleFactor => _transitionScaleFactor;
+
+  late bool _dataLoadingFromSplashPage = true;
+
+  bool get dataLoadingFromSplashPage => _dataLoadingFromSplashPage;
+
+  late bool _caloriesCalculated = false;
+
+  bool get caloriesCalculated => _caloriesCalculated;
+
   Widget _pageWidget = DietHomePage();
   List<Widget> _pageWidgetCache = [DietHomePage()];
   int _pageWidgetCacheIndex = 0;
@@ -19,7 +46,29 @@ class PageChange with ChangeNotifier {
 
   bool get confirmation => _confirmation;
 
+  void setCaloriesCalculated(bool _dataLoaded) {
+
+    _caloriesCalculated = _dataLoaded;
+
+    notifyListeners();
+  }
+
+  void setDataLoadingStatus(bool _dataLoaded) {
+
+    _dataLoadingFromSplashPage = _dataLoaded;
+
+    notifyListeners();
+  }
+
   void changePageRemovePreviousCache(Widget newPage) {
+
+    if (_navigationBarCache) {
+      _navigationBarCache = false;
+      _pageWidgetCache = [_pageWidget];
+    }
+
+    setTransitionScale(defaultScale);
+
     _pageWidget = newPage;
 
     _pageWidgetCache.add(_pageWidget);
@@ -27,23 +76,51 @@ class PageChange with ChangeNotifier {
 
     _pageWidgetCacheIndex = _pageWidgetCache.length - 1;
 
-    print(_pageWidgetCache);
+    debugPrint(_pageWidgetCache.toString());
+    notifyListeners();
+  }
+
+  void navigatorBarNavigationReset(int navigatorIndex) {
+
+    setTransitionScale(defaultBackScale);
+
+    _navigationBarCache = true;
+
+    _pageWidgetCache = pages;
+    _pageWidgetCacheIndex = navigatorIndex;
+
+    _pageWidget = pages[navigatorIndex];
+
+    debugPrint(_pageWidgetCache.toString());
     notifyListeners();
   }
 
   void changePageClearCache(Widget newPage) {
 
-    _confirmation = false;
+    if (_navigationBarCache) {
+      _navigationBarCache = false;
+      _pageWidgetCache = [_pageWidget];
+    }
 
+    setTransitionScale(defaultBackScale);
+    _confirmation = false;
     _pageWidget = newPage;
 
     _pageWidgetCache = [_pageWidget];
     _pageWidgetCacheIndex = 0;
 
+    debugPrint(_pageWidgetCache.toString());
     notifyListeners();
   }
 
   void changePageCache(Widget newPage) {
+
+    if (_navigationBarCache) {
+      _navigationBarCache = false;
+      _pageWidgetCache = [_pageWidget];
+    }
+
+    setTransitionScale(defaultScale);
 
     if (newPage.runtimeType == FoodRecipeCreator && _confirmation == false) {
       _confirmation = true;
@@ -57,17 +134,26 @@ class PageChange with ChangeNotifier {
     } else if (newPage != _pageWidgetCache.last) {
       _pageWidgetCache.add(newPage);
       _pageWidgetCacheIndex = _pageWidgetCache.length-1;
-      if (_pageWidgetCache.length > 5) {
-        _pageWidgetCache.removeAt(0);
-        _pageWidgetCacheIndex = _pageWidgetCache.length-1;
-      }
+      //if (_pageWidgetCache.length > 5) {
+      //  _pageWidgetCache.removeAt(0);
+      //  _pageWidgetCacheIndex = _pageWidgetCache.length-1;
+      //}
     }
 
-    print(_pageWidgetCache);
+    debugPrint(_pageWidgetCache.toString());
     notifyListeners();
   }
 
+  void setTransitionScale(double scale) {
+
+    _transitionScaleFactor = scale;
+    notifyListeners();
+
+  }
+
   void backPage() {
+
+    setTransitionScale(defaultBackScale);
 
     if (_pageWidgetCache.last.runtimeType == FoodRecipeCreator) {
 
@@ -82,6 +168,7 @@ class PageChange with ChangeNotifier {
           _pageWidgetCacheIndex = _pageWidgetCache.length-1;
         }
 
+        debugPrint(_pageWidgetCache.toString());
         notifyListeners();
       } else {
         _confirmationCounter++;
@@ -98,9 +185,10 @@ class PageChange with ChangeNotifier {
         _pageWidgetCacheIndex = _pageWidgetCache.length-1;
       }
 
+      debugPrint(_pageWidgetCache.toString());
       notifyListeners();
     }
-
+    //setTransitionScale(0.8);
   }
 
 }

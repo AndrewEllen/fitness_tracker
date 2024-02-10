@@ -1,5 +1,6 @@
 
 import 'package:fitness_tracker/constants.dart';
+import 'package:fitness_tracker/pages/groceries/groceries_home.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
@@ -100,18 +101,28 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
 
               //print(newFoodItem.foodName);
 
-              context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
-
-              _isScanned = true;
-
-              if (newFoodItem.newItem) {
-                scannerController.stop();
-
-                context.read<PageChange>().changePageRemovePreviousCache(FoodNewNutritionEdit(category: widget.category, fromBarcode: true, recipe: widget.recipe, saveAsCustom: false,));
+              if (widget.category == "groceries") {
+                context.read<PageChange>().changePageRemovePreviousCache(GroceriesHome(
+                  foodName: newFoodItem.foodName,
+                  foodBarcode: newFoodItem.barcode,
+                  dropdown: true,
+                ));
               } else {
-                scannerController.stop();
 
-                context.read<PageChange>().changePageRemovePreviousCache(FoodDisplayPage(category: widget.category, recipe: widget.recipe,));
+                context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
+
+                _isScanned = true;
+
+                if (newFoodItem.newItem) {
+                  scannerController.stop();
+
+                  context.read<PageChange>().changePageRemovePreviousCache(FoodNewNutritionEdit(category: widget.category, fromBarcode: true, recipe: widget.recipe, saveAsCustom: false,));
+                } else {
+                  scannerController.stop();
+
+                  context.read<PageChange>().changePageRemovePreviousCache(FoodDisplayPage(category: widget.category, recipe: widget.recipe,));
+                }
+
               }
 
             }

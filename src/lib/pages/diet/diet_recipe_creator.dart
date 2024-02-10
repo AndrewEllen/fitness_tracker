@@ -21,9 +21,10 @@ import 'diet_food_display_page.dart';
 import 'diet_recipe_food_search.dart';
 
 class FoodRecipeCreator extends StatefulWidget {
-  const FoodRecipeCreator({Key? key, required this.category})
+  const FoodRecipeCreator({Key? key, required this.category, required this.editDiary})
       : super(key: key);
   final String category;
+  final bool editDiary;
 
   @override
   State<FoodRecipeCreator> createState() => _FoodRecipeCreatorState();
@@ -45,9 +46,9 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
 
   void AddToRecipe() {
 
-    if (currentRecipe.foodData.servings.isNotEmpty && currentRecipe.recipeFoodList.isNotEmpty && foodNameController.text.isNotEmpty) {
+    servingsController.text = double.tryParse(servingsController.text) == null ? "1" : servingsController.text;
 
-      print(widget.category);
+    if (currentRecipe.foodData.servings.isNotEmpty && currentRecipe.recipeFoodList.isNotEmpty && foodNameController.text.isNotEmpty) {
 
       context.read<UserNutritionData>().createRecipe(
         foodNameController.text,
@@ -56,7 +57,7 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
 
       context.read<UserNutritionData>().setCurrentFoodItem(currentRecipe.foodData);
       context.read<UserNutritionData>().updateCurrentFoodItemServings("1");
-      context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipeEdit: true,));
+      context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.category, recipeEdit: true, editDiary: widget.editDiary,));
 
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -388,7 +389,7 @@ class _FoodRecipeCreatorState extends State<FoodRecipeCreator> {
                 heightFactor: 1,
                 widthFactor: 1,
                 child: AppButton(
-                  buttonText: "Next",
+                  buttonText: "Save",
                   onTap: AddToRecipe,
                 ),
               ),

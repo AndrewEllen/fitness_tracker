@@ -3,112 +3,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:fitness_tracker/models/stats/user_data_model.dart';
-import 'package:fitness_tracker/models/workout/exercise_model.dart';
-import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:fitness_tracker/models/stats/stats_model.dart';
-import 'package:fitness_tracker/models/workout/training_plan_model.dart';
 import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
+import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
+import 'package:fitness_tracker/models/workout/routines_model.dart';
+import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../models/diet/food_item.dart';
+import '../../models/groceries/grocery_item.dart';
+import '../../models/workout/exercise_model.dart';
+import '../../models/workout/reps_weight_stats_model.dart';
+import '../../models/workout/workout_log_model.dart';
+import '../../models/workout/workout_overall_stats_model.dart';
 
-void UpdateUserDocumentCategories(List<String> categories) async {
-
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc("${firebaseAuth.currentUser?.uid.toString()}")
-      .collection("workout-data")
-      .doc("categories")
-      .set({"categories": categories});
-}
-
-void UpdateUserDocumentExercises(List<Exercises> exercisesList) async {
-
-  List<Map> ConvertToMap({required List<Exercises> exercisesList}) {
-    List<Map> exercises = [];
-    for (var exerciseModel in exercisesList) {
-      Map exercise = exerciseModel.toMap();
-      exercises.add(exercise);
-    }
-    return exercises;
-  }
-
-  List<Map> exercises = ConvertToMap(exercisesList: exercisesList);
-
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc("${firebaseAuth.currentUser?.uid.toString()}")
-      .collection("workout-data")
-      .doc("exercises")
-      .set({"exercises": exercises });
-
-}
-
-void UpdateUserDocumentRoutines(List<WorkoutRoutine> workoutRoutinesList) async {
-
-  List<Map> ConvertToMap({required List<WorkoutRoutine> workoutRoutinesList}) {
-    List<Map> routines = [];
-    for (var workoutRoutine in workoutRoutinesList) {
-      Map routine = workoutRoutine.toMap();
-      routines.add(routine);
-    }
-    return routines;
-  }
-
-  List<Map> routines = ConvertToMap(workoutRoutinesList: workoutRoutinesList);
-
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc("${firebaseAuth.currentUser?.uid.toString()}")
-      .collection("workout-data")
-      .doc("routines")
-      .set({"routines": routines });
-}
-
-void UpdateUserDocumentTrainingPlans(List<TrainingPlan> trainingPlansList) async {
-
-  List<Map> ConvertToMap({required List<TrainingPlan> trainingPlansList}) {
-    List<Map> trainingPlans = [];
-    for (var trainingPlan in trainingPlansList) {
-      Map plan = trainingPlan.toMap();
-      trainingPlans.add(plan);
-    }
-    return trainingPlans;
-  }
-
-  List<Map> trainingPlans = ConvertToMap(trainingPlansList: trainingPlansList);
-
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc("${firebaseAuth.currentUser?.uid.toString()}")
-      .collection("workout-data")
-      .doc("training-plans")
-      .set({"training-plans": trainingPlans });
-
-}
-
-void UpdateUserDocumentUserData(String selectedTrainingPlanID) async {
-
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc("${firebaseAuth.currentUser?.uid.toString()}")
-      .collection("user-data")
-      .doc("training-plan")
-      .set({"training-data": {
-        "selected-training-plan": selectedTrainingPlanID,
-        },
-      });
-}
 
 void DeleteUserDocumentMeasurements(String documentName) async {
 
@@ -254,5 +163,367 @@ void writeUserBiometric(UserDataModel userData) async {
       .collection("bioData")
       .doc("bioData")
       .set({"bioData": userData.toMap()});
+
+}
+
+void writeGrocery(GroceryItem groceryItem, String groceryListID) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('grocery-lists')
+      .doc(groceryListID)
+      .collection('grocery-data')
+      .doc(groceryItem.uuid)
+      .set({"groceryData": groceryItem.toMap()});
+
+}
+
+void writeGroceryLists(List<String> groceryLists) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .collection('grocery-data')
+      .doc("grocery-lists")
+      .set({"groceryLists": groceryLists});
+
+}
+
+void writeGroceryListID(String groceryListID) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .collection('grocery-data')
+      .doc("selected-grocery-list")
+      .set({"groceryListID": groceryListID});
+
+}
+
+void deleteGrocery(GroceryItem groceryItem, String groceryListID) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('grocery-lists')
+      .doc(groceryListID)
+      .collection('grocery-data')
+      .doc(groceryItem.uuid)
+      .delete();
+
+}
+
+void createNewExercise(ExerciseModel exercise) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-data')
+      .doc(exercise.exerciseName)
+      .set({
+        "category": exercise.category,
+        "type": exercise.type,
+        "exerciseTrackingType": exercise.exerciseTrackingType,
+      });
+
+}
+
+void deleteExercise(String exerciseName) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-data')
+      .doc(exerciseName)
+      .delete();
+
+}
+
+void saveExerciseLogs(ExerciseModel exercise, Map log) async {
+
+  print(log);
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  var logToSave = exercise.exerciseTrackingData.dailyLogs.where((element) => element["measurementDate"] == log["measurementDate"]);
+
+  print("Saving");
+  print(logToSave);
+
+  print(log["measurementDate"].runtimeType);
+
+  //DateFormat("dd-MM-yyyy").format(DateFormat("dd/MM/yyyy").parse(log["measurementDate"]));
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-data')
+      .doc(exercise.exerciseName)
+      .collection("exercise-tracking-data")
+      .doc(DateFormat("dd-MM-yyyy").format(DateFormat("dd/MM/yyyy").parse(log["measurementDate"])).toString())
+      .set({
+        "timeStamp": DateFormat("dd/MM/yyyy").parse(log["measurementDate"]).toUtc(),
+        "data": logToSave,
+        "type": exercise.type,
+      });
+
+}
+
+void saveExerciseMaxRepsAtWeight(String exerciseName, Map maxWeightAtReps) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-data')
+      .doc(exerciseName)
+      .set({"data": maxWeightAtReps});
+
+}
+
+void updateLogData(ExerciseModel exercise, int index) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-data')
+      .doc(exercise.exerciseName)
+      .collection("exercise-tracking-data")
+      .doc(DateFormat("dd-MM-yyyy").format(DateFormat("dd/MM/yyyy").parse(exercise.exerciseTrackingData.dailyLogs[index]["measurementDate"])).toString())
+      .set({
+    "data": [
+      {
+      "measurementDate": exercise.exerciseTrackingData.dailyLogs[index]["measurementDate"],
+      "measurementTimeStamp": exercise.exerciseTrackingData.dailyLogs[index]["measurementTimeStamp"],
+      "repValues": exercise.exerciseTrackingData.dailyLogs[index]["repValues"],
+      "weightValues": exercise.exerciseTrackingData.dailyLogs[index]["weightValues"],
+      "intensityValues": exercise.exerciseTrackingData.dailyLogs[index]["intensityValues"]
+      }
+    ],
+  });
+
+}
+
+void deleteLogData(ExerciseModel exercise, int index) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-data')
+      .doc(exercise.exerciseName)
+      .collection("exercise-tracking-data")
+      .doc(DateFormat("dd-MM-yyyy").format(DateFormat("dd/MM/yyyy").parse(exercise.exerciseTrackingData.dailyLogs[index]["measurementDate"])).toString())
+      .delete();
+
+}
+
+void createRoutine(RoutinesModel routine) async {
+
+  mapData(data) {
+
+    return [
+      for (ExerciseListModel exerciseListData in data)
+        {
+          "exerciseName": exerciseListData.exerciseName,
+          "exerciseDate": exerciseListData.exerciseDate,
+        }
+      ];
+
+  }
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('routine-data')
+      .doc(routine.routineName)
+      .set({
+          "routineName": routine.routineName,
+          "routineDate": routine.routineDate,
+          "routineID": routine.routineID,
+          "exercises": mapData(routine.exercises),
+      });
+
+}
+
+void updateRoutineData(RoutinesModel routine) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  mapData(data) {
+
+    return [
+      for (ExerciseListModel exerciseListData in data)
+        {
+          "exerciseName": exerciseListData.exerciseName,
+          "exerciseDate": exerciseListData.exerciseDate,
+        }
+    ];
+
+  }
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('routine-data')
+      .doc(routine.routineName)
+      .set({
+    "routineName": routine.routineName,
+    "routineDate": routine.routineDate,
+    "routineID": routine.routineID,
+    "exercises": mapData(routine.exercises),
+  });
+
+}
+
+void deleteRoutineData(String routineName) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('routine-data')
+      .doc(routineName)
+      .delete();
+
+}
+
+void updateExerciseData(List<String> exerciseNames) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('exercise-data')
+      .doc("exercise-names")
+      .set({
+        "data": exerciseNames,
+      });
+
+}
+
+void updateCategoriesData(List<String> categoryNames) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('exercise-data')
+      .doc("category-names")
+      .set({
+    "data": categoryNames,
+  });
+
+}
+
+void writeWorkoutStarted(bool workoutStarted, WorkoutLogModel? workout) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('current-workout-data')
+      .doc("started")
+      .set({
+        "started": workoutStarted,
+      });
+
+  if (workout != null) {
+    await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('current-workout-data')
+        .doc("workout")
+        .set(workout.toMap());
+  }
+
+}
+
+void updateCurrentWorkout(WorkoutLogModel workoutLog) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('current-workout-data')
+      .doc("workout")
+      .set(workoutLog.toMap());
+
+}
+
+void finalizeWorkout(WorkoutLogModel workoutLog) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-log-data')
+      .doc(const Uuid().v4().toString())
+      .set({
+          "data": workoutLog.toMap(),
+          "time-stamp": DateTime.now().toUtc(),
+      });
+
+}
+
+void saveOverallStats(WorkoutOverallStatsModel stats) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-overall-stats')
+      .doc("stats")
+      .set(
+        stats.toMap(),
+      );
+
+}
+
+void saveDayTracking(Map<String, dynamic> daysWorkedOut) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('current-workout-data')
+      .doc("week-days-worked")
+      .set(daysWorkedOut);
+
+}
+
+void SaveDailyStreak(Map<String, dynamic> dailyStreak) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('user-data')
+      .doc("daily-streak")
+      .set(dailyStreak);
 
 }

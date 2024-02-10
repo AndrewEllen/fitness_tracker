@@ -14,6 +14,7 @@ import '../../providers/general/database_get.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/diet/diet_list_header_box.dart';
 import '../../widgets/diet/food_nutrition_list_formfield.dart';
+import '../../widgets/general/incremental_counter.dart';
 import '../diet_new/diet_home.dart';
 import 'diet_recipe_creator.dart';
 import 'food_nutrition_list_edit.dart';
@@ -45,7 +46,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
     context.read<UserNutritionData>().setCurrentRecipe(recipe);
     context.read<UserNutritionData>().setCurrentRecipeFood(await GetRecipeFoodList(recipe.recipeFoodList));
 
-    context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category));
+    context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category, editDiary: widget.editDiary,));
   }
 
   @override
@@ -53,6 +54,13 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
 
     InitializeControllers();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    servingsController.dispose();
+    servingSizeController.dispose();
+    super.dispose();
   }
 
   void InitializeControllers() {
@@ -87,7 +95,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         currentFoodItem.recipe,
       );
 
-      context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category,));
+      context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category, editDiary: widget.editDiary,));
 
     } else if (currentFoodItem.foodName.isNotEmpty &&
         currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
@@ -103,7 +111,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
         currentFoodItem.recipe,
       );
 
-      context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category,));
+      context.read<PageChange>().changePageCache(FoodRecipeCreator(category: widget.category, editDiary: widget.editDiary,));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text(
@@ -122,6 +130,9 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
   }
 
   void AddToDiary() {
+
+    servingsController.text = double.tryParse(servingsController.text) == null ? "0" : servingsController.text;
+    servingSizeController.text = double.tryParse(servingSizeController.text) == null ? "0" : servingSizeController.text;
 
       if (widget.editDiary && currentFoodItem.foodName.isNotEmpty &&
           currentFoodItem.calories != "-" && currentFoodItem.calories.isNotEmpty &&
@@ -191,6 +202,21 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
     }
   }
 
+  void SaveServings() {
+
+    servingsController.text = double.tryParse(servingsController.text) == null ? "0" : servingsController.text;
+    servingSizeController.text = double.tryParse(servingSizeController.text) == null ? "0" : servingSizeController.text;
+
+    print(servingsController.text);
+    print(servingSizeController.text);
+
+    if (currentFoodItem.recipe) {
+      context.read<UserNutritionData>().updateRecipeServings(servingsController.text);
+    }
+    context.read<UserNutritionData>().updateCurrentFoodItemServings(servingsController.text);
+    context.read<UserNutritionData>().updateCurrentFoodItemServingSize(servingSizeController.text);
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -204,22 +230,20 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
     double _height = 851.h;
     double _width = 393.w;
 
-    print(widget.category);
-
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: appPrimaryColour,
         body: NotificationListener<OverscrollIndicatorNotification>(
         onNotification: (overscroll) {
-      overscroll.disallowIndicator();
-      return true;
-    },
-      child: ListView(
-        children: [
+          overscroll.disallowIndicator();
+          return true;
+        },
+          child: ListView(
+          children: [
           ScreenWidthContainer(
             minHeight: _bigContainerMin,
             maxHeight: _bigContainerMin*4,
-            height: _height * 0.33,
+            height: _height * 0.38,
             margin: 0,
             child: ListView(
               children: [
@@ -229,33 +253,33 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   largeTitle: true,
                   color: Colors.white,
                 ),
-                FoodNutritionListFormField(
-                  servings: true,
-                  controller: servingsController,
-                  secondaryController: servingSizeController,
-                  formKey: servingskey,
-                  width: _width,
-                  formName: "Servings",
-                  centerForm: true,
-                  noUnits: true,
+
+                IncrementalCounter(
+                  inputController: servingsController,
+                  suffix: '',
+                  label: 'No. Of Servings*',
+                  smallButtons: true,
+                  function: () => SaveServings(),
+                  bigIncrementAmount: 1,
+                  smallIncrementAmount: 0.5,
                 ),
-                FoodNutritionListFormField(
-                  servingSize: true,
-                  controller: servingSizeController,
-                  secondaryController: servingsController,
-                  formKey: servingSizekey,
-                  width: _width,
-                  formName: "Serving Size",
-                  centerForm: true,
-                  units: "g",
+                IncrementalCounter(
+                  inputController: servingSizeController,
+                  suffix: '',
+                  label: 'Weight of Serving*',
+                  smallButtons: true,
+                  function: () => SaveServings(),
+                  bigIncrementAmount: 10,
+                  smallIncrementAmount: 1,
                 ),
+
                 Padding(
                   padding: EdgeInsets.all(_height/120),
                   child: Container(
                     padding: const EdgeInsets.all(6),
                     margin: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(5),
                       border: Border.all(
                         width: 1,
                         color: appSecondaryColour,
@@ -474,7 +498,7 @@ class _FoodDisplayPageState extends State<FoodDisplayPage> {
                   value: currentFoodItem.cholesterol,
                   width: _width,
                   title: "Cholesterol",
-                  units: "g",
+                  units: "mg",
                 ),
 
                 DietListHeaderBox(

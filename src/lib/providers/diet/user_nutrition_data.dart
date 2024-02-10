@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
+import 'package:fitness_tracker/models/workout/workout_log_exercise_data.dart';
+import 'package:fitness_tracker/models/workout/workout_log_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +14,7 @@ import '../../models/diet/food_item.dart';
 import '../../models/diet/user__foods_model.dart';
 import '../../models/diet/user_nutrition_model.dart';
 import '../general/database_write.dart';
+import '../stats/user_data.dart';
 
 //[LO3.7.3.5]
 //Processes the data for the food items retrieved
@@ -109,6 +114,11 @@ class UserNutritionData with ChangeNotifier {
   //late List<ListFoodItem> _foodListItemsLunch = [];
   //late List<ListFoodItem> _foodListItemsDinner = [];
   //late List<ListFoodItem> _foodListItemsSnacks = [];
+
+  late double _userWeight;
+  late double _userAge;
+  late double _userGender;
+  late double _userActivity;
 
   late UserNutritionModel _userDailyNutrition = UserNutritionModel(
     date: DateTime(DateTime
@@ -611,7 +621,7 @@ class UserNutritionData with ChangeNotifier {
       _userNutritionHistory.foodServingSize.insert(0, servingSize);
       _userNutritionHistory.recipe.insert(0, recipe);
 
-      if (_userNutritionHistory.barcodes.length > 50) {
+      if (_userNutritionHistory.barcodes.length > 150) {
         _userNutritionHistory.barcodes.removeLast();
         _userNutritionHistory.foodListItemNames.removeLast();
         _userNutritionHistory.foodServings.removeLast();
@@ -1100,6 +1110,195 @@ class UserNutritionData with ChangeNotifier {
 
   }
 
+  void setUserWeight(double userWeight) {
+    _userWeight = userWeight;
+  }
+
+  void setUserAge(double userAge) {
+    _userAge = userAge;
+  }
+
+  void setUserGender(double userGender) {
+    _userGender = userGender;
+  }
+  void setUserActivity(double userActivity) {
+    _userActivity = userActivity;
+  }
+
+  void addCardioCalories(WorkoutLogModel completedWorkout) {
+    double calculateMET(String exerciseName, double speed, double intensity) {
+      if (exerciseName == "jogging") {
+        return 7;
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 0.0 && speed < 5) {
+        return 6;
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 5.0 && speed < 5.2) {
+        return 8.3;
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 5.2 && speed < 6) {
+        return 9;
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 6.0 && speed < 6.7) {
+        return 9.8;
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 6.7 && speed < 7) {
+        return 10.5;
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 7 && speed < 7.5) {
+        return 11;
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 7.5 && speed < 8) {
+        return 11.5;
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 8 && speed < 8.6) {
+        return 11.8;
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 8.6 && speed < 9) {
+        return 12.3;
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 9 && speed < 10) {
+        return 12.8;
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 10 && speed < 11) {
+        return 14.5;
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 11 && speed < 12) {
+        return 16;
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 12 && speed < 13) {
+        return 19;
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 13 && speed < 14) {
+        return 19.8;
+      } else if ((exerciseName == "running" || exerciseName == "jogging") && speed >= 14) {
+        return 23;
+        ///In swimming intensity is used instead of speed
+      } else if (exerciseName == "swimming" && intensity >= 1 && intensity < 3) {
+        return 6;
+      } else if (exerciseName == "swimming" && intensity >= 3 && intensity < 5) {
+        return 8.3;
+      } else if (exerciseName == "swimming" && intensity >= 5 && intensity < 7) {
+        return 10;
+      } else if (exerciseName == "swimming" && intensity >= 7) {
+        return 13.8;
+      } else if (exerciseName == "swimming") {
+        return 5.8;
+        ///Cycling
+      } else if ((exerciseName == "cycling" || exerciseName == "stationary bike") && speed >= 0.0 && speed < 10) {
+        return 4;
+      } else if ((exerciseName == "cycling" || exerciseName == "stationary bike") && speed >= 10 && speed < 12) {
+        return 6.8;
+      } else if ((exerciseName == "cycling" || exerciseName == "stationary bike") && speed >= 12 && speed < 14) {
+        return 8;
+      } else if ((exerciseName == "cycling" || exerciseName == "stationary bike") && speed >= 14 && speed < 16) {
+        return 10;
+      } else if ((exerciseName == "cycling" || exerciseName == "stationary bike") && speed >= 16 && speed < 20) {
+        return 12;
+      } else if ((exerciseName == "cycling" || exerciseName == "stationary bike") && speed >= 20) {
+        return 15.8;
+        ///Rowing will use intensity instead of speed
+      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && intensity >= 1 && intensity < 3) {
+        return 4.8;
+      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && intensity >= 3 && intensity < 5) {
+        return 7;
+      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && intensity >= 5 && intensity < 7) {
+        return 8.5;
+      } else if ((exerciseName == "rowing" || exerciseName == "rowing machine") && intensity >= 7) {
+        return 12;
+        ///CrossTrainer
+      } else if ((exerciseName == "elliptical trainer machine" || exerciseName == "cross trainer machine") && intensity >= 1 && intensity < 3) {
+        return 4;
+      } else if ((exerciseName == "elliptical trainer machine" || exerciseName == "cross trainer machine") && intensity >= 3 && intensity < 5) {
+        return 5;
+      } else if ((exerciseName == "elliptical trainer machine" || exerciseName == "cross trainer machine") && intensity >= 5 && intensity < 7) {
+        return 6.5;
+      } else if ((exerciseName == "elliptical trainer machine" || exerciseName == "cross trainer machine") && intensity >= 7) {
+        return 7.5;
+      } else {
+        return 3;
+      }
+    }
+
+    double totalCalories(List<double> caloriesList) {
+      double totalCalorieCount = 0;
+      for (double calories in caloriesList) {
+        totalCalorieCount += calories;
+      }
+      return totalCalorieCount;
+    }
+
+    int calculateTimeDifference(String firstTime, String secondTime) {
+
+      List<String> firstTimeSplit = firstTime.split(":");
+      List<String> secondTimeSplit = secondTime.split(":");
+
+      double firstTimeDouble = double.parse(firstTimeSplit[0]);
+      double secondTimeDouble = double.parse(secondTimeSplit[0]);
+
+      if (firstTimeDouble > secondTimeDouble) {
+
+        double dif = 0 + secondTimeDouble;
+        secondTimeSplit[0] = (24 + dif).toString();
+
+      }
+
+      DateTime now = DateTime.now();
+
+      DateTime firstTimeDateTime = DateTime(now.year, now.month, now.day).add(
+          Duration(hours: int.parse(firstTimeSplit[0]), minutes: int.parse(firstTimeSplit[1])));
+      DateTime secondTimeDateTime = DateTime(now.year, now.month, now.day).add(
+          Duration(hours: int.parse(secondTimeSplit[0]), minutes: int.parse(secondTimeSplit[1])));
+
+      return secondTimeDateTime.difference(firstTimeDateTime).inMinutes;
+    }
+
+    List<double> caloriesBurnedList = [];
+
+    String firstSet = "";
+    String lastSet = "";
+    double weightsCalories = 0;
+
+    for (WorkoutLogExerciseDataModel exercise in completedWorkout.exercises) {
+      if (exercise.type == 1) {
+
+        ///Using weight and reps as distance and time because the code existed already
+        double averageSpeedMPH = ((exercise.weight/exercise.reps)*60)/1.609;
+
+        double MET = calculateMET(exercise.measurementName.toLowerCase(), averageSpeedMPH, exercise.intensityNumber!);
+
+        caloriesBurnedList.add((MET * 3.5 * _userWeight / 200)*exercise.reps);
+
+      } else if(exercise.type == 0) {
+
+        if (firstSet.isEmpty) {
+          firstSet = exercise.timestamp;
+        }
+        lastSet = exercise.timestamp;
+
+      }
+    }
+
+    if (firstSet.isNotEmpty) {
+      weightsCalories = 200 * (calculateTimeDifference(firstSet, lastSet)/60);
+      foodListItemsExercise.add(
+        ListExerciseItem(
+          name: "FIT Tracked Resistance",
+          category: 'exercise',
+          calories: weightsCalories.toStringAsFixed(0),
+          extraInfoField: completedWorkout.routineNames.join(","),
+          hideDelete: false,
+        ),
+      );
+    }
+
+    if (caloriesBurnedList.isNotEmpty) {
+      foodListItemsExercise.add(
+        ListExerciseItem(
+          name: "FIT Tracked Cardio",
+          category: 'exercise',
+          calories: totalCalories(caloriesBurnedList).toStringAsFixed(0),
+          extraInfoField: completedWorkout.routineNames.join(","),
+          hideDelete: false,
+        ),
+      );
+    }
+
+    if (caloriesBurnedList.isNotEmpty || firstSet.isNotEmpty) {
+      calculateMacros();
+      notifyListeners();
+      UpdateUserNutritionalData(_userDailyNutrition);
+    }
+
+    notifyListeners();
+  }
+
   void addWalkingCalories(double caloriesBurned, int steps) {
 
     try {
@@ -1397,8 +1596,6 @@ class UserNutritionData with ChangeNotifier {
     _userNutritionCustomRecipes.foodListItemNames.add(foodName);
     _userNutritionCustomRecipes.foodServings.add(servings);
     _userNutritionCustomRecipes.foodServingSize.add(servingSize);
-
-    print(_userNutritionCustomRecipes.barcodes.length);
 
     UpdateUserCustomRecipeData(userNutritionCustomRecipes);
 

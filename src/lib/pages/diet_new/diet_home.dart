@@ -1,4 +1,5 @@
 import 'package:fitness_tracker/pages/groceries/groceries_home.dart';
+import 'package:fitness_tracker/widgets/general/screen_width_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:health/health.dart';
@@ -42,6 +43,7 @@ class DietHomePage extends StatelessWidget {
                     child: DailyNutritionDisplay(),
                   ),
                 ),
+
                 DietHomeFoodDisplay(
                   bigContainerMin: _smallContainerMin,
                   height: _height,
@@ -101,11 +103,9 @@ class DietHomePage extends StatelessWidget {
 
                 ),
 
-                ElevatedButton(
-                  onPressed: () => context.read<PageChange>().changePageCache(const GroceriesHome()),
-                  child: const Text(
-                    "Groceries",
-                  ),
+                ScreenWidthButton(
+                  label: "Groceries List",
+                  onTap: () => context.read<PageChange>().changePageCache(GroceriesHome()),
                 ),
 
                 SizedBox(

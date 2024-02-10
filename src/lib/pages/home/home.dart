@@ -1,22 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitness_tracker/providers/general/general_data_provider.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as chartColour;
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/constants.dart';
-import 'package:fitness_tracker/widgets/home/home_bar_chart.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tilt/flutter_tilt.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'dart:math';
 
 import '../../helpers/general/numerical_range_formatter_extension.dart';
-import '../../helpers/workout/find_routine_id.dart';
 import '../../helpers/general/firebase_auth_service.dart';
 import '../../models/stats/user_data_model.dart';
 import '../../providers/general/database_write.dart';
 import '../../providers/stats/user_data.dart';
 import '../general/auth_choose_login_signup.dart';
+import '../general_new/calculate_calories_page.dart';
+import "package:fitness_tracker/helpers/general/custom_icons.dart";
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,599 +29,281 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  late UserDataModel userData = context.read<UserData>().userData;
-  late String _dropdownActivityValue = userData.activityLevel;
-  late String _dropdownWeightValue = userData.weightGoal;
-  late String _dropdownGenderValue = userData.biologicalSex;
+  Future<void> signOutUser() async {
 
-  late TextEditingController heightController = TextEditingController(text: userData.height);
-  late final heightKey = GlobalKey<FormState>();
+    context.read<PageChange>().setCaloriesCalculated(false);
 
-  late TextEditingController weightController = TextEditingController(text: userData.weight);
-  late final weightKey = GlobalKey<FormState>();
-
-  late TextEditingController ageController = TextEditingController(text: userData.age);
-  late final ageKey = GlobalKey<FormState>();
-
-  bool _loading = true;
-  late int userDailyStreak;
-
-  late Color streakColour;
-
-  late List caloriesProgress,
-      proteinProgress,
-      fatProgress,
-      carbohydratesProgress;
-  late List<dailyWorkoutVolume> workoutData;
-  late String currentWorkoutName;
-
-
-  void calculateCalories() {
-
-    if (heightController.text.isNotEmpty && weightController.text.isNotEmpty
-    && ageController.text.isNotEmpty) {
-      late double calories;
-      late double calAdjustment;
-      late double bmrMult;
-      late double weightGain;
-
-      switch (double.parse(_dropdownActivityValue)) {
-        case 0:
-          bmrMult = 1.2;
-        case 1:
-          bmrMult = 1.375;
-        case 2:
-          bmrMult = 1.55;
-        case 3:
-          bmrMult = 1.725;
-        case 4:
-          bmrMult = 1.9;
-      }
-
-      switch (double.parse(_dropdownWeightValue)) {
-        case 0:
-          weightGain = -500;
-        case 1:
-          weightGain = -250;
-        case 2:
-          weightGain = 0;
-        case 3:
-          weightGain = 250;
-        case 4:
-          weightGain = 500;
-      }
-
-      switch (double.parse(_dropdownGenderValue)) {
-        case 0:
-          calAdjustment = 5;
-        case 1:
-          calAdjustment = -161;
-      }
-
-      calories = ((
-          10 * double.parse(weightController.text) + 6.25 * double.parse(heightController.text)
-              - 5 * double.parse(ageController.text) + calAdjustment
-      ) * bmrMult) + weightGain;
-
-      print(calories);
-
-      context.read<UserData>().updateUserBioData(UserDataModel(
-          height: heightController.text,
-          weight: weightController.text,
-          age: ageController.text,
-          activityLevel: _dropdownActivityValue,
-          weightGoal: _dropdownWeightValue,
-          biologicalSex: _dropdownGenderValue,
-          calories: calories.toStringAsFixed(2)
-      ));
-
-      context.read<UserNutritionData>().setCalories(calories.toStringAsFixed(2));
-    }
-  }
-
-
-  @override
-  void initState() {
-    userDailyStreak = 4;
-    if (userDailyStreak > 0) {
-      streakColour = streakColourOrange;
-    } else {
-      streakColour = streakColourGrey;
+    if (await GoogleSignIn().isSignedIn()) {
+      await GoogleSignIn().disconnect();
     }
 
-    workoutData = [
-      dailyWorkoutVolume(
-        routine: "Monday",
-        volume: 8145,
-        barChartColour: chartColour.ColorUtil.fromDartColor(appSecondaryColour),
-      ),
-      dailyWorkoutVolume(
-        routine: "Tuesday",
-        volume: 12656,
-        barChartColour: chartColour.ColorUtil.fromDartColor(appSecondaryColour),
-      ),
-      dailyWorkoutVolume(
-        routine: "Wednesday",
-        volume: 10653,
-        barChartColour: chartColour.ColorUtil.fromDartColor(appSecondaryColour),
-      ),
-      dailyWorkoutVolume(
-        routine: "Thursday",
-        volume: 8145,
-        barChartColour: chartColour.ColorUtil.fromDartColor(appSecondaryColour),
-      ),
-      dailyWorkoutVolume(
-        routine: "Friday",
-        volume: 9453,
-        barChartColour: chartColour.ColorUtil.fromDartColor(appSecondaryColour),
-      ),
-      dailyWorkoutVolume(
-        routine: "Saturday",
-        volume: 14593,
-        barChartColour: chartColour.ColorUtil.fromDartColor(appSecondaryColour),
-      ),
-      dailyWorkoutVolume(
-        routine: "Sunday",
-        volume: 13592,
-        barChartColour: chartColour.ColorUtil.fromDartColor(appSecondaryColour),
-      ),
-    ];
-
-    _loading = false;
-
-    super.initState();
+    await FirebaseAuth.instance.signOut();
   }
+
+  double fireScalingFactor(int dailyStreak) {
+
+    double scalingFactor = ((log(0.5*(dailyStreak+8)) / log(10))/0.6)-0.3;
+
+    return scalingFactor;
+  }
+
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    double _width = 393.w;
-    double _height = 851.h;
     double _margin = 15.w;
-    double _bigContainerMin = 160.h;
-    double _smallContainerMin = 95.h;
     return Scaffold(
+      key: _scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: appTertiaryColour,
+        title: const Text(
+          "Home",
+          style: boldTextStyle,
+        ),
+      ),
+      endDrawer: Drawer(
+        backgroundColor: appPrimaryColour,
+        child: NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (overscroll) {
+            overscroll.disallowIndicator();
+            return true;
+          },
+          child: Column(
+            children: [
+              AppBar(
+                backgroundColor: appTertiaryColour,
+                title: const Text(
+                  "Settings",
+                  style: boldTextStyle,
+                ),
+                automaticallyImplyLeading: false,
+                actions: [Container()],
+              ),
+              TextButton(
+                onPressed: () {
+                  _scaffoldKey.currentState?.closeEndDrawer();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CalculateCaloriesPage(),
+                    ),
+                  );
+                },
+                child: Text(
+                  "Update Calorie Goal",
+                  style: boldTextStyle.copyWith(color: appSecondaryColour),
+                ),
+              ),
+              const Spacer(flex: 20),
+              TextButton(
+                  onPressed: () => signOutUser(),
+                  child: Text(
+                    "Logout",
+                    style: boldTextStyle.copyWith(color: Colors.red),
+                  ),
+              ),
+              const Spacer(),
+            ],
+          ),
+        ),
+      ),
       backgroundColor: appPrimaryColour,
       body: NotificationListener<OverscrollIndicatorNotification>(
         onNotification: (overscroll) {
           overscroll.disallowIndicator();
           return true;
         },
-        child: _loading
-            ? const Center(
-                child: CircularProgressIndicator(
-                color: appSecondaryColour,
-              ))
-            : Stack(
-              children: [
-                ListView(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top:16),
-                        child: ScreenWidthContainer(
-                          minHeight: _bigContainerMin * 0.96,
-                          maxHeight: _bigContainerMin * 1.5,
-                          height: _height * 0.3,
-                          margin: _margin/2,
-                          child: Column(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(top: 2),
-                                child: const Text(
-                                  "Workout Volume Daily (Kg)",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              HomeBarChart(
-                                chartWorkoutData: workoutData,
-                                chartHeight: ((_height / 100) * 23.2),
-                                chartWidth: ((_width / 100) * 97),
-                              ),
-                            ],
+        child: Center(
+          child: Tilt(
+            clipBehavior: Clip.hardEdge,
+            border: Border.all(
+              color: Colors.orangeAccent
+            ),
+            borderRadius: BorderRadius.circular(30),
+            tiltConfig: const TiltConfig(
+              enableSensorRevert: true,
+              sensorFactor: 5,
+              angle: 20,
+              leaveDuration: Duration(seconds: 2),
+              leaveCurve: Curves.elasticOut,
+            ),
+            shadowConfig: const ShadowConfig(
+              disable: false,
+              color: Colors.orangeAccent,
+              minBlurRadius: 0,
+              maxBlurRadius: 0,
+              offsetFactor: 0.015,
+            ),
+            lightConfig: const LightConfig(
+              color: Color.fromRGBO(255, 246, 163, 0.0),
+              minIntensity: 0,
+              maxIntensity: 0.3,
+            ),
+            childLayout: ChildLayout(
+
+              outer: [
+                Positioned.fill(
+                  bottom: 60,
+                  child: TiltParallax(
+                    size: const Offset(36, 36),
+                    child: Center(
+                      child: Icon(
+                        MyFlutterApp.campfire,
+                        color: streakColourOrangeDark,
+                        size: 60.h*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"]),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned.fill(
+                  bottom: 60,
+                  child: TiltParallax(
+                    size: const Offset(37, 37),
+                    child: Center(
+                      child: Icon(
+                        MyFlutterApp.campfire,
+                        color: streakColourOrangeDark,
+                        size: 60.h*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"]),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned.fill(
+                  bottom: 60,
+                  child: TiltParallax(
+                    size: const Offset(38, 38),
+                    child: Center(
+                      child: Icon(
+                        MyFlutterApp.campfire,
+                        color: streakColourOrangeDark,
+                        size: 60.h*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"]),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned.fill(
+                  bottom: 60,
+                  child: TiltParallax(
+                    size: const Offset(39, 39),
+                    child: Center(
+                      child: Icon(
+                        MyFlutterApp.campfire,
+                        color: streakColourOrangeDark,
+                        size: 60.h*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"]),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned.fill(
+                  bottom: 60,
+                  child: TiltParallax(
+                    size: const Offset(40, 40),
+                    child: Center(
+                      child: Icon(
+                        MyFlutterApp.campfire,
+                        color: streakColourOrange,
+                        size: 60.h*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"]),
+                      ),
+                    ),
+                  ),
+                ),
+
+                Positioned.fill(
+                  bottom: 60,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: TiltParallax(
+                      size: const Offset(76, 76),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 38.h*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"])),
+                        child: Text(
+                          context.read<GeneralDataProvider>().dailyStreak["dailyStreak"].toString(),
+                          style: boldTextStyle.copyWith(
+                              color: Colors.grey,
+                              fontSize: 18*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"]),
                           ),
                         ),
                       ),
-/*                      ScreenWidthContainer(
-                        minHeight: _smallContainerMin,
-                        maxHeight: _smallContainerMin * 1.5,
-                        height: (_height / 100) * 13,
-                        margin: _margin,
-                        child: Column(
-                          children: [
-                            const Spacer(flex: 1),
-                            Icon(
-                              MdiIcons.fire,
-                              color: streakColour,
-                              size: 50,
-                            ),
-                            Text(
-                              "$userDailyStreak Day Streak",
-                              style: TextStyle(
-                                color: streakColour,
-                                fontSize: 20,
-                              ),
-                            ),
-                            const Spacer(flex: 1),
-                          ],
-                        ),
-                      ),*/
-/*                      ScreenWidthContainer(
-                        minHeight: _bigContainerMin,
-                        maxHeight: _bigContainerMin * 1.6,
-                        height: (_height / 100) * 18,
-                        margin: _margin,
-                        child: Stack(
-                          children: [
-                            Align(
-                              alignment: Alignment.topCenter,
-                              child: Container(
-                                margin: const EdgeInsets.only(top: 10),
-                                child: const Text(
-                                  "Today's Scheduled Workout",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Container(
-                                margin: const EdgeInsets.only(top: 15),
-                                height: (_height / 100) * 21,
-                                width: (_width / 100) * 93,
-                                child: FractionallySizedBox(
-                                  heightFactor: 0.45,
-                                  widthFactor: 0.65,
-                                  child: AppButton(
-                                    buttonText:
-                                    (context.watch<TrainingPlanProvider>().currentlySelectedPlan.trainingPlanName.isNotEmpty) ?
-                                    context.read<RoutinesList>().workoutRoutines[
-                                      findRoutineID(
-                                        context.read<RoutinesList>().workoutRoutines,
-                                        context
-                                            .read<TrainingPlanProvider>()
-                                            .currentlySelectedPlan,
-                                        0,
-                                      )]
-                                        .routineName
-                                        : "None Selected",
-                                    onTap: (context.watch<TrainingPlanProvider>().currentlySelectedPlan.trainingPlanName.isNotEmpty) ? () {
-                                      context.read<PageChange>().changePageCache(
-                                        ShowRoutinesScreen(
-                                          //hard coded currently
-                                          routine: context.read<RoutinesList>().workoutRoutines[
-                                          findRoutineID(
-                                            context.read<RoutinesList>().workoutRoutines,
-                                            context
-                                                .read<TrainingPlanProvider>()
-                                                .currentlySelectedPlan,
-                                            0,
-                                          )],
-                                          returnScreen: const WorkoutsHomePage(),
-                                        ),
-                                      );
-                                    } : () {},
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),*/
-                      ScreenWidthContainer(
-                        minHeight: _smallContainerMin,
-                        maxHeight: _smallContainerMin * 20,
-                        height: (_height / 100) * 55,
-                        margin: _margin,
-                        child: Column(
-                          children: [
-                            Form(
-                              key: heightKey,
-                              child: TextFormField(
-                                controller: heightController,
-                                cursorColor: Colors.white,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (20),
-                                ),
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  NumericalRangeFormatter(min: 1, max: 300),
-                                ],
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(bottom: (_width/12)/2.5, left: 5, right: 5,),
-                                  hintText: 'Height (CM)...',
-                                  suffix: const Text("Cm"),
-                                  hintStyle: const TextStyle(
-                                    color: Colors.white54,
-                                    fontSize: (18),
-                                  ),
-                                  errorStyle: const TextStyle(
-                                    height: 0,
-                                  ),
-                                  focusedBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: appSecondaryColour,
-                                    ),
-                                  ),
-                                ),
-                                validator: (String? value) {
-                                  if (value!.isNotEmpty) {
-                                    return null;
-                                  }
-                                  return "";
-                                },
-                              ),
-                            ),
-                            Form(
-                              key: weightKey,
-                              child: TextFormField(
-                                controller: weightController,
-                                cursorColor: Colors.white,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (20),
-                                ),
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  NumericalRangeFormatter(min: 1, max: 800),
-                                ],
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(bottom: (_width/12)/2.5, left: 5, right: 5,),
-                                  hintText: 'Weight (KG)...',
-                                  suffix: const Text("Kg"),
-                                  hintStyle: const TextStyle(
-                                    color: Colors.white54,
-                                    fontSize: (18),
-                                  ),
-                                  errorStyle: const TextStyle(
-                                    height: 0,
-                                  ),
-                                  focusedBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: appSecondaryColour,
-                                    ),
-                                  ),
-                                ),
-                                validator: (String? value) {
-                                  if (value!.isNotEmpty) {
-                                    return null;
-                                  }
-                                  return "";
-                                },
-                              ),
-                            ),
-                            Form(
-                              key: ageKey,
-                              child: TextFormField(
-                                controller: ageController,
-                                cursorColor: Colors.white,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (20),
-                                ),
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
-                                  NumericalRangeFormatter(min: 1, max: 123),
-                                ],
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(bottom: (_width/12)/2.5, left: 5, right: 5,),
-                                  hintText: 'Age (Years)...',
-                                  suffix: const Text("Years"),
-                                  hintStyle: const TextStyle(
-                                    color: Colors.white54,
-                                    fontSize: (18),
-                                  ),
-                                  errorStyle: const TextStyle(
-                                    height: 0,
-                                  ),
-                                  focusedBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: appSecondaryColour,
-                                    ),
-                                  ),
-                                ),
-                                validator: (String? value) {
-                                  if (value!.isNotEmpty) {
-                                    return null;
-                                  }
-                                  return "";
-                                },
-                              ),
-                            ),
-                            Theme(
-                              data: Theme.of(context).copyWith(
-                                canvasColor: appTertiaryColour,
-                              ),
-                              child: DropdownButton(
-                                value: _dropdownActivityValue,
-                                items: const [
-                                  DropdownMenuItem(child: Text("Sedentary",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                    ),
-                                  ),
-                                    value: "0",
-                                  ),
-                                  DropdownMenuItem(child: Text("Lightly Active",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                    value: "1",
-                                  ),
-                                  DropdownMenuItem(child: Text("Moderately Active",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                    value: "2",
-                                  ),
-                                  DropdownMenuItem(child: Text("Very Active",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                    value: "3",
-                                  ),
-                                  DropdownMenuItem(child: Text("Extremely Active",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                    value: "4",
-                                  ),
-                                ],
-                                onChanged: (value) {
-                                  setState(() {
-                                    _dropdownActivityValue = value!;
-                                  });
-                                }
-                              ),
-                            ),
-                            Theme(
-                              data: Theme.of(context).copyWith(
-                                canvasColor: appTertiaryColour,
-                              ),
-                              child: DropdownButton(
-                                  value: _dropdownWeightValue,
-                                  items: const [
-                                    DropdownMenuItem(child: Text("Extreme Weight Loss",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                      value: "0",
-                                    ),
-                                    DropdownMenuItem(child: Text("Mild Weight Loss",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                      value: "1",
-                                    ),
-                                    DropdownMenuItem(child: Text("Maintain Weight",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                      value: "2",
-                                    ),
-                                    DropdownMenuItem(child: Text("Mild Weight Gain",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                      value: "3",
-                                    ),
-                                    DropdownMenuItem(child: Text("Extreme Weight Gain",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                      value: "4",
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _dropdownWeightValue = value!;
-                                    });
-                                  }
-                              ),
-                            ),
-                            Theme(
-                              data: Theme.of(context).copyWith(
-                                canvasColor: appTertiaryColour,
-                              ),
-                              child: DropdownButton(
-                                  value: _dropdownGenderValue,
-                                  items: const [
-                                    DropdownMenuItem(child: Text("Male",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                      value: "0",
-                                    ),
-                                    DropdownMenuItem(child: Text("Female",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                      value: "1",
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _dropdownGenderValue = value!;
-                                    });
-                                  }
-                              ),
-                            ),
-                            AppButton(
-                              onTap: calculateCalories,
-                              buttonText: "Calculate Calories",
-                            ),
-                            Text(
-                              "Calories: " + context.watch<UserNutritionData>().caloriesGoal.toString() + " Kcal",
-                              style: const TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            Text(
-                              "Protein: " + context.read<UserNutritionData>().proteinGoal.toString() + " g",
-                              style: const TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            Text(
-                              "Carbs: " + context.read<UserNutritionData>().carbohydratesGoal.toString() + " g",
-                              style: const TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            Text(
-                              "Fat: " + context.read<UserNutritionData>().fatGoal.toString() + " g",
-                              style: const TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Spacer(flex: 1),
-                          ],
+                    ),
+                  ),
+                ),
+                Positioned.fill(
+                  bottom: 60,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: TiltParallax(
+                      size: const Offset(77, 77),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 38.h*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"])),
+                        child: Text(
+                          context.read<GeneralDataProvider>().dailyStreak["dailyStreak"].toString(),
+                          style: boldTextStyle.copyWith(
+                            color: Colors.grey,
+                            fontSize: 18*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"]),
+                          ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    margin: const EdgeInsets.all(9),
-                    child: SizedBox(
-                      width: 35,
-                      height: 35,
-                      child: FittedBox(
-                        child: FloatingActionButton(
-                          backgroundColor: Colors.red,
-                          onPressed: () {
-                            FirebaseAuth auth = FirebaseAuth.instance;
-                            context.read<FirebaseAuthenticationService>().firebaseSignOut();
-                            auth.signOut().then((response) {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (context) => const ChooseLoginSignUp(),
+                ),
+                Positioned.fill(
+                  bottom: 60,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: TiltParallax(
+                      size: const Offset(78, 78),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 38.h*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"])),
+                        child: Text(
+                          context.read<GeneralDataProvider>().dailyStreak["dailyStreak"].toString(),
+                          style: boldTextStyle.copyWith(
+                            color: Colors.grey,
+                            fontSize: 18*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"]),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned.fill(
+                  bottom: 60,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: TiltParallax(
+                      size: const Offset(79, 79),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 38.h*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"])),
+                        child: Text(
+                          context.read<GeneralDataProvider>().dailyStreak["dailyStreak"].toString(),
+                          style: boldTextStyle.copyWith(
+                            color: Colors.grey,
+                            fontSize: 18*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"]),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned.fill(
+                  bottom: 60,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: TiltParallax(
+                      size: const Offset(80, 80),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 38.h*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"])),
+                        child: Text(
+                          context.read<GeneralDataProvider>().dailyStreak["dailyStreak"].toString(),
+                          style: boldTextStyle.copyWith(
+                              color: Colors.white,
+                              fontSize: 18*fireScalingFactor(context.read<GeneralDataProvider>().dailyStreak["dailyStreak"]),
+                              shadows: [
+                                const Shadow(
+                                  offset: Offset(01.0, 2.0),
+                                  blurRadius: 3.0,
+                                  color: Colors.black,
                                 ),
-                              );
-                              }
-                            );
-                          },
-                          child: const Icon(
-                            Icons.logout,
-                            size: 40,
+                              ]
                           ),
                         ),
                       ),
@@ -627,7 +311,111 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ],
+
+              inner: [
+
+                Positioned.fill(
+                  bottom: 60,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: TiltParallax(
+                      size: const Offset(-80, -80),
+                      child: Text(
+                        "Daily Streak",
+                        style: boldTextStyle.copyWith(
+                            color: Colors.grey,
+                            fontSize: 42,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                Positioned.fill(
+                  bottom: 60,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: TiltParallax(
+                      size: const Offset(-79, -79),
+                      child: Text(
+                        "Daily Streak",
+                        style: boldTextStyle.copyWith(
+                            color: Colors.grey,
+                            fontSize: 42,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                Positioned.fill(
+                  bottom: 60,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: TiltParallax(
+                      size: const Offset(-78, -78),
+                      child: Text(
+                        "Daily Streak",
+                        style: boldTextStyle.copyWith(
+                          color: Colors.grey,
+                          fontSize: 42,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                Positioned.fill(
+                  bottom: 60,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: TiltParallax(
+                      size: const Offset(-77, -77),
+                      child: Text(
+                        "Daily Streak",
+                        style: boldTextStyle.copyWith(
+                          color: Colors.grey,
+                          fontSize: 42,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                Positioned.fill(
+                  bottom: 60,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: TiltParallax(
+                      size: const Offset(-76, -76),
+                      child: Text(
+                        "Daily Streak",
+                        style: boldTextStyle.copyWith(
+                            color: Colors.white,
+                            fontSize: 42,
+                            shadows: [
+                              const Shadow(
+                                offset: Offset(01.0, 2.0),
+                                blurRadius: 3.0,
+                                color: Colors.black,
+                              ),
+                            ]
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+              ],
+
             ),
+            child: Container(
+              width: 300.w,
+              height: 580.h,
+              color: appTertiaryColour,
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -2,169 +2,44 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/helpers/diet/nutrition_tracker.dart';
 import 'package:fitness_tracker/models/diet/exercise_calories_list_item.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
+import 'package:fitness_tracker/models/groceries/grocery_item.dart';
 import 'package:fitness_tracker/models/stats/user_data_model.dart';
-import 'package:fitness_tracker/models/workout/exercise_model.dart';
-import 'package:fitness_tracker/models/workout/routines_model.dart';
-import 'package:fitness_tracker/models/workout/training_plan_model.dart';
 import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
+import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
+import 'package:fitness_tracker/models/workout/routines_model.dart';
+import 'package:fitness_tracker/models/workout/workout_log_exercise_data.dart';
+import 'package:fitness_tracker/models/workout/workout_log_model.dart';
+import 'package:fitness_tracker/models/workout/workout_overall_stats_model.dart';
 import 'package:fitness_tracker/providers/diet/user_nutrition_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 import 'dart:async';
 
 import '../../models/diet/food_data_list_item.dart';
 import '../../models/diet/food_item.dart';
 import '../../models/stats/stats_model.dart';
+import '../../models/workout/exercise_model.dart';
+import '../../models/workout/reps_weight_stats_model.dart';
 
-GetPreDefinedCategories() async {
 
-  final snapshot = await FirebaseFirestore.instance
-      .collection('predefined-data')
-      .doc('predefined-categories')
-      .get();
-  final List<String> data = List<String>.from(snapshot.get("categories"));
-  return data;
+String checkIfValidNumber(String value) {
+
+  return double.tryParse(value) == null ? "1" : value;
+
 }
 
-GetPreDefinedExercises() async {
+List<String> checkIfValidNumberList(List<String> valueList) {
 
-  final snapshot = await FirebaseFirestore.instance
-      .collection('predefined-data')
-      .doc('predefined-exercises')
-      .get();
+  return [
+    for (String item in valueList)
+      double.tryParse(item) == null ? "1" : item
+  ];
 
-  final _data = snapshot.get("exercises");
-  final List<Exercises> data = List<Exercises>.generate(_data.length, (int index) {
-    return Exercises(
-        exerciseName: _data[index]["exerciseName"],
-        exerciseCategory: _data[index]["exerciseCategory"],
-    );
-  });
-  return data;
 }
 
-GetPreDefinedRoutines() async {
-
-  final snapshot = await FirebaseFirestore.instance
-      .collection('predefined-data')
-      .doc('predefined-routines')
-      .get();
-
-  final _data = snapshot.get("routines");
-  final List<WorkoutRoutine> data = List<WorkoutRoutine>.generate(_data.length, (int index) {
-    final List<String> exercises = List<String>.generate(_data[index]["exercises"].length, (int indexExercises) {
-      return _data[index]["exercises"][indexExercises];
-    });
-    return WorkoutRoutine(
-      routineID: _data[index]["routineID"],
-      routineName: _data[index]["routineName"],
-      exercises: exercises,
-    );
-  });
-  return data;
-}
-
-GetPreDefinedTrainingPlans() async {
-
-  final snapshot = await FirebaseFirestore.instance
-      .collection('predefined-data')
-      .doc('predefined-training-plans')
-      .get();
-
-  final _data = snapshot.get("training-plans");
-  final List<TrainingPlan> data = List<TrainingPlan>.generate(_data.length, (int index) {
-    final List<String> routineIDs = List<String>.generate(_data[index]["routineIDs"].length, (int indexRoutines) {
-      return _data[index]["routineIDs"][indexRoutines];
-    });
-    return TrainingPlan(
-      trainingPlanID: _data[index]["trainingPlanID"],
-      routineIDs: routineIDs,
-      trainingPlanName: _data[index]["trainingPlanName"],
-    );
-  });
-  return data;
-}
-
-GetUserCategories() async {
-  try {
-
-    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  final snapshot = await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc("${firebaseAuth.currentUser?.uid.toString()}")
-      .collection("workout-data")
-      .doc("categories")
-      .get();
-  final List<String> data = List<String>.from(snapshot.get("categories"));
-  return data;
-
-  } catch (exception) {
-    print(exception);
-  }
-}
-
-GetUserRoutines() async {
-
-  try {
-
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  final snapshot = await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc("${firebaseAuth.currentUser?.uid.toString()}")
-      .collection("workout-data")
-      .doc("routines")
-      .get();
-
-  final _data = snapshot.get("routines");
-  final List<WorkoutRoutine> data = List<WorkoutRoutine>.generate(_data.length, (int index) {
-    final List<String> exercises = List<String>.generate(_data[index]["exercises"].length, (int indexExercises) {
-      return _data[index]["exercises"][indexExercises];
-    });
-    return WorkoutRoutine(
-      routineID: _data[index]["routineID"],
-      routineName: _data[index]["routineName"],
-      exercises: exercises,
-    );
-  });
-  return data;
-
-  } catch (exception) {
-    print(exception);
-  }
-}
-
-GetUserTrainingPlans() async {
-
-  try {
-
-    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection("workout-data")
-        .doc("training-plans")
-        .get();
-
-    final _data = snapshot.get("training-plans");
-    final List<TrainingPlan> data = List<TrainingPlan>.generate(_data.length, (int index) {
-      final List<String> routineIDs = List<String>.generate(_data[index]["routineIDs"].length, (int indexRoutines) {
-        return _data[index]["routineIDs"][indexRoutines];
-      });
-      return TrainingPlan(
-        trainingPlanID: _data[index]["trainingPlanID"],
-        routineIDs: routineIDs,
-        trainingPlanName: _data[index]["trainingPlanName"],
-      );
-    });
-    return data;
-
-  } catch (exception) {
-    print(exception);
-  }
-}
 
 GetUserDataTrainingPlan() async {
   try {
@@ -186,8 +61,6 @@ GetUserDataTrainingPlan() async {
 }
 
 GetUserMeasurements() async {
-
-
 
   try {
 
@@ -220,32 +93,6 @@ GetUserMeasurements() async {
     print(data);
     print(data[0].measurementName);
 
-    return data;
-
-  } catch (exception) {
-    print(exception);
-  }
-}
-
-GetUserExercises() async {
-  try {
-
-    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection("workout-data")
-        .doc("exercises")
-        .get();
-
-    final _data = snapshot.get("exercises");
-    final List<Exercises> data = List<Exercises>.generate(_data.length, (int index) {
-      return Exercises(
-        exerciseName: _data[index]["exerciseName"],
-        exerciseCategory: _data[index]["exerciseCategory"],
-      );
-    });
     return data;
 
   } catch (exception) {
@@ -416,7 +263,6 @@ GetUserNutritionData(String date) async {
 
     final Map _data = snapshot.get("nutrition-data");
 
-
     Future<List<ListFoodItem>> ToListFoodItem (_data) async {
       try {
 
@@ -425,8 +271,8 @@ GetUserNutritionData(String date) async {
           return ListFoodItem(
             category: _data[index]["category"] ?? "",
             barcode: _data[index]["barcode"] ?? "",
-            foodServingSize: _data[index]["foodServingSize"] ?? "",
-            foodServings: _data[index]["foodServings"] ?? "",
+            foodServingSize: checkIfValidNumber(_data[index]["foodServingSize"]) ?? "",
+            foodServings: checkIfValidNumber(_data[index]["foodServings"]) ?? "",
             foodItemData: FoodDefaultData(),
             recipe: _data[index]["recipe"] as bool,
           );
@@ -521,8 +367,8 @@ GetUserNutritionHistory() async {
     return UserNutritionFoodModel(
       barcodes: List<String>.from(_data["barcodes"] as List),
       foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
-      foodServings: List<String>.from(_data["foodServings"] as List),
-      foodServingSize: List<String>.from(_data["foodServingSize"] as List),
+      foodServings: checkIfValidNumberList(List<String>.from(_data["foodServings"] as List)),
+      foodServingSize: checkIfValidNumberList(List<String>.from(_data["foodServingSize"] as List)),
       recipe: List<bool>.from(_data["recipe"] as List),
     );
 
@@ -548,8 +394,8 @@ GetUserCustomFood() async {
     return UserNutritionFoodModel(
       barcodes: List<String>.from(_data["barcodes"] as List),
       foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
-      foodServings: List<String>.from(_data["foodServings"] as List),
-      foodServingSize: List<String>.from(_data["foodServingSize"] as List),
+      foodServings: checkIfValidNumberList(List<String>.from(_data["foodServings"] as List)),
+      foodServingSize: checkIfValidNumberList(List<String>.from(_data["foodServingSize"] as List)),
       recipe: List<bool>.generate(_data["barcodes"].length, (index) => false),
     );
 
@@ -575,8 +421,8 @@ GetUserCustomRecipes() async {
     return UserNutritionFoodModel(
       barcodes: List<String>.from(_data["barcodes"] as List),
       foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
-      foodServings: List<String>.from(_data["foodServings"] as List),
-      foodServingSize: List<String>.from(_data["foodServingSize"] as List),
+      foodServings: checkIfValidNumberList(List<String>.from(_data["foodServings"] as List)),
+      foodServingSize: checkIfValidNumberList(List<String>.from(_data["foodServingSize"] as List)),
       recipe: List<bool>.generate(_data["barcodes"].length, (index) => true),
     );
 
@@ -685,32 +531,52 @@ GetFoodDataFromFirebaseRecipe(String barcode) async {
   }
 }
 
-
 GetRecipeFoodList(List<ListFoodItem> foodList) async {
+
+  List<List<String>> splitList(List<String> list, int chunkSize) {
+    List<List<String>> result = [];
+
+    for (int i = 0; i < list.length; i += chunkSize) {
+      int end = (i + chunkSize < list.length) ? i + chunkSize : list.length;
+      result.add(list.sublist(i, end));
+    }
+
+    return result;
+  }
+
+  List<String> recipeBarcodeList = List.generate(foodList.length, (index) => foodList[index].barcode);
+
+  List<List<String>> recipeBarcodeListofLists = splitList(recipeBarcodeList, 10);
+
+  List<FoodItem> foodItemDataComplete = [];
 
   try{
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('food-data')
-        .where(FieldPath.documentId, whereIn: List.generate(foodList.length, (index) => foodList[index].barcode))
-        .get();
+    for (List<String> barcodes in recipeBarcodeListofLists) {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('food-data')
+          .where(FieldPath.documentId, whereIn: barcodes)
+          .get();
 
-    List<FoodItem> foodItemData = [
-      for (QueryDocumentSnapshot document in snapshot.docs)
-        ConvertToFoodItem(document.get("food-data"), firebase: true)
-          ..firebaseItem = true,
-    ];
+      List<FoodItem> foodItemData = [
+        for (QueryDocumentSnapshot document in snapshot.docs)
+          ConvertToFoodItem(document.get("food-data"), firebase: true)
+            ..firebaseItem = true,
+      ];
 
-    final foodListMap = {for (final food in foodItemData) food.barcode : food};
-    for (final food in foodList) {
-      ///TODO Implement null check
-      food.foodItemData = foodListMap[food.barcode]!;
+      foodItemDataComplete.addAll(foodItemData);
     }
 
-    return foodList;
+      final foodListMap = {for (final food in foodItemDataComplete) food.barcode : food};
+      for (final food in foodList) {
+        ///TODO Implement null check
+        food.foodItemData = foodListMap[food.barcode]!;
+      }
+
+      return foodList;
 
   } catch (exception) {
-    print("nutrition failed");
+    print("Recipe fetch failed");
     print(exception);
 
   }
@@ -761,4 +627,540 @@ GetUserCalories() async {
   } catch (exception) {
     print(exception);
   }
+}
+
+GetUserGroceryLists() async {
+  try {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc("${firebaseAuth.currentUser?.uid.toString()}")
+        .collection('grocery-data')
+        .doc("grocery-lists")
+        .get();
+
+    return snapshot["groceryLists"];
+
+  } catch (exception) {
+    print(exception);
+  }
+}
+
+GetUserGroceryListID() async {
+  try {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc("${firebaseAuth.currentUser?.uid.toString()}")
+        .collection('grocery-data')
+        .doc("selected-grocery-list")
+        .get();
+
+    return snapshot["groceryListID"];
+
+  } catch (exception) {
+    print(exception);
+  }
+}
+
+GetUserGroceries(String groceryListID) async {
+  try {
+
+    print("Getting Groceries");
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = FirebaseFirestore.instance
+        .collection('grocery-lists')
+        .doc(groceryListID)
+        .collection('grocery-data')
+        .where(FieldPath.documentId)
+        .snapshots()
+        .listen((event) {
+
+          List<GroceryItem> groceryItems = [
+          for (QueryDocumentSnapshot document in event.docs)
+            GroceryItem(
+              uuid: document.get("groceryData")["uuid"],
+              barcode: document.get("groceryData")["barcode"],
+              foodName: document.get("groceryData")["foodName"],
+              cupboard: document.get("groceryData")["cupboard"],
+              fridge: document.get("groceryData")["fridge"],
+              freezer: document.get("groceryData")["freezer"],
+              needed: document.get("groceryData")["needed"],
+            ),
+          ];
+        });
+
+  } catch (exception) {
+    print(exception);
+  }
+}
+
+GetExerciseLogData(String exerciseName) async {
+  try {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('workout-data')
+        .doc(exerciseName)
+        .collection("exercise-tracking-data")
+        .orderBy("timeStamp", descending: true)
+        .limit(7)
+        .where("timeStamp", isLessThanOrEqualTo: DateTime.now().toUtc())
+        .get();
+
+    final repsAndWeightSnapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('workout-data')
+        .doc(exerciseName)
+        .get();
+
+    Map mapData(data) {
+
+      return {
+        "measurementDate": data["data"][0]["measurementDate"],
+        "measurementTimeStamp": data["data"][0]["measurementTimeStamp"],
+        "repValues": data["data"][0]["repValues"],
+        "weightValues": data["data"][0]["weightValues"],
+        "intensityValues": data["data"][0]["intensityValues"]
+      };
+
+    }
+
+    ExerciseModel data = ExerciseModel(
+        exerciseName: exerciseName,
+        exerciseTrackingData: RepsWeightStatsMeasurement(
+          measurementName: exerciseName,
+          dailyLogs: [
+            for (QueryDocumentSnapshot document in snapshot.docs)
+              mapData(document.data())
+          ],
+        ),
+        category: repsAndWeightSnapshot.data()?["category"],
+        type: repsAndWeightSnapshot.data()?["type"] ?? 0,
+        exerciseTrackingType: repsAndWeightSnapshot.data()?["exerciseTrackingType"],
+        exerciseMaxRepsAndWeight: repsAndWeightSnapshot.data()?["data"] == null ? {}
+            : repsAndWeightSnapshot.data()!["data"].map<String, String>((key, value) => MapEntry<String, String>(key.toString(), value.toString()))
+    );
+
+    return data;
+
+  } catch (exception, stacktrace) {
+    debugPrint(exception.toString());
+    debugPrint(stacktrace.toString());
+  }
+}
+
+GetMoreExerciseLogData(String exerciseName, String date) async {
+  try {
+
+    DateTime previousDay = DateTime.parse(DateFormat("yyyy-MM-dd").format(DateFormat("dd/MM/yyyy").parse(date)).toString());
+
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('workout-data')
+        .doc(exerciseName)
+        .collection("exercise-tracking-data")
+        .orderBy("timeStamp", descending: true)
+        .limit(7)
+        .where("timeStamp", isLessThanOrEqualTo: DateTime(previousDay.year, previousDay.month, previousDay.day-1).toUtc())
+        .get();
+
+    Map mapData(data) {
+
+      return {
+        "measurementDate": data["data"][0]["measurementDate"],
+        "measurementTimeStamp": data["data"][0]["measurementTimeStamp"],
+        "repValues": data["data"][0]["repValues"],
+        "weightValues": data["data"][0]["weightValues"]
+      };
+
+    }
+
+    ExerciseModel data = ExerciseModel(
+        exerciseName: exerciseName,
+        exerciseTrackingData: RepsWeightStatsMeasurement(
+          measurementName: exerciseName,
+          dailyLogs: [
+            for (QueryDocumentSnapshot document in snapshot.docs)
+              mapData(document.data())
+          ],
+        ),
+      exerciseMaxRepsAndWeight: {},
+    );
+
+    return data;
+
+  } catch (exception) {
+    print(exception);
+  }
+}
+
+GetRoutinesData() async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  dynamic data = await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('routine-data')
+      .get();
+
+  List<ExerciseListModel> buildExerciseListObjects(data) {
+
+    if (data.isEmpty) {
+      return [];
+    }
+
+    List<ExerciseListModel> exercises =  [
+      for (Map exercise in data)
+        ExerciseListModel(
+          exerciseName: exercise["exerciseName"],
+          exerciseDate: exercise["exerciseDate"],
+        )
+    ];
+
+    return exercises;
+
+  }
+
+  List<RoutinesModel> routines = [
+    for (QueryDocumentSnapshot document in data.docs)
+      RoutinesModel(
+          routineID: document["routineID"],
+          routineDate: document["routineDate"],
+          routineName: document["routineName"],
+          exercises: buildExerciseListObjects(document["exercises"]),
+      )
+  ];
+
+  return routines;
+
+}
+
+
+GetExerciseData() async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  dynamic data = await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('exercise-data')
+      .doc('exercise-names')
+      .get();
+
+  return List<String>.from(data['data'] as List);
+
+}
+
+GetCategoriesData() async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  dynamic data = await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('exercise-data')
+      .doc('category-names')
+      .get();
+
+  return List<String>.from(data['data'] as List);
+
+}
+
+GetWorkoutStarted() async {
+
+  try {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    dynamic snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('current-workout-data')
+        .where("started", isEqualTo: true)
+        .get();
+
+    dynamic data = [
+      for (QueryDocumentSnapshot document in snapshot.docs)
+        document.data()
+    ];
+
+    return data[0]["started"];
+
+
+  } catch (error) {
+
+    debugPrint(error.toString());
+
+    return false;
+
+  }
+
+
+}
+
+GetCurrentWorkoutData() async {
+
+  int returnType(int? type) {
+
+    if (type != null) {
+      return type;
+    }
+    return 0;
+  }
+
+  exercisesToModel(data) {
+
+    return [
+      for (Map exercise in data)
+        WorkoutLogExerciseDataModel(
+          measurementName: exercise["measurementName"],
+          routineName: exercise["routineName"],
+          intensityNumber: exercise["intensityNumber"] != null ? exercise["intensityNumber"].toDouble() : 5.0,
+          type: exercise.toString().contains('type') ? returnType(exercise["type"]) : 0,
+          reps: exercise["reps"].toDouble(),
+          weight: exercise["weight"].toDouble(),
+          timestamp: exercise["timestamp"],
+        ),
+      ];
+    
+  }
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  dynamic data = await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('current-workout-data')
+      .doc("workout")
+      .get();
+  
+  dynamic parseDateTime(Timestamp? timeStamp) {
+
+    if (timeStamp != null) {
+      return timeStamp.toDate();
+    }
+    return null;
+
+    
+  }
+
+
+  return WorkoutLogModel(
+    startOfWorkout: parseDateTime(data["startOfWorkout"]),
+    endOfWorkout: parseDateTime(data["endOfWorkout"]),
+    exercises: exercisesToModel(data["exercises"]),
+    routineNames: List<String>.from(data["routineNames"]),
+  );
+
+}
+
+GetPastWorkoutData(dynamic? document) async {
+try {
+
+  int returnType(int? type) {
+
+    if (type != null) {
+      return type;
+    }
+    return 0;
+  }
+
+  //DateTime previousDay = DateTime.parse(DateFormat("yyyy-MM-dd").format(DateFormat("dd/MM/yyyy").parse(date)).toString());
+
+  exercisesToModel(data) {
+
+    print(data[0]["measurementName"]);
+
+    return [
+      for (Map exercise in data)
+        WorkoutLogExerciseDataModel(
+          measurementName: exercise["measurementName"],
+          routineName: exercise["routineName"],
+          intensityNumber: exercise["intensityNumber"] != null ? exercise["intensityNumber"].toDouble() : 5.0,
+          type: exercise.toString().contains('type') ? returnType(exercise["type"]) : 0,
+          reps: exercise["reps"].toDouble(),
+          weight: exercise["weight"].toDouble(),
+          timestamp: exercise["timestamp"],
+        ),
+    ];
+
+  }
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  dynamic snapshot;
+
+  if (document != null) {
+
+    print("More data");
+
+    snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('workout-log-data')
+        .orderBy("time-stamp", descending: true)
+        .limit(7)
+        .startAfterDocument(document)
+        .get();
+    
+  } else {
+
+    print("Less data");
+
+    snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('workout-log-data')
+        .orderBy("time-stamp", descending: true)
+        .limit(7)
+        .where("time-stamp", isLessThanOrEqualTo: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day+1).toUtc())
+        .get();
+    
+  }
+
+  dynamic parseDateTime(Timestamp? timeStamp) {
+
+    print("timestamp");
+
+    if (timeStamp != null) {
+      return timeStamp.toDate();
+    }
+    return null;
+
+  }
+
+  return {
+    "workoutLogs": <WorkoutLogModel>[
+
+    for (dynamic document in snapshot.docs)
+      WorkoutLogModel(
+        startOfWorkout: parseDateTime(document.data()["data"]["startOfWorkout"]),
+        endOfWorkout: parseDateTime(document.data()["data"]["endOfWorkout"]),
+        exercises: exercisesToModel(document.data()["data"]["exercises"]),
+        routineNames: List<String>.from(document.data()["data"]["routineNames"]),
+      )
+  ],
+    "lastDoc": snapshot.docs.isEmpty ? document : snapshot.docs.last,
+  };
+
+
+  } catch (error, stacktrace) {
+
+    debugPrint(error.toString());
+    debugPrint(stacktrace.toString());
+    print("error");
+
+  }
+
+}
+
+GetWorkoutOverallStats() async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  dynamic snapshot = await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-overall-stats')
+      .doc("stats")
+      .get();
+
+  dynamic parseDateTime(Timestamp? timeStamp) {
+
+    if (timeStamp != null) {
+      return timeStamp.toDate();
+    }
+    return null;
+
+  }
+
+  return WorkoutOverallStatsModel(
+    totalVolume: snapshot["totalVolume"],
+    totalReps: snapshot["totalReps"],
+    totalSets: snapshot["totalSets"],
+    totalWorkouts: snapshot["totalWorkouts"],
+    totalAverageDuration: snapshot["totalAverageDuration"],
+    totalVolumeThisYear: snapshot["totalVolumeThisYear"],
+    totalVolumeThisMonth: snapshot["totalVolumeThisMonth"],
+    totalRepsThisYear: snapshot["totalRepsThisYear"],
+    totalRepsThisMonth: snapshot["totalRepsThisMonth"],
+    totalSetsThisYear: snapshot["totalSetsThisYear"],
+    totalSetsThisMonth: snapshot["totalSetsThisMonth"],
+    totalWorkoutsThisYear: snapshot["totalWorkoutsThisYear"],
+    totalWorkoutsThisMonth: snapshot["totalWorkoutsThisMonth"],
+    averageDurationThisYear: snapshot["averageDurationThisYear"],
+    averageDurationThisMonth: snapshot["averageDurationThisMonth"],
+    lastLog: parseDateTime(snapshot["lastLog"]),
+  );
+
+}
+
+GetWeekdayExerciseTracking() async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  dynamic snapshot = await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('current-workout-data')
+      .doc("week-days-worked")
+      .get();
+
+  dynamic parseDateTime(Timestamp? timeStamp) {
+
+    if (timeStamp != null) {
+      return timeStamp.toDate();
+    }
+    return null;
+
+  }
+
+  Map<String, dynamic> snapshotMap = Map<String, dynamic>.from(snapshot.data());
+  snapshotMap["lastDate"] = parseDateTime(snapshotMap["lastDate"]);
+
+  return snapshotMap;
+
+}
+
+GetDailyStreak() async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  dynamic snapshot = await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('user-data')
+      .doc("daily-streak")
+      .get();
+
+  dynamic parseDateTime(Timestamp? timeStamp) {
+
+    if (timeStamp != null) {
+      return timeStamp.toDate();
+    }
+    return null;
+
+  }
+
+  Map<String, dynamic> snapshotMap = Map<String, dynamic>.from(snapshot.data());
+  snapshotMap["lastDate"] = parseDateTime(snapshotMap["lastDate"]);
+
+  return snapshotMap;
+
 }

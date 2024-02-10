@@ -72,10 +72,10 @@ class _DietDatePickerState extends State<DietDatePicker> {
         );
       },
       context: context,
-      initialDate:
-      context.read<UserNutritionData>().nutritionDate,
-      firstDate: DateTime(1991),
-      lastDate: DateTime(2023, 12, 31),
+      initialDate: context.read<UserNutritionData>().nutritionDate,
+      firstDate: DateTime(2012),
+      lastDate: DateTime(DateTime.now().year, 12, 31).difference(context.read<UserNutritionData>().nutritionDate) < const Duration(days: 0) ?
+      context.read<UserNutritionData>().nutritionDate : DateTime(DateTime.now().year, 12, 31),
     );
     if (newDateUnformatted != null) {
       print(newDateUnformatted);

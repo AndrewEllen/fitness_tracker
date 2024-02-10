@@ -223,6 +223,9 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
 
   void SaveFoodItem() {
 
+    servingsController.text = double.tryParse(servingsController.text) == null ? "0" : servingsController.text;
+    servingSizeController.text = double.tryParse(servingSizeController.text) == null ? "0" : servingSizeController.text;
+
     print("Barcode on edit screen");
     print(barcodeController.text);
 
@@ -295,6 +298,10 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
 
   String ServingSizeCalculator(String valuePerOneHundred, String servingSize,
       String servings, int decimalPlaces) {
+
+    servingsController.text = double.tryParse(servingsController.text) == null ? "0" : servingsController.text;
+    servingSizeController.text = double.tryParse(servingSizeController.text) == null ? "0" : servingSizeController.text;
+
     try {
       return ((double.parse(valuePerOneHundred) / 100) *
               (double.parse(servingSize) * double.parse(servings)))
@@ -443,7 +450,7 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
                           formKey: cholesterolKey,
                           width: _width,
                           formName: "Cholesterol",
-                          units: "g",
+                          units: "mg",
                         ),
                         DietListHeaderBox(
                           width: _width,

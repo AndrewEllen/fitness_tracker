@@ -1,6 +1,7 @@
 import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../constants.dart';
@@ -183,13 +184,29 @@ class _FoodRecipeSearchPageState extends State<FoodRecipeSearchPage> {
           toolbarHeight: height/9,
           backgroundColor: appTertiaryColour,
           automaticallyImplyLeading: false,
-          bottom: const TabBar(
-            indicatorColor: appSecondaryColour,
-            tabs: [
-              Tab(text: "All"),
-              Tab(text: "Custom Food"),
+          bottom: PreferredSize(
+          preferredSize: Size.fromHeight(50.h),
+          child: Stack(
+            fit: StackFit.passthrough,
+            alignment: Alignment.bottomCenter,
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: appSecondaryColourDark, width: 2.0),
+                  ),
+                ),
+              ),
+              const TabBar(
+                indicatorColor: appSecondaryColour,
+                tabs: [
+                  Tab(text: "All"),
+                  Tab(text: "Custom Food"),
+                ],
+              ),
             ],
           ),
+        ),
           flexibleSpace: Stack(
             children: [
               Container(
