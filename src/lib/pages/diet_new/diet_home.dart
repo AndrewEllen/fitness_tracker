@@ -6,22 +6,143 @@ import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import '../../constants.dart';
+import '../../models/diet/user_nutrition_model.dart';
 import '../../providers/diet/user_nutrition_data.dart';
+import '../../providers/general/database_get.dart';
 import '../../providers/general/page_change_provider.dart';
 import '../../widgets/diet_new/diet_home_daily_nutrition_display.dart';
 import '../../widgets/diet_new/diet_home_exercise_display.dart';
 import '../../widgets/diet_new/diet_home_food_display.dart';
 import '../../widgets/diet_new/diet_water_box.dart';
 
-class DietHomePage extends StatelessWidget {
+class DietHomePage extends StatefulWidget {
   DietHomePage({Key? key}) : super(key: key);
 
+  @override
+  State<DietHomePage> createState() => _DietHomePageState();
+}
+
+class _DietHomePageState extends State<DietHomePage> {
+
+  void loadNewData() async {
+
+    UserNutritionModel userNutritionData;
+    String date = context.read<UserNutritionData>().nutritionDate.toString();
+
+    if (
+    context.read<UserNutritionData>().userDailyNutritionCache.any((element) => element.date.toString() == date)
+    ) {
+
+      print("Found");
+
+      print(date);
+      print(context.read<UserNutritionData>()
+          .userDailyNutritionCache[
+      context.read<UserNutritionData>().userDailyNutritionCache
+          .indexWhere((element) => element.date == date)].date);
+
+      userNutritionData = context.read<UserNutritionData>()
+          .userDailyNutritionCache[
+      context.read<UserNutritionData>().userDailyNutritionCache
+          .indexWhere((element) => element.date == date)
+      ];
+
+    } else {
+
+      print("Not Found");
+
+      userNutritionData = await GetUserNutritionData(
+          date
+      );
+
+      context.read<UserNutritionData>()
+          .addToNutritionDataCache(userNutritionData);
+
+    }
+
+    context.read<UserNutritionData>().setCurrentFoodDiary(
+        userNutritionData
+    );
+  }
+
+  Widget child = DietPageWidget();
+
+  DismissDirection defaultDirection = DismissDirection.startToEnd;
+
+  void _onHorizontalSwipe(DismissDirection direction) {
+    defaultDirection = direction;
+    if (direction == DismissDirection.startToEnd) {
+      context
+          .read<UserNutritionData>()
+          .updateNutritionDateArrows(true);
+      loadNewData();
+      setState(() {
+        child = DietPageWidget();
+      });
+    } else {
+      context
+          .read<UserNutritionData>()
+          .updateNutritionDateArrows(false);
+      loadNewData();
+      setState(() {
+        child = DietPageWidget();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final PageController controller = PageController();
+    return GestureDetector(
+      onHorizontalDragEnd: (DragEndDetails direction) {
+        if (direction.primaryVelocity! > 0) {
+          context
+              .read<UserNutritionData>()
+              .updateNutritionDateArrows(true);
+          loadNewData();
+        } else {
+          context
+              .read<UserNutritionData>()
+              .updateNutritionDateArrows(false);
+          loadNewData();
+        }
+      },
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 350),
+        switchInCurve: Curves.easeIn,
+        switchOutCurve: Curves.easeOut,
+        transitionBuilder: (child, animation) {
+          if (defaultDirection == DismissDirection.startToEnd) {
+
+            return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(
+                      -0.8, 0.0), // adjust the position as you need
+                  end: const Offset(0.0, 0.0),
+                ).animate(animation),
+                child: child);
+          } else {
+            return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(
+                      0.8, 0.0), // adjust the position as you need
+                  end: const Offset(0.0, 0.0),
+                ).animate(animation),
+                child: child);
+          }
+        },
+        layoutBuilder: (currentChild, _) => currentChild ?? DietPageWidget(),
+        child: Dismissible(
+          key: UniqueKey(),
+          resizeDuration: null,
+          onDismissed: _onHorizontalSwipe,
+          direction: DismissDirection.horizontal,
+          child: child,
+        ),
+      ),
 
 
-    return DietPageWidget();
+    );
   }
 }
 
