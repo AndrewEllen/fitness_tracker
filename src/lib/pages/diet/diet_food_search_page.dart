@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_recipes_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:text_analysis/extensions.dart';
@@ -70,6 +72,29 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
   void SearchOFFbyString(String value) async {
 
+    bool result = await InternetConnection().hasInternetAccess;
+    GetOptions options = const GetOptions(source: Source.serverAndCache);
+
+    if (!result) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text("No Internet Connection"),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height * 0.6695,
+            right: 20,
+            left: 20,
+          ),
+          dismissDirection: DismissDirection.none,
+          duration: const Duration(milliseconds: 700),
+        ),
+      );
+      options = const GetOptions(source: Source.cache);
+    }
+
     if (searchController.text.isNotEmpty && searchController.text != "") {
       setState(() {
         foodItemsFromSearch = [];
@@ -78,7 +103,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
       Future.wait<void>([
 
-        SearchByNameFirebase(value).then((result) =>
+        SearchByNameFirebase(value, options: options).then((result) =>
             setState(() {
               foodItemsFromSearch += result;
               _searching = false;

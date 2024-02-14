@@ -121,6 +121,22 @@ class _SplashScreenState extends State<SplashScreen> {
     GetOptions options = const GetOptions(source: Source.serverAndCache);
 
     if (!result) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text("No Internet Connection"),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height * 0.6695,
+            right: 20,
+            left: 20,
+          ),
+          dismissDirection: DismissDirection.none,
+          duration: const Duration(milliseconds: 700),
+        ),
+      );
       options = const GetOptions(source: Source.cache);
     }
 

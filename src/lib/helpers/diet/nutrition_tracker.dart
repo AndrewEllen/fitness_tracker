@@ -396,7 +396,7 @@ CheckFoodBarcodeOpenFF(barcodeDisplayValue) async {
 
 }
 
-SearchByNameFirebase(String value) async {
+SearchByNameFirebase(String value, {options = const GetOptions(source: Source.serverAndCache)}) async {
 
   List<FoodItem> foodItems = [];
 
@@ -408,7 +408,7 @@ SearchByNameFirebase(String value) async {
         .where("food-data.foodName", isGreaterThanOrEqualTo: value)
         .where("food-data.foodName", isLessThanOrEqualTo: value + "\uf8ff")
         .limit(20)
-        .get();
+        .get(options);
 
     foodItems = [
       for (QueryDocumentSnapshot document in snapshot.docs)
@@ -422,7 +422,7 @@ SearchByNameFirebase(String value) async {
 
 }
 
-SearchByNameTriGramFirebase(String value) async {
+SearchByNameTriGramFirebase(String value, {options = const GetOptions(source: Source.serverAndCache)}) async {
 
   List<Map> sortListBySimilarity(List<Map> similarityMap, removeExcess) {
 
@@ -476,7 +476,7 @@ SearchByNameTriGramFirebase(String value) async {
         .collection("food-data")
         .where("foodNameSearch", arrayContainsAny: searchValues)
         .limit(40)
-        .get();
+        .get(options);
 
     foodItems = [
       for (QueryDocumentSnapshot document in snapshot.docs)
