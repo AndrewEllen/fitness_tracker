@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/diet/user__foods_model.dart';
@@ -117,24 +118,29 @@ class _SplashScreenState extends State<SplashScreen> {
   void fetchData() async {
 
     bool result = await InternetConnection().hasInternetAccess;
+    GetOptions options = const GetOptions(source: Source.serverAndCache);
+
+    if (!result) {
+      options = const GetOptions(source: Source.cache);
+    }
 
     await Future.wait<void>([
-      GetDailyStreak().then((result) => dailyStreak = result),
-      GetUserMeasurements().then((result) => measurements = result),
-      GetUserBioData().then((result) => userData = result),
-      GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString()).then((result) => userNutrition = result),
-      GetUserNutritionHistory().then((result) => userNutritionHistory = result),
-      GetUserCustomFood().then((result) => userCustomFood = result),
-      GetUserCustomRecipes().then((result) => userRecipes = result),
-      GetUserGroceryListID().then((result) => groceryListID = result),
-      GetUserGroceryLists().then((result) => groceryLists = result),
-      GetRoutinesData().then((result) => routines = result),
-      GetExerciseData().then((result) => exercises = result),
-      GetCategoriesData().then((result) => exerciseCategories = result),
-      GetWorkoutStarted().then((result) => workoutStarted = result),
-      GetPastWorkoutData(null).then((result) => workoutLogs = result),
-      GetWorkoutOverallStats().then((result) => workoutOverallStats = result),
-      GetWeekdayExerciseTracking().then((result) => weekdayTrackingValues = result),
+      GetDailyStreak(options: options).then((result) => dailyStreak = result),
+      GetUserMeasurements(options: options).then((result) => measurements = result),
+      GetUserBioData(options: options).then((result) => userData = result),
+      GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString(), options: options).then((result) => userNutrition = result),
+      GetUserNutritionHistory(options: options).then((result) => userNutritionHistory = result),
+      GetUserCustomFood(options: options).then((result) => userCustomFood = result),
+      GetUserCustomRecipes(options: options).then((result) => userRecipes = result),
+      GetUserGroceryListID(options: options).then((result) => groceryListID = result),
+      GetUserGroceryLists(options: options).then((result) => groceryLists = result),
+      GetRoutinesData(options: options).then((result) => routines = result),
+      GetExerciseData(options: options).then((result) => exercises = result),
+      GetCategoriesData(options: options).then((result) => exerciseCategories = result),
+      GetWorkoutStarted(options: options).then((result) => workoutStarted = result),
+      GetPastWorkoutData(null, options: options).then((result) => workoutLogs = result),
+      GetWorkoutOverallStats(options: options).then((result) => workoutOverallStats = result),
+      GetWeekdayExerciseTracking(options: options).then((result) => weekdayTrackingValues = result),
     ]);
 
     try {

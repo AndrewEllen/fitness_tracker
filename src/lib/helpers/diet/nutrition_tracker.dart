@@ -300,7 +300,7 @@ String ConvertToUsableData(dynamic valueToConvert, {String defaultValue = "", bo
   return valueToConvert;
 }
 
-CheckFoodBarcode(String barcodeDisplayValue, {bool recipe = false}) async {
+CheckFoodBarcode(String barcodeDisplayValue, {bool recipe = false, options = const GetOptions(source: Source.serverAndCache)}) async {
 
   if (recipe) {
 
@@ -347,7 +347,7 @@ CheckFoodBarcode(String barcodeDisplayValue, {bool recipe = false}) async {
   }
 }
 
-CheckFoodBarcodeList(List<String> barcodeDisplayValues, List<String> recipeBarcodeDisplayValues) async {
+CheckFoodBarcodeList(List<String> barcodeDisplayValues, List<String> recipeBarcodeDisplayValues, {options = const GetOptions(source: Source.serverAndCache)}) async {
 
   try {
 
@@ -355,12 +355,12 @@ CheckFoodBarcodeList(List<String> barcodeDisplayValues, List<String> recipeBarco
 
     if (barcodeDisplayValues.isNotEmpty) {
       print("passing");
-      newFoodItems.addAll(await BatchGetFoodDataFromFirebase(barcodeDisplayValues));
+      newFoodItems.addAll(await BatchGetFoodDataFromFirebase(barcodeDisplayValues, options: options));
       print("passed");
     }
     if (recipeBarcodeDisplayValues.isNotEmpty) {
       print("CHECKING RECIPE LIST");
-      newFoodItems.addAll(await BatchGetFoodDataFromFirebase(recipeBarcodeDisplayValues, recipe: true));
+      newFoodItems.addAll(await BatchGetFoodDataFromFirebase(recipeBarcodeDisplayValues, recipe: true, options: options));
     }
 
     return newFoodItems;

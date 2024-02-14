@@ -60,7 +60,7 @@ GetUserDataTrainingPlan() async {
   }
 }
 
-GetUserMeasurements() async {
+GetUserMeasurements({options = const GetOptions(source: Source.serverAndCache)}) async {
 
   try {
 
@@ -70,7 +70,7 @@ GetUserMeasurements() async {
         .collection('user-data')
         .doc("${firebaseAuth.currentUser?.uid.toString()}")
         .collection("stats-measurements")
-        .get();
+        .get(options);
 
     final _data = snapshot.docs.map((doc) => doc.data()).toList();
 
@@ -103,7 +103,7 @@ GetUserMeasurements() async {
 //[LO3.7.3.5]
 //Gets the food data from my firebase database
 
-GetFoodDataFromFirebase(String barcode) async {
+GetFoodDataFromFirebase(String barcode, {options = const GetOptions(source: Source.serverAndCache)}) async {
 
   print("firebase get");
 
@@ -113,7 +113,7 @@ GetFoodDataFromFirebase(String barcode) async {
     final snapshot = await FirebaseFirestore.instance
         .collection('food-data')
         .doc(barcode)
-        .get();
+        .get(options);
 
     final _data = snapshot.get("food-data");
 
@@ -187,7 +187,7 @@ GetFoodDataFromFirebase(String barcode) async {
   }
 }
 
-BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false}) async {
+BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false, options = const GetOptions(source: Source.serverAndCache)}) async {
 
   List<FoodItem> foodItems = [];
   print(barcodes);
@@ -201,7 +201,7 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false}) async
       final snapshot = await FirebaseFirestore.instance
           .collection('recipe-data')
           .where(FieldPath.documentId, whereIn: barcodes)
-          .get();
+          .get(options);
 
       foodItems = [
         for (QueryDocumentSnapshot document in snapshot.docs)
@@ -215,7 +215,7 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false}) async
       print(exception);
 
       for (var barcode in barcodes) {
-        foodItems.add(await GetFoodDataFromFirebase(barcode));
+        foodItems.add(await GetFoodDataFromFirebase(barcode, options: options));
       }
 
     }
@@ -228,7 +228,7 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false}) async
       final snapshot = await FirebaseFirestore.instance
           .collection('food-data')
           .where(FieldPath.documentId, whereIn: barcodes)
-          .get();
+          .get(options);
 
       foodItems = [
         for (QueryDocumentSnapshot document in snapshot.docs)
@@ -240,7 +240,7 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false}) async
       print(exception);
 
       for (var barcode in barcodes) {
-        foodItems.add(await GetFoodDataFromFirebase(barcode));
+        foodItems.add(await GetFoodDataFromFirebase(barcode, options: options));
       }
 
     }
@@ -248,7 +248,7 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false}) async
   }
 }
 
-GetUserNutritionData(String date) async {
+GetUserNutritionData(String date, {options = const GetOptions(source: Source.serverAndCache)}) async {
 
   try {
 
@@ -259,7 +259,7 @@ GetUserNutritionData(String date) async {
         .doc("${firebaseAuth.currentUser?.uid.toString()}")
         .collection("nutrition-data")
         .doc(date)
-        .get();
+        .get(options);
 
     final Map _data = snapshot.get("nutrition-data");
 
@@ -282,7 +282,8 @@ GetUserNutritionData(String date) async {
 
         List<FoodItem> foodItemList = await CheckFoodBarcodeList(
             [for (final food in foodList) if (!food.recipe) food.barcode],
-            [for (final food in foodList) if (food.recipe) food.barcode]
+            [for (final food in foodList) if (food.recipe) food.barcode],
+            options: options
         );
 
         final foodListMap = {for (final food in foodItemList) food.barcode : food};
@@ -364,7 +365,7 @@ GetUserNutritionData(String date) async {
 
 }
 
-GetUserNutritionHistory() async {
+GetUserNutritionHistory({options = const GetOptions(source: Source.serverAndCache)}) async {
   try {
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -374,7 +375,7 @@ GetUserNutritionHistory() async {
         .doc("${firebaseAuth.currentUser?.uid.toString()}")
         .collection("nutrition-history-data")
         .doc("history")
-        .get();
+        .get(options);
 
     final _data = snapshot.get("history");
 
@@ -391,7 +392,7 @@ GetUserNutritionHistory() async {
   }
 }
 
-GetUserCustomFood() async {
+GetUserCustomFood({options = const GetOptions(source: Source.serverAndCache)}) async {
   try {
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -401,7 +402,7 @@ GetUserCustomFood() async {
         .doc("${firebaseAuth.currentUser?.uid.toString()}")
         .collection("nutrition-custom-food-data")
         .doc("food")
-        .get();
+        .get(options);
 
     final _data = snapshot.get("food");
 
@@ -418,7 +419,7 @@ GetUserCustomFood() async {
   }
 }
 
-GetUserCustomRecipes() async {
+GetUserCustomRecipes({options = const GetOptions(source: Source.serverAndCache)}) async {
   try {
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -428,7 +429,7 @@ GetUserCustomRecipes() async {
         .doc("${firebaseAuth.currentUser?.uid.toString()}")
         .collection("nutrition-recipes-food-data")
         .doc("food")
-        .get();
+        .get(options);
 
     final _data = snapshot.get("food");
 
@@ -445,7 +446,7 @@ GetUserCustomRecipes() async {
   }
 }
 
-GetFoodDataFromFirebaseRecipe(String barcode) async {
+GetFoodDataFromFirebaseRecipe(String barcode, {options = const GetOptions(source: Source.serverAndCache)}) async {
 
   print("firebase get");
 
@@ -454,7 +455,7 @@ GetFoodDataFromFirebaseRecipe(String barcode) async {
     final snapshot = await FirebaseFirestore.instance
         .collection('recipe-data')
         .doc(barcode)
-        .get();
+        .get(options);
 
     final _data = snapshot.get("food-data");
 
@@ -597,7 +598,7 @@ GetRecipeFoodList(List<ListFoodItem> foodList) async {
 
 }
 
-GetUserBioData() async {
+GetUserBioData({options = const GetOptions(source: Source.serverAndCache)}) async {
   try {
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -607,7 +608,7 @@ GetUserBioData() async {
         .doc("${firebaseAuth.currentUser?.uid.toString()}")
         .collection("bioData")
         .doc("bioData")
-        .get();
+        .get(options);
 
     return UserDataModel(
         height: snapshot["bioData"]["height"],
@@ -643,7 +644,7 @@ GetUserCalories() async {
   }
 }
 
-GetUserGroceryLists() async {
+GetUserGroceryLists({options = const GetOptions(source: Source.serverAndCache)}) async {
   try {
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -653,7 +654,7 @@ GetUserGroceryLists() async {
         .doc("${firebaseAuth.currentUser?.uid.toString()}")
         .collection('grocery-data')
         .doc("grocery-lists")
-        .get();
+        .get(options);
 
     return List<String>.from(snapshot["groceryLists"] as List);
 
@@ -662,7 +663,7 @@ GetUserGroceryLists() async {
   }
 }
 
-GetUserGroceryListID() async {
+GetUserGroceryListID({options = const GetOptions(source: Source.serverAndCache)}) async {
   try {
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -672,7 +673,7 @@ GetUserGroceryListID() async {
         .doc("${firebaseAuth.currentUser?.uid.toString()}")
         .collection('grocery-data')
         .doc("selected-grocery-list")
-        .get();
+        .get(options);
 
     return snapshot["groceryListID"];
 
@@ -823,7 +824,7 @@ GetMoreExerciseLogData(String exerciseName, String date) async {
   }
 }
 
-GetRoutinesData() async {
+GetRoutinesData({options = const GetOptions(source: Source.serverAndCache)}) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -831,7 +832,7 @@ GetRoutinesData() async {
       .collection('user-data')
       .doc(firebaseAuth.currentUser!.uid)
       .collection('routine-data')
-      .get();
+      .get(options);
 
   List<ExerciseListModel> buildExerciseListObjects(data) {
 
@@ -866,7 +867,7 @@ GetRoutinesData() async {
 }
 
 
-GetExerciseData() async {
+GetExerciseData({options = const GetOptions(source: Source.serverAndCache)}) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -875,13 +876,13 @@ GetExerciseData() async {
       .doc(firebaseAuth.currentUser!.uid)
       .collection('exercise-data')
       .doc('exercise-names')
-      .get();
+      .get(options);
 
   return List<String>.from(data['data'] as List);
 
 }
 
-GetCategoriesData() async {
+GetCategoriesData({options = const GetOptions(source: Source.serverAndCache)}) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -890,13 +891,13 @@ GetCategoriesData() async {
       .doc(firebaseAuth.currentUser!.uid)
       .collection('exercise-data')
       .doc('category-names')
-      .get();
+      .get(options);
 
   return List<String>.from(data['data'] as List);
 
 }
 
-GetWorkoutStarted() async {
+GetWorkoutStarted({options = const GetOptions(source: Source.serverAndCache)}) async {
 
   try {
 
@@ -907,7 +908,7 @@ GetWorkoutStarted() async {
         .doc(firebaseAuth.currentUser!.uid)
         .collection('current-workout-data')
         .where("started", isEqualTo: true)
-        .get();
+        .get(options);
 
     dynamic data = [
       for (QueryDocumentSnapshot document in snapshot.docs)
@@ -984,7 +985,7 @@ GetCurrentWorkoutData() async {
 
 }
 
-GetPastWorkoutData(dynamic? document) async {
+GetPastWorkoutData(dynamic? document, {options = const GetOptions(source: Source.serverAndCache)}) async {
 try {
 
   int returnType(int? type) {
@@ -1031,7 +1032,7 @@ try {
         .orderBy("time-stamp", descending: true)
         .limit(7)
         .startAfterDocument(document)
-        .get();
+        .get(options);
     
   } else {
 
@@ -1044,7 +1045,7 @@ try {
         .orderBy("time-stamp", descending: true)
         .limit(7)
         .where("time-stamp", isLessThanOrEqualTo: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day+1).toUtc())
-        .get();
+        .get(options);
     
   }
 
@@ -1084,7 +1085,7 @@ try {
 
 }
 
-GetWorkoutOverallStats() async {
+GetWorkoutOverallStats({options = const GetOptions(source: Source.serverAndCache)}) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -1093,7 +1094,7 @@ GetWorkoutOverallStats() async {
       .doc(firebaseAuth.currentUser!.uid)
       .collection('workout-overall-stats')
       .doc("stats")
-      .get();
+      .get(options);
 
   dynamic parseDateTime(Timestamp? timeStamp) {
 
@@ -1125,7 +1126,7 @@ GetWorkoutOverallStats() async {
 
 }
 
-GetWeekdayExerciseTracking() async {
+GetWeekdayExerciseTracking({options = const GetOptions(source: Source.serverAndCache)}) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -1134,7 +1135,7 @@ GetWeekdayExerciseTracking() async {
       .doc(firebaseAuth.currentUser!.uid)
       .collection('current-workout-data')
       .doc("week-days-worked")
-      .get();
+      .get(options);
 
   dynamic parseDateTime(Timestamp? timeStamp) {
 
@@ -1152,7 +1153,7 @@ GetWeekdayExerciseTracking() async {
 
 }
 
-GetDailyStreak() async {
+GetDailyStreak({options = const GetOptions(source: Source.serverAndCache)}) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -1161,7 +1162,7 @@ GetDailyStreak() async {
       .doc(firebaseAuth.currentUser!.uid)
       .collection('user-data')
       .doc("daily-streak")
-      .get();
+      .get(options);
 
   dynamic parseDateTime(Timestamp? timeStamp) {
 
