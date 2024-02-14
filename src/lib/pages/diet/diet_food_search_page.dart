@@ -72,49 +72,40 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
 
     if (searchController.text.isNotEmpty && searchController.text != "") {
       setState(() {
+        foodItemsFromSearch = [];
         _searching = true;
       });
 
-      foodItemsFromSearchFirebase = await SearchByNameFirebase(value);
+      Future.wait<void>([
 
-      setState(() {
-        foodItemsFromSearch = foodItemsFromSearchFirebase;
+        SearchByNameFirebase(value).then((result) =>
+            setState(() {
+              foodItemsFromSearch += result;
+              _searching = false;
+            })
+        ),
 
-        if (foodItemsFromSearch.isNotEmpty) {
-          _searching = false;
-        }
+        SearchByNameTriGramFirebase(value).then((result) =>
+            setState(() {
+              for (int i = 0; i < foodItemsFromSearch.length; i++) {
+                result.removeWhere((item) => item.barcode == foodItemsFromSearch[i].barcode);
+              }
+              foodItemsFromSearch += result;
+              _searching = false;
+            })
+        ),
 
-      });
+        SearchByNameOpenff(value).then((result) =>
+            setState(() {
+              for (int i = 0; i < foodItemsFromSearch.length; i++) {
+                result.removeWhere((item) => item.barcode == foodItemsFromSearch[i].barcode);
+              }
+              foodItemsFromSearch += result;
+              _searching = false;
+            })
+        ),
 
-      print("Entering search");
-      foodItemsFromSearchTriGramFirebase = await SearchByNameTriGramFirebase(value);
-
-      for (int i = 0; i < foodItemsFromSearch.length; i++) {
-        foodItemsFromSearchTriGramFirebase.removeWhere((item) => item.barcode == foodItemsFromSearch[i].barcode);
-      }
-
-      setState(() {
-
-        foodItemsFromSearch = foodItemsFromSearchFirebase + foodItemsFromSearchTriGramFirebase;
-
-        if (foodItemsFromSearchTriGramFirebase.isNotEmpty) {
-          _searching = false;
-        }
-
-      });
-
-      foodItemsFromSearchOpenFF = await SearchByNameOpenff(value);
-
-      for (int i = 0; i < foodItemsFromSearch.length; i++) {
-        foodItemsFromSearchOpenFF.removeWhere((item) => item.barcode == foodItemsFromSearch[i].barcode);
-      }
-
-      setState(() {
-
-        foodItemsFromSearch += foodItemsFromSearchOpenFF;
-
-        _searching = false;
-      });
+      ]);
 
     }
 
