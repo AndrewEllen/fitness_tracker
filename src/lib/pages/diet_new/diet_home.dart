@@ -16,7 +16,7 @@ import '../../widgets/diet_new/diet_home_food_display.dart';
 import '../../widgets/diet_new/diet_water_box.dart';
 
 class DietHomePage extends StatefulWidget {
-  DietHomePage({Key? key}) : super(key: key);
+  const DietHomePage({Key? key}) : super(key: key);
 
   @override
   State<DietHomePage> createState() => _DietHomePageState();
@@ -65,34 +65,14 @@ class _DietHomePageState extends State<DietHomePage> {
     );
   }
 
-  Widget child = DietPageWidget();
-
-  DismissDirection defaultDirection = DismissDirection.startToEnd;
-
-  void _onHorizontalSwipe(DismissDirection direction) {
-    defaultDirection = direction;
-    if (direction == DismissDirection.startToEnd) {
-      context
-          .read<UserNutritionData>()
-          .updateNutritionDateArrows(true);
-      loadNewData();
-      setState(() {
-        child = DietPageWidget();
-      });
-    } else {
-      context
-          .read<UserNutritionData>()
-          .updateNutritionDateArrows(false);
-      loadNewData();
-      setState(() {
-        child = DietPageWidget();
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final PageController controller = PageController();
+
+    double _margin = 15;
+    double _smallContainerMin = 95;
+    double _height = MediaQuery.of(context).size.height;
+    double _width = MediaQuery.of(context).size.width;
+
     return GestureDetector(
       onHorizontalDragEnd: (DragEndDetails direction) {
         if (direction.primaryVelocity! > 0) {
@@ -107,144 +87,94 @@ class _DietHomePageState extends State<DietHomePage> {
           loadNewData();
         }
       },
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 350),
-        switchInCurve: Curves.easeIn,
-        switchOutCurve: Curves.easeOut,
-        transitionBuilder: (child, animation) {
-          if (defaultDirection == DismissDirection.startToEnd) {
-
-            return SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(
-                      -0.8, 0.0), // adjust the position as you need
-                  end: const Offset(0.0, 0.0),
-                ).animate(animation),
-                child: child);
-          } else {
-            return SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(
-                      0.8, 0.0), // adjust the position as you need
-                  end: const Offset(0.0, 0.0),
-                ).animate(animation),
-                child: child);
-          }
-        },
-        layoutBuilder: (currentChild, _) => currentChild ?? DietPageWidget(),
-        child: Dismissible(
-          key: UniqueKey(),
-          resizeDuration: null,
-          onDismissed: _onHorizontalSwipe,
-          direction: DismissDirection.horizontal,
-          child: child,
-        ),
-      ),
-
-
-    );
-  }
-}
-
-class DietPageWidget extends StatelessWidget {
-  const DietPageWidget({Key? key}) : super(key: key);
-
-
-  @override
-  Widget build(BuildContext context) {
-
-    double _margin = 15;
-    double _smallContainerMin = 95;
-    double _height = MediaQuery.of(context).size.height;
-    double _width = MediaQuery.of(context).size.width;
-
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: appPrimaryColour,
-      body: NotificationListener<OverscrollIndicatorNotification>(
-        onNotification: (overscroll) {
-          overscroll.disallowIndicator();
-          return true;
-        },
-        child: SingleChildScrollView(
-          //physics: const NeverScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(0.0),
-                child: Center(
-                  child: DailyNutritionDisplay(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: appPrimaryColour,
+        body: NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (overscroll) {
+            overscroll.disallowIndicator();
+            return true;
+          },
+          child: SingleChildScrollView(
+            //physics: const NeverScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(0.0),
+                  child: Center(
+                    child: DailyNutritionDisplay(),
+                  ),
                 ),
-              ),
 
-              DietHomeFoodDisplay(
-                bigContainerMin: _smallContainerMin,
-                height: _height,
-                margin: _margin,
-                width: _width,
-                title: "Breakfast",
-                foodList: context.watch<UserNutritionData>().foodListItemsBreakfast,
-                caloriesTotal: context.read<UserNutritionData>().breakfastCalories,
-              ),
+                DietHomeFoodDisplay(
+                  bigContainerMin: _smallContainerMin,
+                  height: _height,
+                  margin: _margin,
+                  width: _width,
+                  title: "Breakfast",
+                  foodList: context.watch<UserNutritionData>().foodListItemsBreakfast,
+                  caloriesTotal: context.read<UserNutritionData>().breakfastCalories,
+                ),
 
-              DietHomeFoodDisplay(
-                bigContainerMin: _smallContainerMin,
-                height: _height,
-                margin: _margin,
-                width: _width,
-                title: "Lunch",
-                foodList: context.watch<UserNutritionData>().foodListItemsLunch,
-                caloriesTotal: context.read<UserNutritionData>().lunchCalories,
-              ),
+                DietHomeFoodDisplay(
+                  bigContainerMin: _smallContainerMin,
+                  height: _height,
+                  margin: _margin,
+                  width: _width,
+                  title: "Lunch",
+                  foodList: context.watch<UserNutritionData>().foodListItemsLunch,
+                  caloriesTotal: context.read<UserNutritionData>().lunchCalories,
+                ),
 
-              DietHomeFoodDisplay(
-                bigContainerMin: _smallContainerMin,
-                height: _height,
-                margin: _margin,
-                width: _width,
-                title: "Dinner",
-                foodList: context.watch<UserNutritionData>().foodListItemsDinner,
-                caloriesTotal: context.read<UserNutritionData>().dinnerCalories,
-              ),
+                DietHomeFoodDisplay(
+                  bigContainerMin: _smallContainerMin,
+                  height: _height,
+                  margin: _margin,
+                  width: _width,
+                  title: "Dinner",
+                  foodList: context.watch<UserNutritionData>().foodListItemsDinner,
+                  caloriesTotal: context.read<UserNutritionData>().dinnerCalories,
+                ),
 
-              DietHomeFoodDisplay(
-                bigContainerMin: _smallContainerMin,
-                height: _height,
-                margin: _margin,
-                width: _width,
-                title: "Snacks",
-                foodList: context.watch<UserNutritionData>().foodListItemsSnacks,
-                caloriesTotal: context.read<UserNutritionData>().snacksCalories,
-              ),
+                DietHomeFoodDisplay(
+                  bigContainerMin: _smallContainerMin,
+                  height: _height,
+                  margin: _margin,
+                  width: _width,
+                  title: "Snacks",
+                  foodList: context.watch<UserNutritionData>().foodListItemsSnacks,
+                  caloriesTotal: context.read<UserNutritionData>().snacksCalories,
+                ),
 
-              DietHomeExerciseDisplay(
-                bigContainerMin: _smallContainerMin,
-                height: _height,
-                margin: _margin,
-                width: _width,
-                title: "Exercise",
-                exerciseList: context.watch<UserNutritionData>().foodListItemsExercise,
-                caloriesTotal: context.read<UserNutritionData>().exerciseCalories,
-              ),
+                DietHomeExerciseDisplay(
+                  bigContainerMin: _smallContainerMin,
+                  height: _height,
+                  margin: _margin,
+                  width: _width,
+                  title: "Exercise",
+                  exerciseList: context.watch<UserNutritionData>().foodListItemsExercise,
+                  caloriesTotal: context.read<UserNutritionData>().exerciseCalories,
+                ),
 
-              DietWaterDisplay(
-                bigContainerMin: _smallContainerMin,
-                height: _height,
-                margin: _margin,
-                width: _width,
-                title: "Water",
+                DietWaterDisplay(
+                  bigContainerMin: _smallContainerMin,
+                  height: _height,
+                  margin: _margin,
+                  width: _width,
+                  title: "Water",
 
-              ),
+                ),
 
-              ScreenWidthButton(
-                label: "Groceries List",
-                onTap: () => context.read<PageChange>().changePageCache(GroceriesHome()),
-              ),
+                ScreenWidthButton(
+                  label: "Groceries List",
+                  onTap: () => context.read<PageChange>().changePageCache(GroceriesHome()),
+                ),
 
-              SizedBox(
-                height: 40.h,
-              ),
-            ],
+                SizedBox(
+                  height: 40.h,
+                ),
+              ],
+            ),
           ),
         ),
       ),
