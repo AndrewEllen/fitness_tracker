@@ -323,14 +323,28 @@ GetUserNutritionData(String date) async {
       }
     }
 
+    List<ListFoodItem> breakfastList = [];
+    List<ListFoodItem> lunchList = [];
+    List<ListFoodItem> dinnerList = [];
+    List<ListFoodItem> snacksList = [];
+    List<ListExerciseItem> exerciseList = [];
+
+    await Future.wait<void>([
+      ToListFoodItem(_data["foodListItemsBreakfast"]).then((result) => breakfastList = result),
+      ToListFoodItem(_data["foodListItemsLunch"]).then((result) => lunchList = result),
+      ToListFoodItem(_data["foodListItemsDinner"]).then((result) => dinnerList = result),
+      ToListFoodItem(_data["foodListItemsSnacks"]).then((result) => snacksList = result),
+      ToListExerciseItem(_data["foodListItemsExercise"]).then((result) => exerciseList = result),
+    ]);
+
     return UserNutritionModel(
         date: _data["date"] ?? "",
-        foodListItemsBreakfast: await ToListFoodItem(_data["foodListItemsBreakfast"]),
-        foodListItemsLunch: await ToListFoodItem(_data["foodListItemsLunch"]),
-        foodListItemsDinner: await ToListFoodItem(_data["foodListItemsDinner"]),
-        foodListItemsSnacks: await ToListFoodItem(_data["foodListItemsSnacks"]),
-        foodListItemsExercise: await ToListExerciseItem(_data["foodListItemsExercise"]),
-        water: await _data["water"] ?? 0,
+        foodListItemsBreakfast: breakfastList,
+        foodListItemsLunch: lunchList,
+        foodListItemsDinner: dinnerList,
+        foodListItemsSnacks: snacksList,
+        foodListItemsExercise: exerciseList,
+        water: _data["water"],
     );
 
   } catch (exception) {
