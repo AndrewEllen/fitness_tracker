@@ -115,7 +115,24 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void fetchData() async {
 
-    try {dailyStreak = await GetDailyStreak();} catch (exception) {print(exception);}
+    await Future.wait<void>([
+      GetDailyStreak().then((result) => dailyStreak = result),
+      GetUserMeasurements().then((result) => measurements = result),
+      GetUserBioData().then((result) => userData = result),
+      GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString()).then((result) => userNutrition = result),
+      GetUserNutritionHistory().then((result) => userNutritionHistory = result),
+      GetUserCustomFood().then((result) => userCustomFood = result),
+      GetUserCustomRecipes().then((result) => userRecipes = result),
+      GetUserGroceryListID().then((result) => groceryListID = result),
+      GetUserGroceryLists().then((result) => groceryLists = result),
+      GetRoutinesData().then((result) => routines = result),
+      GetExerciseData().then((result) => exercises = result),
+      GetCategoriesData().then((result) => exerciseCategories = result),
+      GetWorkoutStarted().then((result) => workoutStarted = result),
+      GetPastWorkoutData(null).then((result) => workoutLogs = result),
+      GetWorkoutOverallStats().then((result) => workoutOverallStats = result),
+      GetWeekdayExerciseTracking().then((result) => weekdayTrackingValues = result),
+    ]);
 
     try {
 
@@ -157,24 +174,6 @@ class _SplashScreenState extends State<SplashScreen> {
     } catch (exception) {print(exception);}
 
     print("Calling from future void ASYNC");
-
-    await Future.wait<void>([
-      GetUserMeasurements().then((result) => measurements = result),
-      GetUserBioData().then((result) => userData = result),
-      GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString()).then((result) => userNutrition = result),
-      GetUserNutritionHistory().then((result) => userNutritionHistory = result),
-      GetUserCustomFood().then((result) => userCustomFood = result),
-      GetUserCustomRecipes().then((result) => userRecipes = result),
-      GetUserGroceryListID().then((result) => groceryListID = result),
-      GetUserGroceryLists().then((result) => groceryLists = result),
-      GetRoutinesData().then((result) => routines = result),
-      GetExerciseData().then((result) => exercises = result),
-      GetCategoriesData().then((result) => exerciseCategories = result),
-      GetWorkoutStarted().then((result) => workoutStarted = result),
-      GetPastWorkoutData(null).then((result) => workoutLogs = result),
-      GetWorkoutOverallStats().then((result) => workoutOverallStats = result),
-      GetWeekdayExerciseTracking().then((result) => weekdayTrackingValues = result),
-    ]);
 
     //try {measurements = await GetUserMeasurements();} catch (exception) {print(exception);}
     //try {userData = await GetUserDataTrainingPlan();} catch (exception) {print(exception);}
