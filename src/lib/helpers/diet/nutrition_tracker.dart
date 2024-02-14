@@ -383,6 +383,8 @@ CheckFoodBarcodeList(List<String> barcodeDisplayValues, List<String> recipeBarco
 
 CheckFoodBarcodeOpenFF(barcodeDisplayValue) async {
 
+  OpenFoodAPIConfiguration.userAgent = UserAgent(name: "Stay FIT", url: "https://github.com/AndrewEllen");
+
   ProductQueryConfiguration foodQueryConfiguration = ProductQueryConfiguration(
       barcodeDisplayValue,
       version: ProductQueryVersion.v3
@@ -517,6 +519,8 @@ SearchByNameOpenff(String value) async {
   List<FoodItem> foodItems = [];
 
   try {
+
+    OpenFoodAPIConfiguration.userAgent = UserAgent(name: "Stay FIT", url: "https://github.com/AndrewEllen");
 
     ProductSearchQueryConfiguration configuration =
     ProductSearchQueryConfiguration(

@@ -15,6 +15,7 @@ import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:health/health.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
@@ -114,6 +115,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void fetchData() async {
+
+    bool result = await InternetConnection().hasInternetAccess;
 
     await Future.wait<void>([
       GetDailyStreak().then((result) => dailyStreak = result),

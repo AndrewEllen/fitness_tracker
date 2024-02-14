@@ -2,7 +2,7 @@ import 'package:openfoodfacts/openfoodfacts.dart';
 
 void setOpenFoodFactsAPISettings() {
 
-  OpenFoodAPIConfiguration.userAgent = const UserAgent(name: "Stay FIT", url: "https://github.com/AndrewEllen");
+  OpenFoodAPIConfiguration.userAgent = UserAgent(name: "Stay FIT", url: "https://github.com/AndrewEllen");
 
   OpenFoodAPIConfiguration.globalLanguages = <OpenFoodFactsLanguage>[
     OpenFoodFactsLanguage.ENGLISH
