@@ -655,7 +655,7 @@ GetUserGroceryLists() async {
         .doc("grocery-lists")
         .get();
 
-    return snapshot["groceryLists"];
+    return List<String>.from(snapshot["groceryLists"] as List);
 
   } catch (exception) {
     print(exception);

@@ -156,28 +156,47 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     } catch (exception) {print(exception);}
 
+    print("Calling from future void ASYNC");
 
-    try {measurements = await GetUserMeasurements();} catch (exception) {print(exception);}
+    await Future.wait<void>([
+      GetUserMeasurements().then((result) => measurements = result),
+      GetUserBioData().then((result) => userData = result),
+      GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString()).then((result) => userNutrition = result),
+      GetUserNutritionHistory().then((result) => userNutritionHistory = result),
+      GetUserCustomFood().then((result) => userCustomFood = result),
+      GetUserCustomRecipes().then((result) => userRecipes = result),
+      GetUserGroceryListID().then((result) => groceryListID = result),
+      GetUserGroceryLists().then((result) => groceryLists = result),
+      GetRoutinesData().then((result) => routines = result),
+      GetExerciseData().then((result) => exercises = result),
+      GetCategoriesData().then((result) => exerciseCategories = result),
+      GetWorkoutStarted().then((result) => workoutStarted = result),
+      GetPastWorkoutData(null).then((result) => workoutLogs = result),
+      GetWorkoutOverallStats().then((result) => workoutOverallStats = result),
+      GetWeekdayExerciseTracking().then((result) => weekdayTrackingValues = result),
+    ]);
+
+    //try {measurements = await GetUserMeasurements();} catch (exception) {print(exception);}
     //try {userData = await GetUserDataTrainingPlan();} catch (exception) {print(exception);}
-    try {userData = await GetUserBioData();} catch (exception) {print(exception);}
+    //try {userData = await GetUserBioData();} catch (exception) {print(exception);}
     print("Fetching nutrition");
-    try {userNutrition = await GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString());} catch (exception) {print(exception);}
+    //try {userNutrition = await GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString());} catch (exception) {print(exception);}
 
-    try {userNutritionHistory = await GetUserNutritionHistory();} catch (exception) {print(exception);}
-    try {userCustomFood = await GetUserCustomFood();} catch (exception) {print(exception);}
-    try {userRecipes = await GetUserCustomRecipes();} catch (exception) {print("recipe");print(exception);}
+    //try {userNutritionHistory = await GetUserNutritionHistory();} catch (exception) {print(exception);}
+    //try {userCustomFood = await GetUserCustomFood();} catch (exception) {print(exception);}
+    //try {userRecipes = await GetUserCustomRecipes();} catch (exception) {print("recipe");print(exception);}
 
-    try {groceryListID = await GetUserGroceryListID();} catch (exception) {print("recipe");print(exception);}
-    try {groceryLists = await GetUserGroceryLists();} catch (exception) {print("recipe");print(exception);}
+    //try {groceryListID = await GetUserGroceryListID();} catch (exception) {print("recipe");print(exception);}
+    //try {groceryLists = await GetUserGroceryLists();} catch (exception) {print("recipe");print(exception);}
 
-    try {routines = await GetRoutinesData();} catch (exception) {print("routines");print(exception);}
-    try {exercises = await GetExerciseData();} catch (exception) {print("exercises");print(exception);}
-    try {exerciseCategories = await GetCategoriesData();} catch (exception) {print("categories");print(exception);}
+    //try {routines = await GetRoutinesData();} catch (exception) {print("routines");print(exception);}
+    //try {exercises = await GetExerciseData();} catch (exception) {print("exercises");print(exception);}
+    //try {exerciseCategories = await GetCategoriesData();} catch (exception) {print("categories");print(exception);}
 
-    try {workoutStarted = await GetWorkoutStarted();} catch (exception) {print("started");print(exception);}
-    try {workoutLogs = await GetPastWorkoutData(null);} catch (exception) {print("logs");print(exception);}
-    try {workoutOverallStats = await GetWorkoutOverallStats();} catch (exception) {print("workout-stats");print(exception);}
-    try {weekdayTrackingValues = await GetWeekdayExerciseTracking();} catch (exception) {print("weekday-tracking");print(exception);}
+    //try {workoutStarted = await GetWorkoutStarted();} catch (exception) {print("started");print(exception);}
+    //try {workoutLogs = await GetPastWorkoutData(null);} catch (exception) {print("logs");print(exception);}
+    //try {workoutOverallStats = await GetWorkoutOverallStats();} catch (exception) {print("workout-stats");print(exception);}
+    //try {weekdayTrackingValues = await GetWeekdayExerciseTracking();} catch (exception) {print("weekday-tracking");print(exception);}
 
     try {context.read<UserData>().setUserBioData(userData);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCalories(userData.calories);} catch (exception) {print(exception);}
