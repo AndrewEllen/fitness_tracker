@@ -120,6 +120,12 @@ class UserNutritionData with ChangeNotifier {
   late double _userGender;
   late double _userActivity;
 
+  late List<UserNutritionModel> _userDailyNutritionCache = [
+
+  ];
+
+  List<UserNutritionModel> get userDailyNutritionCache => _userDailyNutritionCache;
+
   late UserNutritionModel _userDailyNutrition = UserNutritionModel(
     date: DateTime(DateTime
         .now()
@@ -2351,6 +2357,13 @@ class UserNutritionData with ChangeNotifier {
       foodItemData: newFoodItem,
       recipe: newFoodItem.recipe,
     );
+  }
+
+  void addToNutritionDataCache(UserNutritionModel userNutritionData) {
+
+    _userDailyNutritionCache.add(userNutritionData);
+
+    notifyListeners();
   }
 
   void updateNutritionDate(DateTime date) {

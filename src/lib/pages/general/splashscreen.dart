@@ -192,6 +192,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     try {context.read<UserStatsMeasurements>().initialiseStatsMeasurements(measurements);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCurrentFoodDiary(userNutrition);} catch (exception) {print(exception);}
+    try {context.read<UserNutritionData>().addToNutritionDataCache(userNutrition);} catch (exception) {print(exception);}
 
     try {context.read<UserNutritionData>().setFoodHistory(userNutritionHistory);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCustomFood(userCustomFood);} catch (exception) {print(exception);}

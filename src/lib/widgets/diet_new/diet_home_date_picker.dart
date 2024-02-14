@@ -5,6 +5,7 @@ import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import '../../constants.dart';
+import '../../models/diet/user_nutrition_model.dart';
 import '../../models/stats/user_data_model.dart';
 import '../../providers/diet/user_nutrition_data.dart';
 import '../../providers/general/database_get.dart';
@@ -22,9 +23,44 @@ class _DietDatePickerState extends State<DietDatePicker> {
 
 
   void loadNewData() async {
+
+    UserNutritionModel userNutritionData;
+    String date = context.read<UserNutritionData>().nutritionDate.toString();
+
+    if (
+    context.read<UserNutritionData>().userDailyNutritionCache.any((element) => element.date.toString() == date)
+    ) {
+
+      print("Found");
+
+      print(date);
+      print(context.read<UserNutritionData>()
+          .userDailyNutritionCache[
+      context.read<UserNutritionData>().userDailyNutritionCache
+          .indexWhere((element) => element.date == date)].date);
+
+      userNutritionData = context.read<UserNutritionData>()
+          .userDailyNutritionCache[
+      context.read<UserNutritionData>().userDailyNutritionCache
+          .indexWhere((element) => element.date == date)
+      ];
+
+    } else {
+
+      print("Not Found");
+
+      userNutritionData = await GetUserNutritionData(
+          date
+      );
+
+      context.read<UserNutritionData>()
+          .addToNutritionDataCache(userNutritionData);
+
+    }
+
     context.read<UserNutritionData>().setCurrentFoodDiary(
-        await GetUserNutritionData(
-            context.read<UserNutritionData>().nutritionDate.toString()));
+        userNutritionData
+    );
   }
 
 
