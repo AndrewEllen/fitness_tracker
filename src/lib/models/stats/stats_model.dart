@@ -18,4 +18,11 @@ class StatsMeasurement {
   String measurementName;
   List<double> measurementValues;
   List<String> measurementDates;
+
+  StatsMeasurement.clone(StatsMeasurement source) :
+        measurementID = source.measurementID,
+        measurementName = source.measurementName,
+        measurementValues = source.measurementValues.map((item) => item).toList(),
+        measurementDates = source.measurementDates.map((item) => item).toList();
+
 }

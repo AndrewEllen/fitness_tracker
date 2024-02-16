@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:fitness_tracker/helpers/general/list_extensions.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
@@ -16,20 +17,31 @@ import '../../models/stats/stats_model.dart';
 class WorkoutLineChart extends StatelessWidget {
   const WorkoutLineChart({
     required this.routineName,
+    this.currentVolume = 0,
+    this.currentDate = "",
     Key? key,
   }) : super(key: key);
   final String routineName;
+  final String currentDate;
+  final double currentVolume;
 
   @override
   Widget build(BuildContext context) {
 
-    final List<StatsMeasurement> data = context.read<WorkoutProvider>().routineVolumeStats;
-
-    print(data);
+    final List<StatsMeasurement> data = [...context.read<WorkoutProvider>().routineVolumeStats.map(
+            (element) => StatsMeasurement.clone(element))];
 
     int index = data.indexWhere((element) => element.measurementID == routineName);
 
-    print(index);
+    if (currentVolume > 0) {
+
+      data[index].measurementValues.add(currentVolume);
+      data[index].measurementDates.add(currentDate);
+
+    }
+
+    print(context.read<WorkoutProvider>().routineVolumeStats[index].measurementValues.length);
+    print(data[index].measurementValues.length);
 
     return index == -1 ? const SizedBox.shrink() : Container(
       decoration: BoxDecoration(

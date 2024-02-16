@@ -29,6 +29,20 @@ class WorkoutLogPage extends StatefulWidget {
 class _WorkoutLogPageState extends State<WorkoutLogPage> {
   final RegExp removeTrailingZeros = RegExp(r'([.]*0)(?!.*\d)');
 
+  double calculateRoutineVolume(WorkoutLogModel workoutLog, String routineName) {
+
+    double volume = 0;
+
+    for (WorkoutLogExerciseDataModel exerciseData in workoutLog.exercises) {
+      if (exerciseData.type == 0 && exerciseData.routineName == routineName) {
+        volume += exerciseData.weight * exerciseData.reps;
+      }
+    }
+
+    return volume;
+
+  }
+
   String totalVolume(WorkoutLogModel? workoutLog) {
 
     if (workoutLog == null) {
@@ -342,6 +356,8 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
                 itemBuilder: (BuildContext context, int index) {
                   return WorkoutLineChart(
                     routineName: routineNames[index],
+                    currentVolume: calculateRoutineVolume(workout, routineNames[index]),
+                    currentDate: workout.startOfWorkout.toString(),
                   );
                 },
               ),
