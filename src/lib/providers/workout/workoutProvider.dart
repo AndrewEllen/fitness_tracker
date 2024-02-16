@@ -399,6 +399,15 @@ class WorkoutProvider with ChangeNotifier {
 
   List<StatsMeasurement> get routineVolumeStats => _routineVolumeStats;
 
+  Future<void> addVolumeDataToList(String routineName) async {
+
+    StatsMeasurement volumeData = await GetRoutineVolumeData(routineName);
+
+    _routineVolumeStats.add(volumeData);
+
+    notifyListeners();
+  }
+
   void calculateRoutineStats() {
 
     List<String> routineNames = {

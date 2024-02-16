@@ -1196,42 +1196,21 @@ GetDailyStreak({options = const GetOptions(source: Source.serverAndCache)}) asyn
 
 }
 
-GetRoutineVolumeData(List<String> routineNames, {options = const GetOptions(source: Source.serverAndCache)}) async {
-
-  try {
+GetRoutineVolumeData(String routineName, {options = const GetOptions(source: Source.serverAndCache)}) async {
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection("stats-measurements")
-        .get(options);
-
-    final _data = snapshot.docs.map((doc) => doc.data()).toList();
-
-    final List<StatsMeasurement> data = List<StatsMeasurement>.generate(_data.length, (int index) {
-      final List<double> values = List<double>.generate(_data[index]["measurements-data"]["measurementData"].length, (int indexData) {
-        return _data[index]["measurements-data"]["measurementData"][indexData];
-      });
-      final List<String> dates = List<String>.generate(_data[index]["measurements-data"]["measurementData"].length, (int indexData) {
-        return _data[index]["measurements-data"]["measurementDate"][indexData];
-      });
+      dynamic snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('workout-overall-stats')
+          .doc(routineName)
+          .get(options);
 
       return StatsMeasurement(
-        measurementID: _data[index]["measurements-data"]['measurementID'],
-        measurementName: _data[index]["measurements-data"]["measurementName"],
-        measurementValues: values,
-        measurementDates: dates,
+        measurementID: snapshot["measurements-data"]['measurementID'],
+        measurementName: snapshot["measurements-data"]["measurementName"],
+        measurementValues: List<double>.from(snapshot["measurements-data"]["measurementData"]),
+        measurementDates: List<String>.from(snapshot["measurements-data"]["measurementDate"]),
       );
-    });
-
-    print(data);
-    print(data[0].measurementName);
-
-    return data;
-
-  } catch (exception) {
-    print(exception);
   }
-}

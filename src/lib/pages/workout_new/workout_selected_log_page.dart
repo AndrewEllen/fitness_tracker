@@ -68,6 +68,12 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
       workoutExerciseNamesSet = {for (WorkoutLogExerciseDataModel exercise in workout.exercises)
         exercise.measurementName}.toList();
 
+      for (String routineName in workoutRoutineNamesSet) {
+        if (!context.read<WorkoutProvider>().routineVolumeStats.any((e) => e == routineName)) {
+          context.read<WorkoutProvider>().addVolumeDataToList(routineName);
+        }
+      }
+
     } catch (error) {
       debugPrint(error.toString());
     }

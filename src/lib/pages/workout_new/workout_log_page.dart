@@ -13,6 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/workout/routines_model.dart';
+import '../../providers/general/database_get.dart';
 import '../../widgets/general/incremental_counter.dart';
 import '../../widgets/workout_new/routine_page_exercise_list.dart';
 import '../../widgets/workout_new/workout_line_chart.dart';
@@ -91,7 +92,6 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
   @override
   Widget build(BuildContext context) {
 
-
     context.watch<WorkoutProvider>().workoutStarted;
 
     List workoutExerciseNamesSet = [];
@@ -120,6 +120,13 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
       for(WorkoutLogExerciseDataModel exercise in context.read<WorkoutProvider>().currentWorkout.exercises)
         exercise.routineName!
     }.toList();
+
+    for (String routineName in routineNames) {
+      if (!context.read<WorkoutProvider>().routineVolumeStats.any((e) => e == routineName)) {
+        context.read<WorkoutProvider>().addVolumeDataToList(routineName);
+      }
+    }
+
 
     return Scaffold(
       appBar: AppBar(
