@@ -28,8 +28,8 @@ class WorkoutLineChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final List<StatsMeasurement> data = [...context.read<WorkoutProvider>().routineVolumeStats.map(
-            (element) => StatsMeasurement.clone(element))];
+    final List<StatsMeasurement> data = context.read<WorkoutProvider>().routineVolumeStats.map(
+            (element) => StatsMeasurement.clone(element)).toList();
 
     int index = data.indexWhere((element) => element.measurementID == routineName);
 
