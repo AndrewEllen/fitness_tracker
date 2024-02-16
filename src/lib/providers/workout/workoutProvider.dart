@@ -8,6 +8,7 @@ import 'package:fitness_tracker/models/workout/workout_overall_stats_model.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
+import '../../models/stats/stats_model.dart';
 import '../../models/workout/exercise_model.dart';
 import '../../models/workout/reps_weight_stats_model.dart';
 import '../../models/workout/routines_model.dart';
@@ -394,9 +395,11 @@ class WorkoutProvider with ChangeNotifier {
 
   }
 
-  void calculateRoutineStats() {
+  List<StatsMeasurement> _routineVolumeStats = [];
 
-    print("Stats");
+  List<StatsMeasurement> get routineVolumeStats => _routineVolumeStats;
+
+  void calculateRoutineStats() {
 
     List<String> routineNames = {
       for(WorkoutLogExerciseDataModel exercise in _currentWorkout.exercises)
@@ -411,10 +414,30 @@ class WorkoutProvider with ChangeNotifier {
 
       for (WorkoutLogExerciseDataModel exerciseData in _currentWorkout.exercises) {
         if (exerciseData.type == 0 && exerciseData.routineName == routineName) {
-
           volume += exerciseData.weight * exerciseData.reps;
         }
       }
+
+      if (_routineVolumeStats.any((element) => element.measurementID == routineName)) {
+
+        int index = _routineVolumeStats.indexWhere((element) => element.measurementID == routineName);
+
+        _routineVolumeStats[index].measurementValues.add(volume);
+        _routineVolumeStats[index].measurementDates.add(DateTime.now().toString());
+
+      } else {
+
+        _routineVolumeStats.add(
+            StatsMeasurement(
+                measurementID: routineName,
+                measurementName: routineName + " Volume",
+                measurementValues: [volume],
+                measurementDates: [DateTime.now().toString()],
+            ),
+        );
+
+      }
+
       print(routineName);
       print(volume);
     }

@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import '../../models/workout/routines_model.dart';
 import '../../widgets/general/incremental_counter.dart';
 import '../../widgets/workout_new/routine_page_exercise_list.dart';
+import '../../widgets/workout_new/workout_line_chart.dart';
 import '../../widgets/workout_new/workout_log_box.dart';
 import '../../widgets/workout_new/workout_log_top_stats_box.dart';
 
@@ -99,6 +100,12 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
     } catch (error) {
       debugPrint(error.toString());
     }
+
+
+    List<String> routineNames = {
+      for(WorkoutLogExerciseDataModel exercise in context.read<WorkoutProvider>().currentWorkout.exercises)
+        exercise.routineName!
+    }.toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -327,6 +334,16 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
                       );
                     }
                 ),
+              ),
+              ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: routineNames.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return WorkoutLineChart(
+                    routineName: routineNames[index],
+                  );
+                },
               ),
         ]
       )
