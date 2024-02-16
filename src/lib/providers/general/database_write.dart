@@ -542,7 +542,7 @@ void SaveRoutineVolumeData(StatsMeasurement volumeData) async {
   await FirebaseFirestore.instance
       .collection('user-data')
       .doc("${firebaseAuth.currentUser?.uid.toString()}")
-      .collection("workout-overall-stats")
+      .collection("workout-routine-stats")
       .doc(volumeData.measurementID)
       .set({"measurements-data": volumeDataMapped});
 

@@ -1,4 +1,5 @@
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/workout/exercise_model.dart';
@@ -9,6 +10,7 @@ import 'package:fitness_tracker/pages/workout_new/workout_selected_log_page.dart
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +31,40 @@ class WorkoutLogPage extends StatefulWidget {
 
 class _WorkoutLogPageState extends State<WorkoutLogPage> {
   final RegExp removeTrailingZeros = RegExp(r'([.]*0)(?!.*\d)');
+
+  void getData(List<String> routineNames) async {
+
+    bool result = await InternetConnection().hasInternetAccess;
+    GetOptions options = const GetOptions(source: Source.serverAndCache);
+
+    if (!result) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text("No Internet Connection"),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height * 0.6695,
+            right: 20,
+            left: 20,
+          ),
+          dismissDirection: DismissDirection.none,
+          duration: const Duration(milliseconds: 700),
+        ),
+      );
+      options = const GetOptions(source: Source.cache);
+    }
+
+
+    for (String routineName in routineNames) {
+      if (!context.read<WorkoutProvider>().routineVolumeStats.any((e) => e.measurementID == routineName)) {
+        context.read<WorkoutProvider>().addVolumeDataToList(routineName, options);
+      }
+    }
+
+  }
 
   double calculateRoutineVolume(WorkoutLogModel workoutLog, String routineName) {
 
@@ -115,18 +151,12 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
       debugPrint(error.toString());
     }
 
-
     List<String> routineNames = {
       for(WorkoutLogExerciseDataModel exercise in context.read<WorkoutProvider>().currentWorkout.exercises)
         exercise.routineName!
     }.toList();
 
-    for (String routineName in routineNames) {
-      if (!context.read<WorkoutProvider>().routineVolumeStats.any((e) => e == routineName)) {
-        context.read<WorkoutProvider>().addVolumeDataToList(routineName);
-      }
-    }
-
+    getData(routineNames);
 
     return Scaffold(
       appBar: AppBar(

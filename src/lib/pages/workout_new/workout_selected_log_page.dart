@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_tracker/constants.dart';
+import 'package:fitness_tracker/models/stats/stats_model.dart';
 import 'package:fitness_tracker/models/workout/exercise_model.dart';
 import 'package:fitness_tracker/models/workout/workout_log_exercise_data.dart';
 import 'package:fitness_tracker/models/workout/workout_log_model.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +28,40 @@ class SelectedWorkoutLogPage extends StatefulWidget {
 
 class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
   final RegExp removeTrailingZeros = RegExp(r'([.]*0)(?!.*\d)');
+
+  void getData(List<String> routineNames) async {
+
+    bool result = await InternetConnection().hasInternetAccess;
+    GetOptions options = const GetOptions(source: Source.serverAndCache);
+
+    if (!result) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text("No Internet Connection"),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height * 0.6695,
+            right: 20,
+            left: 20,
+          ),
+          dismissDirection: DismissDirection.none,
+          duration: const Duration(milliseconds: 700),
+        ),
+      );
+      options = const GetOptions(source: Source.cache);
+    }
+
+
+    for (String routineName in routineNames) {
+      if (!context.read<WorkoutProvider>().routineVolumeStats.any((e) => e.measurementID == routineName)) {
+        context.read<WorkoutProvider>().addVolumeDataToList(routineName, options);
+      }
+    }
+
+  }
 
   String totalVolume(WorkoutLogModel? workoutLog) {
 
@@ -57,9 +94,11 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
   @override
   Widget build(BuildContext context) {
 
+    context.watch<WorkoutProvider>().routineVolumeStats;
+
     List workoutExerciseNamesSet = [];
     List workoutRoutineNamesSet = [];
-    WorkoutLogModel? workout = null;
+    WorkoutLogModel? workout;
 
     try {
       workout = context.read<WorkoutProvider>().currentSelectedLog;
@@ -68,11 +107,7 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
       workoutExerciseNamesSet = {for (WorkoutLogExerciseDataModel exercise in workout.exercises)
         exercise.measurementName}.toList();
 
-      for (String routineName in workoutRoutineNamesSet) {
-        if (!context.read<WorkoutProvider>().routineVolumeStats.any((e) => e == routineName)) {
-          context.read<WorkoutProvider>().addVolumeDataToList(routineName);
-        }
-      }
+      getData(List<String>.from(workoutRoutineNamesSet));
 
     } catch (error) {
       debugPrint(error.toString());

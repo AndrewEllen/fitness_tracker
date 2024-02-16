@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/helpers/diet/nutrition_tracker.dart';
 import 'package:fitness_tracker/models/diet/exercise_calories_list_item.dart';
@@ -1203,14 +1205,14 @@ GetRoutineVolumeData(String routineName, {options = const GetOptions(source: Sou
       dynamic snapshot = await FirebaseFirestore.instance
           .collection('user-data')
           .doc(firebaseAuth.currentUser!.uid)
-          .collection('workout-overall-stats')
+          .collection('workout-routine-stats')
           .doc(routineName)
           .get(options);
 
       return StatsMeasurement(
         measurementID: snapshot["measurements-data"]['measurementID'],
         measurementName: snapshot["measurements-data"]["measurementName"],
-        measurementValues: List<double>.from(snapshot["measurements-data"]["measurementData"]),
+        measurementValues: List<double>.from(snapshot["measurements-data"]["measurementData"].map((e) => e.toDouble()).toList()),
         measurementDates: List<String>.from(snapshot["measurements-data"]["measurementDate"]),
       );
   }
