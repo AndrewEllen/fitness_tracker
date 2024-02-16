@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_tracker/providers/stats/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:health/health.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import '../../constants.dart';
@@ -47,10 +49,34 @@ class _DietDatePickerState extends State<DietDatePicker> {
 
     } else {
 
+      bool result = await InternetConnection().hasInternetAccess;
+      GetOptions options = const GetOptions(source: Source.serverAndCache);
+
+      if (!result) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text("No Internet Connection \nAttempting to load"),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height * 0.6695,
+              right: 20,
+              left: 20,
+            ),
+            dismissDirection: DismissDirection.none,
+            duration: const Duration(milliseconds: 700),
+          ),
+        );
+        options = const GetOptions(source: Source.cache);
+      }
+
       print("Not Found");
 
       userNutritionData = await GetUserNutritionData(
-          date
+        date,
+        options: options,
       );
 
       context.read<UserNutritionData>()

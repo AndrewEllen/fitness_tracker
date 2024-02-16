@@ -78,7 +78,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
     if (!result) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text("No Internet Connection"),
+          content: const Text("No Internet Connection \nAttempting to load"),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
