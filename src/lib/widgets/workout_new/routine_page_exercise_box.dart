@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -52,14 +54,59 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
   onTap() async {
     if (context.read<WorkoutProvider>().checkForExerciseData(widget.routine.exercises[widget.index].exerciseName)) {
 
-      await context.read<WorkoutProvider>().fetchExerciseData(widget.routine.exercises[widget.index].exerciseName);
+      try {
 
-      context.read<PageChange>().changePageCache(WorkoutExercisePage(
-        routine: widget.routine,
-        exercise: context.read<WorkoutProvider>().exerciseList[
-        context.read<WorkoutProvider>().exerciseList.indexWhere((element) => element.exerciseName == widget.routine.exercises[widget.index].exerciseName)
-        ],
-      ));
+        bool result = await InternetConnection().hasInternetAccess;
+        GetOptions options = const GetOptions(source: Source.serverAndCache);
+
+        if (!result) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text("No Internet Connection \nAttempting to load"),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height * 0.6695,
+                right: 20,
+                left: 20,
+              ),
+              dismissDirection: DismissDirection.none,
+              duration: const Duration(milliseconds: 700),
+            ),
+          );
+          options = const GetOptions(source: Source.cache);
+        }
+
+        await context.read<WorkoutProvider>().fetchExerciseData(widget.routine.exercises[widget.index].exerciseName, options);
+
+        context.read<PageChange>().changePageCache(WorkoutExercisePage(
+          routine: widget.routine,
+          exercise: context.read<WorkoutProvider>().exerciseList[
+          context.read<WorkoutProvider>().exerciseList.indexWhere((element) => element.exerciseName == widget.routine.exercises[widget.index].exerciseName)
+          ],
+        ));
+      } catch (error) {
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text("Couldn't load data"),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height * 0.6695,
+              right: 20,
+              left: 20,
+            ),
+            dismissDirection: DismissDirection.none,
+            duration: const Duration(milliseconds: 700),
+          ),
+        );
+
+      }
 
     }
   }

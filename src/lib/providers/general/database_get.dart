@@ -716,7 +716,7 @@ GetUserGroceries(String groceryListID) async {
   }
 }
 
-GetExerciseLogData(String exerciseName) async {
+GetExerciseLogData(String exerciseName, {options = const GetOptions(source: Source.serverAndCache)}) async {
   try {
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -730,14 +730,14 @@ GetExerciseLogData(String exerciseName) async {
         .orderBy("timeStamp", descending: true)
         .limit(7)
         .where("timeStamp", isLessThanOrEqualTo: DateTime.now().toUtc())
-        .get();
+        .get(options);
 
     final repsAndWeightSnapshot = await FirebaseFirestore.instance
         .collection('user-data')
         .doc(firebaseAuth.currentUser!.uid)
         .collection('workout-data')
         .doc(exerciseName)
-        .get();
+        .get(options);
 
     Map mapData(data) {
 

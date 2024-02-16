@@ -674,10 +674,10 @@ class WorkoutProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  fetchExerciseData(String exerciseName) async {
+  fetchExerciseData(String exerciseName, GetOptions options) async {
 
     if (_exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseTrackingData.dailyLogs.isEmpty) {
-      ExerciseModel data = await GetExerciseLogData(exerciseName);
+      ExerciseModel data = await GetExerciseLogData(exerciseName, options: options);
       _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseTrackingData.dailyLogs = data.exerciseTrackingData.dailyLogs;
       _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseMaxRepsAndWeight = data.exerciseMaxRepsAndWeight;
       _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].type = data.type;
