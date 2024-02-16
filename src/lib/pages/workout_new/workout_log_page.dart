@@ -172,8 +172,6 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
           child: Column(
             children: [
 
-              FloatingActionButton(onPressed: context.read<WorkoutProvider>().calculateRoutineStats),
-
               SizedBox(height: 12.h,),
 
               Row(

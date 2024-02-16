@@ -527,3 +527,23 @@ void SaveDailyStreak(Map<String, dynamic> dailyStreak) async {
       .set(dailyStreak);
 
 }
+
+void SaveRoutineVolumeData(StatsMeasurement volumeData) async {
+
+  Map ConvertToMap({required StatsMeasurement volumeData}) {
+    Map volumeDataMap = volumeData.toMap();
+    return volumeDataMap;
+  }
+
+  Map volumeDataMapped = ConvertToMap(volumeData: volumeData);
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .collection("workout-overall-stats")
+      .doc(volumeData.measurementID)
+      .set({"measurements-data": volumeDataMapped});
+
+}

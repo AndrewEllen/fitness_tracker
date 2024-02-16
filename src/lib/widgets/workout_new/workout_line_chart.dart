@@ -33,15 +33,12 @@ class WorkoutLineChart extends StatelessWidget {
 
     int index = data.indexWhere((element) => element.measurementID == routineName);
 
-    if (currentVolume > 0) {
+    if (currentVolume > 0 && index != -1) {
 
       data[index].measurementValues.add(currentVolume);
       data[index].measurementDates.add(currentDate);
 
     }
-
-    print(context.read<WorkoutProvider>().routineVolumeStats[index].measurementValues.length);
-    print(data[index].measurementValues.length);
 
     return index == -1 ? const SizedBox.shrink() : Container(
       decoration: BoxDecoration(

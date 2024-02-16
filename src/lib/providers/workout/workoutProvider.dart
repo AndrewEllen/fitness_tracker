@@ -438,6 +438,8 @@ class WorkoutProvider with ChangeNotifier {
 
       }
 
+      SaveRoutineVolumeData(_routineVolumeStats[_routineVolumeStats.indexWhere((element) => element.measurementID == routineName)]);
+
       print(routineName);
       print(volume);
     }
