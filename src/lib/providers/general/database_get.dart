@@ -415,7 +415,14 @@ GetUserCustomFood({options = const GetOptions(source: Source.serverAndCache)}) a
     );
 
   } catch (exception) {
-    print(exception);
+    debugPrint(exception.toString());
+    return UserNutritionFoodModel(
+      barcodes: [],
+      foodListItemNames: [],
+      foodServings: [],
+      foodServingSize: [],
+      recipe: [],
+    );
   }
 }
 
@@ -442,7 +449,14 @@ GetUserCustomRecipes({options = const GetOptions(source: Source.serverAndCache)}
     );
 
   } catch (exception) {
-    print(exception);
+    debugPrint(exception.toString());
+    return UserNutritionFoodModel(
+      barcodes: [],
+      foodListItemNames: [],
+      foodServings: [],
+      foodServingSize: [],
+      recipe: [],
+    );
   }
 }
 
@@ -660,6 +674,7 @@ GetUserGroceryLists({options = const GetOptions(source: Source.serverAndCache)})
 
   } catch (exception) {
     print(exception);
+    return <String>[];
   }
 }
 
@@ -678,7 +693,8 @@ GetUserGroceryListID({options = const GetOptions(source: Source.serverAndCache)}
     return snapshot["groceryListID"];
 
   } catch (exception) {
-    print(exception);
+    debugPrint(exception.toString());
+    return Uuid().v4.toString();
   }
 }
 

@@ -394,6 +394,34 @@ class WorkoutProvider with ChangeNotifier {
 
   }
 
+  void calculateRoutineStats() {
+
+    print("Stats");
+
+    List<String> routineNames = {
+      for(WorkoutLogExerciseDataModel exercise in _currentWorkout.exercises)
+        exercise.routineName!
+    }.toList();
+
+    ///During testing this doesnt work but is the proper implementation
+    //for (String routineName in _currentWorkout.routineNames) {
+    for (String routineName in routineNames) {
+
+      double volume = 0;
+
+      for (WorkoutLogExerciseDataModel exerciseData in _currentWorkout.exercises) {
+        if (exerciseData.type == 0 && exerciseData.routineName == routineName) {
+
+          volume += exerciseData.weight * exerciseData.reps;
+        }
+      }
+      print(routineName);
+      print(volume);
+    }
+
+
+  }
+
   void endWorkout(DateTime endOfWorkout) {
 
     _workoutStarted = false;
@@ -410,6 +438,7 @@ class WorkoutProvider with ChangeNotifier {
           exercise.routineName!
       }.toList();
 
+      calculateRoutineStats();
       calculateOverallStats();
 
       ///todo add calorie calculations for cardio
