@@ -65,6 +65,7 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
 
   String totalVolume(WorkoutLogModel? workoutLog) {
 
+
     if (workoutLog == null) {
       return "0";
     }
@@ -304,6 +305,7 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
                 itemBuilder: (BuildContext context, int index) {
                   return WorkoutLineChart(
                     routineName: workoutRoutineNamesSet[index],
+                    routineEndDate: workout?.endOfWorkout,
                   );
                 },
               ),

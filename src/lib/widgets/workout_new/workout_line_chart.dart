@@ -19,10 +19,12 @@ class WorkoutLineChart extends StatelessWidget {
     required this.routineName,
     this.currentVolume = 0,
     this.currentDate = "",
+    this.routineEndDate,
     Key? key,
   }) : super(key: key);
   final String routineName;
   final String currentDate;
+  final DateTime? routineEndDate;
   final double currentVolume;
 
   @override
@@ -32,6 +34,16 @@ class WorkoutLineChart extends StatelessWidget {
             (element) => StatsMeasurement.clone(element)).toList();
 
     int index = data.indexWhere((element) => element.measurementID == routineName);
+
+    if (routineEndDate != null) {
+      for (StatsMeasurement dataEntry in data) {
+        for (String date in dataEntry.measurementDates) {
+          print(routineEndDate!);
+          print(DateTime.parse(date));
+          print(routineEndDate!.compareTo(DateTime.parse(date)));
+        }
+      }
+    }
 
     if (currentVolume > 0 && index != -1) {
 
