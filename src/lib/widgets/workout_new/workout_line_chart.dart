@@ -30,11 +30,12 @@ class WorkoutLineChart extends StatefulWidget {
 class _WorkoutLineChartState extends State<WorkoutLineChart> {
   @override
   Widget build(BuildContext context) {
-    final List<StatsMeasurement> data = context
+    late List<StatsMeasurement> data = context
         .read<WorkoutProvider>()
         .routineVolumeStats
         .map((element) => StatsMeasurement.clone(element))
         .toList();
+
 
     int index = data
         .indexWhere((element) => element.measurementID == widget.routineName);
@@ -61,6 +62,16 @@ class _WorkoutLineChartState extends State<WorkoutLineChart> {
 
         }
       }
+    }
+
+
+    if (index != -1 && data[index].measurementValues.length > 31) {
+
+      int start = data[index].measurementValues.length-32;
+
+      int end = data[index].measurementValues.length;
+
+      data[index].measurementValues = data[index].measurementValues.sublist(start,end);
     }
 
     if (widget.currentVolume > 0 && index != -1) {
@@ -234,7 +245,7 @@ class _WorkoutStatsLineChartState extends State<WorkoutStatsLineChart> {
           getTooltipItems: (value) {
             return value
                 .map((e) => LineTooltipItem(
-                      "${data.measurementValues[e.x.toInt()]} \n ${DateFormat('dd/MM/yy hh:mm:ss').format(DateTime.parse(data.measurementDates[e.x.toInt()]))} ",
+                      "${data.measurementValues[e.x.toInt()]} \n ${DateFormat('dd/MM/yy').format(DateTime.parse(data.measurementDates[e.x.toInt()]))} ",
                       const TextStyle(
                         color: appSecondaryColour,
                         fontSize: 14,
