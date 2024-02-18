@@ -38,9 +38,12 @@ class WorkoutLineChart extends StatelessWidget {
     if (routineEndDate != null) {
       for (StatsMeasurement dataEntry in data) {
         for (String date in dataEntry.measurementDates) {
-          print(routineEndDate!);
-          print(DateTime.parse(date));
-          print(routineEndDate!.compareTo(DateTime.parse(date)));
+          print(DateTime.parse(date).isAfter(routineEndDate!));
+
+          if (DateTime.parse(date).isAfter(routineEndDate!)) {
+            print(date);
+          }
+
         }
       }
     }
@@ -208,7 +211,7 @@ class _WorkoutStatsLineChartState extends State<WorkoutStatsLineChart> {
           tooltipBgColor: appQuinaryColour.withOpacity(0.9),
           getTooltipItems: (value) {
             return value.map((e) => LineTooltipItem(
-              "${data.measurementValues[e.x.toInt()]} \n ${DateFormat('dd/MM/yy').format(DateTime.parse(data.measurementDates[e.x.toInt()]))} ",
+              "${data.measurementValues[e.x.toInt()]} \n ${DateFormat('dd/MM/yy hh:mm:ss').format(DateTime.parse(data.measurementDates[e.x.toInt()]))} ",
               const TextStyle(
                 color: appSecondaryColour,
                 fontSize: 14,

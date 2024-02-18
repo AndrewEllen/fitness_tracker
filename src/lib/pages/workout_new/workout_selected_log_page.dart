@@ -81,14 +81,20 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
     return volume.toString().replaceAll(removeTrailingZeros, "");
   }
 
-  String timeStartedFunction(DateTime time) {
+  String timeEndedFunction(DateTime timeStarted, DateTime timeEnded) {
 
-    String stringToDisplay = "Workout Date: ";
+    String dateStart = DateFormat("dd/MM/yyyy").format(timeStarted).toString();
+    String timeOfDayStart = DateFormat("hh:mm a").format(timeStarted).toString();
 
-    String date = DateFormat("dd/MM/yyyy").format(time).toString();
-    String timeOfDay = DateFormat("hh:mm a").format(time).toString();
+    String dateEnd;
+    if (DateUtils.isSameDay(timeStarted, timeEnded)) {
+      dateEnd = "";
+    } else {
+      dateEnd = DateFormat("dd/MM/yyyy").format(timeEnded).toString() + " ";
+    }
+    String timeOfDayEnd = DateFormat("hh:mm a").format(timeEnded).toString();
 
-    return stringToDisplay + date + " at " + timeOfDay;
+    return dateStart + " " + timeOfDayStart + " - " + dateEnd +  timeOfDayEnd;
   }
 
 
@@ -157,9 +163,12 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
               ),
 
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(9.0),
                 child: Text(
-                  timeStartedFunction(context.read<WorkoutProvider>().currentSelectedLog.startOfWorkout),
+                  timeEndedFunction(
+                    context.read<WorkoutProvider>().currentSelectedLog.startOfWorkout,
+                    context.read<WorkoutProvider>().currentSelectedLog.endOfWorkout!,
+                  ),
                   style: boldTextStyle,
                 ),
               ),
