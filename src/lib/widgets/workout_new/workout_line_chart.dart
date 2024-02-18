@@ -1,10 +1,6 @@
 import 'dart:math';
 
-import 'package:fitness_tracker/helpers/general/list_extensions.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
-import 'package:fitness_tracker/widgets/general/app_default_button.dart';
-import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
-import 'package:fitness_tracker/widgets/stats/stats_line_chart.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/exports.dart';
@@ -14,7 +10,7 @@ import 'package:provider/provider.dart';
 import '../../constants.dart';
 import '../../models/stats/stats_model.dart';
 
-class WorkoutLineChart extends StatelessWidget {
+class WorkoutLineChart extends StatefulWidget {
   const WorkoutLineChart({
     required this.routineName,
     this.currentVolume = 0,
@@ -28,84 +24,98 @@ class WorkoutLineChart extends StatelessWidget {
   final double currentVolume;
 
   @override
+  State<WorkoutLineChart> createState() => _WorkoutLineChartState();
+}
+
+class _WorkoutLineChartState extends State<WorkoutLineChart> {
+  @override
   Widget build(BuildContext context) {
+    final List<StatsMeasurement> data = context
+        .read<WorkoutProvider>()
+        .routineVolumeStats
+        .map((element) => StatsMeasurement.clone(element))
+        .toList();
 
-    final List<StatsMeasurement> data = context.read<WorkoutProvider>().routineVolumeStats.map(
-            (element) => StatsMeasurement.clone(element)).toList();
+    int index = data
+        .indexWhere((element) => element.measurementID == widget.routineName);
 
-    int index = data.indexWhere((element) => element.measurementID == routineName);
 
-    if (routineEndDate != null) {
-      for (StatsMeasurement dataEntry in data) {
-        for (String date in dataEntry.measurementDates) {
-          print(DateTime.parse(date).isAfter(routineEndDate!));
+    if (widget.routineEndDate != null && index != -1) {
+      var toRemoveDateList = [];
+      for (String date in data[index].measurementDates) {
+        if (DateTime.parse(date).isAfter(DateTime(
+            widget.routineEndDate!.year,
+            widget.routineEndDate!.month,
+            widget.routineEndDate!.day,
+            widget.routineEndDate!.hour,
+            widget.routineEndDate!.minute + 1))) {
+            toRemoveDateList.add(date);
+        }
+      }
+      if (toRemoveDateList.isNotEmpty) {
+        for (var date in toRemoveDateList) {
 
-          if (DateTime.parse(date).isAfter(routineEndDate!)) {
-            print(date);
-          }
+          int removalIndex = data[index].measurementDates.indexOf(date);
+          data[index].measurementDates.removeWhere((e) => e == date);
+          data[index].measurementValues.removeAt(removalIndex);
 
         }
       }
     }
 
-    if (currentVolume > 0 && index != -1) {
-
-      data[index].measurementValues.add(currentVolume);
-      data[index].measurementDates.add(currentDate);
-
+    if (widget.currentVolume > 0 && index != -1) {
+      data[index].measurementValues.add(widget.currentVolume);
+      data[index].measurementDates.add(widget.currentDate);
     }
 
-    return index == -1 ? const SizedBox.shrink() : Container(
-      decoration: BoxDecoration(
-          color: appTertiaryColour,
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black.withOpacity(0.4),
-                blurRadius: 4,
-                offset: const Offset(0, 1)
-            ),
-          ]
-      ),
-      margin: const EdgeInsets.only(bottom: 20),
-      child: SizedBox(
-        child: Column(
-          children: [
-            AppBar(
-              backgroundColor: appTertiaryColour,
-              elevation: 1.25,
-              title: Text(
-                  data[index].measurementName.toString(),
-                  overflow: TextOverflow.ellipsis,
-                  style: boldTextStyle
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                margin: EdgeInsets.only(
-                  left: 6.w,
-                ),
-                height: (337/1.34).h,
-                child: data[index].measurementValues.isEmpty || data[index].measurementValues.length < 2  ? const Center(
-                    child: Text(
-                      "Not Enough Data to Display",
-                      style: TextStyle(
-                        color: appQuarternaryColour,
-                        fontSize: 22,
+    return index == -1
+        ? const SizedBox.shrink()
+        : Container(
+            decoration: BoxDecoration(color: appTertiaryColour, boxShadow: [
+              BoxShadow(
+                  color: Colors.black.withOpacity(0.4),
+                  blurRadius: 4,
+                  offset: const Offset(0, 1)),
+            ]),
+            margin: const EdgeInsets.only(bottom: 20),
+            child: SizedBox(
+              child: Column(
+                children: [
+                  AppBar(
+                    backgroundColor: appTertiaryColour,
+                    elevation: 1.25,
+                    title: Text(data[index].measurementName.toString(),
+                        overflow: TextOverflow.ellipsis, style: boldTextStyle),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        left: 6.w,
                       ),
-                    )
-                ) : WorkoutStatsLineChart(data: data[index]),
+                      height: (337 / 1.34).h,
+                      child: data[index].measurementValues.isEmpty ||
+                              data[index].measurementValues.length < 2
+                          ? const Center(
+                              child: Text(
+                              "Not Enough Data to Display",
+                              style: TextStyle(
+                                color: appQuarternaryColour,
+                                fontSize: 22,
+                              ),
+                            ))
+                          : WorkoutStatsLineChart(data: data[index]),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  const Divider(
+                    color: appQuarternaryColour,
+                    height: 0,
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 15),
-            Divider(
-              color: appQuarternaryColour,
-              height: 0,
-            ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }
 
@@ -127,21 +137,33 @@ class _WorkoutStatsLineChartState extends State<WorkoutStatsLineChart> {
   @override
   Widget build(BuildContext context) {
     context.watch<UserStatsMeasurements>().statsMeasurement;
-    chartDisplayPoints = data.measurementValues.asMap().entries.map((e) => FlSpot(e.key.toDouble(), e.value)).toList();
+    chartDisplayPoints = data.measurementValues
+        .asMap()
+        .entries
+        .map((e) => FlSpot(e.key.toDouble(), e.value))
+        .toList();
 
-    xAxisMax = data.measurementValues.length.toDouble()-1;
+    xAxisMax = data.measurementValues.length.toDouble() - 1;
     xAxisMin = 0; //xAxisMax - 11;
     if (xAxisMin < 0) {
       xAxisMin = 0;
     }
 
-    listDisplayRange = data.measurementValues.sublist(xAxisMin.toInt(),xAxisMax.toInt()+1);
+    listDisplayRange =
+        data.measurementValues.sublist(xAxisMin.toInt(), xAxisMax.toInt() + 1);
     intervalY = (listDisplayRange.reduce(max) / 3).roundToDouble();
     if (intervalY < 1) {
       intervalY = 1;
     }
 
-    if (chartDisplayPoints.sublist(xAxisMin.toInt(),xAxisMax.toInt()+1).every((e) => e.y == chartDisplayPoints.sublist(xAxisMin.toInt(),xAxisMax.toInt()+1).first.y)) {
+    if (chartDisplayPoints
+        .sublist(xAxisMin.toInt(), xAxisMax.toInt() + 1)
+        .every((e) =>
+            e.y ==
+            chartDisplayPoints
+                .sublist(xAxisMin.toInt(), xAxisMax.toInt() + 1)
+                .first
+                .y)) {
       displayDataYAxis = false;
     } else {
       displayDataYAxis = true;
@@ -155,8 +177,7 @@ class _WorkoutStatsLineChartState extends State<WorkoutStatsLineChart> {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(
-            right: 8, left: 2, top: 16, bottom: 0),
+        padding: const EdgeInsets.only(right: 8, left: 2, top: 16, bottom: 0),
         child: LineChart(
           chartData(),
         ),
@@ -166,11 +187,12 @@ class _WorkoutStatsLineChartState extends State<WorkoutStatsLineChart> {
 
   Widget horizontalAxis(double value, TitleMeta meta) {
     return Transform.rotate(
-      angle: -pi/6,
+      angle: -pi / 6,
       child: Container(
-        margin: const EdgeInsets.only(top:5, right: 25),
+        margin: const EdgeInsets.only(top: 5, right: 25),
         child: Text(
-          DateFormat('dd/MM/yy').format(DateTime.parse(data.measurementDates[value.toInt()])),
+          DateFormat('dd/MM/yy')
+              .format(DateTime.parse(data.measurementDates[value.toInt()])),
           style: const TextStyle(
             color: appQuarternaryColour,
             fontWeight: FontWeight.w500,
@@ -210,14 +232,16 @@ class _WorkoutStatsLineChartState extends State<WorkoutStatsLineChart> {
         touchTooltipData: LineTouchTooltipData(
           tooltipBgColor: appQuinaryColour.withOpacity(0.9),
           getTooltipItems: (value) {
-            return value.map((e) => LineTooltipItem(
-              "${data.measurementValues[e.x.toInt()]} \n ${DateFormat('dd/MM/yy hh:mm:ss').format(DateTime.parse(data.measurementDates[e.x.toInt()]))} ",
-              const TextStyle(
-                color: appSecondaryColour,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
-            )).toList();
+            return value
+                .map((e) => LineTooltipItem(
+                      "${data.measurementValues[e.x.toInt()]} \n ${DateFormat('dd/MM/yy hh:mm:ss').format(DateTime.parse(data.measurementDates[e.x.toInt()]))} ",
+                      const TextStyle(
+                        color: appSecondaryColour,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ))
+                .toList();
           },
         ),
       ),
@@ -240,10 +264,10 @@ class _WorkoutStatsLineChartState extends State<WorkoutStatsLineChart> {
       ),
       titlesData: FlTitlesData(
         show: true,
-        rightTitles: AxisTitles(
+        rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
-        topTitles: AxisTitles(
+        topTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
         bottomTitles: AxisTitles(
@@ -274,11 +298,14 @@ class _WorkoutStatsLineChartState extends State<WorkoutStatsLineChart> {
       ),
       minX: xAxisMin,
       maxX: xAxisMax,
-      minY: (listDisplayRange.reduce(min).roundToDouble()-0.6).roundToDouble(),
-      maxY: (listDisplayRange.reduce(max).roundToDouble()+0.6).roundToDouble(),
+      minY:
+          (listDisplayRange.reduce(min).roundToDouble() - 0.6).roundToDouble(),
+      maxY:
+          (listDisplayRange.reduce(max).roundToDouble() + 0.6).roundToDouble(),
       lineBarsData: [
         LineChartBarData(
-          spots: chartDisplayPoints.sublist(xAxisMin.toInt(),xAxisMax.toInt()+1),
+          spots: chartDisplayPoints.sublist(
+              xAxisMin.toInt(), xAxisMax.toInt() + 1),
           isCurved: true,
           curveSmoothness: 0.3,
           color: appSecondaryColour,
