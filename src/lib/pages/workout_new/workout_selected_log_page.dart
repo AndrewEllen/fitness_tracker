@@ -154,7 +154,7 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
                   ),
 
                   WorkoutLogTopStatsBox(
-                    dataToDisplay: DateTime.now().difference(workout!.startOfWorkout).inMinutes.toString(),
+                    dataToDisplay: workout!.endOfWorkout!.difference(workout!.startOfWorkout).inMinutes.toString(),
                     title: "Duration",
                     bottomText: "Minutes",
                   ),
