@@ -1238,9 +1238,9 @@ class UserNutritionData with ChangeNotifier {
       DateTime now = DateTime.now();
 
       DateTime firstTimeDateTime = DateTime(now.year, now.month, now.day).add(
-          Duration(hours: int.parse(firstTimeSplit[0]), minutes: int.parse(firstTimeSplit[1])));
+          Duration(hours: double.parse(firstTimeSplit[0]).toInt(), minutes: double.parse(firstTimeSplit[1]).toInt()));
       DateTime secondTimeDateTime = DateTime(now.year, now.month, now.day).add(
-          Duration(hours: int.parse(secondTimeSplit[0]), minutes: int.parse(secondTimeSplit[1])));
+          Duration(hours: double.parse(secondTimeSplit[0]).toInt(), minutes: double.parse(secondTimeSplit[1]).toInt()));
 
       return secondTimeDateTime.difference(firstTimeDateTime).inMinutes;
     }
