@@ -92,13 +92,13 @@ GetUserMeasurements({options = const GetOptions(source: Source.serverAndCache)})
       );
     });
 
-    print(data);
-    print(data[0].measurementName);
-
     return data;
 
   } catch (exception) {
     print(exception);
+
+    return [];
+
   }
 }
 
@@ -381,7 +381,7 @@ GetUserNutritionHistory({options = const GetOptions(source: Source.serverAndCach
 
     final _data = snapshot.get("history");
 
-    return UserNutritionFoodModel(
+    UserNutritionFoodModel historyModel = UserNutritionFoodModel(
       barcodes: List<String>.from(_data["barcodes"] as List),
       foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
       foodServings: checkIfValidNumberList(List<String>.from(_data["foodServings"] as List)),
@@ -389,8 +389,19 @@ GetUserNutritionHistory({options = const GetOptions(source: Source.serverAndCach
       recipe: List<bool>.from(_data["recipe"] as List),
     );
 
+    return historyModel;
+
   } catch (exception) {
     print(exception);
+
+    return UserNutritionFoodModel(
+      barcodes: [],
+      foodListItemNames: [],
+      foodServings: [],
+      foodServingSize: [],
+      recipe: [],
+    );
+
   }
 }
 
@@ -637,7 +648,18 @@ GetUserBioData({options = const GetOptions(source: Source.serverAndCache)}) asyn
     );
 
   } catch (exception) {
-    print(exception);
+    debugPrint(exception.toString());
+
+    return UserDataModel(
+      height: "1",
+      weight: "1",
+      age: "1",
+      activityLevel: "0",
+      weightGoal: "0",
+      biologicalSex: "0",
+      calories: "10",
+    );
+
   }
 }
 
@@ -887,31 +909,83 @@ GetRoutinesData({options = const GetOptions(source: Source.serverAndCache)}) asy
 
 GetExerciseData({options = const GetOptions(source: Source.serverAndCache)}) async {
 
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  try {
 
-  dynamic data = await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc(firebaseAuth.currentUser!.uid)
-      .collection('exercise-data')
-      .doc('exercise-names')
-      .get(options);
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  return List<String>.from(data['data'] as List);
+    dynamic data = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('exercise-data')
+        .doc('exercise-names')
+        .get(options);
+
+    bool _exists;
+    try {
+      var test = data["data"];
+      _exists = true;
+
+    } catch (e) {
+
+      _exists = false;
+
+    }
+
+    List<String> exerciseData = _exists ? List<String>.from(data['data'].cast<String>()) : [];
+
+    return exerciseData;
+
+  } catch (e, stackTrace) {
+    debugPrint(e.toString());
+    debugPrint(stackTrace.toString());
+
+    return [];
+
+  }
+
+
 
 }
 
 GetCategoriesData({options = const GetOptions(source: Source.serverAndCache)}) async {
 
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  try {
 
-  dynamic data = await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc(firebaseAuth.currentUser!.uid)
-      .collection('exercise-data')
-      .doc('category-names')
-      .get(options);
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  return List<String>.from(data['data'] as List);
+    dynamic data = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('exercise-data')
+        .doc('category-names')
+        .get(options);
+
+    bool _exists;
+    try {
+      var test = data["data"];
+      _exists = true;
+
+    } catch (e) {
+
+      _exists = false;
+
+    }
+
+    List<String> exerciseData = _exists ? List<String>.from(data['data'] as List<String>) : [];
+
+    return exerciseData;
+
+  } catch (e, stackTrace) {
+
+    debugPrint("Error Located");
+    debugPrint(e.toString());
+    debugPrint(stackTrace.toString());
+
+    return [];
+
+  }
+
+
 
 }
 
@@ -1105,42 +1179,100 @@ try {
 
 GetWorkoutOverallStats({options = const GetOptions(source: Source.serverAndCache)}) async {
 
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  try {
 
-  dynamic snapshot = await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc(firebaseAuth.currentUser!.uid)
-      .collection('workout-overall-stats')
-      .doc("stats")
-      .get(options);
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  dynamic parseDateTime(Timestamp? timeStamp) {
+    dynamic snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('workout-overall-stats')
+        .doc("stats")
+        .get(options);
 
-    if (timeStamp != null) {
-      return timeStamp.toDate();
+    dynamic parseDateTime(Timestamp? timeStamp) {
+
+      if (timeStamp != null) {
+        return timeStamp.toDate();
+      }
+      return null;
+
     }
-    return null;
+
+    bool _exists;
+    try {
+      var test = snapshot["totalVolume"];
+      _exists = true;
+
+    } catch (e) {
+
+      _exists = false;
+
+    }
+
+    return _exists ? WorkoutOverallStatsModel(
+      totalVolume: snapshot["totalVolume"],
+      totalReps: snapshot["totalReps"],
+      totalSets: snapshot["totalSets"],
+      totalWorkouts: snapshot["totalWorkouts"],
+      totalAverageDuration: snapshot["totalAverageDuration"],
+      totalVolumeThisYear: snapshot["totalVolumeThisYear"],
+      totalVolumeThisMonth: snapshot["totalVolumeThisMonth"],
+      totalRepsThisYear: snapshot["totalRepsThisYear"],
+      totalRepsThisMonth: snapshot["totalRepsThisMonth"],
+      totalSetsThisYear: snapshot["totalSetsThisYear"],
+      totalSetsThisMonth: snapshot["totalSetsThisMonth"],
+      totalWorkoutsThisYear: snapshot["totalWorkoutsThisYear"],
+      totalWorkoutsThisMonth: snapshot["totalWorkoutsThisMonth"],
+      averageDurationThisYear: snapshot["averageDurationThisYear"],
+      averageDurationThisMonth: snapshot["averageDurationThisMonth"],
+      lastLog: parseDateTime(snapshot["lastLog"]),
+    ) :
+    WorkoutOverallStatsModel(
+      totalVolume: 0,
+      totalReps: 0,
+      totalSets: 0,
+      totalWorkouts: 0,
+      totalAverageDuration: 0,
+      totalVolumeThisYear: 0,
+      totalVolumeThisMonth: 0,
+      totalRepsThisYear: 0,
+      totalRepsThisMonth: 0,
+      totalSetsThisYear: 0,
+      totalSetsThisMonth: 0,
+      totalWorkoutsThisYear: 0,
+      totalWorkoutsThisMonth: 0,
+      averageDurationThisYear: 0,
+      averageDurationThisMonth: 0,
+      lastLog: DateTime.now(),
+    );;
+
+  } catch (e, stackTrace) {
+
+    debugPrint(e.toString());
+    debugPrint(stackTrace.toString());
+
+    return WorkoutOverallStatsModel(
+      totalVolume: 0,
+      totalReps: 0,
+      totalSets: 0,
+      totalWorkouts: 0,
+      totalAverageDuration: 0,
+      totalVolumeThisYear: 0,
+      totalVolumeThisMonth: 0,
+      totalRepsThisYear: 0,
+      totalRepsThisMonth: 0,
+      totalSetsThisYear: 0,
+      totalSetsThisMonth: 0,
+      totalWorkoutsThisYear: 0,
+      totalWorkoutsThisMonth: 0,
+      averageDurationThisYear: 0,
+      averageDurationThisMonth: 0,
+      lastLog: DateTime.now(),
+    );
 
   }
 
-  return WorkoutOverallStatsModel(
-    totalVolume: snapshot["totalVolume"],
-    totalReps: snapshot["totalReps"],
-    totalSets: snapshot["totalSets"],
-    totalWorkouts: snapshot["totalWorkouts"],
-    totalAverageDuration: snapshot["totalAverageDuration"],
-    totalVolumeThisYear: snapshot["totalVolumeThisYear"],
-    totalVolumeThisMonth: snapshot["totalVolumeThisMonth"],
-    totalRepsThisYear: snapshot["totalRepsThisYear"],
-    totalRepsThisMonth: snapshot["totalRepsThisMonth"],
-    totalSetsThisYear: snapshot["totalSetsThisYear"],
-    totalSetsThisMonth: snapshot["totalSetsThisMonth"],
-    totalWorkoutsThisYear: snapshot["totalWorkoutsThisYear"],
-    totalWorkoutsThisMonth: snapshot["totalWorkoutsThisMonth"],
-    averageDurationThisYear: snapshot["averageDurationThisYear"],
-    averageDurationThisMonth: snapshot["averageDurationThisMonth"],
-    lastLog: parseDateTime(snapshot["lastLog"]),
-  );
 
 }
 
@@ -1164,8 +1296,42 @@ GetWeekdayExerciseTracking({options = const GetOptions(source: Source.serverAndC
 
   }
 
-  Map<String, dynamic> snapshotMap = Map<String, dynamic>.from(snapshot.data());
-  snapshotMap["lastDate"] = parseDateTime(snapshotMap["lastDate"]);
+  Map<String, dynamic> snapshotMap;
+
+  try {
+
+    snapshotMap = snapshot.data() != null ? Map<String, dynamic>.from(snapshot.data()) : {
+
+      "Monday": false,
+      "Tuesday": false,
+      "Wednesday": false,
+      "Thursday": false,
+      "Friday": false,
+      "Saturday": false,
+      "Sunday": false,
+      "lastDate": DateTime.now(),
+
+    };
+    snapshotMap["lastDate"] = snapshot.data() != null ? parseDateTime(snapshotMap["lastDate"]) : DateTime.now();
+
+  } catch (e, stackTrace) {
+    debugPrint(e.toString());
+    debugPrint(stackTrace.toString());
+
+    snapshotMap = {
+
+      "Monday": false,
+      "Tuesday": false,
+      "Wednesday": false,
+      "Thursday": false,
+      "Friday": false,
+      "Saturday": false,
+      "Sunday": false,
+      "lastDate": DateTime.now(),
+
+    };
+
+  }
 
   return snapshotMap;
 
@@ -1190,9 +1356,30 @@ GetDailyStreak({options = const GetOptions(source: Source.serverAndCache)}) asyn
     return null;
 
   }
+  Map<String, dynamic> snapshotMap;
+  try {
 
-  Map<String, dynamic> snapshotMap = Map<String, dynamic>.from(snapshot.data());
-  snapshotMap["lastDate"] = parseDateTime(snapshotMap["lastDate"]);
+    snapshotMap = snapshot.data() != null ? Map<String, dynamic>.from(snapshot.data()) : {
+
+      "dailyStreak": 0,
+      "lastDate": DateTime.now(),
+
+    };
+
+    snapshotMap["lastDate"] = snapshot.data() != null ? parseDateTime(snapshotMap["lastDate"]) : DateTime.now();
+
+  } catch (e, stackTrace) {
+    debugPrint(e.toString());
+    debugPrint(stackTrace.toString());
+
+    snapshotMap = {
+
+      "dailyStreak": 0,
+      "lastDate": DateTime.now(),
+
+    };
+
+  }
 
   return snapshotMap;
 
