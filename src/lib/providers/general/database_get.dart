@@ -382,11 +382,11 @@ GetUserNutritionHistory({options = const GetOptions(source: Source.serverAndCach
     final _data = snapshot.get("history");
 
     UserNutritionFoodModel historyModel = UserNutritionFoodModel(
-      barcodes: List<String>.from(_data["barcodes"] as List),
-      foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
-      foodServings: checkIfValidNumberList(List<String>.from(_data["foodServings"] as List)),
-      foodServingSize: checkIfValidNumberList(List<String>.from(_data["foodServingSize"] as List)),
-      recipe: List<bool>.from(_data["recipe"] as List),
+      barcodes: List<String>.from(_data["barcodes"]),
+      foodListItemNames: List<String>.from(_data["foodListItemNames"]),
+      foodServings: checkIfValidNumberList(List<String>.from(_data["foodServings"])),
+      foodServingSize: checkIfValidNumberList(List<String>.from(_data["foodServingSize"])),
+      recipe: List<bool>.from(_data["recipe"]),
     );
 
     return historyModel;
@@ -420,10 +420,10 @@ GetUserCustomFood({options = const GetOptions(source: Source.serverAndCache)}) a
     final _data = snapshot.get("food");
 
     return UserNutritionFoodModel(
-      barcodes: List<String>.from(_data["barcodes"] as List),
-      foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
-      foodServings: checkIfValidNumberList(List<String>.from(_data["foodServings"] as List)),
-      foodServingSize: checkIfValidNumberList(List<String>.from(_data["foodServingSize"] as List)),
+      barcodes: List<String>.from(_data["barcodes"]),
+      foodListItemNames: List<String>.from(_data["foodListItemNames"]),
+      foodServings: checkIfValidNumberList(List<String>.from(_data["foodServings"])),
+      foodServingSize: checkIfValidNumberList(List<String>.from(_data["foodServingSize"])),
       recipe: List<bool>.generate(_data["barcodes"].length, (index) => false),
     );
 
@@ -454,10 +454,10 @@ GetUserCustomRecipes({options = const GetOptions(source: Source.serverAndCache)}
     final _data = snapshot.get("food");
 
     return UserNutritionFoodModel(
-      barcodes: List<String>.from(_data["barcodes"] as List),
-      foodListItemNames: List<String>.from(_data["foodListItemNames"] as List),
-      foodServings: checkIfValidNumberList(List<String>.from(_data["foodServings"] as List)),
-      foodServingSize: checkIfValidNumberList(List<String>.from(_data["foodServingSize"] as List)),
+      barcodes: List<String>.from(_data["barcodes"]),
+      foodListItemNames: List<String>.from(_data["foodListItemNames"]),
+      foodServings: checkIfValidNumberList(List<String>.from(_data["foodServings"])),
+      foodServingSize: checkIfValidNumberList(List<String>.from(_data["foodServingSize"])),
       recipe: List<bool>.generate(_data["barcodes"].length, (index) => true),
     );
 
@@ -694,7 +694,7 @@ GetUserGroceryLists({options = const GetOptions(source: Source.serverAndCache)})
         .doc("grocery-lists")
         .get(options);
 
-    return List<String>.from(snapshot["groceryLists"] as List);
+    return List<String>.from(snapshot["groceryLists"]);
 
   } catch (exception) {
     print(exception);
@@ -931,7 +931,7 @@ GetExerciseData({options = const GetOptions(source: Source.serverAndCache)}) asy
 
     }
 
-    List<String> exerciseData = _exists ? List<String>.from(data['data'].cast<String>()) : [];
+    List<String> exerciseData = _exists ? List<String>.from(data['data']) : [];
 
     return exerciseData;
 
@@ -971,7 +971,7 @@ GetCategoriesData({options = const GetOptions(source: Source.serverAndCache)}) a
 
     }
 
-    List<String> exerciseData = _exists ? List<String>.from(data['data'] as List<String>) : [];
+    List<String> exerciseData = _exists ? List<String>.from(data['data']) : [];
 
     return exerciseData;
 
