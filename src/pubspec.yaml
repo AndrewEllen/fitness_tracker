@@ -43,7 +43,6 @@ dependencies:
   firebase_auth: 4.6.1
   uuid: 3.0.6
   intl: 0.17.0
-  google_mlkit_barcode_scanning: 0.5.0
   path_provider: 2.0.15
   openfoodfacts: 3.4.0
   mobile_scanner: ^3.2.0
@@ -69,6 +68,8 @@ dependencies:
   dropdown_textfield: ^1.0.8
   transitioned_indexed_stack: ^1.0.2
   internet_connection_checker_plus: ^2.2.0
+  google_mlkit_text_recognition: ^0.11.0
+  image_picker: ^1.0.7
 
 dev_dependencies:
 
