@@ -1,3 +1,4 @@
+import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -776,6 +777,44 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                 ],
               ),
             ),
+
+            Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Row(
+
+                children: [
+
+                  Expanded(
+                    flex: 7,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 2.0),
+                      child: ElevatedButton(
+                        onPressed: () => SaveFoodItem(),
+                        child: const Text(
+                          "Save Food Data",
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 2.0),
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        child: const Icon(
+                          MdiIcons.cubeScan,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                ],
+
+              ),
+            ),
+
             ScreenWidthContainer(
               minHeight: _smallContainerMin * 0.2,
               maxHeight: _smallContainerMin * 1.5,
