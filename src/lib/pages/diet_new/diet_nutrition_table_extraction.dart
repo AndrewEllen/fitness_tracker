@@ -3,10 +3,12 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
-import '../../OCRapiKey.dart';
 
+import '../../OCRapiKey.dart';
+import '../../constants.dart';
 
 class NutritionTableExtraction extends StatefulWidget {
   const NutritionTableExtraction({Key? key}) : super(key: key);
@@ -18,39 +20,25 @@ class NutritionTableExtraction extends StatefulWidget {
 class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
   File? selectedImage;
-  RecognizedText? recognizedText;
-
   var extracted;
 
-  final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
 
-  Future<void> recogniseText() async {
-
-    recognizedText = await textRecognizer.processImage(
-        InputImage.fromFile(
-          selectedImage!,
-        )
+  Future<File?> cropImage(XFile image) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: image.path,
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: "Crop Image",
+          toolbarColor: appPrimaryColour,
+          toolbarWidgetColor: Colors.black,
+          initAspectRatio: CropAspectRatioPreset.square,
+          lockAspectRatio: false,
+          dimmedLayerColor: appPrimaryColour,
+        ),
+      ],
     );
-
-    for (TextBlock block in recognizedText!.blocks) {
-      final Rect rect = block.boundingBox;
-      final List<Point<int>> cornerPoints = block.cornerPoints;
-      final String text = block.text;
-      final List<String> languages = block.recognizedLanguages;
-
-      print("Printing Block Text");
-      print(text);
-
-      for (TextLine line in block.lines) {
-        print("Printing Text Line");
-        print(line.text);
-        for (TextElement element in line.elements) {
-          print("Printing Text Element");
-          print(element.text);
-        }
-      }
-
-    }
+    return File(croppedFile!.path);
   }
 
 
@@ -110,16 +98,15 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
                   try {
                     final XFile? image = await ImagePicker().pickImage(
                       source: ImageSource.camera,
-                      imageQuality: 100,
+                      imageQuality: 40,
                     );
 
-                    //CroppedFile? croppedFile = await cropImage(image!);
+                    File? croppedFile = await cropImage(image!);
           
                     setState(() {
-                      selectedImage = File(image!.path);
+                      selectedImage = File(croppedFile!.path);
                     });
 
-                    await recogniseText();
                     await OCRTabularRecognition();
 
                   } catch (error) {
@@ -129,25 +116,6 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
                 },
                 child: const Text("Pick From Camera"),
               ),
-
-              recognizedText != null ? ListView.builder(
-                shrinkWrap: true,
-                itemCount: recognizedText!.blocks.length,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Text(
-                      recognizedText!.blocks[index].text,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
-                  );
-
-                },
-              ) : const SizedBox.shrink(),
 
               extracted != null ? Padding(
                 padding: const EdgeInsets.all(14.0),
