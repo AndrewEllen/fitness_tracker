@@ -13,6 +13,7 @@ import '../../providers/diet/user_nutrition_data.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/diet/diet_list_header_box.dart';
 import '../../widgets/diet/food_nutrition_list_formfield.dart';
+import '../diet_new/diet_nutrition_table_extraction.dart';
 import 'diet_food_display_page.dart';
 
 class FoodNewNutritionEdit extends StatefulWidget {
@@ -802,7 +803,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 2.0),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () => context.read<PageChange>().changePageCache(const NutritionTableExtraction()),
                         child: const Icon(
                           MdiIcons.cubeScan,
                         ),
