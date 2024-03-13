@@ -16,17 +16,20 @@ class NutritionTableExtraction extends StatefulWidget {
 class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
   File? selectedImage;
+  RecognizedText? recognizedText;
   final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
 
   Future<void> recogniseText() async {
-    final RecognizedText recognizedText = await textRecognizer.processImage(
+
+    recognizedText = await textRecognizer.processImage(
         InputImage.fromFile(
           selectedImage!,
         )
     );
 
-    String text = recognizedText.text;
-    for (TextBlock block in recognizedText.blocks) {
+    setState(() {});
+
+    for (TextBlock block in recognizedText!.blocks) {
       final Rect rect = block.boundingBox;
       final List<Point<int>> cornerPoints = block.cornerPoints;
       final String text = block.text;
@@ -43,6 +46,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
           print(element.text);
         }
       }
+
     }
   }
 
@@ -82,8 +86,27 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
                   }
                 },
                 child: const Text("Pick From Camera"),
-              )
-          
+              ),
+
+              recognizedText != null ? ListView.builder(
+                shrinkWrap: true,
+                itemCount: recognizedText!.blocks.length,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Text(
+                      recognizedText!.blocks[index].text,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                  );
+
+                },
+              ) : const SizedBox.shrink(),
+
             ],
           ),
         ),
