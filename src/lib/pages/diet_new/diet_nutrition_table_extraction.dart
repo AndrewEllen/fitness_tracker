@@ -19,6 +19,9 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
   File? selectedImage;
   RecognizedText? recognizedText;
+
+  var extracted;
+
   final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
 
   Future<void> recogniseText() async {
@@ -28,8 +31,6 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
           selectedImage!,
         )
     );
-
-    setState(() {});
 
     for (TextBlock block in recognizedText!.blocks) {
       final Rect rect = block.boundingBox;
@@ -55,14 +56,9 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
   Future<void> OCRTabularRecognition() async {
 
-
-    String base64Image = base64Encode(selectedImage!.readAsBytesSync());
-
     final url = Uri.parse('https://api.ocr.space/parse/image');
 
     final req = http.MultipartRequest('POST', url)
-      //..fields['base64Image'] = "data:image/jpg;base64," + base64Image
-      //..fields['filetype'] = "JPG"
       ..fields['language'] = 'eng'
       ..fields['isOverlayRequired'] = 'false'
       ..fields['isTable'] = 'true'
@@ -87,6 +83,11 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
     print("OCR CURL REQUEST BELOW");
     print(res.body);
 
+    extracted = jsonDecode(res.body);
+
+    setState(() {});
+
+    print(jsonDecode(res.body));
 
   }
 
@@ -146,6 +147,17 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
                   );
 
                 },
+              ) : const SizedBox.shrink(),
+
+              extracted != null ? Padding(
+                padding: const EdgeInsets.all(14.0),
+                child: Text(
+                  extracted.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
               ) : const SizedBox.shrink(),
 
             ],
