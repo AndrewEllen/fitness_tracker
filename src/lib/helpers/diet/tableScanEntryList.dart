@@ -1,6 +1,45 @@
 
 List<String> masterEntryList = [
+
+  "amount per serving",
+  "amount per pack",
+  "amount per box",
+  "amount per container",
+  "amount per bag",
+  "amount",
+  "per",
+  "serving",
+  "pack",
+  "box",
+  "container",
+  "bag",
+
+  "a",
+  "b",
+  "c",
+  "d",
+  "d3",
+  "e",
+  "k",
+  "vitamin",
+  "b1",
+  "b2",
+  "b3",
+  "b4",
+  "b5",
+  "b6",
+  "b7",
+  "b8",
+  "b9",
+  "b10",
+  "b11",
+  "b12",
+
+  "acid",
+
   "serving size",
+  "serving",
+  "size",
   "calories",
   "calorie",
   "energy",
@@ -28,6 +67,7 @@ List<String> masterEntryList = [
   "saturated fat",
   "saturated fats",
   "saturates",
+  "saturated",
 
   "polyunsaturatedfat",
   "polyunsaturatedfats",
@@ -36,6 +76,7 @@ List<String> masterEntryList = [
   "polyunsaturated Fat",
   "polyunsaturated fats",
   "polyunsaturates",
+  "polyunsaturated",
 
   "monounsaturatedfat",
   "monounsaturatedfats",
@@ -44,6 +85,7 @@ List<String> masterEntryList = [
   "monounsaturated fat",
   "monounsaturated fats",
   "monounsaturates",
+  "monounsaturated",
 
   "transfat",
   "transfats",
@@ -51,6 +93,7 @@ List<String> masterEntryList = [
   "trans-fats",
   "trans fat",
   "trans fats",
+  "trans",
 
   "cholesterol",
   "calcium",
@@ -70,6 +113,7 @@ List<String> masterEntryList = [
   "vitaminb-1",
   "thiamine",
 
+
   "vitaminb2",
   "vitamin b2",
   "vitamin-b2",
@@ -85,10 +129,16 @@ List<String> masterEntryList = [
   "vitamin-b6",
   "pyridoxine",
 
+  "vitamin b7",
+  "vitaminb7",
+  "vitamin-b7",
+  "biotin",
+
   "vitaminb9",
   "vitamin b9",
   "vitamin-b9",
   "folic acid",
+  "folic",
 
   "vitaminb12",
   "vitamin b12",
@@ -111,6 +161,17 @@ List<String> masterEntryList = [
   "vitamin k",
   "vitamin-k",
 
+  "omega",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+
   "omega3",
   "omega 3",
   "omega-3",
@@ -120,32 +181,50 @@ List<String> masterEntryList = [
   "omega-6",
 
   "alcohol",
-  "biotin",
   "butyric acid",
+  "butyric",
   "caffeine",
   "capric acid",
+  "capric",
   "caproic acid",
+  "caproic",
   "caprylic acid",
+  "caprylic",
   "chloride",
   "chromium",
   "copper",
   "docosahexaenoic acid",
+  "docosahexaenoic",
   "eicosapentaenoic acid",
+  "eicosapentaenoic",
   "erucic acid",
+  "erucic",
   "fluoride",
   "iodine",
   "manganese",
   "molybdenum",
   "myristic acid",
+  "myristic",
   "oleic acid",
+  "oleic",
   "palmitic acid",
+  "palmitic",
   "pantothenic acid",
+  "pantothenic",
   "selenium",
   "stearic acid",
+  "stearic",
 ];
 
 List<String> servingSizeList = [
   "serving size",
+  "amount per serving",
+  "amount per pack",
+  "amount per box",
+  "amount per container",
+  "amount per bag",
+  "amount per",
+  "amount",
 ];
 
 List<String> caloriesList = [
@@ -346,6 +425,9 @@ List<String> alcoholList = [
 
 List<String> biotinList = [
   "biotin",
+  "vitamin b7",
+  "vitaminb7",
+  "vitamin-b7",
 ];
 
 List<String> butyricAcidList = [

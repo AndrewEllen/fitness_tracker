@@ -28,7 +28,9 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
   void parseNutritionalInfo(String input) {
 
-    String getCorrectLabelName(String labelToChange) {
+    String getCorrectLabelName(String inputLabel) {
+
+      String labelToChange = inputLabel.toLowerCase();
 
       print("labelToChange");
       print(labelToChange);
@@ -154,10 +156,14 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
           .toLowerCase()
           .trim()
           .split(" ");
-      splitInputString.removeWhere((value) => !masterEntryList.contains(value));
+
 
       print("SPLIT LABEL");
       print(inputString);
+      print(splitInputString);
+
+      splitInputString.removeWhere((value) => !masterEntryList.contains(value));
+
       print(splitInputString);
 
       return splitInputString.join(" ").trim();
@@ -170,15 +176,20 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
       for (String line in lines) {
         List<String> parts = line.split('\t');
-        if (parts.length >= 2) {
+        if (parts.length >= 1) {
           String label = getCorrectLabelName(removeExcessData(parts[0]));
           String value = "0";
 
           for (String part in parts) {
+            print(part);
             if (double.tryParse(part.toLowerCase().replaceAll(RegExp(r'[^0-9.,]'), '').trim()) != null) {
               value = part.toLowerCase().replaceAll(RegExp(r'[^0-9.,]'), '').trim();
               break;
             }
+          }
+
+          if (label.toLowerCase() == "sodium") {
+            value = "${(double.parse(value)*2.5)/1000}";
           }
 
           nutritionInfo[label] = value;
