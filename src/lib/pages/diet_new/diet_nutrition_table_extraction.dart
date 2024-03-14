@@ -10,6 +10,7 @@ import 'dart:convert';
 
 import '../../OCRapiKey.dart';
 import '../../constants.dart';
+import '../../helpers/diet/tableScanEntryList.dart';
 
 class NutritionTableExtraction extends StatefulWidget {
   const NutritionTableExtraction({Key? key}) : super(key: key);
@@ -25,140 +26,20 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
   void parseNutritionalInfo(String input) {
 
-    List<String> entryList = [
-      "serving size",
-      "calories",
-      "calorie",
-      "energy",
-      "kcal",
-      "kcals",
-      "kiloJoules",
-      "kj",
-      "proteins",
-      "protein",
-      "carbs",
-      "carbohydrates",
-      "carbohydrate",
-      "fiber",
-      "fibre",
-      "sugars",
-      "sugar",
-      "fat",
-      "fats",
+    String extractUsefulDataUsingReferenceList(String labelToChange) {
 
-      "saturated-fat",
-      "saturated-fats",
-      "saturatedfat",
-      "saturatedfats",
-      "saturated fat",
-      "saturated fats",
+      if (servingSizeList.contains(labelToChange)) {
+        return "servingSize";
+      } else if (caloriesList.contains(labelToChange)) {
+        return "calories";
+      } else if (kilojoulesList.contains(labelToChange)) {
+        return "kilojoules";
+      } else if (proteinsList.contains(labelToChange)) {
+        return "proteins";
+      }
 
-      "polyunsaturatedfat",
-      "polyunsaturatedfats",
-      "polyunsaturated-fat",
-      "polyunsaturated-fats",
-      "polyunsaturated Fat",
-      "polyunsaturated fats",
-
-      "monounsaturatedfat",
-      "monounsaturatedfats",
-      "monounsaturated-fat",
-      "monounsaturated-fats",
-      "monounsaturated fat",
-      "monounsaturated fats",
-
-      "transfat",
-      "transfats",
-      "trans-fat",
-      "trans-fats",
-      "trans fat",
-      "trans fats",
-
-      "cholesterol",
-      "calcium",
-      "iron",
-      "sodium",
-      "salt",
-      "zinc",
-      "magnesium",
-      "potassium",
-
-      "vitamina",
-      "vitamin a",
-      "vitamin-a",
-
-      "vitaminb1",
-      "vitamin b1",
-      "vitaminb-1",
-
-      "vitaminb2",
-      "vitamin b2",
-      "vitamin-b2",
-
-      "vitaminb3",
-      "vitamin b3",
-      "vitamin-b3",
-
-      "vitaminb6",
-      "vitamin b6",
-      "vitamin-b6",
-
-      "vitaminb9",
-      "vitamin b9",
-      "vitamin-b9",
-
-      "vitaminb12",
-      "vitamin b12",
-      "vitamin-b12",
-
-      "vitaminc",
-      "vitamin c",
-      "vitamin-c",
-
-      "vitamind",
-      "vitamin d",
-      "vitamin-d",
-
-      "vitamine",
-      "vitamin e",
-      "vitamin-e",
-
-      "vitamink",
-      "vitamin k",
-      "vitamin-k",
-
-      "omega3",
-      "omega 3",
-      "omega-3",
-
-      "omega6",
-      "omega 6",
-      "omega-6",
-
-      "alcohol",
-      "biotin",
-      "butyric acid",
-      "caffeine",
-      "capric acid",
-      "caproic acid",
-      "caprylic acid",
-      "chloride",
-      "chromium",
-      "copper",
-      "docosahexaenoic acid",
-      "eicosapentaenoic acid",
-      "erucic acid",
-      "fluoride",
-      "iodine",
-      "manganese",
-      "molybdenum",
-      "myristic acid",
-      "oleic acid",
-      "palmitic acid",
-      "pantothenic acid",
-      "selenium",
-      "stearic acid",
-    ];
+      return "";
+    }
 
     String removeExcessData(String inputString) {
 
@@ -166,7 +47,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
           .toLowerCase()
           .trim()
           .split(" ");
-      splitInputString.removeWhere((value) => !entryList.contains(value));
+      splitInputString.removeWhere((value) => !masterEntryList.contains(value));
 
       print("SPLIT LABEL");
       print(inputString);
