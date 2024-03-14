@@ -882,21 +882,6 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
 
               ),
             ),
-
-            ScreenWidthContainer(
-              minHeight: _smallContainerMin * 0.2,
-              maxHeight: _smallContainerMin * 1.5,
-              height: (_height / 100) * 6,
-              margin: _margin / 1.5,
-              child: FractionallySizedBox(
-                heightFactor: 1,
-                widthFactor: 1,
-                child: AppButton(
-                  buttonText: "Save Food Data",
-                  onTap: SaveFoodItem,
-                ),
-              ),
-            ),
           ],
         ),
       ),

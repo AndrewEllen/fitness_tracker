@@ -346,65 +346,21 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-
-      child: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-          
-              selectedImage != null ? Image.file(selectedImage!) : const SizedBox.shrink(),
-          
-              ElevatedButton(
-                onPressed: () async {
-                  try {
-                    final XFile? image = await ImagePicker().pickImage(
-                      source: ImageSource.camera,
-                      imageQuality: 40,
-                    );
-
-                    File? croppedFile = await cropImage(image!);
-          
-                    setState(() {
-                      selectedImage = File(croppedFile!.path);
-                    });
-
-                    await OCRTabularRecognition();
-
-                  } catch (error) {
-                    debugPrint("Error Detected");
-                    debugPrint(error.toString());
-                    context.read<PageChange>().backPage();
-                  }
-                },
-                child: const Text("Pick From Camera"),
-              ),
-
-              ElevatedButton(
-                onPressed: () {
-                  parseNutritionalInfo("Nutrition\t\r\nTypical values\tper 100g\tper 1/2 pot (300g)\t%RI|\tyour RI*\t\r\n(as consumed)\t167kJ\t501kJ\t8400kJ\t\r\nEnergy\t40kcal\t119kcal\t6%\t2000kcal\t\r\nFat\t1.2g\t3.6g\t5%\t70g\t\r\nof which saturates\t0.2 g\t0.6g\t3%\t20g\t\r\nCarbohydrate\t4.2g\t12.6g\t\r\nof which sugars\t1.2g\t3,6g\t4%\t90g\t\r\nFibre\t1.1g\t3.3g\t\r\nProtein\t2.5g|\t7.5g\t\r\nSalt\t0.5g\t1.5g\t25%\t6g\t\r\n*Reference intake of an average adult (8400kJ/2000kcal) (RI). Contains 2 portions");
-                },
-                child: const Text("Test"),
-              ),
-
-              extracted != null ? Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: Text(
-                  extracted.toString(),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                ),
-              ) : const SizedBox.shrink(),
-
-            ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            selectedImage == null ? "Scan Nutrition Table" : "Processing Table Data",
+            style: boldTextStyle,
           ),
-        ),
-      ),
-
+          const SizedBox(height: 20,),
+          const CircularProgressIndicator(
+            color: appSecondaryColour,
+          ),
+        ],
+      )
     );
   }
 }

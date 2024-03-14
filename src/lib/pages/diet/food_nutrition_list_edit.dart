@@ -1,6 +1,7 @@
 import 'package:fitness_tracker/widgets/general/screen_width_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -11,6 +12,7 @@ import '../../providers/diet/user_nutrition_data.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/diet/diet_list_header_box.dart';
 import '../../widgets/diet/food_nutrition_list_formfield.dart';
+import '../diet_new/diet_nutrition_table_extraction.dart';
 
 class FoodNutritionListEdit extends StatefulWidget {
   const FoodNutritionListEdit({Key? key, required this.category}) : super(key: key);
@@ -732,18 +734,40 @@ class _FoodNutritionListEditState extends State<FoodNutritionListEdit> {
                       ],
                     ),
                   ),
-                  ScreenWidthContainer(
-                    minHeight: _smallContainerMin * 0.2,
-                    maxHeight: _smallContainerMin * 1.5,
-                    height: (_height / 100) * 6,
-                    margin: _margin / 1.5,
-                    child: FractionallySizedBox(
-                      heightFactor: 1,
-                      widthFactor: 1,
-                      child: AppButton(
-                        buttonText: "Save Food Data",
-                        onTap: SaveFoodItem,
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Row(
+
+                      children: [
+
+                        Expanded(
+                          flex: 7,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 2.0),
+                            child: ElevatedButton(
+                              onPressed: () => SaveFoodItem(),
+                              child: const Text(
+                                "Save Food Data",
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 2.0),
+                            child: ElevatedButton(
+                              onPressed: () => context.read<PageChange>().changePageCache(const NutritionTableExtraction()),
+                              child: const Icon(
+                                MdiIcons.cubeScan,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                      ],
+
                     ),
                   ),
                 ],
