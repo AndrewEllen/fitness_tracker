@@ -406,6 +406,7 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
     seleniumController.text = scannedItem.selenium.isNotEmpty ? scannedItem.selenium : currentFoodItem.selenium;
     stearicAcidController.text = scannedItem.stearicAcid.isNotEmpty ? scannedItem.stearicAcid : currentFoodItem.stearicAcid;
 
+    context.read<UserNutritionData>().changeItemScannedBool(false);
   }
 
   @override
