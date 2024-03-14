@@ -26,6 +26,7 @@ List<String> masterEntryList = [
   "saturatedfats",
   "saturated fat",
   "saturated fats",
+  "saturates",
 
   "polyunsaturatedfat",
   "polyunsaturatedfats",
@@ -33,6 +34,7 @@ List<String> masterEntryList = [
   "polyunsaturated-fats",
   "polyunsaturated Fat",
   "polyunsaturated fats",
+  "polyunsaturates",
 
   "monounsaturatedfat",
   "monounsaturatedfats",
@@ -40,6 +42,7 @@ List<String> masterEntryList = [
   "monounsaturated-fats",
   "monounsaturated fat",
   "monounsaturated fats",
+  "monounsaturates",
 
   "transfat",
   "transfats",
@@ -184,6 +187,7 @@ List<String> saturatedFatList = [
   "saturatedfats",
   "saturated fat",
   "saturated fats",
+  "saturates",
 ];
 
 List<String> polyUnsaturatedFatList = [
@@ -193,6 +197,7 @@ List<String> polyUnsaturatedFatList = [
   "polyunsaturated-fats",
   "polyunsaturated Fat",
   "polyunsaturated fats",
+  "polyunsaturates",
 ];
 
 List<String> monoUnsaturatedFatList = [
@@ -202,6 +207,7 @@ List<String> monoUnsaturatedFatList = [
   "monounsaturated-fats",
   "monounsaturated fat",
   "monounsaturated fats",
+  "monounsaturates",
 ];
 
 List<String> transFatList = [
