@@ -27,14 +27,14 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
   var extracted;
   bool _sodium = false;
 
-  void parseNutritionalInfo(String input) {
+  Future<void> parseNutritionalInfo(String input) async {
 
     String getCorrectLabelName(String inputLabel) {
 
       String labelToChange = inputLabel.toLowerCase();
 
-      //print("labelToChange");
-      //print(labelToChange);
+      debugPrint("labelToChange");
+      debugPrint(labelToChange);
 
       if (servingSizeList.contains(labelToChange)) {
         return "servingSize";
@@ -162,11 +162,11 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
           .split(" ");
 
 
-      //print("SPLIT LABEL");
-      //print(inputString);
+      debugPrint("SPLIT LABEL");
+      debugPrint(inputString);
 
       splitInputString.removeWhere((value) => !masterEntryList.contains(value));
-      //print(splitInputString);
+      debugPrint(splitInputString.toString());
 
       return splitInputString.join(" ").trim();
 
@@ -174,8 +174,8 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
     String doubleParseDataRemoval(String inputString) {
 
-      //print("SPLIT Double");
-      //print(inputString);
+      debugPrint("SPLIT Double");
+      debugPrint(inputString.toString());
 
       List<String> splitInputString = inputString
           .toLowerCase()
@@ -186,7 +186,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
       splitInputString.removeWhere((value) => bRemovalList.contains(value));
 
-      //print(splitInputString);
+      debugPrint(splitInputString.toString());
 
       return splitInputString.join("").replaceAll(RegExp(r'[^0-9.,]'), '').trim();
 
@@ -197,8 +197,8 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
       Map<String, String> nutritionInfo = {};
 
       for (String line in lines) {
-        //print("line");
-        //print(line);
+        debugPrint("line");
+        debugPrint(line);
         List<String> parts = line.split('\t');
         if (parts.isNotEmpty) {
           //print("parts");
@@ -221,8 +221,8 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
         }
       }
 
-      //print("nutritionInfo");
-      //print(nutritionInfo);
+      debugPrint("nutritionInfo");
+      debugPrint(nutritionInfo.toString());
 
       FoodItem scannedItem = FoodItem(
         barcode: "",
@@ -293,7 +293,6 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
     FoodItem scannedItem = parseNutritionInfo(input);
 
     context.read<UserNutritionData>().updateScannedFoodItem(scannedItem);
-    context.read<PageChange>().backPage();
 
   }
 
@@ -348,9 +347,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
     extracted = jsonDecode(res.body)["ParsedResults"][0]["ParsedText"];
 
-    setState(() {});
-
-    parseNutritionalInfo(extracted);
+    await parseNutritionalInfo(extracted);
 
   }
 
@@ -369,10 +366,12 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
       });
 
       await OCRTabularRecognition();
+      context.read<PageChange>().backPage();
 
     } catch (error) {
       debugPrint("Error Detected");
       debugPrint(error.toString());
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString())));
       context.read<PageChange>().backPage();
     }
   }
