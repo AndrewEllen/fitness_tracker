@@ -276,15 +276,19 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
   Future<File?> cropImage(XFile image) async {
     CroppedFile? croppedFile = await ImageCropper().cropImage(
       sourcePath: image.path,
-      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 2),
       uiSettings: [
         AndroidUiSettings(
-          toolbarTitle: "Crop Image",
+          toolbarTitle: "Crop Nutrition Table Image",
           toolbarColor: appPrimaryColour,
-          toolbarWidgetColor: Colors.black,
-          initAspectRatio: CropAspectRatioPreset.square,
+          toolbarWidgetColor: Colors.white,
+          activeControlsWidgetColor: appSenaryColour,
+          cropFrameColor: appSecondaryColour,
+          initAspectRatio: CropAspectRatioPreset.original,
+          cropFrameStrokeWidth: 6,
           lockAspectRatio: false,
-          dimmedLayerColor: appPrimaryColour,
+          showCropGrid: false,
+          dimmedLayerColor: appPrimaryColour.withOpacity(0.5),
         ),
       ],
     );
