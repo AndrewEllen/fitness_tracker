@@ -162,15 +162,6 @@ List<String> masterEntryList = [
   "vitamin-k",
 
   "omega",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
 
   "omega3",
   "omega 3",
@@ -333,6 +324,21 @@ List<String> magnesiumList = [
 
 List<String> potassiumList = [
   "potassium",
+];
+
+List<String> bRemovalList = [
+  "b1",
+  "b2",
+  "b3",
+  "b4",
+  "b5",
+  "b6",
+  "b7",
+  "b8",
+  "b9",
+  "b10",
+  "b11",
+  "b12",
 ];
 
 List<String> vitaminAList = [

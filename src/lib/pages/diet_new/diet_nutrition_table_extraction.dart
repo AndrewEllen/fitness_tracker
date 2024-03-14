@@ -25,6 +25,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
   File? selectedImage;
   var extracted;
+  bool _sodium = false;
 
   void parseNutritionalInfo(String input) {
 
@@ -32,8 +33,8 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
       String labelToChange = inputLabel.toLowerCase();
 
-      print("labelToChange");
-      print(labelToChange);
+      //print("labelToChange");
+      //print(labelToChange);
 
       if (servingSizeList.contains(labelToChange)) {
         return "servingSize";
@@ -66,6 +67,9 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
       } else if (ironList.contains(labelToChange)) {
         return "iron";
       } else if (sodiumList.contains(labelToChange)) {
+        if (labelToChange == "sodium") {
+          _sodium = true;
+        }
         return "sodium";
       } else if (zincList.contains(labelToChange)) {
         return "zinc";
@@ -158,15 +162,33 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
           .split(" ");
 
 
-      print("SPLIT LABEL");
-      print(inputString);
-      print(splitInputString);
+      //print("SPLIT LABEL");
+      //print(inputString);
 
       splitInputString.removeWhere((value) => !masterEntryList.contains(value));
-
-      print(splitInputString);
+      //print(splitInputString);
 
       return splitInputString.join(" ").trim();
+
+    }
+
+    String doubleParseDataRemoval(String inputString) {
+
+      //print("SPLIT Double");
+      //print(inputString);
+
+      List<String> splitInputString = inputString
+          .toLowerCase()
+          .trim()
+          .replaceAll(RegExp('[()]'), '')
+          .split(" ");
+
+
+      splitInputString.removeWhere((value) => bRemovalList.contains(value));
+
+      //print(splitInputString);
+
+      return splitInputString.join("").replaceAll(RegExp(r'[^0-9.,]'), '').trim();
 
     }
 
@@ -175,29 +197,32 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
       Map<String, String> nutritionInfo = {};
 
       for (String line in lines) {
+        //print("line");
+        //print(line);
         List<String> parts = line.split('\t');
-        if (parts.length >= 1) {
+        if (parts.isNotEmpty) {
+          //print("parts");
+          //print(parts);
           String label = getCorrectLabelName(removeExcessData(parts[0]));
           String value = "0";
 
           for (String part in parts) {
-            print(part);
-            if (double.tryParse(part.toLowerCase().replaceAll(RegExp(r'[^0-9.,]'), '').trim()) != null) {
-              value = part.toLowerCase().replaceAll(RegExp(r'[^0-9.,]'), '').trim();
+            //print("part");
+            //print(part);
+            String valueToTry = doubleParseDataRemoval(part);
+            if (double.tryParse(valueToTry) != null) {
+
+              value = valueToTry;
               break;
             }
           }
 
-          if (label.toLowerCase() == "sodium") {
-            value = "${(double.parse(value)*2.5)/1000}";
-          }
-
-          nutritionInfo[label] = value;
+          nutritionInfo[label] = _sodium ? "${(double.parse(value)*2.5)/1000}" : value;
         }
       }
 
-      print(input);
-      print(nutritionInfo);
+      //print("nutritionInfo");
+      //print(nutritionInfo);
 
       FoodItem scannedItem = FoodItem(
         barcode: "",
