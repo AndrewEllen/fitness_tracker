@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/diet/food_item.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'dart:convert';
 
 import '../../OCRapiKey.dart';
@@ -254,14 +256,8 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
     FoodItem scannedItem = parseNutritionInfo(input);
 
-    print(scannedItem.calories);
-    print(scannedItem.proteins);
-    print(scannedItem.carbs);
-    print(scannedItem.fat);
-    print(scannedItem.sugars);
-    print(scannedItem.saturatedFat);
-    print(scannedItem.fiber);
-    print(scannedItem.sodium);
+    context.read<UserNutritionData>().updateScannedFoodItem(scannedItem);
+    context.read<PageChange>().backPage();
 
   }
 
@@ -319,8 +315,37 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
   }
 
 
+  void takePicture() async {
+    try {
+      final XFile? image = await ImagePicker().pickImage(
+        source: ImageSource.camera,
+        imageQuality: 40,
+      );
+
+      File? croppedFile = await cropImage(image!);
+
+      setState(() {
+        selectedImage = File(croppedFile!.path);
+      });
+
+      await OCRTabularRecognition();
+
+    } catch (error) {
+      debugPrint("Error Detected");
+      debugPrint(error.toString());
+      context.read<PageChange>().backPage();
+    }
+  }
+
+  @override
+  void initState() {
+    takePicture();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Container(
 
       child: Center(
@@ -351,6 +376,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
                   } catch (error) {
                     debugPrint("Error Detected");
                     debugPrint(error.toString());
+                    context.read<PageChange>().backPage();
                   }
                 },
                 child: const Text("Pick From Camera"),

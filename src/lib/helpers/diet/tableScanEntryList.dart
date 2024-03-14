@@ -5,6 +5,7 @@ List<String> masterEntryList = [
   "calorie",
   "energy",
   "kcal",
+  "kca",
   "kcals",
   "kiloJoules",
   "kj",
@@ -67,26 +68,32 @@ List<String> masterEntryList = [
   "vitaminb1",
   "vitamin b1",
   "vitaminb-1",
+  "thiamine",
 
   "vitaminb2",
   "vitamin b2",
   "vitamin-b2",
+  "riboflavin",
 
   "vitaminb3",
   "vitamin b3",
   "vitamin-b3",
+  "niacin",
 
   "vitaminb6",
   "vitamin b6",
   "vitamin-b6",
+  "pyridoxine",
 
   "vitaminb9",
   "vitamin b9",
   "vitamin-b9",
+  "folic acid",
 
   "vitaminb12",
   "vitamin b12",
   "vitamin-b12",
+  "cobalamin",
 
   "vitaminc",
   "vitamin c",
@@ -147,6 +154,7 @@ List<String> caloriesList = [
   "energy",
   "kcal",
   "kcals",
+  "kca",
 ];
 
 List<String> kilojoulesList = [
@@ -258,36 +266,42 @@ List<String> vitaminB1List = [
   "vitaminb1",
   "vitamin b1",
   "vitaminb-1",
+  "thiamine",
 ];
 
 List<String> vitaminB2List = [
   "vitaminb2",
   "vitamin b2",
   "vitamin-b2",
+  "riboflavin",
 ];
 
 List<String> vitaminB3List = [
   "vitaminb3",
   "vitamin b3",
   "vitamin-b3",
+  "niacin",
 ];
 
 List<String> vitaminB6List = [
   "vitaminb6",
   "vitamin b6",
   "vitamin-b6",
+  "pyridoxine",
 ];
 
 List<String> vitaminB9List = [
   "vitaminb9",
   "vitamin b9",
   "vitamin-b9",
+  "folic acid"
 ];
 
 List<String> vitaminB12List = [
   "vitaminb12",
   "vitamin b12",
   "vitamin-b12",
+  "cobalamin",
 ];
 
 List<String> vitaminCList = [

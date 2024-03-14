@@ -348,10 +348,77 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
     }
   }
 
+  void setValueOfControllersToScanned(FoodItem scannedItem) {
+
+    servingSizeController.text = scannedItem.servingSize.isNotEmpty ? scannedItem.servingSize : currentFoodItem.servingSize;
+    caloriesController.text = scannedItem.calories.isNotEmpty ? scannedItem.calories : currentFoodItem.calories;
+    kiloJoulesController.text = scannedItem.kiloJoules.isNotEmpty ? scannedItem.kiloJoules : currentFoodItem.kiloJoules;
+    proteinsController.text = scannedItem.proteins.isNotEmpty ? scannedItem.proteins : currentFoodItem.proteins;
+    carbsController.text = scannedItem.carbs.isNotEmpty ? scannedItem.carbs : currentFoodItem.carbs;
+    fiberController.text = scannedItem.fiber.isNotEmpty ? scannedItem.fiber : currentFoodItem.fiber;
+    sugarsController.text = scannedItem.sugars.isNotEmpty ? scannedItem.sugars : currentFoodItem.sugars;
+    fatController.text = scannedItem.fat.isNotEmpty ? scannedItem.fat : currentFoodItem.fat;
+    saturatedFatController.text = scannedItem.saturatedFat.isNotEmpty ? scannedItem.saturatedFat : currentFoodItem.saturatedFat;
+    polyUnsaturatedFatController.text = scannedItem.polyUnsaturatedFat.isNotEmpty ? scannedItem.polyUnsaturatedFat : currentFoodItem.polyUnsaturatedFat;
+    monoUnsaturatedFatController.text = scannedItem.monoUnsaturatedFat.isNotEmpty ? scannedItem.monoUnsaturatedFat : currentFoodItem.monoUnsaturatedFat;
+    transFatController.text = scannedItem.transFat.isNotEmpty ? scannedItem.transFat : currentFoodItem.transFat;
+    cholesterolController.text = scannedItem.cholesterol.isNotEmpty ? scannedItem.cholesterol : currentFoodItem.cholesterol;
+    calciumController.text = scannedItem.calcium.isNotEmpty ? scannedItem.calcium : currentFoodItem.calcium;
+    ironController.text = scannedItem.iron.isNotEmpty ? scannedItem.iron : currentFoodItem.iron;
+    sodiumController.text = scannedItem.sodium.isNotEmpty ? scannedItem.sodium : currentFoodItem.sodium;
+    zincController.text = scannedItem.zinc.isNotEmpty ? scannedItem.zinc : currentFoodItem.zinc;
+    magnesiumController.text = scannedItem.magnesium.isNotEmpty ? scannedItem.magnesium : currentFoodItem.magnesium;
+    potassiumController.text = scannedItem.potassium.isNotEmpty ? scannedItem.potassium : currentFoodItem.potassium;
+    vitaminAController.text = scannedItem.vitaminA.isNotEmpty ? scannedItem.vitaminA : currentFoodItem.vitaminA;
+    vitaminB1Controller.text = scannedItem.vitaminB1.isNotEmpty ? scannedItem.vitaminB1 : currentFoodItem.vitaminB1;
+    vitaminB2Controller.text = scannedItem.vitaminB2.isNotEmpty ? scannedItem.vitaminB2 : currentFoodItem.vitaminB2;
+    vitaminB3Controller.text = scannedItem.vitaminB3.isNotEmpty ? scannedItem.vitaminB3 : currentFoodItem.vitaminB3;
+    vitaminB6Controller.text = scannedItem.vitaminB6.isNotEmpty ? scannedItem.vitaminB6 : currentFoodItem.vitaminB6;
+    vitaminB9Controller.text = scannedItem.vitaminB9.isNotEmpty ? scannedItem.vitaminB9 : currentFoodItem.vitaminB9;
+    vitaminB12Controller.text = scannedItem.vitaminB12.isNotEmpty ? scannedItem.vitaminB12 : currentFoodItem.vitaminB12;
+    vitaminCController.text = scannedItem.vitaminC.isNotEmpty ? scannedItem.vitaminC : currentFoodItem.vitaminC;
+    vitaminDController.text = scannedItem.vitaminD.isNotEmpty ? scannedItem.vitaminD : currentFoodItem.vitaminD;
+    vitaminEController.text = scannedItem.vitaminE.isNotEmpty ? scannedItem.vitaminE : currentFoodItem.vitaminE;
+    vitaminKController.text = scannedItem.vitaminK.isNotEmpty ? scannedItem.vitaminK : currentFoodItem.vitaminK;
+    omega3Controller.text = scannedItem.omega3.isNotEmpty ? scannedItem.omega3 : currentFoodItem.omega3;
+    omega6Controller.text = scannedItem.omega6.isNotEmpty ? scannedItem.omega6 : currentFoodItem.omega6;
+    alcoholController.text = scannedItem.alcohol.isNotEmpty ? scannedItem.alcohol : currentFoodItem.alcohol;
+    biotinController.text = scannedItem.biotin.isNotEmpty ? scannedItem.biotin : currentFoodItem.biotin;
+    butyricAcidController.text = scannedItem.butyricAcid.isNotEmpty ? scannedItem.butyricAcid : currentFoodItem.butyricAcid;
+    caffeineController.text = scannedItem.caffeine.isNotEmpty ? scannedItem.caffeine : currentFoodItem.caffeine;
+    capricAcidController.text = scannedItem.capricAcid.isNotEmpty ? scannedItem.capricAcid : currentFoodItem.capricAcid;
+    caproicAcidController.text = scannedItem.caproicAcid.isNotEmpty ? scannedItem.caproicAcid : currentFoodItem.caproicAcid;
+    caprylicAcidController.text = scannedItem.caprylicAcid.isNotEmpty ? scannedItem.caprylicAcid : currentFoodItem.caprylicAcid;
+    chlorideController.text = scannedItem.chloride.isNotEmpty ? scannedItem.chloride : currentFoodItem.chloride;
+    chromiumController.text = scannedItem.chromium.isNotEmpty ? scannedItem.chromium : currentFoodItem.chromium;
+    copperController.text = scannedItem.copper.isNotEmpty ? scannedItem.copper : currentFoodItem.copper;
+    docosahexaenoicAcidController.text = scannedItem.docosahexaenoicAcid.isNotEmpty ? scannedItem.docosahexaenoicAcid : currentFoodItem.docosahexaenoicAcid;
+    eicosapentaenoicAcidController.text = scannedItem.eicosapentaenoicAcid.isNotEmpty ? scannedItem.eicosapentaenoicAcid : currentFoodItem.eicosapentaenoicAcid;
+    erucicAcidController.text = scannedItem.erucicAcid.isNotEmpty ? scannedItem.erucicAcid : currentFoodItem.erucicAcid;
+    fluorideController.text = scannedItem.fluoride.isNotEmpty ? scannedItem.fluoride : currentFoodItem.fluoride;
+    iodineController.text = scannedItem.iodine.isNotEmpty ? scannedItem.iodine : currentFoodItem.iodine;
+    manganeseController.text = scannedItem.manganese.isNotEmpty ? scannedItem.manganese : currentFoodItem.manganese;
+    molybdenumController.text = scannedItem.molybdenum.isNotEmpty ? scannedItem.molybdenum : currentFoodItem.molybdenum;
+    myristicAcidController.text = scannedItem.myristicAcid.isNotEmpty ? scannedItem.myristicAcid : currentFoodItem.myristicAcid;
+    oleicAcidController.text = scannedItem.oleicAcid.isNotEmpty ? scannedItem.oleicAcid : currentFoodItem.oleicAcid;
+    palmiticAcidController.text = scannedItem.palmiticAcid.isNotEmpty ? scannedItem.palmiticAcid : currentFoodItem.palmiticAcid;
+    pantothenicAcidController.text = scannedItem.pantothenicAcid.isNotEmpty ? scannedItem.pantothenicAcid : currentFoodItem.pantothenicAcid;
+    seleniumController.text = scannedItem.selenium.isNotEmpty ? scannedItem.selenium : currentFoodItem.selenium;
+    stearicAcidController.text = scannedItem.stearicAcid.isNotEmpty ? scannedItem.stearicAcid : currentFoodItem.stearicAcid;
+
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    SetControllerValues();
+    context.watch<UserNutritionData>().itemScanned;
+    FoodItem scannedItem = context.read<UserNutritionData>().scannedFoodItem;
+
+    if (context.read<UserNutritionData>().itemScanned) {
+      setValueOfControllersToScanned(scannedItem);
+    } else {
+      SetControllerValues();
+    }
 
     double _margin = 15;
     double _smallContainerMin = 95;
