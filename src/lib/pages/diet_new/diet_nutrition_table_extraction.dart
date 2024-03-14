@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:fitness_tracker/models/diet/food_item.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
@@ -21,6 +22,102 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
   File? selectedImage;
   var extracted;
+
+  void parseNutritionalInfo(String input) {
+
+    String input = "Nutrition\t\r\nTypical values\tper 100g\tper 1/2 pot (300g)\t%RI|\tyour RI*\t\r\n(as consumed)\t167kJ\t501kJ\t8400kJ\t\r\nEnergy\t40kcal\t119kcal\t6%\t2000kcal\t\r\nFat\t1.2g\t3.6g\t5%\t70g\t\r\nof which saturates\t0.2 g\t0.6g\t3%\t20g\t\r\nCarbohydrate\t4.2g\t12.6g\t\r\nof which sugars\t1.2g\t3,6g\t4%\t90g\t\r\nFibre\t1.1g\t3.3g\t\r\nProtein\t2.5g|\t7.5g\t\r\nSalt\t0.5g\t1.5g\t25%\t6g\t\r\n*Reference intake of an average adult (8400kJ/2000kcal) (RI). Contains 2 portions";
+
+    FoodItem parseNutritionInfo(String input) {
+      List<String> lines = input.split('\t\r\n');
+      Map<String, String> nutritionInfo = {};
+
+      for (String line in lines) {
+        List<String> parts = line.split('\t');
+        if (parts.length >= 3) {
+          String label = parts[0].trim();
+          String value = parts[1].replaceAll(RegExp(r'[^0-9.,]'), '').trim();
+          nutritionInfo[label] = value;
+        }
+      }
+
+      FoodItem scannedItem = FoodItem(
+          barcode: "",
+          foodName: "",
+          quantity: "1",
+          servingSize: nutritionInfo["Serving Size"] ?? "",
+          servings: "1",
+          calories: nutritionInfo["Energy"] ?? "",
+          kiloJoules: nutritionInfo["kJ"] ?? "",
+          proteins: nutritionInfo["Protein"] ?? "",
+          carbs: nutritionInfo["Carbohydrate"] ?? "",
+          fiber: nutritionInfo["Fibre"] ?? "",
+          sugars: nutritionInfo["of which sugars"] ?? "",
+          fat: nutritionInfo["Fat"] ?? "",
+          saturatedFat: nutritionInfo["of which saturates"] ?? "",
+          polyUnsaturatedFat: nutritionInfo["Polyunsaturated Fat"] ?? "",
+          monoUnsaturatedFat: nutritionInfo["Monounsaturated Fat"] ?? "",
+          transFat: nutritionInfo["Trans Fat"] ?? "",
+          cholesterol: nutritionInfo["Cholesterol"] ?? "",
+          calcium: nutritionInfo["Calcium"] ?? "",
+          iron: nutritionInfo["Iron"] ?? "",
+          sodium: nutritionInfo["Salt"] ?? "",
+          zinc: nutritionInfo["Zinc"] ?? "",
+          magnesium: nutritionInfo["Magnesium"] ?? "",
+          potassium: nutritionInfo["Potassium"] ?? "",
+          vitaminA: nutritionInfo["Vitamin A"] ?? "",
+          vitaminB1: nutritionInfo["Vitamin B1"] ?? "",
+          vitaminB2: nutritionInfo["Vitamin B2"] ?? "",
+          vitaminB3: nutritionInfo["Vitamin B3"] ?? "",
+          vitaminB6: nutritionInfo["Vitamin B6"] ?? "",
+          vitaminB9: nutritionInfo["Vitamin B9"] ?? "",
+          vitaminB12: nutritionInfo["Vitamin B12"] ?? "",
+          vitaminC: nutritionInfo["Vitamin C"] ?? "",
+          vitaminD: nutritionInfo["Vitamin D"] ?? "",
+          vitaminE: nutritionInfo["Vitamin E"] ?? "",
+          vitaminK: nutritionInfo["Vitamin K"] ?? "",
+          omega3: nutritionInfo["Omega-3"] ?? "",
+          omega6: nutritionInfo["Omega-6"] ?? "",
+          alcohol: nutritionInfo["Alcohol"] ?? "",
+          biotin: nutritionInfo["Biotin"] ?? "",
+          butyricAcid: nutritionInfo["Butyric Acid"] ?? "",
+          caffeine: nutritionInfo["Caffeine"] ?? "",
+          capricAcid: nutritionInfo["Capric Acid"] ?? "",
+          caproicAcid: nutritionInfo["Caproic Acid"] ?? "",
+          caprylicAcid: nutritionInfo["Caprylic Acid"] ?? "",
+          chloride: nutritionInfo["Chloride"] ?? "",
+          chromium: nutritionInfo["Chromium"] ?? "",
+          copper: nutritionInfo["Copper"] ?? "",
+          docosahexaenoicAcid: nutritionInfo["Docosahexaenoic Acid"] ?? "",
+          eicosapentaenoicAcid: nutritionInfo["Eicosapentaenoic Acid"] ?? "",
+          erucicAcid: nutritionInfo["Erucic Acid"] ?? "",
+          fluoride: nutritionInfo["Fluoride"] ?? "",
+          iodine: nutritionInfo["Iodine"] ?? "",
+          manganese: nutritionInfo["Manganese"] ?? "",
+          molybdenum: nutritionInfo["Molybdenum"] ?? "",
+          myristicAcid: nutritionInfo["Myristic Acid"] ?? "",
+          oleicAcid: nutritionInfo["Oleic Acid"] ?? "",
+          palmiticAcid: nutritionInfo["Palmitic Acid"] ?? "",
+          pantothenicAcid: nutritionInfo["Pantothenic Acid"] ?? "",
+          selenium: nutritionInfo["Selenium"] ?? "",
+          stearicAcid: nutritionInfo["Stearic Acid"] ?? "",
+      );
+
+      return scannedItem;
+
+    }
+
+    FoodItem scannedItem = parseNutritionInfo(input);
+
+    print(scannedItem.calories);
+    print(scannedItem.proteins);
+    print(scannedItem.carbs);
+    print(scannedItem.fat);
+    print(scannedItem.sugars);
+    print(scannedItem.saturatedFat);
+    print(scannedItem.fiber);
+    print(scannedItem.sodium);
+
+  }
 
 
   Future<File?> cropImage(XFile image) async {
@@ -67,15 +164,11 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
     final status = res.statusCode;
     if (status != 200) throw Exception('http.send error: statusCode= $status');
 
-
-    print("OCR CURL REQUEST BELOW");
-    print(res.body);
-
-    extracted = jsonDecode(res.body);
+    extracted = jsonDecode(res.body)["ParsedResults"][0]["ParsedText"];
 
     setState(() {});
 
-    print(jsonDecode(res.body));
+    parseNutritionalInfo(extracted);
 
   }
 
@@ -115,6 +208,13 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
                   }
                 },
                 child: const Text("Pick From Camera"),
+              ),
+
+              ElevatedButton(
+                onPressed: () {
+                  parseNutritionalInfo("");
+                },
+                child: const Text("Test"),
               ),
 
               extracted != null ? Padding(
