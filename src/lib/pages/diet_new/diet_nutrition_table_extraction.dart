@@ -25,7 +25,156 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
   void parseNutritionalInfo(String input) {
 
-    String input = "Nutrition\t\r\nTypical values\tper 100g\tper 1/2 pot (300g)\t%RI|\tyour RI*\t\r\n(as consumed)\t167kJ\t501kJ\t8400kJ\t\r\nEnergy\t40kcal\t119kcal\t6%\t2000kcal\t\r\nFat\t1.2g\t3.6g\t5%\t70g\t\r\nof which saturates\t0.2 g\t0.6g\t3%\t20g\t\r\nCarbohydrate\t4.2g\t12.6g\t\r\nof which sugars\t1.2g\t3,6g\t4%\t90g\t\r\nFibre\t1.1g\t3.3g\t\r\nProtein\t2.5g|\t7.5g\t\r\nSalt\t0.5g\t1.5g\t25%\t6g\t\r\n*Reference intake of an average adult (8400kJ/2000kcal) (RI). Contains 2 portions";
+    List<String> entryList = [
+      "serving size",
+      "calories",
+      "calorie",
+      "energy",
+      "kcal",
+      "kcals",
+      "kiloJoules",
+      "kj",
+      "proteins",
+      "protein",
+      "carbs",
+      "carbohydrates",
+      "carbohydrate",
+      "fiber",
+      "fibre",
+      "sugars",
+      "sugar",
+      "fat",
+      "fats",
+
+      "saturated-fat",
+      "saturated-fats",
+      "saturatedfat",
+      "saturatedfats",
+      "saturated fat",
+      "saturated fats",
+
+      "polyunsaturatedfat",
+      "polyunsaturatedfats",
+      "polyunsaturated-fat",
+      "polyunsaturated-fats",
+      "polyunsaturated Fat",
+      "polyunsaturated fats",
+
+      "monounsaturatedfat",
+      "monounsaturatedfats",
+      "monounsaturated-fat",
+      "monounsaturated-fats",
+      "monounsaturated fat",
+      "monounsaturated fats",
+
+      "transfat",
+      "transfats",
+      "trans-fat",
+      "trans-fats",
+      "trans fat",
+      "trans fats",
+
+      "cholesterol",
+      "calcium",
+      "iron",
+      "sodium",
+      "salt",
+      "zinc",
+      "magnesium",
+      "potassium",
+
+      "vitamina",
+      "vitamin a",
+      "vitamin-a",
+
+      "vitaminb1",
+      "vitamin b1",
+      "vitaminb-1",
+
+      "vitaminb2",
+      "vitamin b2",
+      "vitamin-b2",
+
+      "vitaminb3",
+      "vitamin b3",
+      "vitamin-b3",
+
+      "vitaminb6",
+      "vitamin b6",
+      "vitamin-b6",
+
+      "vitaminb9",
+      "vitamin b9",
+      "vitamin-b9",
+
+      "vitaminb12",
+      "vitamin b12",
+      "vitamin-b12",
+
+      "vitaminc",
+      "vitamin c",
+      "vitamin-c",
+
+      "vitamind",
+      "vitamin d",
+      "vitamin-d",
+
+      "vitamine",
+      "vitamin e",
+      "vitamin-e",
+
+      "vitamink",
+      "vitamin k",
+      "vitamin-k",
+
+      "omega3",
+      "omega 3",
+      "omega-3",
+
+      "omega6",
+      "omega 6",
+      "omega-6",
+
+      "alcohol",
+      "biotin",
+      "butyric acid",
+      "caffeine",
+      "capric acid",
+      "caproic acid",
+      "caprylic acid",
+      "chloride",
+      "chromium",
+      "copper",
+      "docosahexaenoic acid",
+      "eicosapentaenoic acid",
+      "erucic acid",
+      "fluoride",
+      "iodine",
+      "manganese",
+      "molybdenum",
+      "myristic acid",
+      "oleic acid",
+      "palmitic acid",
+      "pantothenic acid",
+      "selenium",
+      "stearic acid",
+    ];
+
+    String removeExcessData(String inputString) {
+
+      List<String> splitInputString = inputString
+          .toLowerCase()
+          .trim()
+          .split(" ");
+      splitInputString.removeWhere((value) => !entryList.contains(value));
+
+      print("SPLIT LABEL");
+      print(inputString);
+      print(splitInputString);
+
+      return splitInputString.join(" ").trim();
+
+    }
 
     FoodItem parseNutritionInfo(String input) {
       List<String> lines = input.split('\t\r\n');
@@ -34,11 +183,22 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
       for (String line in lines) {
         List<String> parts = line.split('\t');
         if (parts.length >= 3) {
-          String label = parts[0].trim();
-          String value = parts[1].replaceAll(RegExp(r'[^0-9.,]'), '').trim();
+          String label = removeExcessData(parts[0]);
+          String value = "0";
+
+          for (String part in parts) {
+            if (double.tryParse(part.toLowerCase().replaceAll(RegExp(r'[^0-9.,]'), '').trim()) != null) {
+              value = part.toLowerCase().replaceAll(RegExp(r'[^0-9.,]'), '').trim();
+              break;
+            }
+          }
+
           nutritionInfo[label] = value;
         }
       }
+
+      print(input);
+      print(nutritionInfo);
 
       FoodItem scannedItem = FoodItem(
           barcode: "",
@@ -212,7 +372,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
               ElevatedButton(
                 onPressed: () {
-                  parseNutritionalInfo("");
+                  parseNutritionalInfo("Nutrition\t\r\nTypical values\tper 100g\tper 1/2 pot (300g)\t%RI|\tyour RI*\t\r\n(as consumed)\t167kJ\t501kJ\t8400kJ\t\r\nEnergy\t40kcal\t119kcal\t6%\t2000kcal\t\r\nFat\t1.2g\t3.6g\t5%\t70g\t\r\nof which saturates\t0.2 g\t0.6g\t3%\t20g\t\r\nCarbohydrate\t4.2g\t12.6g\t\r\nof which sugars\t1.2g\t3,6g\t4%\t90g\t\r\nFibre\t1.1g\t3.3g\t\r\nProtein\t2.5g|\t7.5g\t\r\nSalt\t0.5g\t1.5g\t25%\t6g\t\r\n*Reference intake of an average adult (8400kJ/2000kcal) (RI). Contains 2 portions");
                 },
                 child: const Text("Test"),
               ),
