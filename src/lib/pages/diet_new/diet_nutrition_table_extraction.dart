@@ -9,6 +9,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 import '../../OCRapiKey.dart';
 import '../../constants.dart';
@@ -24,6 +25,7 @@ class NutritionTableExtraction extends StatefulWidget {
 class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
   File? selectedImage;
+  var response;
   var extracted;
   bool _sodium = false;
 
@@ -201,14 +203,14 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
         debugPrint(line);
         List<String> parts = line.split('\t');
         if (parts.isNotEmpty) {
-          //print("parts");
-          //print(parts);
+          debugPrint("parts");
+          debugPrint(parts.toString());
           String label = getCorrectLabelName(removeExcessData(parts[0]));
           String value = "0";
 
           for (String part in parts) {
-            //print("part");
-            //print(part);
+            debugPrint("part");
+            debugPrint(part.toString());
             String valueToTry = doubleParseDataRemoval(part);
             if (double.tryParse(valueToTry) != null) {
 
@@ -296,11 +298,34 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
   }
 
+  Future<File> imageCompressor(File fileToCompress) async {
+
+    Future<File> compressAndGetFile(File file, String targetPath) async {
+      var result = await FlutterImageCompress.compressAndGetFile(
+        file.path, Uri.parse(file.path).resolve('./output.jpg').toString(),
+        quality: 90,
+      );
+      File fileResult = File(result!.path);
+
+      return fileResult;
+    }
+
+    while ((fileToCompress.readAsBytesSync().lengthInBytes/1024) >= 1) {
+      debugPrint("Compressing");
+      fileToCompress = await compressAndGetFile(
+        fileToCompress,
+        "compressed" + fileToCompress.path,
+      );
+    };
+
+    return fileToCompress;
+  }
 
   Future<File?> cropImage(XFile image) async {
     CroppedFile? croppedFile = await ImageCropper().cropImage(
       sourcePath: image.path,
       aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 2),
+      compressQuality: 10,
       uiSettings: [
         AndroidUiSettings(
           toolbarTitle: "Crop Nutrition Table Image",
@@ -345,7 +370,8 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
     final status = res.statusCode;
     if (status != 200) throw Exception('http.send error: statusCode= $status');
 
-    extracted = jsonDecode(res.body)["ParsedResults"][0]["ParsedText"];
+    response = await jsonDecode(res.body);
+    extracted = await jsonDecode(res.body)["ParsedResults"][0]["ParsedText"];
 
     await parseNutritionalInfo(extracted);
 
@@ -356,22 +382,41 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
     try {
       final XFile? image = await ImagePicker().pickImage(
         source: ImageSource.camera,
-        imageQuality: 40,
+        imageQuality: 100,
       );
 
       File? croppedFile = await cropImage(image!);
+      //File? compressedFile = await imageCompressor(croppedFile!);
 
       setState(() {
+        //selectedImage = File(compressedFile!.path);
         selectedImage = File(croppedFile!.path);
       });
 
       await OCRTabularRecognition();
       context.read<PageChange>().backPage();
 
-    } catch (error) {
+    } catch (error, stackTrace) {
       debugPrint("Error Detected");
       debugPrint(error.toString());
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString())));
+      debugPrint(stackTrace.toString());
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        dismissDirection: DismissDirection.horizontal,
+        duration: const Duration(seconds: 20),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(error.toString()),
+                const SizedBox(height: 10),
+                Text(response.toString()),
+                const SizedBox(height: 10),
+                Text("${selectedImage!.readAsBytesSync().lengthInBytes/1024}"),
+                const SizedBox(height: 10),
+                Text(stackTrace.toString()),
+                const SizedBox(height: 10),
+              ],
+            ),
+      )));
       context.read<PageChange>().backPage();
     }
   }
