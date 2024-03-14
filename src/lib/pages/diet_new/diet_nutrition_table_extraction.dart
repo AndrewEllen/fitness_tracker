@@ -28,6 +28,9 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
     String getCorrectLabelName(String labelToChange) {
 
+      print("labelToChange");
+      print(labelToChange);
+
       if (servingSizeList.contains(labelToChange)) {
         return "servingSize";
       } else if (caloriesList.contains(labelToChange)) {
@@ -165,7 +168,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
       for (String line in lines) {
         List<String> parts = line.split('\t');
-        if (parts.length >= 3) {
+        if (parts.length >= 2) {
           String label = getCorrectLabelName(removeExcessData(parts[0]));
           String value = "0";
 
