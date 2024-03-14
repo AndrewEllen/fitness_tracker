@@ -26,7 +26,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
   void parseNutritionalInfo(String input) {
 
-    String extractUsefulDataUsingReferenceList(String labelToChange) {
+    String getLabel(String labelToChange) {
 
       if (servingSizeList.contains(labelToChange)) {
         return "servingSize";
@@ -36,6 +36,108 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
         return "kilojoules";
       } else if (proteinsList.contains(labelToChange)) {
         return "proteins";
+      } else if (carbsList.contains(labelToChange)) {
+        return "carbs";
+      } else if (fiberList.contains(labelToChange)) {
+        return "fiber";
+      } else if (sugarsList.contains(labelToChange)) {
+        return "sugars";
+      } else if (fatsList.contains(labelToChange)) {
+        return "fat";
+      } else if (saturatedFatList.contains(labelToChange)) {
+        return "saturatedFat";
+      } else if (polyUnsaturatedFatList.contains(labelToChange)) {
+        return "polyUnsaturatedFat";
+      } else if (monoUnsaturatedFatList.contains(labelToChange)) {
+        return "monoUnsaturatedFat";
+      } else if (transFatList.contains(labelToChange)) {
+        return "transFat";
+      } else if (cholesterolList.contains(labelToChange)) {
+        return "cholesterol";
+      } else if (calciumList.contains(labelToChange)) {
+        return "calcium";
+      } else if (ironList.contains(labelToChange)) {
+        return "iron";
+      } else if (sodiumList.contains(labelToChange)) {
+        return "sodium";
+      } else if (zincList.contains(labelToChange)) {
+        return "zinc";
+      } else if (magnesiumList.contains(labelToChange)) {
+        return "magnesium";
+      } else if (potassiumList.contains(labelToChange)) {
+        return "potassium";
+      } else if (vitaminAList.contains(labelToChange)) {
+        return "vitaminA";
+      } else if (vitaminB1List.contains(labelToChange)) {
+        return "vitaminB1";
+      } else if (vitaminB2List.contains(labelToChange)) {
+        return "vitaminB2";
+      } else if (vitaminB3List.contains(labelToChange)) {
+        return "vitaminB3";
+      } else if (vitaminB6List.contains(labelToChange)) {
+        return "vitaminB6";
+      } else if (vitaminB9List.contains(labelToChange)) {
+        return "vitaminB9";
+      } else if (vitaminB12List.contains(labelToChange)) {
+        return "vitaminB12";
+      } else if (vitaminCList.contains(labelToChange)) {
+        return "vitaminC";
+      } else if (vitaminDList.contains(labelToChange)) {
+        return "vitaminD";
+      } else if (vitaminEList.contains(labelToChange)) {
+        return "vitaminE";
+      } else if (vitaminKList.contains(labelToChange)) {
+        return "vitaminK";
+      } else if (omega3List.contains(labelToChange)) {
+        return "omega3";
+      } else if (omega6List.contains(labelToChange)) {
+        return "omega6";
+      } else if (alcoholList.contains(labelToChange)) {
+        return "alcohol";
+      } else if (biotinList.contains(labelToChange)) {
+        return "biotin";
+      } else if (butyricAcidList.contains(labelToChange)) {
+        return "butyricAcid";
+      } else if (caffeineList.contains(labelToChange)) {
+        return "caffeine";
+      } else if (capricAcidList.contains(labelToChange)) {
+        return "capricAcid";
+      } else if (caproicAcidList.contains(labelToChange)) {
+        return "caproicAcid";
+      } else if (caprylicAcidList.contains(labelToChange)) {
+        return "caprylicAcid";
+      } else if (chlorideList.contains(labelToChange)) {
+        return "chloride";
+      } else if (chromiumList.contains(labelToChange)) {
+        return "chromium";
+      } else if (copperList.contains(labelToChange)) {
+        return "copper";
+      } else if (docosahexaenoicAcidList.contains(labelToChange)) {
+        return "docosahexaenoicAcid";
+      } else if (eicosapentaenoicAcidList.contains(labelToChange)) {
+        return "eicosapentaenoicAcid";
+      } else if (erucicAcidList.contains(labelToChange)) {
+        return "erucicAcid";
+      } else if (fluorideList.contains(labelToChange)) {
+        return "fluoride";
+      } else if (iodineList.contains(labelToChange)) {
+        return "iodine";
+      } else if (manganeseList.contains(labelToChange)) {
+        return "manganese";
+      } else if (molybdenumList.contains(labelToChange)) {
+        return "molybdenum";
+      } else if (myristicAcidList.contains(labelToChange)) {
+        return "myristicAcid";
+      } else if (oleicAcidList.contains(labelToChange)) {
+        return "oleicAcid";
+      } else if (palmiticAcidList.contains(labelToChange)) {
+        return "palmiticAcid";
+      } else if (pantothenicAcidList.contains(labelToChange)) {
+        return "pantothenicAcid";
+      } else if (seleniumList.contains(labelToChange)) {
+        return "selenium";
+      } else if (stearicAcidList.contains(labelToChange)) {
+        return "stearicAcid";
       }
 
       return "";
@@ -82,65 +184,65 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
       print(nutritionInfo);
 
       FoodItem scannedItem = FoodItem(
-          barcode: "",
-          foodName: "",
-          quantity: "1",
-          servingSize: nutritionInfo["Serving Size"] ?? "",
-          servings: "1",
-          calories: nutritionInfo["Energy"] ?? "",
-          kiloJoules: nutritionInfo["kJ"] ?? "",
-          proteins: nutritionInfo["Protein"] ?? "",
-          carbs: nutritionInfo["Carbohydrate"] ?? "",
-          fiber: nutritionInfo["Fibre"] ?? "",
-          sugars: nutritionInfo["of which sugars"] ?? "",
-          fat: nutritionInfo["Fat"] ?? "",
-          saturatedFat: nutritionInfo["of which saturates"] ?? "",
-          polyUnsaturatedFat: nutritionInfo["Polyunsaturated Fat"] ?? "",
-          monoUnsaturatedFat: nutritionInfo["Monounsaturated Fat"] ?? "",
-          transFat: nutritionInfo["Trans Fat"] ?? "",
-          cholesterol: nutritionInfo["Cholesterol"] ?? "",
-          calcium: nutritionInfo["Calcium"] ?? "",
-          iron: nutritionInfo["Iron"] ?? "",
-          sodium: nutritionInfo["Salt"] ?? "",
-          zinc: nutritionInfo["Zinc"] ?? "",
-          magnesium: nutritionInfo["Magnesium"] ?? "",
-          potassium: nutritionInfo["Potassium"] ?? "",
-          vitaminA: nutritionInfo["Vitamin A"] ?? "",
-          vitaminB1: nutritionInfo["Vitamin B1"] ?? "",
-          vitaminB2: nutritionInfo["Vitamin B2"] ?? "",
-          vitaminB3: nutritionInfo["Vitamin B3"] ?? "",
-          vitaminB6: nutritionInfo["Vitamin B6"] ?? "",
-          vitaminB9: nutritionInfo["Vitamin B9"] ?? "",
-          vitaminB12: nutritionInfo["Vitamin B12"] ?? "",
-          vitaminC: nutritionInfo["Vitamin C"] ?? "",
-          vitaminD: nutritionInfo["Vitamin D"] ?? "",
-          vitaminE: nutritionInfo["Vitamin E"] ?? "",
-          vitaminK: nutritionInfo["Vitamin K"] ?? "",
-          omega3: nutritionInfo["Omega-3"] ?? "",
-          omega6: nutritionInfo["Omega-6"] ?? "",
-          alcohol: nutritionInfo["Alcohol"] ?? "",
-          biotin: nutritionInfo["Biotin"] ?? "",
-          butyricAcid: nutritionInfo["Butyric Acid"] ?? "",
-          caffeine: nutritionInfo["Caffeine"] ?? "",
-          capricAcid: nutritionInfo["Capric Acid"] ?? "",
-          caproicAcid: nutritionInfo["Caproic Acid"] ?? "",
-          caprylicAcid: nutritionInfo["Caprylic Acid"] ?? "",
-          chloride: nutritionInfo["Chloride"] ?? "",
-          chromium: nutritionInfo["Chromium"] ?? "",
-          copper: nutritionInfo["Copper"] ?? "",
-          docosahexaenoicAcid: nutritionInfo["Docosahexaenoic Acid"] ?? "",
-          eicosapentaenoicAcid: nutritionInfo["Eicosapentaenoic Acid"] ?? "",
-          erucicAcid: nutritionInfo["Erucic Acid"] ?? "",
-          fluoride: nutritionInfo["Fluoride"] ?? "",
-          iodine: nutritionInfo["Iodine"] ?? "",
-          manganese: nutritionInfo["Manganese"] ?? "",
-          molybdenum: nutritionInfo["Molybdenum"] ?? "",
-          myristicAcid: nutritionInfo["Myristic Acid"] ?? "",
-          oleicAcid: nutritionInfo["Oleic Acid"] ?? "",
-          palmiticAcid: nutritionInfo["Palmitic Acid"] ?? "",
-          pantothenicAcid: nutritionInfo["Pantothenic Acid"] ?? "",
-          selenium: nutritionInfo["Selenium"] ?? "",
-          stearicAcid: nutritionInfo["Stearic Acid"] ?? "",
+        barcode: "",
+        foodName: "",
+        quantity: "1",
+        servingSize: nutritionInfo[getLabel("servingSize")] ?? "",
+        servings: "1",
+        calories: nutritionInfo[getLabel("calories")] ?? "",
+        kiloJoules: nutritionInfo[getLabel("kilojoules")] ?? "",
+        proteins: nutritionInfo[getLabel("proteins")] ?? "",
+        carbs: nutritionInfo[getLabel("carbs")] ?? "",
+        fiber: nutritionInfo[getLabel("fiber")] ?? "",
+        sugars: nutritionInfo[getLabel("sugars")] ?? "",
+        fat: nutritionInfo[getLabel("fat")] ?? "",
+        saturatedFat: nutritionInfo[getLabel("saturatedFat")] ?? "",
+        polyUnsaturatedFat: nutritionInfo[getLabel("polyUnsaturatedFat")] ?? "",
+        monoUnsaturatedFat: nutritionInfo[getLabel("monoUnsaturatedFat")] ?? "",
+        transFat: nutritionInfo[getLabel("transFat")] ?? "",
+        cholesterol: nutritionInfo[getLabel("cholesterol")] ?? "",
+        calcium: nutritionInfo[getLabel("calcium")] ?? "",
+        iron: nutritionInfo[getLabel("iron")] ?? "",
+        sodium: nutritionInfo[getLabel("sodium")] ?? "",
+        zinc: nutritionInfo[getLabel("zinc")] ?? "",
+        magnesium: nutritionInfo[getLabel("magnesium")] ?? "",
+        potassium: nutritionInfo[getLabel("potassium")] ?? "",
+        vitaminA: nutritionInfo[getLabel("vitaminA")] ?? "",
+        vitaminB1: nutritionInfo[getLabel("vitaminB1")] ?? "",
+        vitaminB2: nutritionInfo[getLabel("vitaminB2")] ?? "",
+        vitaminB3: nutritionInfo[getLabel("vitaminB3")] ?? "",
+        vitaminB6: nutritionInfo[getLabel("vitaminB6")] ?? "",
+        vitaminB9: nutritionInfo[getLabel("vitaminB9")] ?? "",
+        vitaminB12: nutritionInfo[getLabel("vitaminB12")] ?? "",
+        vitaminC: nutritionInfo[getLabel("vitaminC")] ?? "",
+        vitaminD: nutritionInfo[getLabel("vitaminD")] ?? "",
+        vitaminE: nutritionInfo[getLabel("vitaminE")] ?? "",
+        vitaminK: nutritionInfo[getLabel("vitaminK")] ?? "",
+        omega3: nutritionInfo[getLabel("omega3")] ?? "",
+        omega6: nutritionInfo[getLabel("omega6")] ?? "",
+        alcohol: nutritionInfo[getLabel("alcohol")] ?? "",
+        biotin: nutritionInfo[getLabel("biotin")] ?? "",
+        butyricAcid: nutritionInfo[getLabel("butyricAcid")] ?? "",
+        caffeine: nutritionInfo[getLabel("caffeine")] ?? "",
+        capricAcid: nutritionInfo[getLabel("capricAcid")] ?? "",
+        caproicAcid: nutritionInfo[getLabel("caproicAcid")] ?? "",
+        caprylicAcid: nutritionInfo[getLabel("caprylicAcid")] ?? "",
+        chloride: nutritionInfo[getLabel("chloride")] ?? "",
+        chromium: nutritionInfo[getLabel("chromium")] ?? "",
+        copper: nutritionInfo[getLabel("copper")] ?? "",
+        docosahexaenoicAcid: nutritionInfo[getLabel("docosahexaenoicAcid")] ?? "",
+        eicosapentaenoicAcid: nutritionInfo[getLabel("eicosapentaenoicAcid")] ?? "",
+        erucicAcid: nutritionInfo[getLabel("erucicAcid")] ?? "",
+        fluoride: nutritionInfo[getLabel("fluoride")] ?? "",
+        iodine: nutritionInfo[getLabel("iodine")] ?? "",
+        manganese: nutritionInfo[getLabel("manganese")] ?? "",
+        molybdenum: nutritionInfo[getLabel("molybdenum")] ?? "",
+        myristicAcid: nutritionInfo[getLabel("myristicAcid")] ?? "",
+        oleicAcid: nutritionInfo[getLabel("oleicAcid")] ?? "",
+        palmiticAcid: nutritionInfo[getLabel("palmiticAcid")] ?? "",
+        pantothenicAcid: nutritionInfo[getLabel("pantothenicAcid")] ?? "",
+        selenium: nutritionInfo[getLabel("selenium")] ?? "",
+        stearicAcid: nutritionInfo[getLabel("stearicAcid")] ?? "",
       );
 
       return scannedItem;
