@@ -161,6 +161,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
       List<String> splitInputString = inputString
           .toLowerCase()
           .trim()
+          .replaceAll(RegExp('[()]'), '')
           .split(" ");
 
 
