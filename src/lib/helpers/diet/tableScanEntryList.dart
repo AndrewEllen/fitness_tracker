@@ -104,6 +104,8 @@ List<String> masterEntryList = [
   "magnesium",
   "potassium",
 
+  "vit",
+
   "vitamina",
   "vitamin a",
   "vitamin-a",
@@ -123,6 +125,14 @@ List<String> masterEntryList = [
   "vitamin b3",
   "vitamin-b3",
   "niacin",
+
+  "vitaminb4",
+  "vitamin b4",
+  "vitamin-b4",
+
+  "vitaminb5",
+  "vitamin b5",
+  "vitamin-b5",
 
   "vitaminb6",
   "vitamin b6",
@@ -342,12 +352,14 @@ List<String> bRemovalList = [
 ];
 
 List<String> vitaminAList = [
+  "vit a",
   "vitamina",
   "vitamin a",
   "vitamin-a",
 ];
 
 List<String> vitaminB1List = [
+  "vit b1",
   "vitaminb1",
   "vitamin b1",
   "vitaminb-1",
@@ -355,6 +367,7 @@ List<String> vitaminB1List = [
 ];
 
 List<String> vitaminB2List = [
+  "vit b2",
   "vitaminb2",
   "vitamin b2",
   "vitamin-b2",
@@ -362,6 +375,7 @@ List<String> vitaminB2List = [
 ];
 
 List<String> vitaminB3List = [
+  "vit b3",
   "vitaminb3",
   "vitamin b3",
   "vitamin-b3",
@@ -369,6 +383,7 @@ List<String> vitaminB3List = [
 ];
 
 List<String> vitaminB6List = [
+  "vit b6",
   "vitaminb6",
   "vitamin b6",
   "vitamin-b6",
@@ -376,6 +391,7 @@ List<String> vitaminB6List = [
 ];
 
 List<String> vitaminB9List = [
+  "vit b9",
   "vitaminb9",
   "vitamin b9",
   "vitamin-b9",
@@ -383,6 +399,7 @@ List<String> vitaminB9List = [
 ];
 
 List<String> vitaminB12List = [
+  "vit b12",
   "vitaminb12",
   "vitamin b12",
   "vitamin-b12",
@@ -390,24 +407,28 @@ List<String> vitaminB12List = [
 ];
 
 List<String> vitaminCList = [
+  "vit c",
   "vitaminc",
   "vitamin c",
   "vitamin-c",
 ];
 
 List<String> vitaminDList = [
+  "vit d",
   "vitamind",
   "vitamin d",
   "vitamin-d",
 ];
 
 List<String> vitaminEList = [
+  "vit e",
   "vitamine",
   "vitamin e",
   "vitamin-e",
 ];
 
 List<String> vitaminKList = [
+  "vit k",
   "vitamink",
   "vitamin k",
   "vitamin-k",
@@ -430,6 +451,7 @@ List<String> alcoholList = [
 ];
 
 List<String> biotinList = [
+  "vit b7",
   "biotin",
   "vitamin b7",
   "vitaminb7",
@@ -509,6 +531,10 @@ List<String> palmiticAcidList = [
 ];
 
 List<String> pantothenicAcidList = [
+  "vit b5",
+  "vitaminb5",
+  "vitamin b5",
+  "vitamin-b5",
   "pantothenic acid",
 ];
 
