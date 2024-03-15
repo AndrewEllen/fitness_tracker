@@ -174,7 +174,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
     }
 
-    String doubleParseDataRemoval(String inputString) {
+    String doubleParseDataRemoval(String inputString, String label) {
 
       debugPrint("SPLIT Double");
       debugPrint(inputString.toString());
@@ -187,10 +187,61 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
 
 
       splitInputString.removeWhere((value) => bRemovalList.contains(value));
+      splitInputString = splitInputString.join("").replaceAll(RegExp(r'[^0-9.,]'), ' ').trim().split(" ");
 
       debugPrint(splitInputString.toString());
 
-      return splitInputString.join("").replaceAll(RegExp(r'[^0-9.,]'), '').trim();
+      String joinedInputString;
+
+      if ((label == "calories" || label == "kilojoules") && (double.tryParse(splitInputString[0].trim()) != null) && (splitInputString.length > 1)) {
+
+        List<double> doubleList = [];
+
+        for (String item in splitInputString) {
+          debugPrint("double list gen");
+          debugPrint(item.toString());
+          if (double.tryParse(item) != null) {
+            debugPrint("double found");
+            debugPrint(item.toString());
+            doubleList.add(double.parse(item));
+          }
+        }
+
+        if (doubleList.isNotEmpty) {
+          label == "calories"
+              ? joinedInputString = doubleList.reduce(min).toString()
+              : joinedInputString = doubleList.reduce(max).toString();
+        } else {
+          joinedInputString = "";
+        }
+
+
+      } else {
+
+        List<double> doubleList = [];
+
+        for (String item in splitInputString) {
+          debugPrint("double list gen");
+          debugPrint(item.toString());
+          if (double.tryParse(item) != null) {
+            debugPrint("double found");
+            debugPrint(item.toString());
+            doubleList.add(double.parse(item));
+          }
+        }
+
+        if (doubleList.isNotEmpty) {
+          joinedInputString = doubleList[0].toString();
+        } else {
+          joinedInputString = "";
+        }
+
+      }
+
+      debugPrint("joinedInputString");
+      debugPrint(joinedInputString.toString());
+
+      return joinedInputString;
 
     }
 
@@ -206,12 +257,12 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
           debugPrint("parts");
           debugPrint(parts.toString());
           String label = getCorrectLabelName(removeExcessData(parts[0]));
-          String value = "0";
+          String value = "";
 
           for (String part in parts) {
             debugPrint("part");
             debugPrint(part.toString());
-            String valueToTry = doubleParseDataRemoval(part);
+            String valueToTry = doubleParseDataRemoval(part, label);
             if (double.tryParse(valueToTry) != null) {
 
               value = valueToTry;
@@ -220,6 +271,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
           }
 
           nutritionInfo[label] = _sodium ? "${(double.parse(value)*2.5)/1000}" : value;
+          if (_sodium) {_sodium = false;}
         }
       }
 
