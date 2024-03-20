@@ -1,4 +1,5 @@
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
@@ -230,7 +231,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                                 padding: EdgeInsets.only(bottom: 10.0.h, right: 20.w),
                                 child: ElevatedButton(
                                   onPressed: () {
-
+                                    FirebaseAnalytics.instance.logEvent(name: 'save_log_pressed');
                                     if (weightController.text.isNotEmpty && repsController.text.isNotEmpty) {
                                       Map newLog = {
                                         "measurementDate": DateFormat("dd/MM/yyy").format(DateTime.now()).toString(),
@@ -384,7 +385,7 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-
+                      FirebaseAnalytics.instance.logEvent(name: 'exercise_load_more_pressed');
                       context.read<WorkoutProvider>().fetchMoreExerciseData(widget.exercise);
 
                     },

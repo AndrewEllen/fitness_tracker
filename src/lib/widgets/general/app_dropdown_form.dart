@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -149,11 +150,13 @@ class _DropDownFormState extends State<DropDownForm> {
               ),
             onChanged: (value) => searchForExercise(value),
             onTap: () {
+              FirebaseAnalytics.instance.logEvent(name: widget.label.replaceAll(" ", "_")+'_dropdown_selected');
                 setState(() {
                   _displayDropdown = true;
                 });
             },
             onFieldSubmitted: (value) {
+              FirebaseAnalytics.instance.logEvent(name: widget.label.replaceAll(" ", "_")+'_dropdown_selected');
               setState(() {
                 _displayDropdown = false;
               });
@@ -192,7 +195,7 @@ class _DropDownFormState extends State<DropDownForm> {
                         child: searchList.isEmpty ? Ink(
                           child: InkWell(
                             onTap: () {
-                
+                              FirebaseAnalytics.instance.logEvent(name: widget.label.replaceAll(" ", "_")+'_dropdown_selected');
                               widget.formController.text = widget.listOfItems[index];
                               print(widget.listOfItems[index]);
                 
@@ -213,7 +216,7 @@ class _DropDownFormState extends State<DropDownForm> {
                         ) : Ink(
                           child: InkWell(
                           onTap: () {
-                
+                            FirebaseAnalytics.instance.logEvent(name: widget.label.replaceAll(" ", "_")+'_dropdown_selected');
                             widget.formController.text = searchList[index];
                             print(searchList[index]);
                 

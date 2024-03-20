@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/providers/stats/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,7 +26,7 @@ class _DietDatePickerState extends State<DietDatePicker> {
 
 
   void loadNewData() async {
-
+    FirebaseAnalytics.instance.logEvent(name: 'changed_nutrition_date');
     UserNutritionModel userNutritionData;
     String date = context.read<UserNutritionData>().nutritionDate.toString();
 
@@ -91,6 +92,7 @@ class _DietDatePickerState extends State<DietDatePicker> {
 
 
   Future<void> _selectDate(BuildContext context) async {
+    FirebaseAnalytics.instance.logEvent(name: 'select_date_calendar_opened');
     DateTime? newDateUnformatted = await showDatePicker(
       builder: (context, child) {
         return Theme(
@@ -191,6 +193,7 @@ class _DietDatePickerState extends State<DietDatePicker> {
                           ),
                           color: appSecondaryColour,
                           onPressed: () {
+                            FirebaseAnalytics.instance.logEvent(name: 'changed_date_previous');
                             context
                                 .read<UserNutritionData>()
                                 .updateNutritionDateArrows(true);
@@ -212,6 +215,7 @@ class _DietDatePickerState extends State<DietDatePicker> {
                           ),
                           color: appSecondaryColour,
                           onPressed: () {
+                            FirebaseAnalytics.instance.logEvent(name: 'changed_date_next');
                             context
                                 .read<UserNutritionData>()
                                 .updateNutritionDateArrows(false);

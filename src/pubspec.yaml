@@ -29,26 +29,23 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  firebase_core: 2.27.1
+  cloud_firestore: 4.15.9
+  firebase_auth: 4.17.9
+  firebase_crashlytics: ^3.4.19
+  firebase_analytics: ^10.8.10
+  #firestore_cache: ^2.3.0+1
   cupertino_icons: 1.0.2
   curved_navigation_bar: 1.0.3
   material_design_icons_flutter: 5.0.6595
   fl_chart: 0.66.1
   percent_indicator: 4.0.0
   provider: 6.0.2
-  #firebase_core: 1.14.0
-  firebase_core: 2.13.1
-  #cloud_firestore: 3.1.11
-  cloud_firestore: 4.7.1
-  #firebase_auth: 3.3.15
-  firebase_auth: 4.6.1
   uuid: 3.0.6
   intl: 0.17.0
   path_provider: 2.0.15
   openfoodfacts: 3.4.0
   mobile_scanner: ^3.2.0
-  firebase_crashlytics: ^3.3.2
-  firebase_analytics: ^10.4.2
-  firestore_cache: ^2.3.0+1
   flutter_screenutil: ^5.9.0
   flutter_rating_bar: ^4.0.1
   health: 6.0.0
@@ -73,6 +70,7 @@ dependencies:
   http: ^1.2.1
   image_cropper: ^5.0.1
   flutter_image_compress: ^2.2.0
+
 
 dev_dependencies:
 

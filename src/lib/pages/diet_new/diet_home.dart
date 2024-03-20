@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/pages/groceries/groceries_home.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_button.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class DietHomePage extends StatefulWidget {
 class _DietHomePageState extends State<DietHomePage> {
 
   void loadNewData() async {
-
+    FirebaseAnalytics.instance.logEvent(name: 'changed_nutrition_date_swipe');
     UserNutritionModel userNutritionData;
     String date = context.read<UserNutritionData>().nutritionDate.toString();
 
@@ -102,11 +103,13 @@ class _DietHomePageState extends State<DietHomePage> {
     return GestureDetector(
       onHorizontalDragEnd: (DragEndDetails direction) {
         if (direction.primaryVelocity! > 0) {
+          FirebaseAnalytics.instance.logEvent(name: 'changed_nutrition_date_swipe_left');
           context
               .read<UserNutritionData>()
               .updateNutritionDateArrows(true);
           loadNewData();
         } else {
+          FirebaseAnalytics.instance.logEvent(name: 'changed_nutrition_date_swipe_right');
           context
               .read<UserNutritionData>()
               .updateNutritionDateArrows(false);

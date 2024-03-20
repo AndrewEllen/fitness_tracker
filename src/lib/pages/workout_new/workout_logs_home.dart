@@ -1,4 +1,5 @@
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +40,7 @@ class _WorkoutLogsHomeState extends State<WorkoutLogsHome> {
               WorkoutLogPageList(),
               ElevatedButton(
                 onPressed: () {
-
+                  FirebaseAnalytics.instance.logEvent(name: 'routine_logs_load_more_pressed');
                   context.read<WorkoutProvider>().loadMoreWorkoutLogs();
 
                 },

@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/providers/general/general_data_provider.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
@@ -30,7 +31,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   Future<void> signOutUser() async {
-
+    FirebaseAnalytics.instance.logEvent(name: 'sign_out');
     context.read<PageChange>().setCaloriesCalculated(false);
 
     if (await GoogleSignIn().isSignedIn()) {
@@ -81,6 +82,7 @@ class _HomePageState extends State<HomePage> {
               ),
               TextButton(
                 onPressed: () {
+                  FirebaseAnalytics.instance.logEvent(name: 'opened_update_calorie_goal');
                   _scaffoldKey.currentState?.closeEndDrawer();
                   Navigator.push(
                     context,

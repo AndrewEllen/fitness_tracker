@@ -1,4 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/pages/general/splashscreen.dart';
 import 'package:fitness_tracker/pages/general_new/auth_landing_page.dart';
@@ -116,7 +117,7 @@ class _MainPageState extends State<MainPage> {
 
 
   navBarColor(int index) {
-    print(index);
+    debugPrint(index.toString());
     context.read<PageChange>().navigatorBarNavigationReset(index);
     setState(() {
       _previousIndex = _currentNavigatorIndex;
