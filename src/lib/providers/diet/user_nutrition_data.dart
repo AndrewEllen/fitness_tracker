@@ -293,6 +293,25 @@ class UserNutritionData with ChangeNotifier {
       .day);
 
 
+
+  FoodItem _scannedFoodItem = FoodDefaultData();
+  FoodItem get scannedFoodItem => _scannedFoodItem;
+
+  bool _itemScanned = false;
+  bool get itemScanned => _itemScanned;
+
+  void changeItemScannedBool(bool value) {
+    _itemScanned = value;
+  }
+
+  void updateScannedFoodItem(FoodItem newlyScannedItem) {
+
+    _scannedFoodItem = newlyScannedItem;
+    _itemScanned = true;
+    notifyListeners();
+  }
+
+
   late double _calories = 0;
   late double _breakfastCalories = 0;
   late double _lunchCalories = 0;

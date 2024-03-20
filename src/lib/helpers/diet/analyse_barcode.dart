@@ -1,4 +1,4 @@
-import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
+/*import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 
 
 ///TODO Remove this later
@@ -19,4 +19,4 @@ Future<String?> analyseBarcode(imageFile) async {
   print(barcodeDisplayValue);
 
   return barcodeDisplayValue;
-}
+}*/
