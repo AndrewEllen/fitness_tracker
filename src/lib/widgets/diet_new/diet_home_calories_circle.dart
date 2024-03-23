@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,6 +31,7 @@ class _CalorieCircleState extends State<CalorieCircle> {
   }
 
   void displayCalories() {
+    FirebaseAnalytics.instance.logEvent(name: 'changed_calories_display');
     setState(() {
       _displayCalories = !_displayCalories;
     });

@@ -2,6 +2,7 @@
 import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
 import 'package:fitness_tracker/models/workout/workout_log_exercise_data.dart';
 import 'package:fitness_tracker/models/workout/workout_overall_stats_model.dart';
@@ -462,6 +463,8 @@ class WorkoutProvider with ChangeNotifier {
     _currentWorkout.endOfWorkout = endOfWorkout;
 
     if (_currentWorkout.exercises.isNotEmpty) {
+
+      FirebaseAnalytics.instance.logEvent(name: 'workout_saved');
 
       _weekDayExerciseTracker[DateFormat('EEEE').format(DateTime.now())] = true;
       _weekDayExerciseTracker["lastDate"] = DateTime.now();

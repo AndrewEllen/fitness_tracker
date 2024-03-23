@@ -1,4 +1,5 @@
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_log_page.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_logs_home.dart';
@@ -28,6 +29,7 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
   final TextEditingController inputController = TextEditingController();
 
   newRoutine(BuildContext context) async {
+    FirebaseAnalytics.instance.logEvent(name: 'routine_creation_pressed');
     double buttonSize = 22.h;
 
     await showDialog(

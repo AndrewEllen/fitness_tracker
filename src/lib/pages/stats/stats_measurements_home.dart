@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/constants.dart';
@@ -24,7 +25,7 @@ class _MeasurementsHomePageState extends State<MeasurementsHomePage> {
 
   newMeasurement(BuildContext context) async {
     double buttonSize = 22.h;
-
+    FirebaseAnalytics.instance.logEvent(name: 'opened_new_stats_box');
     await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -103,6 +104,7 @@ class _MeasurementsHomePageState extends State<MeasurementsHomePage> {
                       primaryColor: appSecondaryColour,
                       buttonText: "Create",
                       onTap: () {
+                        FirebaseAnalytics.instance.logEvent(name: 'creating_new_stat');
                         if (newMeasurementNameKey.currentState!.validate()) {
                           context.read<UserStatsMeasurements>().addNewMeasurement(newMeasurementNameController.text, const Uuid().v4());
                           UpdateUserDocumentMeasurements(context.read<UserStatsMeasurements>().statsMeasurement[context.read<UserStatsMeasurements>().statsMeasurement.length-1]);

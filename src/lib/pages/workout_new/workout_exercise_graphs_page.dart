@@ -1,3 +1,4 @@
+import "package:firebase_analytics/firebase_analytics.dart";
 import "package:fl_chart/fl_chart.dart";
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
@@ -22,7 +23,7 @@ class _ExerciseGraphsPageState extends State<ExerciseGraphsPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    FirebaseAnalytics.instance.logEvent(name: 'exercise_bar_graph_opened');
     context.read<WorkoutProvider>().exerciseMaxRepAndWeight;
 
     Map data = context.read<WorkoutProvider>().exerciseMaxRepAndWeight;

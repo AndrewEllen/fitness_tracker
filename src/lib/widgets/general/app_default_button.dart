@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
@@ -10,7 +11,7 @@ class AppButton extends StatelessWidget {
   final Color? primaryColor;
   final double fontSize;
 
-  late final ButtonStyle? changeColor;
+  late ButtonStyle? changeColor;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +24,11 @@ class AppButton extends StatelessWidget {
       );
     }
     return ElevatedButton(
-
       style: changeColor,
-      onPressed: onTap,
+      onPressed: () {
+        FirebaseAnalytics.instance.logEvent(name: 'button_press_'+buttonText.replaceAll(" ", "_"));
+        onTap();
+        },
       child: FittedBox(
         fit: BoxFit.fitHeight,
         child: Text(

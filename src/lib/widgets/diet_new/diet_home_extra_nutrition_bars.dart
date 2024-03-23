@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -39,6 +40,11 @@ class _DietHomeExtraNutritionBarsState extends State<DietHomeExtraNutritionBars>
                   //bottomLeft: Radius.circular(10),
                 ),
                 onTap: () {
+                  if (expandContainer) {
+                    FirebaseAnalytics.instance.logEvent(name: 'expanded_extra_nutrition_bars');
+                  } else {
+                    FirebaseAnalytics.instance.logEvent(name: 'retracted_extra_nutrition_bars');
+                  }
                   setState(() {
                     expandContainer = !expandContainer;
                   });

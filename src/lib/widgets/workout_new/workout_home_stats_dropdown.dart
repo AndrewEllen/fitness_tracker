@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/widgets/workout_new/workout_home_stats.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,11 @@ class _workoutHomeStatsDropdownState extends State<workoutHomeStatsDropdown> {
                 padding: const EdgeInsets.all(8.0),
                 child: IconButton(
                     onPressed: () {
+                      if (_expandPanel) {
+                        FirebaseAnalytics.instance.logEvent(name: 'expanded_workout_stats');
+                      } else {
+                        FirebaseAnalytics.instance.logEvent(name: 'retracted_workout_stats');
+                      }
                       setState(() {
                         _expandPanel = !_expandPanel;
                       });

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/models/diet/food_item.dart';
 import 'package:http/http.dart' as http;
@@ -30,7 +31,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
   bool _sodium = false;
 
   Future<void> parseNutritionalInfo(String input) async {
-
+    FirebaseAnalytics.instance.logEvent(name: 'parsing_nutrition_table');
     String getCorrectLabelName(String inputLabel) {
 
       String labelToChange = inputLabel.toLowerCase();
@@ -453,7 +454,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
       debugPrint("Error Detected");
       debugPrint(error.toString());
       debugPrint(stackTrace.toString());
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         dismissDirection: DismissDirection.horizontal,
         duration: const Duration(seconds: 20),
           content: SingleChildScrollView(
@@ -469,7 +470,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
                 const SizedBox(height: 10),
               ],
             ),
-      )));
+      )));*/
       context.read<PageChange>().backPage();
     }
   }

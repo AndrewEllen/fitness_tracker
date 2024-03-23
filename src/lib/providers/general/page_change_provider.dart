@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -76,6 +77,7 @@ class PageChange with ChangeNotifier {
 
     _pageWidgetCacheIndex = _pageWidgetCache.length - 1;
 
+    FirebaseAnalytics.instance.logEvent(name: 'navigated_to_'+(_pageWidgetCache[_pageWidgetCacheIndex].runtimeType.toString()).replaceAll(" ", "_"));
     debugPrint(_pageWidgetCache.toString());
     notifyListeners();
   }
@@ -91,6 +93,7 @@ class PageChange with ChangeNotifier {
 
     _pageWidget = pages[navigatorIndex];
 
+    FirebaseAnalytics.instance.logEvent(name: 'navigated_to_'+(_pageWidgetCache[_pageWidgetCacheIndex].runtimeType.toString()).replaceAll(" ", "_"));
     debugPrint(_pageWidgetCache.toString());
     notifyListeners();
   }
@@ -109,6 +112,7 @@ class PageChange with ChangeNotifier {
     _pageWidgetCache = [_pageWidget];
     _pageWidgetCacheIndex = 0;
 
+    FirebaseAnalytics.instance.logEvent(name: 'navigated_to_'+(_pageWidgetCache[_pageWidgetCacheIndex].runtimeType.toString()).replaceAll(" ", "_"));
     debugPrint(_pageWidgetCache.toString());
     notifyListeners();
   }
@@ -140,6 +144,7 @@ class PageChange with ChangeNotifier {
       //}
     }
 
+    FirebaseAnalytics.instance.logEvent(name: 'navigated_to_'+(_pageWidgetCache[_pageWidgetCacheIndex].runtimeType.toString()).replaceAll(" ", "_"));
     debugPrint(_pageWidgetCache.toString());
     notifyListeners();
   }
@@ -161,6 +166,7 @@ class PageChange with ChangeNotifier {
         _confirmation = false;
         _confirmationCounter = 0;
         _pageWidgetCache.removeLast();
+        ///TODO this may throw errors if cache is ever 0 after removeLast
         _pageWidgetCacheIndex = _pageWidgetCache.length-1;
 
         if (_pageWidgetCache.isEmpty) {
@@ -168,6 +174,7 @@ class PageChange with ChangeNotifier {
           _pageWidgetCacheIndex = _pageWidgetCache.length-1;
         }
 
+        FirebaseAnalytics.instance.logEvent(name: 'navigated_to_'+(_pageWidgetCache[_pageWidgetCacheIndex].runtimeType.toString()).replaceAll(" ", "_"));
         debugPrint(_pageWidgetCache.toString());
         notifyListeners();
       } else {
@@ -178,13 +185,14 @@ class PageChange with ChangeNotifier {
 
       _confirmation = false;
       _pageWidgetCache.removeLast();
+      ///TODO this may throw errors if cache is ever 0 after removeLast
       _pageWidgetCacheIndex = _pageWidgetCache.length-1;
-
       if (_pageWidgetCache.isEmpty) {
         _pageWidgetCache.add(const HomePage());
         _pageWidgetCacheIndex = _pageWidgetCache.length-1;
       }
 
+      FirebaseAnalytics.instance.logEvent(name: 'navigated_to_'+(_pageWidgetCache[_pageWidgetCacheIndex].runtimeType.toString()).replaceAll(" ", "_"));
       debugPrint(_pageWidgetCache.toString());
       notifyListeners();
     }

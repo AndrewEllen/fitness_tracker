@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/pages/general/auth_choose_login_signup.dart';
@@ -54,6 +55,12 @@ void main() async {
         .recordError(error, stack, fatal: true);
     return true;
   };
+
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  FirebaseAnalytics.instance.logAppOpen();
+
+  FirebaseAnalytics.instance.logLogin();
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     systemNavigationBarColor: appTertiaryColour,

@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
 
 
   void incrementCounter(bool isSmall) {
-
+    FirebaseAnalytics.instance.logEvent(name: 'incremented_counter');
     if (widget.inputController.text.isEmpty) {
       widget.inputController.text = "0";
     }
@@ -66,7 +67,7 @@ class _IncrementalCounterState extends State<IncrementalCounter> {
   }
 
   void decrementCounter(bool isSmall) {
-
+    FirebaseAnalytics.instance.logEvent(name: 'decremented_counter');
     if (widget.inputController.text.isEmpty) {
       widget.inputController.text = "0";
     }

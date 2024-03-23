@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_expanding_container.dart';
 import 'package:flutter/material.dart';
@@ -97,6 +98,7 @@ class _DietWaterDisplayState extends State<DietWaterDisplay> {
                   ),
                   tapOnlyMode: true,
                   onRatingUpdate: (rating) {
+                    FirebaseAnalytics.instance.logEvent(name: 'updated_water');
                     context.read<UserNutritionData>().updateWater(rating);
                   },
                   itemCount: context.read<UserNutritionData>().userDailyNutrition.water.round() + 1,
