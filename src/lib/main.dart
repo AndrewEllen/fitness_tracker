@@ -56,6 +56,8 @@ void main() async {
     return true;
   };
 
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
   FirebaseAnalytics.instance.logAppOpen();
 
   FirebaseAnalytics.instance.logLogin();

@@ -454,7 +454,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
       debugPrint("Error Detected");
       debugPrint(error.toString());
       debugPrint(stackTrace.toString());
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         dismissDirection: DismissDirection.horizontal,
         duration: const Duration(seconds: 20),
           content: SingleChildScrollView(
@@ -470,7 +470,7 @@ class _NutritionTableExtractionState extends State<NutritionTableExtraction> {
                 const SizedBox(height: 10),
               ],
             ),
-      )));
+      )));*/
       context.read<PageChange>().backPage();
     }
   }
