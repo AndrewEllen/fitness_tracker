@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:fitness_tracker/models/workout/exercise_model.dart';
+import 'package:fitness_tracker/pages/workout_new/exercise_database_search.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -133,6 +134,8 @@ class _NewExercisePageState extends State<NewExercisePage> {
       "Glutes",
       "Quads",
       "Hamstrings",
+      "Abductors",
+      "Adductors",
       "Calves",
       "Cardio"
     ];
@@ -312,6 +315,12 @@ class _NewExercisePageState extends State<NewExercisePage> {
                         },
                       ),
                     ) : const SizedBox.shrink(),
+
+                    SizedBox(
+                      height: 100.h,
+                    ),
+
+                    AppButton(onTap: () => context.read<PageChange>().changePageCache(ExerciseDatabaseSearch()), buttonText: "Search Exercises"),
 
                     SizedBox(
                       height: 100.h,
