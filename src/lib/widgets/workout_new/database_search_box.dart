@@ -42,6 +42,13 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
   late YoutubePlayerController longVideoController;
 
   @override
+  void dispose() {
+    shortVideoController.dispose();
+    longVideoController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
 
     if (widget.exerciseModel.shortVideo.isNotEmpty) {

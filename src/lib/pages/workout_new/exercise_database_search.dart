@@ -152,7 +152,7 @@ class _ExerciseDatabaseSearchState extends State<ExerciseDatabaseSearch> {
     "Any",
     "Bodybuilding",
     "Powerlifting",
-    "Olympic Weightlifting",
+    "Olympic Weightlifting ",
     "Calisthenics",
     "Yoga", ///Postural in the database
     "Balance",
