@@ -16,6 +16,27 @@ class DatabaseSearchBox extends StatefulWidget {
 }
 
 class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
+
+
+  bool checkMuscle(String muscleToCheck) {
+
+    if (widget.exerciseModel.primaryMuscle == muscleToCheck) {
+      return true;
+    }
+    if (widget.exerciseModel.secondaryMuscle == muscleToCheck) {
+      return true;
+    }
+    if (widget.exerciseModel.tertiaryMuscle == muscleToCheck) {
+      return true;
+    }
+    return false;
+  }
+
+
+
+
+
+
   bool _expandPanel = false;
   late YoutubePlayerController shortVideoController;
   late YoutubePlayerController longVideoController;
@@ -160,7 +181,7 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
                       style: boldTextStyle,
                     ),
 
-                    const SizedBox(height: 100,),
+                    const SizedBox(height: 25,),
 
 
 
@@ -174,7 +195,17 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
                             child: CustomPaint(
                               size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
                               painter: RPSCustomPainterColour(
-                                chest: true,
+                                chest: checkMuscle("Pectoralis Major"),
+                                abdominals: checkMuscle("Rectus Abdominis"),
+                                calves: checkMuscle("Gastrocnemius"),
+                                quadriceps: checkMuscle("Quadriceps Femoris"),
+                                anteriorDelts: checkMuscle("Anterior Deltoids"),
+                                midDelts: checkMuscle("Medial Deltoids"),
+                                obliques: checkMuscle("Obliques"),
+                                forearms: checkMuscle("Brachioradialis"),
+                                biceps: checkMuscle("Biceps Brachii"),
+                                serratusAnterior: checkMuscle("Serratus Anterior"),
+                                trapezius: checkMuscle("Upper Trapezius"),
                               ),
                             ),
                           ),
@@ -196,7 +227,7 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
 
 
 
-                    const SizedBox(height: 500,),
+                    const SizedBox(height: 400,),
 
                     widget.exerciseModel.shortVideo.isNotEmpty ? YoutubePlayerBuilder(
                       player: YoutubePlayer(
