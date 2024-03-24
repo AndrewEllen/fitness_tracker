@@ -615,7 +615,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_6_fill = Paint()..style=PaintingStyle.fill;
-    paint_6_fill.color = Color(0xffff6600).withOpacity(chest ? 1.0 : 0.0);
+    paint_6_fill.color = Color(0xffff6600).withOpacity(trapezius ? 1.0 : 0.0);
     canvas.drawPath(path_6,paint_6_fill);
 
     Path path_7 = Path();
@@ -630,7 +630,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_7_fill = Paint()..style=PaintingStyle.fill;
-    paint_7_fill.color = Color(0xffff6600).withOpacity(chest ? 1.0 : 0.0);
+    paint_7_fill.color = Color(0xffff6600).withOpacity(trapezius ? 1.0 : 0.0);
     canvas.drawPath(path_7,paint_7_fill);
 
     Path path_8 = Path();
@@ -646,7 +646,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_8_fill = Paint()..style=PaintingStyle.fill;
-    paint_8_fill.color = Color(0xffff00ff).withOpacity(chest ? 1.0 : 0.0);
+    paint_8_fill.color = Color(0xffff00ff).withOpacity(anteriorDelts ? 1.0 : 0.0);
     canvas.drawPath(path_8,paint_8_fill);
 
     Path path_9 = Path();
@@ -661,7 +661,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_9_fill = Paint()..style=PaintingStyle.fill;
-    paint_9_fill.color = Color(0xffff00ff).withOpacity(chest ? 1.0 : 0.0);
+    paint_9_fill.color = Color(0xffff00ff).withOpacity(anteriorDelts ? 1.0 : 0.0);
     canvas.drawPath(path_9,paint_9_fill);
 
     Path path_10 = Path();
@@ -677,7 +677,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_10_fill = Paint()..style=PaintingStyle.fill;
-    paint_10_fill.color = Color(0xff800080).withOpacity(chest ? 1.0 : 0.0);
+    paint_10_fill.color = Color(0xff800080).withOpacity(midDelts ? 1.0 : 0.0);
     canvas.drawPath(path_10,paint_10_fill);
 
     Path path_11 = Path();
@@ -692,7 +692,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_11_fill = Paint()..style=PaintingStyle.fill;
-    paint_11_fill.color = Color(0xff800080).withOpacity(chest ? 1.0 : 0.0);
+    paint_11_fill.color = Color(0xff800080).withOpacity(midDelts ? 1.0 : 0.0);
     canvas.drawPath(path_11,paint_11_fill);
 
     Path path_12 = Path();
@@ -709,7 +709,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_12_fill = Paint()..style=PaintingStyle.fill;
-    paint_12_fill.color = Color(0xffffff00).withOpacity(chest ? 1.0 : 0.0);
+    paint_12_fill.color = Color(0xffffff00).withOpacity(serratusAnterior ? 1.0 : 0.0);
     canvas.drawPath(path_12,paint_12_fill);
 
     Path path_13 = Path();
@@ -726,7 +726,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_13_fill = Paint()..style=PaintingStyle.fill;
-    paint_13_fill.color = Color(0xffffff00).withOpacity(chest ? 1.0 : 0.0);
+    paint_13_fill.color = Color(0xffffff00).withOpacity(serratusAnterior ? 1.0 : 0.0);
     canvas.drawPath(path_13,paint_13_fill);
 
     Path path_14 = Path();
@@ -744,7 +744,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_14_fill = Paint()..style=PaintingStyle.fill;
-    paint_14_fill.color = Color(0xff800000).withOpacity(chest ? 1.0 : 0.0);
+    paint_14_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_14,paint_14_fill);
 
     Path path_15 = Path();
@@ -760,7 +760,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_15_fill = Paint()..style=PaintingStyle.fill;
-    paint_15_fill.color = Color(0xff800000).withOpacity(chest ? 1.0 : 0.0);
+    paint_15_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_15,paint_15_fill);
 
     Path path_16 = Path();
@@ -775,7 +775,7 @@ class RPSCustomPainterColour extends CustomPainter {
     path_16.close();
 
     Paint paint_16_fill = Paint()..style=PaintingStyle.fill;
-    paint_16_fill.color = Color(0xff800000).withOpacity(chest ? 1.0 : 0.0);
+    paint_16_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_16,paint_16_fill);
 
     Path path_17 = Path();
@@ -792,7 +792,7 @@ class RPSCustomPainterColour extends CustomPainter {
     path_17.close();
 
     Paint paint_17_fill = Paint()..style=PaintingStyle.fill;
-    paint_17_fill.color = Color(0xff800000).withOpacity(chest ? 1.0 : 0.0);
+    paint_17_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_17,paint_17_fill);
 
     Path path_18 = Path();
@@ -810,7 +810,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_18_fill = Paint()..style=PaintingStyle.fill;
-    paint_18_fill.color = Color(0xff800000).withOpacity(chest ? 1.0 : 0.0);
+    paint_18_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_18,paint_18_fill);
 
     Path path_19 = Path();
@@ -827,7 +827,7 @@ class RPSCustomPainterColour extends CustomPainter {
     path_19.close();
 
     Paint paint_19_fill = Paint()..style=PaintingStyle.fill;
-    paint_19_fill.color = Color(0xff800000).withOpacity(chest ? 1.0 : 0.0);
+    paint_19_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_19,paint_19_fill);
 
     Path path_20 = Path();
@@ -846,7 +846,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_20_fill = Paint()..style=PaintingStyle.fill;
-    paint_20_fill.color = Color(0xff800000).withOpacity(chest ? 1.0 : 0.0);
+    paint_20_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_20,paint_20_fill);
 
     Path path_21 = Path();
@@ -864,7 +864,7 @@ class RPSCustomPainterColour extends CustomPainter {
     path_21.close();
 
     Paint paint_21_fill = Paint()..style=PaintingStyle.fill;
-    paint_21_fill.color = Color(0xff800000).withOpacity(chest ? 1.0 : 0.0);
+    paint_21_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_21,paint_21_fill);
 
     Path path_22 = Path();
@@ -881,7 +881,7 @@ class RPSCustomPainterColour extends CustomPainter {
     path_22.close();
 
     Paint paint_22_fill = Paint()..style=PaintingStyle.fill;
-    paint_22_fill.color = Color(0xff00ffff).withOpacity(chest ? 1.0 : 0.0);
+    paint_22_fill.color = Color(0xff00ffff).withOpacity(obliques ? 1.0 : 0.0);
     canvas.drawPath(path_22,paint_22_fill);
 
     Path path_23 = Path();
@@ -900,7 +900,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_23_fill = Paint()..style=PaintingStyle.fill;
-    paint_23_fill.color = Color(0xff00ffff).withOpacity(chest ? 1.0 : 0.0);
+    paint_23_fill.color = Color(0xff00ffff).withOpacity(obliques ? 1.0 : 0.0);
     canvas.drawPath(path_23,paint_23_fill);
 
     Path path_24 = Path();
@@ -924,7 +924,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_24_fill = Paint()..style=PaintingStyle.fill;
-    paint_24_fill.color = Color(0xff008080).withOpacity(chest ? 1.0 : 0.0);
+    paint_24_fill.color = Color(0xff008080).withOpacity(quadriceps ? 1.0 : 0.0);
     canvas.drawPath(path_24,paint_24_fill);
 
     Path path_25 = Path();
@@ -947,7 +947,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_25_fill = Paint()..style=PaintingStyle.fill;
-    paint_25_fill.color = Color(0xff008080).withOpacity(chest ? 1.0 : 0.0);
+    paint_25_fill.color = Color(0xff008080).withOpacity(quadriceps ? 1.0 : 0.0);
     canvas.drawPath(path_25,paint_25_fill);
 
     Path path_26 = Path();
@@ -977,7 +977,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_26_fill = Paint()..style=PaintingStyle.fill;
-    paint_26_fill.color = Color(0xff008000).withOpacity(chest ? 1.0 : 0.0);
+    paint_26_fill.color = Color(0xff008000).withOpacity(calves ? 1.0 : 0.0);
     canvas.drawPath(path_26,paint_26_fill);
 
     Path path_27 = Path();
@@ -1005,7 +1005,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_27_fill = Paint()..style=PaintingStyle.fill;
-    paint_27_fill.color = Color(0xff008000).withOpacity(chest ? 1.0 : 0.0);
+    paint_27_fill.color = Color(0xff008000).withOpacity(calves ? 1.0 : 0.0);
     canvas.drawPath(path_27,paint_27_fill);
 
   }
