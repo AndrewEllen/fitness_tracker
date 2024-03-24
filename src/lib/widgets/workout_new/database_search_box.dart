@@ -18,15 +18,15 @@ class DatabaseSearchBox extends StatefulWidget {
 class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
 
 
-  bool checkMuscle(String muscleToCheck) {
+  bool checkMuscle(List<String> musclesToCheck) {
 
-    if (widget.exerciseModel.primaryMuscle == muscleToCheck) {
+    if (musclesToCheck.contains(widget.exerciseModel.primaryMuscle)) {
       return true;
     }
-    if (widget.exerciseModel.secondaryMuscle == muscleToCheck) {
+    if (musclesToCheck.contains(widget.exerciseModel.secondaryMuscle)) {
       return true;
     }
-    if (widget.exerciseModel.tertiaryMuscle == muscleToCheck) {
+    if (musclesToCheck.contains(widget.exerciseModel.tertiaryMuscle)) {
       return true;
     }
     return false;
@@ -38,13 +38,14 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
 
 
   bool _expandPanel = false;
-  late YoutubePlayerController shortVideoController;
-  late YoutubePlayerController longVideoController;
+  YoutubePlayerController? shortVideoController;
+  YoutubePlayerController? longVideoController;
 
   @override
   void dispose() {
-    shortVideoController.dispose();
-    longVideoController.dispose();
+
+    shortVideoController?.dispose();
+    longVideoController?.dispose();
     super.dispose();
   }
 
@@ -201,17 +202,17 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
                             child: CustomPaint(
                               size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
                               painter: RPSCustomPainterColour(
-                                chest: checkMuscle("Pectoralis Major"),
-                                abdominals: checkMuscle("Rectus Abdominis"),
-                                calves: checkMuscle("Gastrocnemius"),
-                                quadriceps: checkMuscle("Quadriceps Femoris"),
-                                anteriorDelts: checkMuscle("Anterior Deltoids"),
-                                midDelts: checkMuscle("Medial Deltoids"),
-                                obliques: checkMuscle("Obliques"),
-                                forearms: checkMuscle("Brachioradialis"),
-                                biceps: checkMuscle("Biceps Brachii"),
-                                serratusAnterior: checkMuscle("Serratus Anterior"),
-                                trapezius: checkMuscle("Upper Trapezius"),
+                                chest: checkMuscle(["Pectoralis Major"]),
+                                abdominals: checkMuscle(["Rectus Abdominis"]),
+                                calves: checkMuscle(["Gastrocnemius"]),
+                                quadriceps: checkMuscle(["Quadriceps Femoris"]),
+                                anteriorDelts: checkMuscle(["Anterior Deltoids"]),
+                                midDelts: checkMuscle(["Medial Deltoids"]),
+                                obliques: checkMuscle(["Obliques"]),
+                                forearms: checkMuscle(["Brachioradialis"]),
+                                biceps: checkMuscle(["Biceps Brachii", "Biceps Femoris"]),
+                                serratusAnterior: checkMuscle(["Serratus Anterior"]),
+                                trapezius: checkMuscle(["Upper Trapezius"]),
                               ),
                             ),
                           ),
@@ -237,7 +238,7 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
 
                     widget.exerciseModel.shortVideo.isNotEmpty ? YoutubePlayerBuilder(
                       player: YoutubePlayer(
-                        controller: shortVideoController,
+                        controller: shortVideoController!,
                         showVideoProgressIndicator: true,
                         progressIndicatorColor: Colors.amber,
                         progressColors: const ProgressBarColors(
@@ -260,7 +261,7 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
 
                     widget.exerciseModel.longVideo.isNotEmpty ? YoutubePlayerBuilder(
                       player: YoutubePlayer(
-                        controller: longVideoController,
+                        controller: longVideoController!,
                         showVideoProgressIndicator: true,
                         progressIndicatorColor: Colors.amber,
                         progressColors: const ProgressBarColors(
