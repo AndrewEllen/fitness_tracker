@@ -173,7 +173,9 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
                             offset: Offset(-240, -150),
                             child: CustomPaint(
                               size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                              painter: RPSCustomPainterColour(),
+                              painter: RPSCustomPainterColour(
+                                chest: true,
+                              ),
                             ),
                           ),
                         ),
