@@ -20,13 +20,13 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
 
   bool checkMuscle(List<String> musclesToCheck) {
 
-    if (musclesToCheck.contains(widget.exerciseModel.primaryMuscle)) {
+    if (musclesToCheck.contains(widget.exerciseModel.primaryMuscle.trim())) {
       return true;
     }
-    if (musclesToCheck.contains(widget.exerciseModel.secondaryMuscle)) {
+    if (musclesToCheck.contains(widget.exerciseModel.secondaryMuscle.trim())) {
       return true;
     }
-    if (musclesToCheck.contains(widget.exerciseModel.tertiaryMuscle)) {
+    if (musclesToCheck.contains(widget.exerciseModel.tertiaryMuscle.trim())) {
       return true;
     }
     return false;
@@ -41,13 +41,6 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
   YoutubePlayerController? shortVideoController;
   YoutubePlayerController? longVideoController;
 
-  @override
-  void dispose() {
-
-    shortVideoController?.dispose();
-    longVideoController?.dispose();
-    super.dispose();
-  }
 
   @override
   void initState() {
