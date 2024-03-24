@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../constants.dart';
 import '../../models/workout/exercise_database_model.dart';
 import '../../widgets/general/app_dropdown_form.dart';
+import '../../widgets/workout_new/database_search_box.dart';
 
 class ExerciseDatabaseSearch extends StatefulWidget {
   ExerciseDatabaseSearch({Key? key}) : super(key: key);
@@ -344,9 +345,13 @@ class _ExerciseDatabaseSearchState extends State<ExerciseDatabaseSearch> {
             shrinkWrap: true,
             itemCount: exerciseDatabaseSearchList.length,
             itemBuilder: (BuildContext context, int index) {
-              return Text(
-                "${exerciseDatabaseSearchList[index].exercise}",
-                style: boldTextStyle,
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DatabaseSearchBox(
+                    exerciseModel: exerciseDatabaseSearchList[index],
+                  ),
+                ],
               );
       
             },
