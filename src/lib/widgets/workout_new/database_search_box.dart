@@ -184,7 +184,6 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
                     const SizedBox(height: 25,),
 
 
-
                     Stack(
                       children: [
 
