@@ -320,11 +320,7 @@ class _NewExercisePageState extends State<NewExercisePage> {
                       height: 100.h,
                     ),
 
-                    AppButton(onTap: () => context.read<PageChange>().changePageCache(ExerciseDatabaseSearch()), buttonText: "Search Exercises"),
 
-                    SizedBox(
-                      height: 100.h,
-                    ),
                   ],
                 ),
                 Align(
@@ -336,8 +332,20 @@ class _NewExercisePageState extends State<NewExercisePage> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        Expanded(
+                          flex: 6,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            padding: EdgeInsets.only(left: 12.w),
+                            child: AppButton(
+                              onTap: () => context.read<PageChange>().changePageCache(ExerciseDatabaseSearch()),
+                              buttonText: 'Find New Exercises',
+                            ),
+                          ),
+                        ),
                         const Spacer(),
                         Expanded(
+                          flex: 6,
                           child: Container(
                             alignment: Alignment.centerRight,
                             padding: EdgeInsets.only(right: 12.w),
