@@ -197,41 +197,97 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
                     const SizedBox(height: 25,),
 
 
-                    Container(
+                    Transform.scale(
+                      scale: 0.72.w,
                       child: Stack(
                         children: [
+                          Transform.translate(
+                            offset: Offset(-130,0),
+                            child: Stack(
+                              children: [
 
-                          Transform.scale(
-                            scale: 0.5,
-                            child: Transform.translate(
-                              offset: Offset(-240, -149),
-                              child: CustomPaint(
-                                size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                                painter: FrontAnatomyCustomPainterColour(
-                                  chest: checkMuscle(["Pectoralis Major"]),
-                                  abdominals: checkMuscle(["Rectus Abdominis"]),
-                                  calves: checkMuscle(["Gastrocnemius", "Soleus"]),
-                                  quadriceps: checkMuscle(["Quadriceps Femoris"]),
-                                  anteriorDelts: checkMuscle(["Anterior Deltoids"]),
-                                  midDelts: checkMuscle(["Medial Deltoids"]),
-                                  obliques: checkMuscle(["Obliques"]),
-                                  forearms: checkMuscle(["Brachioradialis"]),
-                                  biceps: checkMuscle(["Biceps Brachii"]),
-                                  serratusAnterior: checkMuscle(["Serratus Anterior"]),
-                                  trapezius: checkMuscle(["Upper Trapezius"]),
+
+                                Transform.scale(
+                                  scale: 0.5,
+                                  child: Transform.translate(
+                                    offset: Offset(-240, -149),
+                                    child: CustomPaint(
+                                      size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                                      painter: FrontAnatomyCustomPainterColour(
+                                        chest: checkMuscle(["Pectoralis Major"]),
+                                        abdominals: checkMuscle(["Rectus Abdominis"]),
+                                        calves: checkMuscle(["Gastrocnemius", "Soleus"]),
+                                        quadriceps: checkMuscle(["Quadriceps Femoris"]),
+                                        anteriorDelts: checkMuscle(["Anterior Deltoids"]),
+                                        midDelts: checkMuscle(["Medial Deltoids"]),
+                                        obliques: checkMuscle(["Obliques"]),
+                                        forearms: checkMuscle(["Brachioradialis"]),
+                                        biceps: checkMuscle(["Biceps Brachii"]),
+                                        serratusAnterior: checkMuscle(["Serratus Anterior"]),
+                                        trapezius: checkMuscle(["Upper Trapezius"]),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+
+                                Transform.scale(
+                                  scale: 1.88,
+                                  child: Transform.translate(
+                                    offset: Offset(47, 45),
+                                    child: CustomPaint(
+                                      size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                                      painter: FrontAnatomyCustomPainter(),
+                                    ),
+                                  ),
+                                ),
+
+
+                              ],
                             ),
                           ),
 
-                          Transform.scale(
-                            scale: 1.88,
-                            child: Transform.translate(
-                              offset: Offset(47, 45),
-                              child: CustomPaint(
-                                size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                                painter: FrontAnatomyCustomPainter(),
-                              ),
+
+                          Transform.translate(
+                            offset: Offset(130,0),
+                            child: Stack(
+                              children: [
+
+                                Transform.scale(
+                                  scale: 1.88,
+                                  child: Transform.translate(
+                                    offset: Offset(47, 45),
+                                    child: CustomPaint(
+                                      size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                                      painter: BackAnatomyCustomPainter(),
+                                    ),
+                                  ),
+                                ),
+
+                                Transform.scale(
+                                  scale: 0.5,
+                                  child: Transform.translate(
+                                    offset: Offset(-240, -148),
+                                    child: CustomPaint(
+                                      size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                                      painter: BackAnatomyCustomPainterColour(
+                                        upperTrapezius: checkMuscle(["Upper Trapezius"]),
+                                        lowerTrapezius: checkMuscle(["Lower Trapezius"]),
+                                        calves: checkMuscle(["Gastrocnemius", "Soleus"]),
+                                        posteriorDeltoid: checkMuscle(["Posterior Deltoids"]),
+                                        medialDeltoid: checkMuscle(["Medial Deltoids"]),
+                                        hamstrings: checkMuscle(["Biceps Femoris"]),
+                                        forearms: checkMuscle(["Brachioradialis"]),
+                                        triceps: checkMuscle(["Triceps Brachii"]),
+                                        erectorSpinea: checkMuscle(["Erector Spinae"]),
+                                        glutes: checkMuscle(["Gluteus Maximus"]),
+                                        latissimusDorsi: checkMuscle(["Latissimus Dorsi"]),
+                                        infraspinatus: checkMuscle(["Infraspinatus", "Teres Major", "Teres Minor", "Subscapularis"]),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                              ],
                             ),
                           ),
 
@@ -239,55 +295,6 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
                         ],
                       ),
                     ),
-
-                    const SizedBox(height: 400,),
-
-                    Container(
-                      child: Stack(
-                        children: [
-
-
-
-                          Transform.scale(
-                            scale: 1.88,
-                            child: Transform.translate(
-                              offset: Offset(47, 45),
-                              child: CustomPaint(
-                                size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                                painter: BackAnatomyCustomPainter(),
-                              ),
-                            ),
-                          ),
-
-                          Transform.scale(
-                            scale: 0.5,
-                            child: Transform.translate(
-                              offset: Offset(-240, -148),
-                              child: CustomPaint(
-                                size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                                painter: BackAnatomyCustomPainterColour(
-                                  upperTrapezius: checkMuscle(["Upper Trapezius"]),
-                                  lowerTrapezius: checkMuscle(["Lower Trapezius"]),
-                                  calves: checkMuscle(["Gastrocnemius", "Soleus"]),
-                                  posteriorDeltoid: checkMuscle(["Posterior Deltoids"]),
-                                  medialDeltoid: checkMuscle(["Medial Deltoids"]),
-                                  hamstrings: checkMuscle(["Biceps Femoris"]),
-                                  forearms: checkMuscle(["Brachioradialis"]),
-                                  triceps: checkMuscle(["Triceps Brachii"]),
-                                  erectorSpinea: checkMuscle(["Erector Spinae"]),
-                                  glutes: checkMuscle(["Gluteus Maximus"]),
-                                  latissimusDorsi: checkMuscle(["Latissimus Dorsi"]),
-                                  infraspinatus: checkMuscle(["Infraspinatus", "Teres Major", "Teres Minor", "Subscapularis"]),
-                                ),
-                              ),
-                            ),
-                          ),
-
-                        ],
-                      ),
-                    ),
-
-
 
                     const SizedBox(height: 400,),
 
