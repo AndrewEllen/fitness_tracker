@@ -18,18 +18,30 @@ class DatabaseSearchBox extends StatefulWidget {
 class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
 
 
-  bool checkMuscle(List<String> musclesToCheck) {
+  Map checkMuscle(List<String> musclesToCheck) {
 
     if (musclesToCheck.contains(widget.exerciseModel.primaryMuscle.trim())) {
-      return true;
+      return {
+        "display": true,
+        "colour": 0xffff0000
+      };
     }
     if (musclesToCheck.contains(widget.exerciseModel.secondaryMuscle.trim())) {
-      return true;
+      return {
+        "display": true,
+        "colour": 0xffff5900
+      };
     }
     if (musclesToCheck.contains(widget.exerciseModel.tertiaryMuscle.trim())) {
-      return true;
+      return {
+        "display": true,
+        "colour": 0xffffca5e
+      };
     }
-    return false;
+    return {
+      "display": false,
+      "colour": 0xffff0000
+    };
   }
 
 
@@ -198,13 +210,13 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
                                 painter: FrontAnatomyCustomPainterColour(
                                   chest: checkMuscle(["Pectoralis Major"]),
                                   abdominals: checkMuscle(["Rectus Abdominis"]),
-                                  calves: checkMuscle(["Gastrocnemius"]),
+                                  calves: checkMuscle(["Gastrocnemius", "Soleus"]),
                                   quadriceps: checkMuscle(["Quadriceps Femoris"]),
                                   anteriorDelts: checkMuscle(["Anterior Deltoids"]),
                                   midDelts: checkMuscle(["Medial Deltoids"]),
                                   obliques: checkMuscle(["Obliques"]),
                                   forearms: checkMuscle(["Brachioradialis"]),
-                                  biceps: checkMuscle(["Biceps Brachii", "Biceps Femoris"]),
+                                  biceps: checkMuscle(["Biceps Brachii"]),
                                   serratusAnterior: checkMuscle(["Serratus Anterior"]),
                                   trapezius: checkMuscle(["Upper Trapezius"]),
                                 ),
@@ -254,17 +266,18 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
                               child: CustomPaint(
                                 size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
                                 painter: BackAnatomyCustomPainterColour(
-                                  //upperTrapezius: checkMuscle(["Upper Trapezius"]),
-                                  //lowerTrapezius: checkMuscle(["Rectus Abdominis"]),
-                                  //calves: checkMuscle(["Gastrocnemius"]),
-                                  //posteriorDeltoid: checkMuscle(["Anterior Deltoids"]),
-                                  //medialDeltoid: checkMuscle(["Medial Deltoids"]),
-                                  //hamstrings: checkMuscle(["Obliques"]),
-                                  //forearms: checkMuscle(["Brachioradialis"]),
-                                  //triceps: checkMuscle(["Biceps Brachii", "Biceps Femoris"]),
-                                  //erectorSpinea: checkMuscle(["Serratus Anterior"]),
-                                  //glutes: checkMuscle(["Upper Trapezius"]),
-                                  //latisimusDorsi: checkMuscle(["Upper Trapezius"]),
+                                  upperTrapezius: checkMuscle(["Upper Trapezius"]),
+                                  lowerTrapezius: checkMuscle(["Lower Trapezius"]),
+                                  calves: checkMuscle(["Gastrocnemius", "Soleus"]),
+                                  posteriorDeltoid: checkMuscle(["Posterior Deltoids"]),
+                                  medialDeltoid: checkMuscle(["Medial Deltoids"]),
+                                  hamstrings: checkMuscle(["Biceps Femoris"]),
+                                  forearms: checkMuscle(["Brachioradialis"]),
+                                  triceps: checkMuscle(["Triceps Brachii"]),
+                                  erectorSpinea: checkMuscle(["Erector Spinae"]),
+                                  glutes: checkMuscle(["Gluteus Maximus"]),
+                                  latissimusDorsi: checkMuscle(["Latissimus Dorsi"]),
+                                  infraspinatus: checkMuscle(["Infraspinatus", "Teres Major", "Teres Minor", "Subscapularis"]),
                                 ),
                               ),
                             ),

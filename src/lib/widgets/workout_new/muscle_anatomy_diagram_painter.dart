@@ -463,30 +463,63 @@ class FrontAnatomyCustomPainter extends CustomPainter {
 class FrontAnatomyCustomPainterColour extends CustomPainter {
   FrontAnatomyCustomPainterColour({
     Key? key,
-    this.chest = false,
-    this.anteriorDelts = false,
-    this.midDelts = false,
-    this.biceps = false,
-    this.forearms = false,
-    this.abdominals = false,
-    this.serratusAnterior = false,
-    this.obliques = false,
-    this.quadriceps = false,
-    this.calves = false,
-    this.trapezius = false,
+    this.chest = const {
+      "display": false,
+      "colour": 0xffff0000
+    },
+    this.anteriorDelts = const {
+  "display": false,
+  "colour": 0xffff0000
+  },
+    this.midDelts = const {
+  "display": false,
+  "colour": 0xffff0000
+  },
+    this.biceps = const {
+  "display": false,
+  "colour": 0xffff0000
+  },
+    this.forearms = const {
+  "display": false,
+  "colour": 0xffff0000
+  },
+    this.abdominals = const {
+  "display": false,
+  "colour": 0xffff0000
+  },
+    this.serratusAnterior = const {
+  "display": false,
+  "colour": 0xffff0000
+  },
+    this.obliques = const {
+  "display": false,
+  "colour": 0xffff0000
+  },
+    this.quadriceps = const {
+  "display": false,
+  "colour": 0xffff0000
+  },
+    this.calves = const {
+  "display": false,
+  "colour": 0xffff0000
+  },
+    this.trapezius = const {
+  "display": false,
+  "colour": 0xffff0000
+  },
   });
 
-  final bool chest;
-  final bool anteriorDelts;
-  final bool midDelts;
-  final bool biceps;
-  final bool forearms;
-  final bool abdominals;
-  final bool serratusAnterior;
-  final bool obliques;
-  final bool quadriceps;
-  final bool calves;
-  final bool trapezius;
+  final Map chest;
+  final Map anteriorDelts;
+  final Map midDelts;
+  final Map biceps;
+  final Map forearms;
+  final Map abdominals;
+  final Map serratusAnterior;
+  final Map obliques;
+  final Map quadriceps;
+  final Map calves;
+  final Map trapezius;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -506,7 +539,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
     path_0.close();
 
     Paint paint_0_fill = Paint()..style=PaintingStyle.fill;
-    paint_0_fill.color = Color(0xffff0000).withOpacity(biceps ? 1.0 : 0.0);
+    paint_0_fill.color = Color(biceps["colour"]).withOpacity(biceps["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_0,paint_0_fill);
 
     Path path_1 = Path();
@@ -523,7 +556,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
     path_1.close();
 
     Paint paint_1_fill = Paint()..style=PaintingStyle.fill;
-    paint_1_fill.color = Color(0xffff0000).withOpacity(biceps ? 1.0 : 0.0);
+    paint_1_fill.color = Color(biceps["colour"]).withOpacity(biceps["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_1,paint_1_fill);
 
     Path path_2 = Path();
@@ -543,7 +576,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
     path_2.close();
 
     Paint paint_2_fill = Paint()..style=PaintingStyle.fill;
-    paint_2_fill.color = Color(0xffff0000).withOpacity(forearms ? 1.0 : 0.0);
+    paint_2_fill.color = Color(forearms["colour"]).withOpacity(forearms["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_2,paint_2_fill);
 
     Path path_3 = Path();
@@ -563,7 +596,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
     path_3.close();
 
     Paint paint_3_fill = Paint()..style=PaintingStyle.fill;
-    paint_3_fill.color = Color(0xffff0000).withOpacity(forearms ? 1.0 : 0.0);
+    paint_3_fill.color = Color(forearms["colour"]).withOpacity(forearms["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_3,paint_3_fill);
 
     Path path_4 = Path();
@@ -580,7 +613,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
     path_4.close();
 
     Paint paint_4_fill = Paint()..style=PaintingStyle.fill;
-    paint_4_fill.color = Color(0xffff0000).withOpacity(chest ? 1.0 : 0);
+    paint_4_fill.color = Color(chest["colour"]).withOpacity(chest["display"] ? 1.0 : 0);
     canvas.drawPath(path_4,paint_4_fill);
 
     Path path_5 = Path();
@@ -598,7 +631,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
     path_5.close();
 
     Paint paint_5_fill = Paint()..style=PaintingStyle.fill;
-    paint_5_fill.color = Color(0xffff0000).withOpacity(chest ? 1.0 : 0);
+    paint_5_fill.color = Color(chest["colour"]).withOpacity(chest["display"] ? 1.0 : 0);
     canvas.drawPath(path_5,paint_5_fill);
 
     Path path_6 = Path();
@@ -615,7 +648,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_6_fill = Paint()..style=PaintingStyle.fill;
-    paint_6_fill.color = Color(0xffff0000).withOpacity(trapezius ? 1.0 : 0.0);
+    paint_6_fill.color = Color(trapezius["colour"]).withOpacity(trapezius["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_6,paint_6_fill);
 
     Path path_7 = Path();
@@ -630,7 +663,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_7_fill = Paint()..style=PaintingStyle.fill;
-    paint_7_fill.color = Color(0xffff0000).withOpacity(trapezius ? 1.0 : 0.0);
+    paint_7_fill.color = Color(trapezius["colour"]).withOpacity(trapezius["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_7,paint_7_fill);
 
     Path path_8 = Path();
@@ -646,7 +679,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_8_fill = Paint()..style=PaintingStyle.fill;
-    paint_8_fill.color = Color(0xffff0000).withOpacity(anteriorDelts ? 1.0 : 0.0);
+    paint_8_fill.color = Color(anteriorDelts["colour"]).withOpacity(anteriorDelts["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_8,paint_8_fill);
 
     Path path_9 = Path();
@@ -661,7 +694,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_9_fill = Paint()..style=PaintingStyle.fill;
-    paint_9_fill.color = Color(0xffff0000).withOpacity(anteriorDelts ? 1.0 : 0.0);
+    paint_9_fill.color = Color(anteriorDelts["colour"]).withOpacity(anteriorDelts["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_9,paint_9_fill);
 
     Path path_10 = Path();
@@ -677,7 +710,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_10_fill = Paint()..style=PaintingStyle.fill;
-    paint_10_fill.color = Color(0xffff0000).withOpacity(midDelts ? 1.0 : 0.0);
+    paint_10_fill.color = Color(midDelts["colour"]).withOpacity(midDelts["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_10,paint_10_fill);
 
     Path path_11 = Path();
@@ -692,7 +725,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_11_fill = Paint()..style=PaintingStyle.fill;
-    paint_11_fill.color = Color(0xffff0000).withOpacity(midDelts ? 1.0 : 0.0);
+    paint_11_fill.color = Color(midDelts["colour"]).withOpacity(midDelts["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_11,paint_11_fill);
 
     Path path_12 = Path();
@@ -707,9 +740,8 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
     path_12.cubicTo(316.556,388.62332000000004,316.17272999999994,388.4184000000001,316.05136999999996,388.04809000000006);
     path_12.close();
 
-
     Paint paint_12_fill = Paint()..style=PaintingStyle.fill;
-    paint_12_fill.color = Color(0xffff0000).withOpacity(serratusAnterior ? 1.0 : 0.0);
+    paint_12_fill.color = Color(serratusAnterior["colour"]).withOpacity(serratusAnterior["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_12,paint_12_fill);
 
     Path path_13 = Path();
@@ -726,7 +758,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_13_fill = Paint()..style=PaintingStyle.fill;
-    paint_13_fill.color = Color(0xffff0000).withOpacity(serratusAnterior ? 1.0 : 0.0);
+    paint_13_fill.color = Color(serratusAnterior["colour"]).withOpacity(serratusAnterior["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_13,paint_13_fill);
 
     Path path_14 = Path();
@@ -744,7 +776,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_14_fill = Paint()..style=PaintingStyle.fill;
-    paint_14_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_14_fill.color = Color(abdominals["colour"]).withOpacity(abdominals["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_14,paint_14_fill);
 
     Path path_15 = Path();
@@ -760,7 +792,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_15_fill = Paint()..style=PaintingStyle.fill;
-    paint_15_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_15_fill.color = Color(abdominals["colour"]).withOpacity(abdominals["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_15,paint_15_fill);
 
     Path path_16 = Path();
@@ -775,7 +807,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
     path_16.close();
 
     Paint paint_16_fill = Paint()..style=PaintingStyle.fill;
-    paint_16_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_16_fill.color = Color(abdominals["colour"]).withOpacity(abdominals["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_16,paint_16_fill);
 
     Path path_17 = Path();
@@ -792,7 +824,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
     path_17.close();
 
     Paint paint_17_fill = Paint()..style=PaintingStyle.fill;
-    paint_17_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_17_fill.color = Color(abdominals["colour"]).withOpacity(abdominals["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_17,paint_17_fill);
 
     Path path_18 = Path();
@@ -810,7 +842,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_18_fill = Paint()..style=PaintingStyle.fill;
-    paint_18_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_18_fill.color = Color(abdominals["colour"]).withOpacity(abdominals["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_18,paint_18_fill);
 
     Path path_19 = Path();
@@ -827,7 +859,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
     path_19.close();
 
     Paint paint_19_fill = Paint()..style=PaintingStyle.fill;
-    paint_19_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_19_fill.color = Color(abdominals["colour"]).withOpacity(abdominals["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_19,paint_19_fill);
 
     Path path_20 = Path();
@@ -846,7 +878,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_20_fill = Paint()..style=PaintingStyle.fill;
-    paint_20_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_20_fill.color = Color(abdominals["colour"]).withOpacity(abdominals["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_20,paint_20_fill);
 
     Path path_21 = Path();
@@ -864,7 +896,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
     path_21.close();
 
     Paint paint_21_fill = Paint()..style=PaintingStyle.fill;
-    paint_21_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_21_fill.color = Color(abdominals["colour"]).withOpacity(abdominals["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_21,paint_21_fill);
 
     Path path_22 = Path();
@@ -881,7 +913,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
     path_22.close();
 
     Paint paint_22_fill = Paint()..style=PaintingStyle.fill;
-    paint_22_fill.color = Color(0xffff0000).withOpacity(obliques ? 1.0 : 0.0);
+    paint_22_fill.color = Color(obliques["colour"]).withOpacity(obliques["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_22,paint_22_fill);
 
     Path path_23 = Path();
@@ -900,7 +932,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_23_fill = Paint()..style=PaintingStyle.fill;
-    paint_23_fill.color = Color(0xffff0000).withOpacity(obliques ? 1.0 : 0.0);
+    paint_23_fill.color = Color(obliques["colour"]).withOpacity(obliques["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_23,paint_23_fill);
 
     Path path_24 = Path();
@@ -924,7 +956,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_24_fill = Paint()..style=PaintingStyle.fill;
-    paint_24_fill.color = Color(0xffff0000).withOpacity(quadriceps ? 1.0 : 0.0);
+    paint_24_fill.color = Color(quadriceps["colour"]).withOpacity(quadriceps["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_24,paint_24_fill);
 
     Path path_25 = Path();
@@ -947,7 +979,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_25_fill = Paint()..style=PaintingStyle.fill;
-    paint_25_fill.color = Color(0xffff0000).withOpacity(quadriceps ? 1.0 : 0.0);
+    paint_25_fill.color = Color(quadriceps["colour"]).withOpacity(quadriceps["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_25,paint_25_fill);
 
     Path path_26 = Path();
@@ -977,7 +1009,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_26_fill = Paint()..style=PaintingStyle.fill;
-    paint_26_fill.color = Color(0xffff0000).withOpacity(calves ? 1.0 : 0.0);
+    paint_26_fill.color = Color(calves["colour"]).withOpacity(calves["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_26,paint_26_fill);
 
     Path path_27 = Path();
@@ -1005,7 +1037,7 @@ class FrontAnatomyCustomPainterColour extends CustomPainter {
 
 
     Paint paint_27_fill = Paint()..style=PaintingStyle.fill;
-    paint_27_fill.color = Color(0xffff0000).withOpacity(calves ? 1.0 : 0.0);
+    paint_27_fill.color = Color(calves["colour"]).withOpacity(calves["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_27,paint_27_fill);
 
   }
@@ -1516,35 +1548,69 @@ class BackAnatomyCustomPainter extends CustomPainter {
 class BackAnatomyCustomPainterColour extends CustomPainter {
   BackAnatomyCustomPainterColour({
     Key? key,
-    this.upperTrapezius = false,
-    this.lowerTrapezius = false,
-    this.posteriorDeltoid = false,
-    this.medialDeltoid = false,
-    this.infraspinatus = false,
-    this.triceps = false,
-    this.forearms = false,
-    this.erectorSpinea = false,
-    this.glutes = false,
-    this.hamstrings = false,
-    this.calves = false,
-    this.latisimusDorsi = false,
-    this.biceps = true,
+    this.upperTrapezius = const {
+  "display": false,
+  "colour": 0xffff0000
+  },
+    this.lowerTrapezius = const {
+      "display": false,
+      "colour": 0xffff0000
+    },
+    this.posteriorDeltoid = const {
+      "display": false,
+      "colour": 0xffff0000
+    },
+    this.medialDeltoid = const {
+      "display": false,
+      "colour": 0xffff0000
+    },
+    this.infraspinatus = const {
+      "display": false,
+      "colour": 0xffff0000
+    },
+    this.triceps = const {
+      "display": false,
+      "colour": 0xffff0000
+    },
+    this.forearms = const {
+      "display": false,
+      "colour": 0xffff0000
+    },
+    this.erectorSpinea = const {
+      "display": false,
+      "colour": 0xffff0000
+    },
+    this.glutes = const {
+      "display": false,
+      "colour": 0xffff0000
+    },
+    this.hamstrings = const {
+      "display": false,
+      "colour": 0xffff0000
+    },
+    this.calves = const {
+      "display": false,
+      "colour": 0xffff0000
+    },
+    this.latissimusDorsi = const {
+      "display": false,
+      "colour": 0xffff0000
+    },
 
   });
 
-  final bool upperTrapezius;
-  final bool lowerTrapezius;
-  final bool posteriorDeltoid;
-  final bool medialDeltoid;
-  final bool infraspinatus;
-  final bool triceps;
-  final bool forearms;
-  final bool erectorSpinea;
-  final bool glutes;
-  final bool hamstrings;
-  final bool calves;
-  final bool latisimusDorsi;
-  final bool biceps;
+  final Map upperTrapezius;
+  final Map lowerTrapezius;
+  final Map posteriorDeltoid;
+  final Map medialDeltoid;
+  final Map infraspinatus;
+  final Map triceps;
+  final Map forearms;
+  final Map erectorSpinea;
+  final Map glutes;
+  final Map hamstrings;
+  final Map calves;
+  final Map latissimusDorsi;
 
 
 
@@ -1564,7 +1630,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_0.close();
 
     Paint paint_0_fill = Paint()..style=PaintingStyle.fill;
-    paint_0_fill.color = Color(0xffff0000).withOpacity(upperTrapezius ? 1.0 : 0.0);
+    paint_0_fill.color = Color(upperTrapezius["colour"]).withOpacity(upperTrapezius["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_0,paint_0_fill);
 
     Path path_1 = Path();
@@ -1582,7 +1648,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_1.close();
 
     Paint paint_1_fill = Paint()..style=PaintingStyle.fill;
-    paint_1_fill.color = Color(0xffff0000).withOpacity(upperTrapezius ? 1.0 : 0.0);
+    paint_1_fill.color = Color(upperTrapezius["colour"]).withOpacity(upperTrapezius["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_1,paint_1_fill);
 
     Path path_2 = Path();
@@ -1599,7 +1665,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_2.close();
 
     Paint paint_2_fill = Paint()..style=PaintingStyle.fill;
-    paint_2_fill.color = Color(0xffff0000).withOpacity(lowerTrapezius ? 1.0 : 0.0);
+    paint_2_fill.color = Color(lowerTrapezius["colour"]).withOpacity(lowerTrapezius["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_2,paint_2_fill);
 
     Path path_3 = Path();
@@ -1615,7 +1681,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_3.close();
 
     Paint paint_3_fill = Paint()..style=PaintingStyle.fill;
-    paint_3_fill.color = Color(0xffff0000).withOpacity(lowerTrapezius ? 1.0 : 0.0);
+    paint_3_fill.color = Color(lowerTrapezius["colour"]).withOpacity(lowerTrapezius["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_3,paint_3_fill);
 
     Path path_4 = Path();
@@ -1630,7 +1696,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_4.close();
 
     Paint paint_4_fill = Paint()..style=PaintingStyle.fill;
-    paint_4_fill.color = Color(0xffff0000).withOpacity(infraspinatus ? 1.0 : 0.0);
+    paint_4_fill.color = Color(infraspinatus["colour"]).withOpacity(infraspinatus["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_4,paint_4_fill);
 
     Path path_5 = Path();
@@ -1643,7 +1709,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_5.close();
 
     Paint paint_5_fill = Paint()..style=PaintingStyle.fill;
-    paint_5_fill.color = Color(0xffff0000).withOpacity(posteriorDeltoid ? 1.0 : 0.0);
+    paint_5_fill.color = Color(posteriorDeltoid["colour"]).withOpacity(posteriorDeltoid["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_5,paint_5_fill);
 
     Path path_6 = Path();
@@ -1656,7 +1722,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_6.close();
 
     Paint paint_6_fill = Paint()..style=PaintingStyle.fill;
-    paint_6_fill.color = Color(0xffff0000).withOpacity(medialDeltoid ? 1.0 : 0.0);
+    paint_6_fill.color = Color(medialDeltoid["colour"]).withOpacity(medialDeltoid["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_6,paint_6_fill);
 
     Path path_7 = Path();
@@ -1671,7 +1737,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_7.close();
 
     Paint paint_7_fill = Paint()..style=PaintingStyle.fill;
-    paint_7_fill.color = Color(0xffff0000).withOpacity(triceps ? 1.0 : 0.0);
+    paint_7_fill.color = Color(triceps["colour"]).withOpacity(triceps["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_7,paint_7_fill);
 
     Path path_8 = Path();
@@ -1690,7 +1756,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_8.close();
 
     Paint paint_8_fill = Paint()..style=PaintingStyle.fill;
-    paint_8_fill.color = Color(0xffff0000).withOpacity(forearms ? 1.0 : 0.0);
+    paint_8_fill.color = Color(forearms["colour"]).withOpacity(forearms["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_8,paint_8_fill);
 
     Path path_9 = Path();
@@ -1712,7 +1778,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_9.close();
 
     Paint paint_9_fill = Paint()..style=PaintingStyle.fill;
-    paint_9_fill.color = Color(0xffff0000).withOpacity(latisimusDorsi ? 1.0 : 0.0);
+    paint_9_fill.color = Color(latissimusDorsi["colour"]).withOpacity(latissimusDorsi["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_9,paint_9_fill);
 
     Path path_10 = Path();
@@ -1737,7 +1803,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_10.close();
 
     Paint paint_10_fill = Paint()..style=PaintingStyle.fill;
-    paint_10_fill.color = Color(0xffff0000).withOpacity(latisimusDorsi ? 1.0 : 0.0);
+    paint_10_fill.color = Color(latissimusDorsi["colour"]).withOpacity(latissimusDorsi["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_10,paint_10_fill);
 
     Path path_11 = Path();
@@ -1752,7 +1818,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_11.close();
 
     Paint paint_11_fill = Paint()..style=PaintingStyle.fill;
-    paint_11_fill.color = Color(0xffff0000).withOpacity(erectorSpinea ? 1.0 : 0.0);
+    paint_11_fill.color = Color(erectorSpinea["colour"]).withOpacity(erectorSpinea["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_11,paint_11_fill);
 
     Path path_12 = Path();
@@ -1767,7 +1833,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_12.close();
 
     Paint paint_12_fill = Paint()..style=PaintingStyle.fill;
-    paint_12_fill.color = Color(0xffff0000).withOpacity(erectorSpinea ? 1.0 : 0.0);
+    paint_12_fill.color = Color(erectorSpinea["colour"]).withOpacity(erectorSpinea["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_12,paint_12_fill);
 
     Path path_13 = Path();
@@ -1787,7 +1853,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_13.close();
 
     Paint paint_13_fill = Paint()..style=PaintingStyle.fill;
-    paint_13_fill.color = Color(0xffff0000).withOpacity(glutes ? 1.0 : 0.0);
+    paint_13_fill.color = Color(glutes["colour"]).withOpacity(glutes["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_13,paint_13_fill);
 
     Path path_14 = Path();
@@ -1807,7 +1873,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_14.close();
 
     Paint paint_14_fill = Paint()..style=PaintingStyle.fill;
-    paint_14_fill.color = Color(0xffff0000).withOpacity(glutes ? 1.0 : 0.0);
+    paint_14_fill.color = Color(glutes["colour"]).withOpacity(glutes["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_14,paint_14_fill);
 
     Path path_15 = Path();
@@ -1828,7 +1894,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_15.close();
 
     Paint paint_15_fill = Paint()..style=PaintingStyle.fill;
-    paint_15_fill.color = Color(0xffff0000).withOpacity(hamstrings ? 1.0 : 0.0);
+    paint_15_fill.color = Color(hamstrings["colour"]).withOpacity(hamstrings["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_15,paint_15_fill);
 
     Path path_16 = Path();
@@ -1848,7 +1914,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_16.close();
 
     Paint paint_16_fill = Paint()..style=PaintingStyle.fill;
-    paint_16_fill.color = Color(0xffff0000).withOpacity(calves ? 1.0 : 0.0);
+    paint_16_fill.color = Color(calves["colour"]).withOpacity(calves["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_16,paint_16_fill);
 
     Path path_17 = Path();
@@ -1870,7 +1936,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_17.close();
 
     Paint paint_17_fill = Paint()..style=PaintingStyle.fill;
-    paint_17_fill.color = Color(0xffff0000).withOpacity(calves ? 1.0 : 0.0);
+    paint_17_fill.color = Color(calves["colour"]).withOpacity(calves["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_17,paint_17_fill);
 
     Path path_18 = Path();
@@ -1888,7 +1954,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_18.close();
 
     Paint paint_18_fill = Paint()..style=PaintingStyle.fill;
-    paint_18_fill.color = Color(0xffff0000).withOpacity(hamstrings ? 1.0 : 0.0);
+    paint_18_fill.color = Color(hamstrings["colour"]).withOpacity(hamstrings["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_18,paint_18_fill);
 
     Path path_19 = Path();
@@ -1906,7 +1972,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_19.close();
 
     Paint paint_19_fill = Paint()..style=PaintingStyle.fill;
-    paint_19_fill.color = Color(0xffff0000).withOpacity(forearms ? 1.0 : 0.0);
+    paint_19_fill.color = Color(forearms["colour"]).withOpacity(forearms["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_19,paint_19_fill);
 
     Path path_20 = Path();
@@ -1921,7 +1987,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_20.close();
 
     Paint paint_20_fill = Paint()..style=PaintingStyle.fill;
-    paint_20_fill.color = Color(0xffff0000).withOpacity(triceps ? 1.0 : 0.0);
+    paint_20_fill.color = Color(triceps["colour"]).withOpacity(triceps["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_20,paint_20_fill);
 
     Path path_21 = Path();
@@ -1938,7 +2004,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_21.close();
 
     Paint paint_21_fill = Paint()..style=PaintingStyle.fill;
-    paint_21_fill.color = Color(0xffff0000).withOpacity(infraspinatus ? 1.0 : 0.0);
+    paint_21_fill.color = Color(infraspinatus["colour"]).withOpacity(infraspinatus["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_21,paint_21_fill);
 
     Path path_22 = Path();
@@ -1950,7 +2016,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_22.close();
 
     Paint paint_22_fill = Paint()..style=PaintingStyle.fill;
-    paint_22_fill.color = Color(0xffff0000).withOpacity(posteriorDeltoid ? 1.0 : 0.0);
+    paint_22_fill.color = Color(posteriorDeltoid["colour"]).withOpacity(posteriorDeltoid["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_22,paint_22_fill);
 
     Path path_23 = Path();
@@ -1963,7 +2029,7 @@ class BackAnatomyCustomPainterColour extends CustomPainter {
     path_23.close();
 
     Paint paint_23_fill = Paint()..style=PaintingStyle.fill;
-    paint_23_fill.color = Color(0xffff0000).withOpacity(medialDeltoid ? 1.0 : 0.0);
+    paint_23_fill.color = Color(medialDeltoid["colour"]).withOpacity(medialDeltoid["display"] ? 1.0 : 0.0);
     canvas.drawPath(path_23,paint_23_fill);
 
   }
