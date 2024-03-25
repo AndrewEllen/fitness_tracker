@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/models/workout/exercise_database_model.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -224,11 +225,60 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
 
-                      Center(
-                        child: widget.exerciseModel.mechanics.isNotEmpty ? Text(
-                          widget.exerciseModel.mechanics + " Exercise",
-                          style: boldTextStyle.copyWith(fontSize: 22),
-                        ) : const SizedBox.shrink(),
+                      GestureDetector(
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: widget.exerciseModel.exercise));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text("Copied Exercise Name To Clipboard!"),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              margin: EdgeInsets.only(
+                                bottom: MediaQuery.of(context).size.height * 0.6695,
+                                right: 20,
+                                left: 20,
+                              ),
+                              dismissDirection: DismissDirection.none,
+                              duration: const Duration(milliseconds: 700),
+                            ),
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: widget.exerciseModel.mechanics.isNotEmpty ? Text(
+                                widget.exerciseModel.mechanics + " Exercise",
+                                style: boldTextStyle.copyWith(fontSize: 22),
+                              ) : const SizedBox.shrink(),
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  Clipboard.setData(ClipboardData(text: widget.exerciseModel.exercise));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text("Copied Exercise Name To Clipboard!"),
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      margin: EdgeInsets.only(
+                                        bottom: MediaQuery.of(context).size.height * 0.6695,
+                                        right: 20,
+                                        left: 20,
+                                      ),
+                                      dismissDirection: DismissDirection.none,
+                                      duration: const Duration(milliseconds: 700),
+                                    ),
+                                  );
+                                },
+                                icon: Icon(Icons.copy, color: Colors.white,
+                                )
+                            ),
+                          ],
+                        ),
                       ),
 
                       const SizedBox(height: 25,),

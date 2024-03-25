@@ -357,6 +357,8 @@ class _ExerciseDatabaseSearchState extends State<ExerciseDatabaseSearch> {
       
             },
           ),
+
+          exerciseDatabaseSearchList.isNotEmpty ? AppButton(onTap: () => searchExercises(), buttonText: "Load More") : const SizedBox.shrink(),
       
         ],
       
