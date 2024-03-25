@@ -56,6 +56,22 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
   bool displayLongYoutubeVideo = false;
 
 
+  double dropDownSize() {
+
+    if (displayShortYoutubeVideo && displayLongYoutubeVideo) {
+      return 440.0.h;
+    }
+    if (displayShortYoutubeVideo) {
+      return 340.0.h;
+    }
+    if (displayLongYoutubeVideo) {
+      return 340.0.h;
+    }
+    return 260.0.h;
+
+  }
+
+
   @override
   void initState() {
 
@@ -111,6 +127,13 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
 
     }
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    shortVideoController?.dispose();
+    longVideoController?.dispose();
+    super.dispose();
   }
 
 
@@ -182,7 +205,7 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
             )
           ),
           TweenAnimationBuilder(
-            tween: Tween<double>(begin: 0.0, end: _expandPanel ? 420.0.h : 0.0),
+            tween: Tween<double>(begin: 0.0, end: _expandPanel ? dropDownSize() : 0.0),
             duration: const Duration(milliseconds: 250),
             builder: (context, value, _) => ClipRRect(
               child: Container(
@@ -353,13 +376,13 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
                             style: boldTextStyle.copyWith(fontSize: 18),
                             textAlign: TextAlign.left,
                           ),
-                          widget.exerciseModel.primaryMuscle.isNotEmpty ? Text(
+                          widget.exerciseModel.primaryEquipment.isNotEmpty ? Text(
                             "- " + widget.exerciseModel.primaryEquipment + " x " + widget.exerciseModel.numPrimaryItems,
                             style: boldTextStyle,
                             textAlign: TextAlign.left,
                           ) : const SizedBox.shrink(),
 
-                          widget.exerciseModel.secondaryMuscle.isNotEmpty ? Text(
+                          widget.exerciseModel.secondaryEquipment.isNotEmpty ? Text(
                             "- " + widget.exerciseModel.secondaryEquipment + " x " + widget.exerciseModel.numSecondaryItems,
                             style: boldTextStyle,
                             textAlign: TextAlign.left,

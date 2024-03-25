@@ -346,6 +346,7 @@ class _ExerciseDatabaseSearchState extends State<ExerciseDatabaseSearch> {
             itemCount: exerciseDatabaseSearchList.length,
             itemBuilder: (BuildContext context, int index) {
               return Column(
+                key: UniqueKey(),
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   DatabaseSearchBox(
