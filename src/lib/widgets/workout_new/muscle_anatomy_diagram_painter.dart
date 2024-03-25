@@ -2,7 +2,7 @@
 //Copy this CustomPainter code to the Bottom of the File
 import 'package:flutter/cupertino.dart';
 
-class RPSCustomPainter extends CustomPainter {
+class FrontAnatomyCustomPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -460,8 +460,8 @@ class RPSCustomPainter extends CustomPainter {
 }
 
 
-class RPSCustomPainterColour extends CustomPainter {
-  RPSCustomPainterColour({
+class FrontAnatomyCustomPainterColour extends CustomPainter {
+  FrontAnatomyCustomPainterColour({
     Key? key,
     this.chest = false,
     this.anteriorDelts = false,
@@ -506,7 +506,7 @@ class RPSCustomPainterColour extends CustomPainter {
     path_0.close();
 
     Paint paint_0_fill = Paint()..style=PaintingStyle.fill;
-    paint_0_fill.color = Color(0xff00ff00).withOpacity(biceps ? 1.0 : 0.0);
+    paint_0_fill.color = Color(0xffff0000).withOpacity(biceps ? 1.0 : 0.0);
     canvas.drawPath(path_0,paint_0_fill);
 
     Path path_1 = Path();
@@ -523,7 +523,7 @@ class RPSCustomPainterColour extends CustomPainter {
     path_1.close();
 
     Paint paint_1_fill = Paint()..style=PaintingStyle.fill;
-    paint_1_fill.color = Color(0xff00ff00).withOpacity(biceps ? 1.0 : 0.0);
+    paint_1_fill.color = Color(0xffff0000).withOpacity(biceps ? 1.0 : 0.0);
     canvas.drawPath(path_1,paint_1_fill);
 
     Path path_2 = Path();
@@ -543,7 +543,7 @@ class RPSCustomPainterColour extends CustomPainter {
     path_2.close();
 
     Paint paint_2_fill = Paint()..style=PaintingStyle.fill;
-    paint_2_fill.color = Color(0xff0000ff).withOpacity(forearms ? 1.0 : 0.0);
+    paint_2_fill.color = Color(0xffff0000).withOpacity(forearms ? 1.0 : 0.0);
     canvas.drawPath(path_2,paint_2_fill);
 
     Path path_3 = Path();
@@ -563,7 +563,7 @@ class RPSCustomPainterColour extends CustomPainter {
     path_3.close();
 
     Paint paint_3_fill = Paint()..style=PaintingStyle.fill;
-    paint_3_fill.color = Color(0xff0000ff).withOpacity(forearms ? 1.0 : 0.0);
+    paint_3_fill.color = Color(0xffff0000).withOpacity(forearms ? 1.0 : 0.0);
     canvas.drawPath(path_3,paint_3_fill);
 
     Path path_4 = Path();
@@ -615,7 +615,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_6_fill = Paint()..style=PaintingStyle.fill;
-    paint_6_fill.color = Color(0xffff6600).withOpacity(trapezius ? 1.0 : 0.0);
+    paint_6_fill.color = Color(0xffff0000).withOpacity(trapezius ? 1.0 : 0.0);
     canvas.drawPath(path_6,paint_6_fill);
 
     Path path_7 = Path();
@@ -630,7 +630,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_7_fill = Paint()..style=PaintingStyle.fill;
-    paint_7_fill.color = Color(0xffff6600).withOpacity(trapezius ? 1.0 : 0.0);
+    paint_7_fill.color = Color(0xffff0000).withOpacity(trapezius ? 1.0 : 0.0);
     canvas.drawPath(path_7,paint_7_fill);
 
     Path path_8 = Path();
@@ -646,7 +646,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_8_fill = Paint()..style=PaintingStyle.fill;
-    paint_8_fill.color = Color(0xffff00ff).withOpacity(anteriorDelts ? 1.0 : 0.0);
+    paint_8_fill.color = Color(0xffff0000).withOpacity(anteriorDelts ? 1.0 : 0.0);
     canvas.drawPath(path_8,paint_8_fill);
 
     Path path_9 = Path();
@@ -661,7 +661,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_9_fill = Paint()..style=PaintingStyle.fill;
-    paint_9_fill.color = Color(0xffff00ff).withOpacity(anteriorDelts ? 1.0 : 0.0);
+    paint_9_fill.color = Color(0xffff0000).withOpacity(anteriorDelts ? 1.0 : 0.0);
     canvas.drawPath(path_9,paint_9_fill);
 
     Path path_10 = Path();
@@ -677,7 +677,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_10_fill = Paint()..style=PaintingStyle.fill;
-    paint_10_fill.color = Color(0xff800080).withOpacity(midDelts ? 1.0 : 0.0);
+    paint_10_fill.color = Color(0xffff0000).withOpacity(midDelts ? 1.0 : 0.0);
     canvas.drawPath(path_10,paint_10_fill);
 
     Path path_11 = Path();
@@ -692,7 +692,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_11_fill = Paint()..style=PaintingStyle.fill;
-    paint_11_fill.color = Color(0xff800080).withOpacity(midDelts ? 1.0 : 0.0);
+    paint_11_fill.color = Color(0xffff0000).withOpacity(midDelts ? 1.0 : 0.0);
     canvas.drawPath(path_11,paint_11_fill);
 
     Path path_12 = Path();
@@ -709,7 +709,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_12_fill = Paint()..style=PaintingStyle.fill;
-    paint_12_fill.color = Color(0xffffff00).withOpacity(serratusAnterior ? 1.0 : 0.0);
+    paint_12_fill.color = Color(0xffff0000).withOpacity(serratusAnterior ? 1.0 : 0.0);
     canvas.drawPath(path_12,paint_12_fill);
 
     Path path_13 = Path();
@@ -726,7 +726,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_13_fill = Paint()..style=PaintingStyle.fill;
-    paint_13_fill.color = Color(0xffffff00).withOpacity(serratusAnterior ? 1.0 : 0.0);
+    paint_13_fill.color = Color(0xffff0000).withOpacity(serratusAnterior ? 1.0 : 0.0);
     canvas.drawPath(path_13,paint_13_fill);
 
     Path path_14 = Path();
@@ -744,7 +744,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_14_fill = Paint()..style=PaintingStyle.fill;
-    paint_14_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_14_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_14,paint_14_fill);
 
     Path path_15 = Path();
@@ -760,7 +760,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_15_fill = Paint()..style=PaintingStyle.fill;
-    paint_15_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_15_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_15,paint_15_fill);
 
     Path path_16 = Path();
@@ -775,7 +775,7 @@ class RPSCustomPainterColour extends CustomPainter {
     path_16.close();
 
     Paint paint_16_fill = Paint()..style=PaintingStyle.fill;
-    paint_16_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_16_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_16,paint_16_fill);
 
     Path path_17 = Path();
@@ -792,7 +792,7 @@ class RPSCustomPainterColour extends CustomPainter {
     path_17.close();
 
     Paint paint_17_fill = Paint()..style=PaintingStyle.fill;
-    paint_17_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_17_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_17,paint_17_fill);
 
     Path path_18 = Path();
@@ -810,7 +810,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_18_fill = Paint()..style=PaintingStyle.fill;
-    paint_18_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_18_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_18,paint_18_fill);
 
     Path path_19 = Path();
@@ -827,7 +827,7 @@ class RPSCustomPainterColour extends CustomPainter {
     path_19.close();
 
     Paint paint_19_fill = Paint()..style=PaintingStyle.fill;
-    paint_19_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_19_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_19,paint_19_fill);
 
     Path path_20 = Path();
@@ -846,7 +846,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_20_fill = Paint()..style=PaintingStyle.fill;
-    paint_20_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_20_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_20,paint_20_fill);
 
     Path path_21 = Path();
@@ -864,7 +864,7 @@ class RPSCustomPainterColour extends CustomPainter {
     path_21.close();
 
     Paint paint_21_fill = Paint()..style=PaintingStyle.fill;
-    paint_21_fill.color = Color(0xff800000).withOpacity(abdominals ? 1.0 : 0.0);
+    paint_21_fill.color = Color(0xffff0000).withOpacity(abdominals ? 1.0 : 0.0);
     canvas.drawPath(path_21,paint_21_fill);
 
     Path path_22 = Path();
@@ -881,7 +881,7 @@ class RPSCustomPainterColour extends CustomPainter {
     path_22.close();
 
     Paint paint_22_fill = Paint()..style=PaintingStyle.fill;
-    paint_22_fill.color = Color(0xff00ffff).withOpacity(obliques ? 1.0 : 0.0);
+    paint_22_fill.color = Color(0xffff0000).withOpacity(obliques ? 1.0 : 0.0);
     canvas.drawPath(path_22,paint_22_fill);
 
     Path path_23 = Path();
@@ -900,7 +900,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_23_fill = Paint()..style=PaintingStyle.fill;
-    paint_23_fill.color = Color(0xff00ffff).withOpacity(obliques ? 1.0 : 0.0);
+    paint_23_fill.color = Color(0xffff0000).withOpacity(obliques ? 1.0 : 0.0);
     canvas.drawPath(path_23,paint_23_fill);
 
     Path path_24 = Path();
@@ -924,7 +924,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_24_fill = Paint()..style=PaintingStyle.fill;
-    paint_24_fill.color = Color(0xff008080).withOpacity(quadriceps ? 1.0 : 0.0);
+    paint_24_fill.color = Color(0xffff0000).withOpacity(quadriceps ? 1.0 : 0.0);
     canvas.drawPath(path_24,paint_24_fill);
 
     Path path_25 = Path();
@@ -947,7 +947,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_25_fill = Paint()..style=PaintingStyle.fill;
-    paint_25_fill.color = Color(0xff008080).withOpacity(quadriceps ? 1.0 : 0.0);
+    paint_25_fill.color = Color(0xffff0000).withOpacity(quadriceps ? 1.0 : 0.0);
     canvas.drawPath(path_25,paint_25_fill);
 
     Path path_26 = Path();
@@ -977,7 +977,7 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_26_fill = Paint()..style=PaintingStyle.fill;
-    paint_26_fill.color = Color(0xff008000).withOpacity(calves ? 1.0 : 0.0);
+    paint_26_fill.color = Color(0xffff0000).withOpacity(calves ? 1.0 : 0.0);
     canvas.drawPath(path_26,paint_26_fill);
 
     Path path_27 = Path();
@@ -1005,8 +1005,966 @@ class RPSCustomPainterColour extends CustomPainter {
 
 
     Paint paint_27_fill = Paint()..style=PaintingStyle.fill;
-    paint_27_fill.color = Color(0xff008000).withOpacity(calves ? 1.0 : 0.0);
+    paint_27_fill.color = Color(0xffff0000).withOpacity(calves ? 1.0 : 0.0);
     canvas.drawPath(path_27,paint_27_fill);
+
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+
+class BackAnatomyCustomPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+
+  Path path_0 = Path();
+  path_0.moveTo(103.3551,3.6130526);
+  path_0.cubicTo(103.3551,3.6130526,117.12715,5.8908876,116.59939,17.136245);
+  path_0.cubicTo(116.59939,17.136245,116.15282,23.103998999999998,117.08655,23.185192999999998);
+  path_0.cubicTo(118.02028,23.266382999999998,119.40058,23.185192999999998,118.87281,25.052653);
+  path_0.cubicTo(118.34505,26.920113,118.75102,30.452049,117.45192,30.736227);
+  path_0.cubicTo(116.15282,31.020406,115.78745,30.695626999999998,115.1379,32.684881);
+  path_0.cubicTo(114.48834000000001,34.674132,113.39223,36.419802,113.59521000000001,37.921889);
+  path_0.cubicTo(113.79819,39.423977,113.39223000000001,41.616212,114.85371,41.981585);
+  path_0.cubicTo(116.31521000000001,42.346957,142.82502,52.496197,144.4489,55.013209);
+  path_0.cubicTo(146.07278000000002,57.53022,149.11755000000002,64.066333,148.75218,68.97856300000001);
+  path_0.cubicTo(154.10799,77.61811300000001,153.70610000000002,81.78054300000001,153.70610000000002,81.78054300000001);
+  path_0.cubicTo(153.70610000000002,81.78054300000001,152.70138000000003,94.21040300000001,153.36162000000002,95.157713);
+  path_0.cubicTo(154.02187,96.105023,163.69592000000003,119.12755,163.58110000000002,122.22783);
+  path_0.cubicTo(163.46627,125.32812,162.08837000000003,137.67186999999998,163.12179000000003,139.1072);
+  path_0.cubicTo(164.15522000000004,140.54251,170.52804000000003,148.63771,169.55203000000003,151.50834);
+  path_0.cubicTo(168.57601000000003,154.37899000000002,164.90159000000003,158.39788000000001,163.46627000000004,158.16823);
+  path_0.cubicTo(162.03095000000005,157.93858,156.40450000000004,155.64207,155.02660000000003,155.75689);
+  path_0.cubicTo(153.64869000000004,155.87171,152.50043000000002,158.45529,151.40959000000004,157.01997);
+  path_0.cubicTo(150.31875000000002,155.58465,146.81657000000004,144.56141,147.79258000000004,143.64279);
+  path_0.cubicTo(148.76860000000005,142.72419,152.67267000000004,140.82957,152.55785000000003,138.93496);
+  path_0.cubicTo(152.44302000000002,137.04032999999998,152.15596000000002,130.83974999999998,151.00770000000003,130.26561999999998);
+  path_0.cubicTo(149.85945000000004,129.6915,137.68794000000003,108.67842999999999,138.20465000000002,106.09484999999998);
+  path_0.cubicTo(138.72137,103.51127999999999,139.81221000000002,101.15734999999998,138.4343,98.63118299999998);
+  path_0.cubicTo(137.0564,96.10502299999997,132.98009000000002,85.77072299999998,132.34855000000002,87.14863299999998);
+  path_0.cubicTo(131.71701000000002,88.52654299999998,125.22937000000002,106.55414999999998,125.57384000000002,108.27652999999998);
+  path_0.cubicTo(125.91832000000002,109.99890999999998,130.33910000000003,129.00253999999998,130.28169000000003,129.74890999999997);
+  path_0.cubicTo(130.22429000000002,130.49526999999998,134.30059000000003,158.57011999999997,134.07093000000003,159.54613999999998);
+  path_0.cubicTo(133.84128000000004,160.52214999999998,135.90814000000003,186.47271999999998,133.38198000000003,191.58245999999997);
+  path_0.cubicTo(130.85582000000002,196.69219999999996,130.62617000000003,211.79175999999995,132.00407,214.94945999999996);
+  path_0.cubicTo(133.38198,218.10715999999996,135.85073,235.79029999999995,133.61163000000002,241.18708999999996);
+  path_0.cubicTo(131.37253,246.58389999999994,127.23881000000002,265.98940999999996,128.15742000000003,272.13257999999996);
+  path_0.cubicTo(129.07602000000003,278.27574999999996,128.04259000000002,276.49594999999994,128.90378000000004,279.48141);
+  path_0.cubicTo(129.76498000000004,282.46688,137.05640000000005,290.33243,136.42486000000005,291.71033);
+  path_0.cubicTo(135.79332000000005,293.08824,135.62108000000006,293.49013,134.47282000000004,293.71978);
+  path_0.cubicTo(133.32457000000005,293.94943,117.59347000000004,294.63838000000004,117.30640000000004,293.43272);
+  path_0.cubicTo(117.01934000000004,292.22705,118.97137000000004,281.2038,118.74172000000004,280.22778);
+  path_0.cubicTo(118.51207000000004,279.25176,116.38780000000004,255.76994,114.72283000000004,253.12895);
+  path_0.cubicTo(113.05786000000005,250.48796000000002,109.78533000000004,235.27358,109.95757000000005,233.03448);
+  path_0.cubicTo(110.12981000000005,230.79539,111.22065000000005,215.40876,112.02443000000005,211.5047);
+  path_0.cubicTo(112.82821000000006,207.60062000000002,112.48373000000005,203.63915,111.62254000000006,202.26124000000002);
+  path_0.cubicTo(110.76135000000006,200.88333,106.22574000000006,191.46763,105.93868000000006,188.597);
+  path_0.cubicTo(105.65161000000006,185.72636,105.02007000000006,173.95674,104.15888000000007,173.95674);
+  path_0.cubicTo(103.29769000000007,173.95674,103.34793000000006,173.95674,103.34793000000006,173.95674);
+
+  Paint paint_0_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_0_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_0_stroke.strokeCap = StrokeCap.butt;
+  paint_0_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_0,paint_0_stroke);
+
+  Path path_1 = Path();
+  path_1.moveTo(149.87548,99.767073);
+  path_1.cubicTo(144.45987000000002,99.59236299999999,138.43281000000002,91.206903,138.43281000000002,91.206903);
+  path_1.cubicTo(138.43281000000002,91.206903,132.40576000000001,73.213093,139.21895,73.038393);
+  path_1.cubicTo(146.03214,72.863693,150.57427,84.481063,150.57427,84.481063);
+  path_1.cubicTo(150.57427,84.481063,153.36942000000002,99.24298300000001,149.87548,99.76707300000001);
+  path_1.close();
+
+  Paint paint_1_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_1_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_1_stroke.strokeCap = StrokeCap.butt;
+  paint_1_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_1,paint_1_stroke);
+
+  Path path_2 = Path();
+  path_2.moveTo(145.26561,67.415183);
+  path_2.cubicTo(145.26561,67.415183,132.92414000000002,54.911324,133.33011000000002,53.043864);
+  path_2.cubicTo(133.73608000000002,51.176403,141.36831,53.855802,142.99218000000002,55.88565);
+  path_2.cubicTo(144.61606000000003,57.915499,147.21427000000003,66.765633,145.26561,67.415183);
+  path_2.close();
+
+  Paint paint_2_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_2_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_2_stroke.strokeCap = StrokeCap.butt;
+  paint_2_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_2,paint_2_stroke);
+
+  Path path_3 = Path();
+  path_3.moveTo(141.25329,69.501123);
+  path_3.cubicTo(136.62524,68.851573,130.4545,62.84322300000001,130.4545,62.84322300000001);
+  path_3.cubicTo(130.4545,62.84322300000001,125.66405999999999,57.971590000000006,127.7751,56.91606900000001);
+  path_3.cubicTo(129.88613999999998,55.86054600000001,133.53987,56.75368000000001,135.48852,59.35188300000001);
+  path_3.cubicTo(137.43716999999998,61.95009300000001,142.47119999999998,67.14650300000001,141.82165,68.445603);
+  path_3.cubicTo(141.1721,69.744713,141.25329,69.501123,141.25329,69.501123);
+  path_3.close();
+
+  Paint paint_3_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_3_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_3_stroke.strokeCap = StrokeCap.butt;
+  paint_3_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_3,paint_3_stroke);
+
+  Path path_4 = Path();
+  path_4.moveTo(112.65351,177.74052);
+  path_4.cubicTo(112.65351,177.74052,105.41029999999999,165.919,105.28096,163.69515);
+  path_4.cubicTo(105.669,159.01337,108.25585,153.16113,111.74811,152.34182);
+  path_4.cubicTo(115.24036,151.5225,127.26925,148.47934,128.17464999999999,149.82536000000002);
+  path_4.cubicTo(129.08004999999997,151.17136000000002,133.08968,161.88096000000002,132.18427999999997,164.28038);
+  path_4.cubicTo(131.27888,166.6798,133.47769999999997,175.86781000000002,127.65726999999997,176.45304000000002);
+  path_4.cubicTo(121.83684999999997,177.03826,113.30021999999997,178.67688,112.65350999999997,177.74052);
+  path_4.close();
+
+  Paint paint_4_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_4_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_4_stroke.strokeCap = StrokeCap.butt;
+  paint_4_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_4,paint_4_stroke);
+
+  Path path_5 = Path();
+  path_5.moveTo(124.09553,245.78958);
+  path_5.cubicTo(124.09553,245.78958,125.94413,238.46609,126.91243,237.79478);
+  path_5.cubicTo(127.88075,237.12346,133.16246,226.93163,131.93007,224.06326);
+  path_5.cubicTo(130.69766,221.19490000000002,127.08849000000001,215.45818000000003,125.59201,215.45818000000003);
+  path_5.cubicTo(124.09553,215.45818000000003,114.41241,213.87141000000003,113.62015,214.60376000000002);
+  path_5.cubicTo(112.82789,215.33611000000002,112.03564,229.31175000000002,112.73987,230.95953000000003);
+  path_5.cubicTo(113.44409,232.60732000000002,114.23635,235.65877000000003,116.43706,238.34404000000004);
+  path_5.cubicTo(118.63777,241.02931000000004,117.84551,245.17929000000004,119.342,245.78958000000003);
+  path_5.cubicTo(120.83848,246.39987000000002,121.45468,247.49840000000003,122.68708,246.70501000000002);
+  path_5.cubicTo(123.91948,245.91163,124.09553,245.78958000000003,124.09553,245.78958000000003);
+  path_5.close();
+
+  Paint paint_5_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.005540476;
+  paint_5_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_5_stroke.strokeCap = StrokeCap.butt;
+  paint_5_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_5,paint_5_stroke);
+
+  Path path_6 = Path();
+  path_6.moveTo(151.00684,102.20996);
+  path_6.cubicTo(151.00684,102.20996,140.65974,102.02096999999999,140.70698000000002,105.23376999999999);
+  path_6.cubicTo(140.75428000000002,108.44655999999999,149.44769000000002,122.38444,150.25088000000002,123.18762999999998);
+  path_6.cubicTo(151.05408000000003,123.99083999999999,151.99902000000003,129.37698999999998,154.12514000000002,129.75497);
+  path_6.cubicTo(156.25126,130.13295,159.41681000000003,128.57379999999998,159.46405000000001,126.58941999999999);
+  path_6.cubicTo(159.51135000000002,124.60504999999999,157.10170000000002,110.24194999999999,155.54255,107.31262999999998);
+  path_6.cubicTo(153.98340000000002,104.38331999999998,151.71554,102.02096999999998,151.00684,102.20995999999998);
+  path_6.close();
+
+  Paint paint_6_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_6_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_6_stroke.strokeCap = StrokeCap.butt;
+  paint_6_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_6,paint_6_stroke);
+
+  Path path_7 = Path();
+  path_7.moveTo(76.500588,185.23933);
+  path_7.cubicTo(76.500588,185.23933,75.49975599999999,180.32224,77.251212,180.05644999999998);
+  path_7.cubicTo(79.002667,179.79065999999997,94.51555499999999,181.25250999999997,94.26534799999999,182.84723);
+  path_7.cubicTo(94.01513999999999,184.44196,91.88837199999999,208.36293999999998,90.13691899999999,208.89453);
+  path_7.cubicTo(88.38546299999999,209.4261,77.12610699999999,212.88134,77.62652399999999,211.41951);
+  path_7.cubicTo(78.126938,209.95767,78.75245799999999,194.80772000000002,78.37714799999999,193.47877);
+  path_7.cubicTo(78.001836,192.14983999999998,76.500588,185.23933,76.500588,185.23933);
+  path_7.close();
+
+  Paint paint_7_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.006891952;
+  paint_7_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_7_stroke.strokeCap = StrokeCap.butt;
+  paint_7_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_7,paint_7_stroke);
+
+  Path path_8 = Path();
+  path_8.moveTo(130.07121,185.22384);
+  path_8.cubicTo(130.07121,185.22384,131.07204000000002,180.30675,129.32059,180.04095999999998);
+  path_8.cubicTo(127.56913000000002,179.77516999999997,112.05624,181.23701999999997,112.30645000000001,182.83174);
+  path_8.cubicTo(112.55666000000001,184.42647,114.68342000000001,208.34744999999998,116.43488,208.87904);
+  path_8.cubicTo(118.18633000000001,209.41061,129.44569,212.86585,128.94528,211.40402);
+  path_8.cubicTo(128.44486,209.94218,127.81934,194.79223000000002,128.19465,193.46328);
+  path_8.cubicTo(128.56996,192.13434999999998,130.07121,185.22384,130.07121,185.22384);
+  path_8.close();
+
+  Paint paint_8_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.006891952;
+  paint_8_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_8_stroke.strokeCap = StrokeCap.butt;
+  paint_8_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_8,paint_8_stroke);
+
+  Path path_9 = Path();
+  path_9.moveTo(99.728967,136.84936);
+  path_9.lineTo(99.716267,150.61982);
+  path_9.cubicTo(99.716267,150.61982,95.725711,146.50836,91.735178,144.57356000000001);
+  path_9.cubicTo(87.74464400000001,142.63876000000002,86.403439,142.71734,87.98649,142.15505000000002);
+  path_9.cubicTo(89.58723400000001,141.58647000000002,92.072653,140.82486000000003,92.072653,140.82486000000003);
+  path_9.cubicTo(92.072653,140.82486000000003,98.018837,138.55737000000002,99.728967,136.84936000000002);
+  path_9.close();
+
+  Paint paint_9_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_9_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_9_stroke.strokeCap = StrokeCap.butt;
+  paint_9_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_9,paint_9_stroke);
+
+  Path path_10 = Path();
+  path_10.moveTo(106.45247,137.19871);
+  path_10.lineTo(106.46517,150.96916000000002);
+  path_10.cubicTo(106.46517,150.96916000000002,110.45572,146.85770000000002,114.44625,144.92291000000003);
+  path_10.cubicTo(118.4368,142.98810000000003,119.77801000000001,143.06668000000002,118.19495,142.50440000000003);
+  path_10.cubicTo(116.5942,141.93582000000004,114.10878000000001,141.17420000000004,114.10878000000001,141.17420000000004);
+  path_10.cubicTo(114.10878000000001,141.17420000000004,108.16263000000001,138.90672000000004,106.45251,137.19871000000003);
+  path_10.close();
+
+  Paint paint_10_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_10_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_10_stroke.strokeCap = StrokeCap.butt;
+  paint_10_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_10,paint_10_stroke);
+
+  Path path_11 = Path();
+  path_11.moveTo(76.162808,83.964695);
+  path_11.cubicTo(75.628159,72.87072,90.435231,75.903019,96.80837,84.688091);
+  path_11.cubicTo(98.301431,86.746206,96.84931,87.579724,99.300614,89.920998);
+  path_11.cubicTo(101.75191,92.262269,101.88977,94.905344,101.88977,94.905344);
+  path_11.lineTo(100.1303,126.22673);
+  path_11.cubicTo(100.1303,126.22673,88.891717,142.06477,88.790282,138.10862);
+  path_11.cubicTo(88.59705500000001,130.5725,81.917944,122.66988,83.795913,107.37382);
+  path_11.cubicTo(83.795913,107.37382,77.564491,89.115813,77.197928,87.768712);
+  path_11.close();
+
+  Paint paint_11_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_11_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_11_stroke.strokeCap = StrokeCap.butt;
+  paint_11_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_11,paint_11_stroke);
+
+  Path path_12 = Path();
+  path_12.moveTo(80.853917,48.475447);
+  path_12.cubicTo(80.853917,48.475447,92.900981,45.735118,94.507258,43.656249);
+  path_12.cubicTo(96.11353299999999,41.577381,95.81235799999999,36.380208,97.51902299999999,37.041666000000006);
+  path_12.cubicTo(99.22569099999998,37.70312500000001,99.627259,49.609374,99.1253,50.081843000000006);
+  path_12.cubicTo(98.62334,50.55431500000001,79.649211,51.78273900000001,78.444502,50.932291000000006);
+  path_12.cubicTo(77.239798,50.081843000000006,80.853917,48.47544700000001,80.853917,48.47544700000001);
+  path_12.close();
+
+  Paint paint_12_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007362429;
+  paint_12_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_12_stroke.strokeCap = StrokeCap.butt;
+  paint_12_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_12,paint_12_stroke);
+
+  Path path_13 = Path();
+  path_13.moveTo(71.390336,71.274034);
+  path_13.cubicTo(71.390336,71.274034,78.80713200000001,67.296026,80.766288,63.185418);
+  path_13.cubicTo(82.725443,59.074808,84.19480800000001,58.942209999999996,84.19480800000001,58.942209999999996);
+  path_13.cubicTo(84.19480800000001,58.942209999999996,84.684594,58.41180799999999,85.174383,59.14110899999999);
+  path_13.cubicTo(85.66417200000001,59.87040999999999,86.78368800000001,67.163428,88.04314400000001,69.41762999999999);
+  path_13.cubicTo(89.30260000000001,71.67183599999998,88.67287400000001,72.334837,88.04314400000001,72.334837);
+  path_13.cubicTo(87.41341600000001,72.334837,73.27952000000002,73.926042,71.95009300000001,72.93153699999999);
+  path_13.cubicTo(70.62066800000001,71.93703599999999,71.390336,71.27403399999999,71.390336,71.27403399999999);
+  path_13.close();
+
+  Paint paint_13_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007281048;
+  paint_13_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_13_stroke.strokeCap = StrokeCap.butt;
+  paint_13_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_13,paint_13_stroke);
+
+  Path path_14 = Path();
+  path_14.moveTo(82.875496,53.125549);
+  path_14.cubicTo(85.815461,51.922838,99.212347,53.426229,99.212347,53.426229);
+  path_14.cubicTo(99.212347,53.426229,100.08097,53.62668,100.34825,54.62894);
+  path_14.cubicTo(100.61550999999999,55.631203,102.82048999999999,84.763579,101.68459,84.49631);
+  path_14.cubicTo(100.5487,84.229041,87.252035,58.17026399999999,87.118402,57.16800099999999);
+  path_14.cubicTo(86.98476600000001,56.16574099999999,78.699411,55.02984499999999,78.699411,55.02984499999999);
+  path_14.cubicTo(78.699411,55.02984499999999,77.76396799999999,54.76257599999999,79.16713299999999,54.161219999999986);
+  path_14.cubicTo(80.570298,53.55986199999999,82.875496,53.125548999999985,82.875496,53.125548999999985);
+  path_14.close();
+
+  Paint paint_14_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_14_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_14_stroke.strokeCap = StrokeCap.butt;
+  paint_14_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_14,paint_14_stroke);
+
+  Path path_15 = Path();
+  path_15.moveTo(130.80388,83.990587);
+  path_15.cubicTo(131.33853,72.896612,116.53146,75.928911,110.15831999999999,84.713983);
+  path_15.cubicTo(108.66525999999999,86.772098,110.11742,87.605616,107.66606999999999,89.94689);
+  path_15.cubicTo(105.21477999999999,92.288161,105.07691999999999,94.931236,105.07691999999999,94.931236);
+  path_15.lineTo(106.83638999999998,126.25263);
+  path_15.cubicTo(106.83638999999998,126.25263,118.07496999999998,142.09067,118.17639999999997,138.13452);
+  path_15.cubicTo(118.36962999999997,130.5984,125.04873999999997,122.69578000000001,123.17076999999998,107.39972);
+  path_15.cubicTo(123.17076999999998,107.39972,129.40219999999997,89.141705,129.76876,87.794604);
+  path_15.close();
+
+  Paint paint_15_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_15_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_15_stroke.strokeCap = StrokeCap.butt;
+  paint_15_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_15,paint_15_stroke);
+
+  Path path_16 = Path();
+  path_16.moveTo(126.11277,48.501339);
+  path_16.cubicTo(126.11277,48.501339,114.06571,45.76101,112.45943,43.682141);
+  path_16.cubicTo(110.85315,41.603273,111.15433,36.4061,109.44766,37.067558000000005);
+  path_16.cubicTo(107.741,37.729017000000006,107.33943,49.635266,107.84139,50.107735000000005);
+  path_16.cubicTo(108.34335,50.58020700000001,127.31748,51.808631000000005,128.52218,50.958183000000005);
+  path_16.cubicTo(129.72689,50.107735000000005,126.11277,48.50133900000001,126.11277,48.50133900000001);
+  path_16.close();
+
+  Paint paint_16_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007362429;
+  paint_16_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_16_stroke.strokeCap = StrokeCap.butt;
+  paint_16_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_16,paint_16_stroke);
+
+  Path path_17 = Path();
+  path_17.moveTo(135.57635,71.299926);
+  path_17.cubicTo(135.57635,71.299926,128.15955,67.321918,126.20039999999999,63.21131);
+  path_17.cubicTo(124.24123999999999,59.100699999999996,122.77187999999998,58.968101999999995,122.77187999999998,58.968101999999995);
+  path_17.cubicTo(122.77187999999998,58.968101999999995,122.28208999999998,58.43769999999999,121.79229999999998,59.16700099999999);
+  path_17.cubicTo(121.30250999999998,59.89630199999999,120.18299999999998,67.18932,118.92353999999999,69.44352199999999);
+  path_17.cubicTo(117.66408999999999,71.69772799999998,118.29381,72.36072899999999,118.92353999999999,72.36072899999999);
+  path_17.cubicTo(119.55326999999998,72.36072899999999,133.68716999999998,73.951934,135.01658999999998,72.95742899999999);
+  path_17.cubicTo(136.34601999999998,71.96292799999999,135.57635,71.29992599999999,135.57635,71.29992599999999);
+  path_17.close();
+
+  Paint paint_17_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007281048;
+  paint_17_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_17_stroke.strokeCap = StrokeCap.butt;
+  paint_17_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_17,paint_17_stroke);
+
+  Path path_18 = Path();
+  path_18.moveTo(124.09119,53.151441);
+  path_18.cubicTo(121.15123,51.94873,107.75434,53.452121,107.75434,53.452121);
+  path_18.cubicTo(107.75434,53.452121,106.88571999999999,53.652572,106.61843999999999,54.654832);
+  path_18.cubicTo(106.35118,55.657095,104.1462,84.78947099999999,105.28209999999999,84.522202);
+  path_18.cubicTo(106.41798999999999,84.254933,119.71464999999999,58.19615599999999,119.84827999999999,57.19389299999999);
+  path_18.cubicTo(119.98191999999999,56.19163299999999,128.26728,55.055736999999986,128.26728,55.055736999999986);
+  path_18.cubicTo(128.26728,55.055736999999986,129.20272,54.78846799999999,127.79955,54.187111999999985);
+  path_18.cubicTo(126.39639,53.58575399999999,124.09119,53.151440999999984,124.09119,53.151440999999984);
+  path_18.close();
+
+  Paint paint_18_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_18_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_18_stroke.strokeCap = StrokeCap.butt;
+  paint_18_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_18,paint_18_stroke);
+
+  Path path_19 = Path();
+  path_19.moveTo(103.3551,3.6130526);
+  path_19.cubicTo(103.3551,3.6130526,89.583052,5.8908876,90.110813,17.136245);
+  path_19.cubicTo(90.110813,17.136245,90.55738199999999,23.103998999999998,89.62365199999999,23.185192999999998);
+  path_19.cubicTo(88.689922,23.266382999999998,87.309625,23.185192999999998,87.837386,25.052653);
+  path_19.cubicTo(88.365146,26.920113,87.959176,30.452049,89.258279,30.736227);
+  path_19.cubicTo(90.557382,31.020406,90.922754,30.695626999999998,91.572305,32.684881);
+  path_19.cubicTo(92.221858,34.674132,93.317975,36.419802,93.11499,37.921889);
+  path_19.cubicTo(92.91200500000001,39.423977,93.317975,41.616212,91.856485,41.981585);
+  path_19.cubicTo(90.39499500000001,42.346957,63.885180000000005,52.4962,62.26130200000001,55.01321);
+  path_19.cubicTo(60.637423000000005,57.53022,57.59265200000001,64.06633,57.95802400000001,68.97856);
+  path_19.cubicTo(52.60221000000001,77.61811,53.00409900000001,81.78054,53.00409900000001,81.78054);
+  path_19.cubicTo(53.00409900000001,81.78054,54.008823000000014,94.2104,53.34857600000001,95.15771000000001);
+  path_19.cubicTo(52.68832900000001,96.10503000000001,43.01427700000001,119.12755000000001,43.12910300000001,122.22783000000001);
+  path_19.cubicTo(43.24392900000001,125.32812000000001,44.621835000000004,137.67187,43.58840500000001,139.1072);
+  path_19.cubicTo(42.55497600000001,140.54251,36.18215800000001,148.63771,37.15817500000001,151.50834);
+  path_19.cubicTo(38.134192000000006,154.37899000000002,41.808609000000004,158.39788000000001,43.24392900000001,158.16823);
+  path_19.cubicTo(44.67924800000001,157.93858,50.30569900000001,155.64207,51.68360500000001,155.75689);
+  path_19.cubicTo(53.061513000000005,155.87171,54.20976700000001,158.45529,55.300611,157.01997);
+  path_19.cubicTo(56.391453000000006,155.58465,59.893632000000004,144.56141,58.917615000000005,143.64279);
+  path_19.cubicTo(57.941597,142.72419,54.037529000000006,140.82957,54.15235500000001,138.93496);
+  path_19.cubicTo(54.26718100000001,137.04032999999998,54.554244000000004,130.83974999999998,55.70250000000001,130.26561999999998);
+  path_19.cubicTo(56.85075500000001,129.6915,69.02226200000001,108.67842999999999,68.505547,106.09484999999998);
+  path_19.cubicTo(67.988832,103.51127999999999,66.89799000000001,101.15734999999998,68.275896,98.63118999999998);
+  path_19.cubicTo(69.653803,96.10501999999998,73.730109,85.77072999999997,74.36165,87.14862999999997);
+  path_19.cubicTo(74.99319,88.52653999999997,81.48083299999999,106.55414999999996,81.13635599999999,108.27652999999997);
+  path_19.cubicTo(80.79187999999999,109.99890999999997,76.371096,129.00253999999995,76.42850999999999,129.74890999999997);
+  path_19.cubicTo(76.48592999999998,130.49526999999998,72.40961499999999,158.57011999999997,72.63926599999999,159.54613999999998);
+  path_19.cubicTo(72.868918,160.52214999999998,70.80205799999999,186.47271999999998,73.32821899999999,191.58245999999997);
+  path_19.cubicTo(75.85438099999999,196.69219999999996,76.08403299999999,211.79175999999995,74.706127,214.94945999999996);
+  path_19.cubicTo(73.32821899999999,218.10715999999996,70.859471,235.79029999999995,73.098569,241.18708999999996);
+  path_19.cubicTo(75.337667,246.58389999999994,79.471387,265.98940999999996,78.552782,272.13257999999996);
+  path_19.cubicTo(77.63417799999999,278.27574999999996,78.66760799999999,276.49594999999994,77.806416,279.48141);
+  path_19.cubicTo(76.945225,282.46688,69.653803,290.33243,70.285343,291.71033);
+  path_19.cubicTo(70.916883,293.08824,71.089122,293.49013,72.237377,293.71978);
+  path_19.cubicTo(73.385633,293.94943,89.11673099999999,294.63838000000004,89.403796,293.43272);
+  path_19.cubicTo(89.69086,292.22705,87.738825,281.2038,87.968477,280.22778);
+  path_19.cubicTo(88.198127,279.25176,90.32239899999999,255.76994,91.98737,253.12895);
+  path_19.cubicTo(93.65234099999999,250.48796000000002,96.924868,235.27358,96.75263,233.03448);
+  path_19.cubicTo(96.580392,230.79539,95.489549,215.40876,94.68576999999999,211.5047);
+  path_19.cubicTo(93.88199099999999,207.60062000000002,94.226468,203.63915,95.08765899999999,202.26124000000002);
+  path_19.cubicTo(95.94885099999999,200.88333,100.48445999999998,191.46763,100.77151999999998,188.597);
+  path_19.cubicTo(101.05858999999998,185.72636,101.69012999999998,173.95674,102.55131999999998,173.95674);
+  path_19.cubicTo(103.41250999999997,173.95674,103.36226999999998,173.95674,103.36226999999998,173.95674);
+
+  Paint paint_19_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_19_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_19_stroke.strokeCap = StrokeCap.butt;
+  paint_19_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_19,paint_19_stroke);
+
+  Path path_20 = Path();
+  path_20.moveTo(56.834718,99.76707);
+  path_20.cubicTo(62.250331,99.59237,68.277386,91.2069,68.277386,91.2069);
+  path_20.cubicTo(68.277386,91.2069,74.30444100000001,73.21309000000001,67.49124900000001,73.03839);
+  path_20.cubicTo(60.678058,72.8637,56.13593,84.48106,56.13593,84.48106);
+  path_20.cubicTo(56.13593,84.48106,53.340776000000005,99.24298,56.834718,99.76707);
+  path_20.close();
+
+  Paint paint_20_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_20_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_20_stroke.strokeCap = StrokeCap.butt;
+  paint_20_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_20,paint_20_stroke);
+
+  Path path_21 = Path();
+  path_21.moveTo(61.444588,67.41519);
+  path_21.cubicTo(61.444588,67.41519,73.786061,54.911319999999996,73.380094,53.043859999999995);
+  path_21.cubicTo(72.974124,51.176399999999994,65.341895,53.855799999999995,63.718017,55.88565);
+  path_21.cubicTo(62.09414,57.9155,59.495933,66.76563,61.444588,67.41519);
+  path_21.close();
+
+  Paint paint_21_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_21_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_21_stroke.strokeCap = StrokeCap.butt;
+  paint_21_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_21,paint_21_stroke);
+
+  Path path_22 = Path();
+  path_22.moveTo(65.456911,69.50113);
+  path_22.cubicTo(70.084962,68.85158,76.255702,62.84322,76.255702,62.84322);
+  path_22.cubicTo(76.255702,62.84322,81.046143,57.971590000000006,78.935103,56.916070000000005);
+  path_22.cubicTo(76.824058,55.86055,73.170333,56.75368,71.221678,59.351890000000004);
+  path_22.cubicTo(69.273025,61.95009,64.239003,67.1465,64.888555,68.4456);
+  path_22.cubicTo(65.53810399999999,69.74471,65.45691099999999,69.50113,65.45691099999999,69.50113);
+  path_22.close();
+
+  Paint paint_22_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_22_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_22_stroke.strokeCap = StrokeCap.butt;
+  paint_22_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_22,paint_22_stroke);
+
+  Path path_23 = Path();
+  path_23.moveTo(94.121538,177.74052);
+  path_23.cubicTo(94.121538,177.74052,101.36474,165.919,101.49408,163.69515);
+  path_23.cubicTo(101.10604,159.01337,98.51919699999999,153.16113,95.026939,152.34182);
+  path_23.cubicTo(91.534683,151.5225,79.505799,148.47934,78.600397,149.82536000000002);
+  path_23.cubicTo(77.694998,151.17136000000002,73.685368,161.88096000000002,74.59077,164.28038);
+  path_23.cubicTo(75.49616800000001,166.6798,73.297342,175.86781000000002,79.11777000000001,176.45304000000002);
+  path_23.cubicTo(84.938198,177.03826,93.47482400000001,178.67688,94.12153800000002,177.74052);
+  path_23.close();
+
+  Paint paint_23_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_23_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_23_stroke.strokeCap = StrokeCap.butt;
+  paint_23_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_23,paint_23_stroke);
+
+  Path path_24 = Path();
+  path_24.moveTo(82.530808,245.25504);
+  path_24.cubicTo(82.530808,245.25504,80.682211,237.93155000000002,79.713899,237.26024);
+  path_24.cubicTo(78.745586,236.58892,73.463883,226.39709000000002,74.696282,223.52872000000002);
+  path_24.cubicTo(75.928679,220.66036000000003,79.53784399999999,214.92364000000003,81.03432699999999,214.92364000000003);
+  path_24.cubicTo(82.530808,214.92364000000003,92.213933,213.33687000000003,93.00618699999998,214.06922000000003);
+  path_24.cubicTo(93.79844399999999,214.80157000000003,94.59070099999998,228.77721000000003,93.88647199999998,230.42499000000004);
+  path_24.cubicTo(93.18224399999998,232.07278000000002,92.38998899999999,235.12423000000004,90.18927899999998,237.80950000000004);
+  path_24.cubicTo(87.98856899999998,240.49477000000005,88.78082599999999,244.64475000000004,87.28434299999998,245.25504000000004);
+  path_24.cubicTo(85.78785899999998,245.86533000000003,85.17166099999997,246.96386000000004,83.93926299999998,246.17047000000002);
+  path_24.cubicTo(82.70686599999998,245.37709,82.53080799999998,245.25504000000004,82.53080799999998,245.25504000000004);
+  path_24.close();
+
+  Paint paint_24_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.005540476;
+  paint_24_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_24_stroke.strokeCap = StrokeCap.butt;
+  paint_24_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_24,paint_24_stroke);
+
+  Path path_25 = Path();
+  path_25.moveTo(55.703364,102.20996);
+  path_25.cubicTo(55.703364,102.20996,66.050462,102.02096999999999,66.003215,105.23376999999999);
+  path_25.cubicTo(65.95596499999999,108.44655999999999,57.262513999999996,122.38444,56.459316,123.18762999999998);
+  path_25.cubicTo(55.656118,123.99083999999999,54.711177,129.37698999999998,52.585059,129.75497);
+  path_25.cubicTo(50.458945,130.13295,47.293393,128.57379999999998,47.246146,126.58941999999999);
+  path_25.cubicTo(47.198896000000005,124.60504999999999,49.608497,110.24194999999999,51.16765,107.31262999999998);
+  path_25.cubicTo(52.726802,104.38331999999998,54.99466,102.02096999999998,55.703364,102.20995999999998);
+  path_25.close();
+
+  Paint paint_25_stroke = Paint()..style=PaintingStyle.stroke..strokeWidth=size.width*0.007142857;
+  paint_25_stroke.color=Color(0xff000000).withOpacity(1);
+  paint_25_stroke.strokeCap = StrokeCap.butt;
+  paint_25_stroke.strokeJoin = StrokeJoin.miter;
+  canvas.drawPath(path_25,paint_25_stroke);
+
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+  return true;
+  }
+}
+
+
+//Copy this CustomPainter code to the Bottom of the File
+class BackAnatomyCustomPainterColour extends CustomPainter {
+  BackAnatomyCustomPainterColour({
+    Key? key,
+    this.upperTrapezius = false,
+    this.lowerTrapezius = false,
+    this.posteriorDeltoid = false,
+    this.medialDeltoid = false,
+    this.infraspinatus = false,
+    this.triceps = false,
+    this.forearms = false,
+    this.erectorSpinea = false,
+    this.glutes = false,
+    this.hamstrings = false,
+    this.calves = false,
+    this.latisimusDorsi = false,
+    this.biceps = true,
+
+  });
+
+  final bool upperTrapezius;
+  final bool lowerTrapezius;
+  final bool posteriorDeltoid;
+  final bool medialDeltoid;
+  final bool infraspinatus;
+  final bool triceps;
+  final bool forearms;
+  final bool erectorSpinea;
+  final bool glutes;
+  final bool hamstrings;
+  final bool calves;
+  final bool latisimusDorsi;
+  final bool biceps;
+
+
+
+  @override
+  void paint(Canvas canvas, Size size) {
+
+    Path path_0 = Path();
+    path_0.moveTo(302.83245,188.75279);
+    path_0.cubicTo(303.94362,187.92957,311.89857,185.34032,320.51012,182.99889000000002);
+    path_0.cubicTo(338.76959999999997,178.03425000000001,352.93271,172.78744,357.52047999999996,169.28818);
+    path_0.cubicTo(361.05897999999996,166.58923000000001,363.90774999999996,160.14681000000002,365.95998999999995,150.20248);
+    path_0.cubicTo(366.76149999999996,146.31867,367.4701299999999,144.71942,367.97417999999993,145.6568);
+    path_0.cubicTo(369.4076599999999,148.32266,371.04705999999993,160.48973,371.69479999999993,173.26996);
+    path_0.cubicTo(372.22092999999995,183.65100999999999,372.0809699999999,186.02969,370.9196999999999,186.44272999999998);
+    path_0.cubicTo(367.95170999999993,187.49836,344.3867899999999,189.07764999999998,323.0354999999999,189.65186999999997);
+    path_0.cubicTo(303.2565399999999,190.18379,301.0343599999999,190.08489999999998,302.8324499999999,188.75278999999998);
+    path_0.close();
+
+    Paint paint_0_fill = Paint()..style=PaintingStyle.fill;
+    paint_0_fill.color = Color(0xffff0000).withOpacity(upperTrapezius ? 1.0 : 0.0);
+    canvas.drawPath(path_0,paint_0_fill);
+
+    Path path_1 = Path();
+    path_1.moveTo(437.68781,189.01283);
+    path_1.cubicTo(431.85418,188.61873,423.26370000000003,187.95225000000002,418.59786,187.53176000000002);
+    path_1.lineTo(410.11451000000005,186.76723);
+    path_1.lineTo(410.70896000000005,172.49093000000002);
+    path_1.cubicTo(411.28509,158.65455000000003,412.80859000000004,148.01467000000002,414.46813000000003,146.23735000000002);
+    path_1.cubicTo(414.91267000000005,145.76127000000002,415.82274,148.00354000000002,416.49051000000003,151.22018000000003);
+    path_1.cubicTo(419.20739000000003,164.30732000000003,421.72346000000005,168.35412000000002,429.60659000000004,172.31583000000003);
+    path_1.cubicTo(435.34968000000003,175.20205000000004,450.07449,180.05719000000005,464.52851000000004,183.83046000000004);
+    path_1.cubicTo(470.67934,185.43616000000006,477.04330000000004,187.47073000000003,478.67064000000005,188.35173000000003);
+    path_1.cubicTo(481.46715000000006,189.86569000000003,480.71521000000007,189.94741000000002,464.96193000000005,189.84146000000004);
+    path_1.cubicTo(455.79480000000007,189.77976000000004,443.52144000000004,189.40693000000005,437.68781000000007,189.01283000000004);
+    path_1.close();
+
+    Paint paint_1_fill = Paint()..style=PaintingStyle.fill;
+    paint_1_fill.color = Color(0xffff0000).withOpacity(upperTrapezius ? 1.0 : 0.0);
+    canvas.drawPath(path_1,paint_1_fill);
+
+    Path path_2 = Path();
+    path_2.moveTo(400.31217,299.80302);
+    path_2.cubicTo(400.31217,279.09826,405.42834999999997,207.72451999999998,407.02319,206.18036);
+    path_2.cubicTo(408.44791,204.80091000000002,431.05108,202.95731,447.78934,202.85532);
+    path_2.cubicTo(458.94739,202.78732,465.18836999999996,203.21114,469.50762,204.33015);
+    path_2.lineTo(475.56852999999995,205.90038);
+    path_2.lineTo(469.50762,207.12286);
+    path_2.cubicTo(462.01995,208.63313,453.74607999999995,210.96635,452.13908999999995,212.02077);
+    path_2.cubicTo(451.47574,212.45602,448.25460999999996,218.48316,444.98101999999994,225.41441);
+    path_2.cubicTo(435.72786999999994,245.00634,406.3819,300.7475,401.66581999999994,307.68945);
+    path_2.cubicTo(400.49082999999996,309.41898000000003,400.3121699999999,308.37807000000004,400.3121699999999,299.80302);
+    path_2.close();
+
+    Paint paint_2_fill = Paint()..style=PaintingStyle.fill;
+    paint_2_fill.color = Color(0xffff0000).withOpacity(lowerTrapezius ? 1.0 : 0.0);
+    canvas.drawPath(path_2,paint_2_fill);
+
+    Path path_3 = Path();
+    path_3.moveTo(378.42475,304.18168);
+    path_3.cubicTo(371.56921,292.27761999999996,355.19105,261.14862999999997,343.63715,238.063);
+    path_3.cubicTo(336.97650000000004,224.75446,331.03419,213.27201,330.43203,212.54645);
+    path_3.cubicTo(329.25771,211.13148999999999,322.70354,209.09749,312.93397,207.11615999999998);
+    path_3.lineTo(306.87306,205.88696);
+    path_3.lineTo(311.92382000000003,204.34877999999998);
+    path_3.cubicTo(320.66935,201.68536999999998,372.35658,203.10011999999998,375.34843,206.08479999999997);
+    path_3.cubicTo(376.94922,207.68175999999997,382.81309,295.88192999999995,381.97101000000004,305.69691);
+    path_3.lineTo(381.62435000000005,309.73752);
+    path_3.close();
+
+    Paint paint_3_fill = Paint()..style=PaintingStyle.fill;
+    paint_3_fill.color = Color(0xffff0000).withOpacity(lowerTrapezius ? 1.0 : 0.0);
+    canvas.drawPath(path_3,paint_3_fill);
+
+    Path path_4 = Path();
+    path_4.moveTo(275.81087,273.16639);
+    path_4.cubicTo(272.02660000000003,272.57567,272.31606000000005,271.76793,277.33388,268.91656);
+    path_4.cubicTo(291.0609,261.11617,304.35257,248.51758,309.39631,238.52599);
+    path_4.cubicTo(312.38968000000006,232.59614000000002,317.03007,226.39993,318.47759,226.39993);
+    path_4.cubicTo(318.92768,226.39993,320.93323000000004,233.27616,322.93438000000003,241.68044);
+    path_4.cubicTo(324.93552000000005,250.08471,327.77516,259.6401,329.24468,262.91463);
+    path_4.cubicTo(330.7142,266.18916,331.62862,269.15623,331.27673000000004,269.50811999999996);
+    path_4.cubicTo(329.84632000000005,270.93854,281.82773000000003,274.10562,275.81087,273.16639);
+    path_4.close();
+
+    Paint paint_4_fill = Paint()..style=PaintingStyle.fill;
+    paint_4_fill.color = Color(0xffff0000).withOpacity(infraspinatus ? 1.0 : 0.0);
+    canvas.drawPath(path_4,paint_4_fill);
+
+    Path path_5 = Path();
+    path_5.moveTo(248.78929,257.44408);
+    path_5.cubicTo(248.78929,255.47009,253.23176,249.31091999999998,264.88505,235.12847);
+    path_5.cubicTo(276.96511999999996,220.42660999999998,281.51347999999996,217.22108,290.39160999999996,217.15231);
+    path_5.cubicTo(296.63179999999994,217.10401,297.59232999999995,217.96124,295.69241999999997,221.88324);
+    path_5.cubicTo(290.60495999999995,232.38529,268.52164,251.22116,254.35834999999997,257.13896);
+    path_5.cubicTo(249.76222999999996,259.05934,248.78928999999997,259.11265,248.78928999999997,257.44408);
+    path_5.close();
+
+    Paint paint_5_fill = Paint()..style=PaintingStyle.fill;
+    paint_5_fill.color = Color(0xffff0000).withOpacity(posteriorDeltoid ? 1.0 : 0.0);
+    canvas.drawPath(path_5,paint_5_fill);
+
+    Path path_6 = Path();
+    path_6.moveTo(233.17909,244.0776);
+    path_6.cubicTo(234.1606,237.17093,238.28902,223.06043,240.72569000000001,218.28417);
+    path_6.cubicTo(243.45868000000002,212.92705999999998,246.21357,210.48673,253.33497000000003,207.11466);
+    path_6.cubicTo(259.47468000000003,204.20743,271.30864,200.7386,273.07266000000004,201.32905);
+    path_6.cubicTo(275.14825,202.02379,249.96465000000003,232.2891,236.66128000000003,245.08776);
+    path_6.lineTo(232.46133000000003,249.12837);
+    path_6.close();
+
+    Paint paint_6_fill = Paint()..style=PaintingStyle.fill;
+    paint_6_fill.color = Color(0xffff0000).withOpacity(medialDeltoid ? 1.0 : 0.0);
+    canvas.drawPath(path_6,paint_6_fill);
+
+    Path path_7 = Path();
+    path_7.moveTo(213.32421,370.64811);
+    path_7.cubicTo(211.39786999999998,366.08149,211.70011,343.04575,213.85831,329.94057);
+    path_7.cubicTo(215.75581,318.41841,220.31382,308.31172999999995,228.76739999999998,296.88199);
+    path_7.cubicTo(239.38179999999997,282.53067999999996,253.25457999999998,275.79366999999996,260.07277999999997,281.67922);
+    path_7.cubicTo(262.89250999999996,284.11323999999996,264.28463999999997,292.44313,263.56411999999995,302.56977);
+    path_7.cubicTo(262.91040999999996,311.75742,259.30074999999994,329.68289,256.25994,338.8422);
+    path_7.cubicTo(252.40954999999997,350.44006,229.71643999999998,370.81922,217.86989999999997,373.31772);
+    path_7.cubicTo(215.02217999999996,373.91832,214.59881,373.66968,213.32420999999997,370.64811000000003);
+    path_7.close();
+
+    Paint paint_7_fill = Paint()..style=PaintingStyle.fill;
+    paint_7_fill.color = Color(0xffff0000).withOpacity(triceps ? 1.0 : 0.0);
+    canvas.drawPath(path_7,paint_7_fill);
+
+    Path path_8 = Path();
+    path_8.moveTo(187.95878,484.94621);
+    path_8.cubicTo(183.6497,482.67083,182.11921999999998,480.33994,182.11921999999998,476.05269);
+    path_8.cubicTo(182.11921999999998,470.58968,188.27185999999998,436.33176,191.69077,422.75829);
+    path_8.cubicTo(195.29691,408.44149,197.90999,403.02513,205.03304999999997,395.10256);
+    path_8.lineTo(209.58055999999996,390.04465);
+    path_8.lineTo(217.82070999999996,390.06215);
+    path_8.cubicTo(226.98821999999996,390.08164999999997,237.82979999999998,392.05713999999995,242.75931999999997,394.6063);
+    path_8.cubicTo(245.72205999999997,396.13838999999996,245.94598999999997,396.59164,245.41451999999998,399.98058);
+    path_8.cubicTo(244.33139999999997,406.88719,227.38281999999998,438.51261999999997,213.87748999999997,458.82754);
+    path_8.cubicTo(211.40260999999995,462.55029,207.94985999999997,469.16631,206.20470999999998,473.5298);
+    path_8.cubicTo(201.63486999999998,484.95603,199.97427,487.02909,195.43495,486.97461000000004);
+    path_8.cubicTo(193.38934999999998,486.95001,190.02507,486.03726000000006,187.95878,484.94617000000005);
+    path_8.close();
+
+    Paint paint_8_fill = Paint()..style=PaintingStyle.fill;
+    paint_8_fill.color = Color(0xffff0000).withOpacity(forearms ? 1.0 : 0.0);
+    canvas.drawPath(path_8,paint_8_fill);
+
+    Path path_9 = Path();
+    path_9.moveTo(337.75356,512.16998);
+    path_9.cubicTo(337.02961,508.05982,334.00912,497.19658,331.04134999999997,488.02944);
+    path_9.cubicTo(328.07358999999997,478.86231000000004,324.49344999999994,466.59832,323.08549999999997,460.77612000000005);
+    path_9.cubicTo(319.80422,447.20737,318.09826999999996,426.77410000000003,319.24645999999996,414.79338000000007);
+    path_9.lineTo(320.11773999999997,405.7020100000001);
+    path_9.lineTo(308.67859999999996,371.8619000000001);
+    path_9.cubicTo(293.36567999999994,326.5620900000001,290.80044999999996,317.4335100000001,291.56636,310.9665900000001);
+    path_9.cubicTo(292.88782,299.8089500000001,300.16398,294.1417100000001,313.21837999999997,294.10234000000014);
+    path_9.cubicTo(334.07198999999997,294.0394400000001,362.52256,313.3488800000001,365.95788,329.89672000000013);
+    path_9.cubicTo(366.89991,334.4344600000001,368.20883,336.7777800000001,372.62525999999997,341.83311000000015);
+    path_9.cubicTo(382.68028,353.34272000000016,382.35636999999997,349.18879000000015,378.49222999999995,417.0739800000001);
+    path_9.lineTo(375.14242999999993,475.9231100000001);
+    path_9.lineTo(364.24220999999994,490.3100300000001);
+    path_9.cubicTo(358.24708999999996,498.2228400000001,350.1307499999999,508.0598200000001,346.20590999999996,512.1699800000001);
+    path_9.lineTo(339.06981999999994,519.6430100000001);
+    path_9.close();
+
+    Paint paint_9_fill = Paint()..style=PaintingStyle.fill;
+    paint_9_fill.color = Color(0xffff0000).withOpacity(latisimusDorsi ? 1.0 : 0.0);
+    canvas.drawPath(path_9,paint_9_fill);
+
+    Path path_10 = Path();
+    path_10.moveTo(435.94366,512.52564);
+    path_10.cubicTo(429.47540000000004,505.16619,417.27559,489.81676999999996,410.9733,481.10874999999993);
+    path_10.lineTo(407.06118,475.70327999999995);
+    path_10.lineTo(403.71412999999995,416.48978999999997);
+    path_10.lineTo(400.36708999999996,357.27630999999997);
+    path_10.lineTo(402.71781,352.14165999999994);
+    path_10.cubicTo(404.0107,349.31759999999997,407.15965,344.65250999999995,409.71547,341.77479999999997);
+    path_10.cubicTo(412.48717999999997,338.654,414.82629,334.80285999999995,415.51193,332.23143);
+    path_10.cubicTo(418.3103,321.73644,423.85194,314.67001999999997,435.97946,306.13232);
+    path_10.cubicTo(446.45362,298.75857,456.57777000000004,294.91850999999997,467.14237,294.31232);
+    path_10.cubicTo(478.20140000000004,293.67777,483.79682,295.93149,487.70056000000005,302.59273);
+    path_10.cubicTo(493.36765,312.26289,492.9703400000001,314.25046000000003,474.45939000000004,368.83144000000004);
+    path_10.lineTo(462.64004000000006,403.68171000000007);
+    path_10.lineTo(462.84202000000005,421.8644500000001);
+    path_10.cubicTo(463.09185,444.3549000000001,461.2447,456.1136400000001,453.71783000000005,479.9482200000001);
+    path_10.cubicTo(447.24659,500.4400300000001,443.87001000000004,512.90821,443.80107000000004,516.5662500000001);
+    path_10.cubicTo(443.77227000000005,518.0941100000001,443.34097,519.3441700000001,442.84261000000004,519.3441700000001);
+    path_10.cubicTo(442.34424,519.3441700000001,439.23971000000006,516.27583,435.94366,512.5256400000001);
+    path_10.close();
+
+    Paint paint_10_fill = Paint()..style=PaintingStyle.fill;
+    paint_10_fill.color = Color(0xffff0000).withOpacity(latisimusDorsi ? 1.0 : 0.0);
+    canvas.drawPath(path_10,paint_10_fill);
+
+    Path path_11 = Path();
+    path_11.moveTo(405.36293,544.34392);
+    path_11.lineTo(405.36293,525.52913);
+    path_11.lineTo(415.71699,530.4620600000001);
+    path_11.cubicTo(421.41173000000003,533.1751700000001,429.37779,536.46333,433.41936,537.76908);
+    path_11.lineTo(440.76766,540.14318);
+    path_11.lineTo(433.47163,543.63327);
+    path_11.cubicTo(426.09566,547.16161,413.24446,555.7411900000001,408.14085,560.54434);
+    path_11.lineTo(405.36293,563.15871);
+    path_11.close();
+
+    Paint paint_11_fill = Paint()..style=PaintingStyle.fill;
+    paint_11_fill.color = Color(0xffff0000).withOpacity(erectorSpinea ? 1.0 : 0.0);
+    canvas.drawPath(path_11,paint_11_fill);
+
+    Path path_12 = Path();
+    path_12.moveTo(372.0279,560.23512);
+    path_12.cubicTo(368.88319,556.39594,354.0448,546.1641400000001,346.32144999999997,542.50926);
+    path_12.lineTo(338.29267,538.7098500000001);
+    path_12.lineTo(344.30114,536.9919000000001);
+    path_12.cubicTo(347.6058,536.0470300000001,355.49627999999996,532.8231900000001,361.83554999999996,529.8278000000001);
+    path_12.cubicTo(368.17481,526.8324100000001,373.52648999999997,524.5466600000001,373.7281899999999,524.7483500000002);
+    path_12.cubicTo(373.9298799999999,524.9500500000001,373.97074999999995,533.4332900000002,373.8189899999999,543.6000200000002);
+    path_12.cubicTo(373.5711799999999,560.2037400000002,373.3888999999999,561.8967000000002,372.0278799999999,560.2351200000002);
+    path_12.close();
+
+    Paint paint_12_fill = Paint()..style=PaintingStyle.fill;
+    paint_12_fill.color = Color(0xffff0000).withOpacity(erectorSpinea ? 1.0 : 0.0);
+    canvas.drawPath(path_12,paint_12_fill);
+
+    Path path_13 = Path();
+    path_13.moveTo(344.2487,669.20155);
+    path_13.cubicTo(342.58195,668.98318,331.89959,667.6465,320.51012,666.23117);
+    path_13.cubicTo(309.12064999999996,664.81584,298.33174999999994,663.20144,296.53479,662.64363);
+    path_13.cubicTo(292.66829,661.44339,289.63809,657.8943800000001,288.14716999999996,652.8199500000001);
+    path_13.cubicTo(286.43416999999994,646.9896500000001,284.96867,613.0967700000001,286.18674,607.48085);
+    path_13.cubicTo(287.63313,600.81226,292.84771,584.91989,296.46197,576.16525);
+    path_13.cubicTo(299.56031,568.6603,299.77443,568.4916900000001,305.86291,568.76223);
+    path_13.cubicTo(316.62854,569.2406100000001,357.84548,578.2154800000001,362.63535,581.12428);
+    path_13.cubicTo(369.32267,585.18536,376.78351000000004,599.40532,379.24986,612.79065);
+    path_13.lineTo(380.48219,619.47874);
+    path_13.lineTo(373.73079,632.79853);
+    path_13.cubicTo(370.01752,640.12441,363.89544,651.34586,360.12617,657.7350700000001);
+    path_13.cubicTo(352.73312,670.26687,352.67885,670.3060700000001,344.2487,669.2015500000001);
+    path_13.close();
+
+    Paint paint_13_fill = Paint()..style=PaintingStyle.fill;
+    paint_13_fill.color = Color(0xffff0000).withOpacity(glutes ? 1.0 : 0.0);
+    canvas.drawPath(path_13,paint_13_fill);
+
+    Path path_14 = Path();
+    path_14.moveTo(421.07084,657.05101);
+    path_14.cubicTo(416.8614,649.92686,410.59427999999997,638.5200100000001,407.14392,631.70245);
+    path_14.lineTo(400.87054,619.30689);
+    path_14.lineTo(402.53416,611.26145);
+    path_14.cubicTo(405.50252,596.90612,414.06084,582.62466,421.38842,579.7989);
+    path_14.cubicTo(424.90535,578.44265,456.47599,571.37542,465.46701,569.9317);
+    path_14.cubicTo(474.61774,568.4623399999999,480.97493000000003,568.27091,482.05176,569.43229);
+    path_14.cubicTo(483.65994,571.16675,490.25616,589.12628,493.33256,600.14649);
+    path_14.lineTo(496.40217,611.14243);
+    path_14.lineTo(495.39863,630.85327);
+    path_14.cubicTo(494.29641000000004,652.50208,492.9246,657.9338899999999,487.6938,661.36124);
+    path_14.cubicTo(485.21979,662.98228,460.48908,666.7478299999999,435.47894,669.3116);
+    path_14.lineTo(428.72438,670.004);
+    path_14.close();
+
+    Paint paint_14_fill = Paint()..style=PaintingStyle.fill;
+    paint_14_fill.color = Color(0xffff0000).withOpacity(glutes ? 1.0 : 0.0);
+    canvas.drawPath(path_14,paint_14_fill);
+
+    Path path_15 = Path();
+    path_15.moveTo(475.2754,795.59575);
+    path_15.cubicTo(471.78068,794.83688,462.79907,792.52783,455.31628,790.4645099999999);
+    path_15.lineTo(441.7112,786.7130299999999);
+    path_15.lineTo(440.17165,781.5705199999999);
+    path_15.cubicTo(436.7344,770.0891599999999,426.78227,693.7630099999999,428.48033,691.9059999999998);
+    path_15.cubicTo(430.88263,689.2788199999999,460.56991,684.8432499999998,477.08376,684.6441599999998);
+    path_15.lineTo(488.70052,684.5041099999999);
+    path_15.lineTo(489.00191,689.6939799999999);
+    path_15.cubicTo(489.19694,693.0523,487.81464,701.6081099999999,485.08504,713.9376399999999);
+    path_15.lineTo(480.86677,732.9914399999999);
+    path_15.lineTo(481.48843,757.2350999999999);
+    path_15.cubicTo(481.83034,770.5691099999999,482.40848,785.0016599999999,482.77319,789.3074399999998);
+    path_15.cubicTo(483.14909,793.7454899999998,483.04501,797.1013399999998,482.53287,797.0558199999998);
+    path_15.cubicTo(482.03599,797.0116199999998,478.77013,796.3546199999998,475.2754,795.5957499999998);
+    path_15.close();
+
+    Paint paint_15_fill = Paint()..style=PaintingStyle.fill;
+    paint_15_fill.color = Color(0xffff0000).withOpacity(hamstrings ? 1.0 : 0.0);
+    canvas.drawPath(path_15,paint_15_fill);
+
+    Path path_16 = Path();
+    path_16.moveTo(455.36548,928.15998);
+    path_16.cubicTo(451.81102,926.15161,451.17332999999996,925.2117000000001,450.06531,920.3479100000001);
+    path_16.cubicTo(447.44502,908.8458400000001,445.51294,903.9673600000001,440.96605,897.3723600000001);
+    path_16.cubicTo(434.34041,887.76228,428.42877,873.06388,427.81931,864.68501);
+    path_16.cubicTo(427.33144999999996,857.9778200000001,429.16511999999994,825.44313,430.45928,817.84425);
+    path_16.cubicTo(431.14569,813.81382,431.16015,813.8028899999999,436.19881,813.5065999999999);
+    path_16.cubicTo(438.97706999999997,813.34323,448.93089,814.1278,458.3184,815.2500799999999);
+    path_16.cubicTo(477.78716,817.5775699999999,476.94678,817.1490399999999,485.02311,828.8675799999999);
+    path_16.cubicTo(491.94183999999996,838.9064899999998,496.27666,847.9187399999998,496.27666,852.2641699999998);
+    path_16.cubicTo(496.27666,860.2047799999998,485.85146,885.2671799999998,477.49536,897.4148199999998);
+    path_16.cubicTo(474.54711000000003,901.7008199999998,469.83337,914.4236899999999,467.46488,924.4881199999999);
+    path_16.cubicTo(466.91709,926.8158899999999,462.46914,930.5025999999999,460.26039,930.4596399999999);
+    path_16.cubicTo(459.79051999999996,930.4506399999999,457.58781999999997,929.4156499999999,455.36548,928.1599799999999);
+    path_16.close();
+
+    Paint paint_16_fill = Paint()..style=PaintingStyle.fill;
+    paint_16_fill.color = Color(0xffff0000).withOpacity(calves ? 1.0 : 0.0);
+    canvas.drawPath(path_16,paint_16_fill);
+
+    Path path_17 = Path();
+    path_17.moveTo(316.67322,926.62455);
+    path_17.cubicTo(315.07803,925.39708,313.4725,921.84807,311.54233,915.2828);
+    path_17.cubicTo(308.20544,903.93265,305.39724,897.3723299999999,301.92946,892.82583);
+    path_17.cubicTo(297.55032,887.08448,288.3032,866.62939,285.92102,857.41435);
+    path_17.lineTo(283.64159,848.59679);
+    path_17.lineTo(288.07859,839.9317000000001);
+    path_17.cubicTo(292.79904,830.7130300000001,301.48463000000004,818.3514500000001,304.61510000000004,816.3964400000001);
+    path_17.cubicTo(306.70913,815.08869,336.23193000000003,811.2942400000001,344.38882,811.28447);
+    path_17.cubicTo(349.45985,811.2784700000001,349.59409,811.3549700000001,350.20306,814.60104);
+    path_17.cubicTo(351.65726,822.35263,352.78465,839.0856200000001,352.80894,853.2782);
+    path_17.cubicTo(352.83464,868.28232,352.78314,868.6412799999999,349.34986000000004,877.3865499999999);
+    path_17.cubicTo(347.43303000000003,882.26915,343.59033000000005,889.73415,340.81053,893.9754599999999);
+    path_17.cubicTo(334.74451000000005,903.2307199999999,333.27176000000003,906.6820999999999,331.67113,915.3935799999999);
+    path_17.cubicTo(330.22131,923.2842499999999,330.163,923.3826399999999,325.2506,926.2282099999999);
+    path_17.cubicTo(320.63646,928.9010199999999,319.68858,928.9448199999998,316.67322,926.6245499999999);
+    path_17.close();
+
+    Paint paint_17_fill = Paint()..style=PaintingStyle.fill;
+    paint_17_fill.color = Color(0xffff0000).withOpacity(calves ? 1.0 : 0.0);
+    canvas.drawPath(path_17,paint_17_fill);
+
+    Path path_18 = Path();
+    path_18.moveTo(297.65674,791.32775);
+    path_18.cubicTo(298.77281,781.21592,300.34865,737.2887800000001,299.72951,733.5484700000001);
+    path_18.cubicTo(299.4029,731.5753500000001,297.60013,723.14245,295.72335,714.8086900000001);
+    path_18.cubicTo(291.69424,696.9176100000001,290.72294,690.14047,291.6554,686.42523);
+    path_18.lineTo(292.34112,683.6931000000001);
+    path_18.lineTo(304.65785,684.3526300000001);
+    path_18.cubicTo(324.13644,685.3956600000001,350.88872,689.7483500000001,352.3497,692.1122600000001);
+    path_18.cubicTo(353.40144,693.81401,345.23598,760.5890800000001,342.22171,774.9363000000001);
+    path_18.cubicTo(339.69097,786.9820800000001,340.4609,786.25346,325.90108,790.38125);
+    path_18.cubicTo(314.97369,793.47923,299.64426,797.13612,297.58517,797.13612);
+    path_18.cubicTo(297.27193,797.13612,297.30414,794.52235,297.65677,791.32775);
+    path_18.close();
+
+    Paint paint_18_fill = Paint()..style=PaintingStyle.fill;
+    paint_18_fill.color = Color(0xffff0000).withOpacity(hamstrings ? 1.0 : 0.0);
+    canvas.drawPath(path_18,paint_18_fill);
+
+    Path path_19 = Path();
+    path_19.moveTo(580.26315,484.44732);
+    path_19.cubicTo(579.15044,483.03274,577.01476,478.60069,575.51721,474.59833);
+    path_19.cubicTo(574.0196599999999,470.59596999999997,569.72538,462.54834999999997,565.9743599999999,456.71470999999997);
+    path_19.cubicTo(550.0566399999999,431.95926,535.28568,403.37035999999995,535.8542399999999,398.41783999999996);
+    path_19.cubicTo(536.0911399999999,396.35436999999996,537.1237499999999,395.14115999999996,539.7132199999999,393.88394999999997);
+    path_19.cubicTo(544.2998099999999,391.65709999999996,554.4128899999998,390.06188,564.0044099999999,390.05228);
+    path_19.cubicTo(571.4968599999999,390.04528,571.6907899999999,390.10988,575.2709699999999,393.83272);
+    path_19.cubicTo(584.1267799999999,403.04149,587.8987999999999,412.5636,593.1778899999999,439.03705);
+    path_19.cubicTo(597.81761,462.30419,599.7927799999999,477.58495000000005,598.52126,480.37563);
+    path_19.cubicTo(597.22378,483.22328,589.74352,487.01929,585.42955,487.01929);
+    path_19.cubicTo(583.26468,487.01929,581.65652,486.2187,580.26315,484.44732);
+    path_19.close();
+
+    Paint paint_19_fill = Paint()..style=PaintingStyle.fill;
+    paint_19_fill.color = Color(0xffff0000).withOpacity(forearms ? 1.0 : 0.0);
+    canvas.drawPath(path_19,paint_19_fill);
+
+    Path path_20 = Path();
+    path_20.moveTo(560.76902,372.47438);
+    path_20.cubicTo(554.5220499999999,370.24291,548.52478,366.24946,541.10766,359.38235);
+    path_20.cubicTo(529.33354,348.48132,526.07672,343.52808999999996,523.06524,331.94201);
+    path_20.cubicTo(517.79225,311.65519,516.14954,295.41031,518.5113200000001,286.90797999999995);
+    path_20.cubicTo(522.3769800000001,272.99173999999994,540.9859100000001,279.69041999999996,554.72945,299.94548);
+    path_20.cubicTo(562.6406000000001,311.60485,565.73981,319.22281999999996,567.59724,331.57504);
+    path_20.cubicTo(569.7740500000001,346.05123,570.04582,366.05277,568.1274800000001,370.59920999999997);
+    path_20.cubicTo(566.5907200000001,374.24127999999996,566.0798700000001,374.37145999999996,560.7690200000001,372.47438);
+    path_20.close();
+
+    Paint paint_20_fill = Paint()..style=PaintingStyle.fill;
+    paint_20_fill.color = Color(0xffff0000).withOpacity(triceps ? 1.0 : 0.0);
+    canvas.drawPath(path_20,paint_20_fill);
+
+    Path path_21 = Path();
+    path_21.moveTo(489.71067,273.30359);
+    path_21.cubicTo(488.5995,273.13948,479.9627,272.48307,470.51777,271.84490999999997);
+    path_21.cubicTo(461.07284,271.20674999999994,452.58387999999997,270.47400999999996,451.65342,270.21659999999997);
+    path_21.cubicTo(450.13905,269.79767,450.23163999999997,269.15887999999995,452.53634999999997,264.12471);
+    path_21.cubicTo(453.95243999999997,261.03157,456.83925,251.46332999999998,458.95147999999995,242.86195999999998);
+    path_21.cubicTo(461.06370999999996,234.26057999999998,463.0276999999999,226.98729999999998,463.31588999999997,226.6991);
+    path_21.cubicTo(464.27317999999997,225.74181,468.92639999999994,231.62525,473.54508999999996,239.63269);
+    path_21.cubicTo(479.08552,249.23816,486.73503999999997,256.91667,498.80204,264.98538);
+    path_21.cubicTo(503.8023,268.32885000000005,508.02563999999995,271.4121,508.18726,271.83706);
+    path_21.cubicTo(508.8236,273.51031,497.30213,274.42479000000003,489.71067,273.30359);
+    path_21.close();
+
+    Paint paint_21_fill = Paint()..style=PaintingStyle.fill;
+    paint_21_fill.color = Color(0xffff0000).withOpacity(infraspinatus ? 1.0 : 0.0);
+    canvas.drawPath(path_21,paint_21_fill);
+
+    Path path_22 = Path();
+    path_22.moveTo(523.20017,255.23475);
+    path_22.cubicTo(509.60256,248.38573,492.28709,233.5331,486.61359999999996,223.85201999999998);
+    path_22.cubicTo(483.34390999999994,218.27272,484.02890999999994,217.1402,490.67319999999995,217.1402);
+    path_22.cubicTo(499.40241999999995,217.1402,504.602,220.72537,515.9746299999999,234.58586);
+    path_22.cubicTo(536.36821,259.44066,537.3990699999999,262.38664,523.20017,255.23475);
+    path_22.close();
+
+    Paint paint_22_fill = Paint()..style=PaintingStyle.fill;
+    paint_22_fill.color = Color(0xffff0000).withOpacity(posteriorDeltoid ? 1.0 : 0.0);
+    canvas.drawPath(path_22,paint_22_fill);
+
+    Path path_23 = Path();
+    path_23.moveTo(539.09237,239.27938);
+    path_23.cubicTo(521.5182199999999,220.90393,506.19420999999994,202.04924,508.27117999999996,201.35692);
+    path_23.cubicTo(510.18346999999994,200.71949,521.93855,204.16323,528.1060799999999,207.1677);
+    path_23.cubicTo(536.7144699999999,211.36121,539.2394499999999,214.46417,543.3092699999999,225.85103);
+    path_23.cubicTo(546.4246099999998,234.56739000000002,548.9802899999999,247.61314000000002,547.5724799999998,247.61314000000002);
+    path_23.cubicTo(547.2921099999999,247.61314000000002,543.4760599999998,243.86295,539.0923699999998,239.27938);
+    path_23.close();
+
+    Paint paint_23_fill = Paint()..style=PaintingStyle.fill;
+    paint_23_fill.color = Color(0xffff0000).withOpacity(medialDeltoid ? 1.0 : 0.0);
+    canvas.drawPath(path_23,paint_23_fill);
 
   }
 
