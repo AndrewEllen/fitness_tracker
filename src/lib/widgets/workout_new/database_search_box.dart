@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+import 'anatomy_diagram.dart';
 import 'muscle_anatomy_diagram_painter.dart';
 
 class DatabaseSearchBox extends StatefulWidget {
@@ -287,108 +288,9 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
                             ],
                           ),
                         ),
-                  
-                        const SizedBox(height: 25,),
-                  
-                        Center(
-                          child: Transform.scale(
-                            scale: 0.72.w,
-                            child: Stack(
-                              children: [
-                                Transform.translate(
-                                  offset: const Offset(-130,0),
-                                  child: Stack(
-                                    children: [
-                  
-                  
-                                      Transform.scale(
-                                        scale: 0.5,
-                                        child: Transform.translate(
-                                          offset: const Offset(-240, -149),
-                                          child: CustomPaint(
-                                            size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                                            painter: FrontAnatomyCustomPainterColour(
-                                              chest: checkMuscle(["Pectoralis Major"]),
-                                              abdominals: checkMuscle(["Rectus Abdominis"]),
-                                              calves: checkMuscle(["Gastrocnemius", "Soleus"]),
-                                              quadriceps: checkMuscle(["Quadriceps Femoris"]),
-                                              anteriorDelts: checkMuscle(["Anterior Deltoids"]),
-                                              midDelts: checkMuscle(["Medial Deltoids"]),
-                                              obliques: checkMuscle(["Obliques"]),
-                                              forearms: checkMuscle(["Brachioradialis"]),
-                                              biceps: checkMuscle(["Biceps Brachii"]),
-                                              serratusAnterior: checkMuscle(["Serratus Anterior"]),
-                                              trapezius: checkMuscle(["Upper Trapezius"]),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                  
-                                      Transform.scale(
-                                        scale: 1.88,
-                                        child: Transform.translate(
-                                          offset: const Offset(47, 45),
-                                          child: CustomPaint(
-                                            size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                                            painter: FrontAnatomyCustomPainter(),
-                                          ),
-                                        ),
-                                      ),
-                  
-                  
-                                    ],
-                                  ),
-                                ),
-                  
-                  
-                                Transform.translate(
-                                  offset: const Offset(130,0),
-                                  child: Stack(
-                                    children: [
-                  
-                                      Transform.scale(
-                                        scale: 1.88,
-                                        child: Transform.translate(
-                                          offset: const Offset(47, 45),
-                                          child: CustomPaint(
-                                            size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                                            painter: BackAnatomyCustomPainter(),
-                                          ),
-                                        ),
-                                      ),
-                  
-                                      Transform.scale(
-                                        scale: 0.5,
-                                        child: Transform.translate(
-                                          offset: const Offset(-240, -148),
-                                          child: CustomPaint(
-                                            size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                                            painter: BackAnatomyCustomPainterColour(
-                                              upperTrapezius: checkMuscle(["Upper Trapezius"]),
-                                              lowerTrapezius: checkMuscle(["Lower Trapezius"]),
-                                              calves: checkMuscle(["Gastrocnemius", "Soleus"]),
-                                              posteriorDeltoid: checkMuscle(["Posterior Deltoids"]),
-                                              medialDeltoid: checkMuscle(["Medial Deltoids"]),
-                                              hamstrings: checkMuscle(["Biceps Femoris"]),
-                                              forearms: checkMuscle(["Brachioradialis"]),
-                                              triceps: checkMuscle(["Triceps Brachii"]),
-                                              erectorSpinea: checkMuscle(["Erector Spinae"]),
-                                              glutes: checkMuscle(["Gluteus Maximus"]),
-                                              latissimusDorsi: checkMuscle(["Latissimus Dorsi"]),
-                                              infraspinatus: checkMuscle(["Infraspinatus", "Teres Major", "Teres Minor", "Subscapularis"]),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                  
-                                    ],
-                                  ),
-                                ),
-                  
-                  
-                              ],
-                            ),
-                          ),
+
+                        AnatomyDiagram(
+                          exerciseDatabaseModel: widget.exerciseModel,
                         ),
                   
                         const SizedBox(height: 225,),
