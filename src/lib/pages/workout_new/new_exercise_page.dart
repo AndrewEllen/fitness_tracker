@@ -30,6 +30,15 @@ class _NewExercisePageState extends State<NewExercisePage> {
   final GlobalKey<FormState> categoriesKey = GlobalKey<FormState>();
   final TextEditingController categoriesController = TextEditingController();
 
+  final GlobalKey<FormState> primaryMuscleKey = GlobalKey<FormState>();
+  final TextEditingController primaryMuscleController = TextEditingController();
+
+  final GlobalKey<FormState> secondaryMuscleKey = GlobalKey<FormState>();
+  final TextEditingController secondaryMuscleController = TextEditingController();
+
+  final GlobalKey<FormState> tertiaryMuscleKey = GlobalKey<FormState>();
+  final TextEditingController tertiaryMuscleController = TextEditingController();
+
   late int typeDropDownMenuValue = 0;
   late int weightTypeDropDownMenuValue = 0;
 
@@ -44,6 +53,18 @@ class _NewExercisePageState extends State<NewExercisePage> {
         categoriesController.text = exerciseMap[exerciseController.text]!["target-muscle"]!;
       }
 
+      if (exerciseMap[exerciseController.text]!["primary-muscle"]!.isNotEmpty) {
+        primaryMuscleController.text = exerciseMap[exerciseController.text]!["primary-muscle"]!;
+      }
+
+      if (exerciseMap[exerciseController.text]!["secondary-muscle"]!.isNotEmpty) {
+        secondaryMuscleController.text = exerciseMap[exerciseController.text]!["secondary-muscle"]!;
+      }
+
+      if (exerciseMap[exerciseController.text]!["tertiary-muscle"]!.isNotEmpty) {
+        tertiaryMuscleController.text = exerciseMap[exerciseController.text]!["tertiary-muscle"]!;
+      }
+
     }
 
   }
@@ -56,6 +77,10 @@ class _NewExercisePageState extends State<NewExercisePage> {
   List<String> categoriesList = <String>[
     'Adductors', 'Trapezius ', 'Other', 'Forearms', 'Back', 'Hamstrings', 'Biceps', 'Trapezius', 'Triceps', 'Glutes', 'Hip Flexors', 'Calves', 'Shoulders', 'Quadriceps', 'Abductors', 'Chest', 'Abdominals'
   ];
+
+  List<String> muscleList = <String>[
+  'Triceps Brachii ', 'Rhomboids', 'Rectus Abdominis', 'Latissimus Dorsi', 'Gluteus Medius', 'Teres Major', 'Gluteus Minimus', 'Anterior Deltoids', 'Iliopsoas', 'Erector Spinae ', 'Infraspinatus', 'Gluteus Maximus', 'Biceps Femoris', 'Brachialis', 'Gastrocnemius', 'Soleus', 'Teres Minor', 'Subscapularis ', 'Quadriceps Femoris', 'Upper Trapezius', 'Adductor Magnus', 'Rectus Abdominis ', 'Tensor Fasciae Latae', 'Biceps Brachii', 'Lower Trapezius', 'Rectus Femoris', 'Triceps Brachaii', 'Tibialis Anterior', 'Pectoralis Major', 'Triceps Brachii', 'Erector Spinae', 'Anterior Deltoids ', 'Medial Deltoids', 'Brachioradialis', 'Obliques', 'Serratus Anterior', 'Posterior Deltoids'
+];
 
 
   @override
@@ -112,6 +137,39 @@ class _NewExercisePageState extends State<NewExercisePage> {
                         formController: categoriesController,
                         formKey: categoriesKey,
                         listOfItems: categoriesList,
+                        validate: false,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20, left: 50.0, right: 50.0),
+                      child: DropDownForm(
+                        label: "Search Primary Muscles",
+                        formController: primaryMuscleController,
+                        formKey: primaryMuscleKey,
+                        listOfItems: muscleList,
+                        validate: false,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20, left: 50.0, right: 50.0),
+                      child: DropDownForm(
+                        label: "Search Secondary Muscles",
+                        formController: secondaryMuscleController,
+                        formKey: secondaryMuscleKey,
+                        listOfItems: muscleList,
+                        validate: false,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20, left: 50.0, right: 50.0),
+                      child: DropDownForm(
+                        label: "Search Tertiary Muscles",
+                        formController: tertiaryMuscleController,
+                        formKey: tertiaryMuscleKey,
+                        listOfItems: muscleList,
                         validate: false,
                       ),
                     ),
