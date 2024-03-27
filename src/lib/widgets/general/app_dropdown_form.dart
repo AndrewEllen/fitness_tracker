@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/constants.dart';
@@ -82,15 +84,13 @@ class _DropDownFormState extends State<DropDownForm> {
         };
       }
 
-      List similarityList = [];
+      List<double> similarityList = [];
       for(String searchWord in searchWord.split(" ")) {
-
+        List<double> wordListSimilarity = [];
         for(String itemWord in searchItem.split(" ")) {
-          double _similarity = searchWord.jaccardSimilarity(itemWord);
-          if (_similarity > 0.42) {
-            similarityList.add(_similarity);
-          }
+          wordListSimilarity.add(searchWord.jaccardSimilarity(itemWord));
         }
+        similarityList.add(wordListSimilarity.reduce(max));
       }
 
       double average = 0;
