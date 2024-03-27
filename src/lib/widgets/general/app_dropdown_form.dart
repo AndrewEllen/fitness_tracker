@@ -42,30 +42,6 @@ class _DropDownFormState extends State<DropDownForm> {
 
   void searchForExercise(String value) {
 
-
-    List<Map> sortBySimilarity(List<Map> similarityMap) {
-
-      List<Map> sortedList = [];
-
-      for (int index = 0; index < similarityMap.length; index++) {
-        if (sortedList.isNotEmpty) {
-          int insertIndex = 0;
-          for (int sortingIndex = 0; sortingIndex < sortedList.length; sortingIndex++) {
-            if (similarityMap[index]["similarity"] >= similarityMap[insertIndex]["similarity"] ) {
-              insertIndex = sortingIndex;
-            }
-          }
-          sortedList.insert(insertIndex, similarityMap[index]);
-
-        } else {
-          sortedList.add(similarityMap[index]);
-        }
-
-      }
-      return sortedList;
-    }
-
-
     List<Map> sortListBySimilarity(List<Map> similarityMap) {
 
       // Create a new list with the same elements and then sort it
@@ -172,7 +148,7 @@ class _DropDownFormState extends State<DropDownForm> {
               cursorColor: appSecondaryColour,
               focusNode: formFocusNode,
               decoration: InputDecoration(
-                errorStyle: TextStyle(height: 0),
+                errorStyle: const TextStyle(height: 0),
                 labelText: widget.label,
                 labelStyle: boldTextStyle.copyWith(
                   color: Colors.white,
@@ -206,7 +182,7 @@ class _DropDownFormState extends State<DropDownForm> {
               ),
             onChanged: (value) => EasyDebounce.debounce(
               "levenshteinDistanceDebouncerExercise",
-              const Duration(milliseconds: 200),
+              const Duration(milliseconds: 400),
                   () => searchForExercise(value)),
             onTap: () {
               FirebaseAnalytics.instance.logEvent(name: widget.label.replaceAll(" ", "_")+'_dropdown_selected');
