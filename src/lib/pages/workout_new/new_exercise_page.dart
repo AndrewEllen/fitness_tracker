@@ -56,13 +56,13 @@ class _NewExercisePageState extends State<NewExercisePage> {
       if (exerciseMap[exerciseController.text]!["primary-muscle"]!.isNotEmpty) {
         primaryMuscleController.text = exerciseMap[exerciseController.text]!["primary-muscle"]!;
       } else {
-        tertiaryMuscleController.text = "";
+        primaryMuscleController.text = "";
       }
 
       if (exerciseMap[exerciseController.text]!["secondary-muscle"]!.isNotEmpty) {
         secondaryMuscleController.text = exerciseMap[exerciseController.text]!["secondary-muscle"]!;
       } else {
-        tertiaryMuscleController.text = "";
+        secondaryMuscleController.text = "";
       }
 
       if (exerciseMap[exerciseController.text]!["tertiary-muscle"]!.isNotEmpty) {
