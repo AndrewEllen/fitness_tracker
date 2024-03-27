@@ -229,6 +229,9 @@ void createNewExercise(ExerciseModel exercise) async {
       .doc(exercise.exerciseName)
       .set({
         "category": exercise.category,
+        "primary-muscle": exercise.primaryMuscle,
+        "secondary-muscle": exercise.secondaryMuscle,
+        "tertiary-muscle": exercise.tertiaryMuscle,
         "type": exercise.type,
         "exerciseTrackingType": exercise.exerciseTrackingType,
       });

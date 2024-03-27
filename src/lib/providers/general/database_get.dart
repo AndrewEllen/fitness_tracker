@@ -801,6 +801,9 @@ GetExerciseLogData(String exerciseName, {options = const GetOptions(source: Sour
           ],
         ),
         category: repsAndWeightSnapshot.data()?["category"],
+        primaryMuscle: repsAndWeightSnapshot.data()?["primaryMuscle"],
+        secondaryMuscle: repsAndWeightSnapshot.data()?["secondaryMuscle"],
+        tertiaryMuscle: repsAndWeightSnapshot.data()?["tertiaryMuscle"],
         type: repsAndWeightSnapshot.data()?["type"] ?? 0,
         exerciseTrackingType: repsAndWeightSnapshot.data()?["exerciseTrackingType"],
         exerciseMaxRepsAndWeight: repsAndWeightSnapshot.data()?["data"] == null ? {}

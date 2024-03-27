@@ -55,14 +55,20 @@ class _NewExercisePageState extends State<NewExercisePage> {
 
       if (exerciseMap[exerciseController.text]!["primary-muscle"]!.isNotEmpty) {
         primaryMuscleController.text = exerciseMap[exerciseController.text]!["primary-muscle"]!;
+      } else {
+        tertiaryMuscleController.text = "";
       }
 
       if (exerciseMap[exerciseController.text]!["secondary-muscle"]!.isNotEmpty) {
         secondaryMuscleController.text = exerciseMap[exerciseController.text]!["secondary-muscle"]!;
+      } else {
+        tertiaryMuscleController.text = "";
       }
 
       if (exerciseMap[exerciseController.text]!["tertiary-muscle"]!.isNotEmpty) {
         tertiaryMuscleController.text = exerciseMap[exerciseController.text]!["tertiary-muscle"]!;
+      } else {
+        tertiaryMuscleController.text = "";
       }
 
     }
@@ -79,7 +85,7 @@ class _NewExercisePageState extends State<NewExercisePage> {
   ];
 
   List<String> muscleList = <String>[
-  'Triceps Brachii ', 'Rhomboids', 'Rectus Abdominis', 'Latissimus Dorsi', 'Gluteus Medius', 'Teres Major', 'Gluteus Minimus', 'Anterior Deltoids', 'Iliopsoas', 'Erector Spinae ', 'Infraspinatus', 'Gluteus Maximus', 'Biceps Femoris', 'Brachialis', 'Gastrocnemius', 'Soleus', 'Teres Minor', 'Subscapularis ', 'Quadriceps Femoris', 'Upper Trapezius', 'Adductor Magnus', 'Rectus Abdominis ', 'Tensor Fasciae Latae', 'Biceps Brachii', 'Lower Trapezius', 'Rectus Femoris', 'Triceps Brachaii', 'Tibialis Anterior', 'Pectoralis Major', 'Triceps Brachii', 'Erector Spinae', 'Anterior Deltoids ', 'Medial Deltoids', 'Brachioradialis', 'Obliques', 'Serratus Anterior', 'Posterior Deltoids'
+  'Triceps Brachii ', 'Rhomboids', 'Rectus Abdominis', 'Latissimus Dorsi', 'Gluteus Medius', 'Teres Major', 'Gluteus Minimus', 'Anterior Deltoids', 'Iliopsoas', 'Infraspinatus', 'Gluteus Maximus', 'Biceps Femoris', 'Brachialis', 'Gastrocnemius', 'Soleus', 'Teres Minor', 'Subscapularis ', 'Quadriceps Femoris', 'Upper Trapezius', 'Adductor Magnus', 'Rectus Abdominis ', 'Tensor Fasciae Latae', 'Biceps Brachii', 'Lower Trapezius', 'Rectus Femoris', 'Triceps Brachaii', 'Tibialis Anterior', 'Pectoralis Major', 'Triceps Brachii', 'Erector Spinae', 'Anterior Deltoids ', 'Medial Deltoids', 'Brachioradialis', 'Obliques', 'Serratus Anterior', 'Posterior Deltoids'
 ];
 
 
@@ -342,6 +348,9 @@ class _NewExercisePageState extends State<NewExercisePage> {
                                         ),
                                         exerciseMaxRepsAndWeight: {},
                                         category: categoriesController.text,
+                                        primaryMuscle: primaryMuscleController.text,
+                                        secondaryMuscle: secondaryMuscleController.text,
+                                        tertiaryMuscle: tertiaryMuscleController.text,
                                         type: typeDropDownMenuValue,
                                         exerciseTrackingType: typeDropDownMenuValue == 0 ? weightTypeDropDownMenuValue : null,
                                       )
