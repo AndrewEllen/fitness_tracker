@@ -41,35 +41,71 @@ class _DropDownFormState extends State<DropDownForm> {
   void searchForExercise(String value) {
 
 
+    List<Map> sortBySimilarity(List<Map> similarityMap) {
+
+      List<Map> sortedList = [];
+
+      for (int index = 0; index < similarityMap.length; index++) {
+        if (sortedList.isNotEmpty) {
+          int insertIndex = 0;
+          for (int sortingIndex = 0; sortingIndex < sortedList.length; sortingIndex++) {
+            if (similarityMap[index]["similarity"] >= similarityMap[insertIndex]["similarity"] ) {
+              insertIndex = sortingIndex;
+            }
+          }
+          sortedList.insert(insertIndex, similarityMap[index]);
+
+        } else {
+          sortedList.add(similarityMap[index]);
+        }
+
+      }
+      return sortedList;
+    }
+
+
     List<Map> sortListBySimilarity(List<Map> similarityMap) {
 
       // Create a new list with the same elements and then sort it
       List<Map<dynamic, dynamic>> sortedList = List<Map<dynamic, dynamic>>.from(similarityMap);
-      sortedList.sort((a, b) => (b.values.first as num).compareTo(a.values.first as num));
+      sortedList.sort((a, b) => (b["similarity"] as num).compareTo(a["similarity"] as num));
 
       return sortedList;
     }
 
     Map checkSimilarity(String searchWord, String searchItem,) {
 
+      if (searchWord.toLowerCase().trim() == searchItem.toLowerCase().trim()) {
+        return {
+          "similarity": 1.1,
+          "listItem": searchItem,
+        };
+      }
+
+      List similarityList = [];
       for(String searchWord in searchWord.split(" ")) {
 
         for(String itemWord in searchItem.split(" ")) {
           double _similarity = searchWord.jaccardSimilarity(itemWord);
           if (_similarity > 0.42) {
-
-            Map _wordsSimilarity = {
-              searchItem: _similarity,
-              "listItem": searchItem,
-            };
-
-            return _wordsSimilarity;
+            similarityList.add(_similarity);
           }
-
         }
       }
+
+      double average = 0;
+
+      for (double value in similarityList) {
+        average += value;
+      }
+      average = average/similarityList.length;
+
+      if (average.isNaN) {
+        average = 0;
+      }
+
       return {
-        searchItem: 0,
+        "similarity": average,
         "listItem": searchItem,
       };
     }
@@ -91,12 +127,10 @@ class _DropDownFormState extends State<DropDownForm> {
           value,
           item,
         );
-        if (similarityMap.values.first > 0.43) {
-          internalSearchList.add(similarityMap);
-        }
+        internalSearchList.add(similarityMap);
       });
 
-      sortListBySimilarity(internalSearchList);
+      internalSearchList = sortListBySimilarity(internalSearchList);
       print(internalSearchList);
 
       internalSearchList.asMap().forEach((index, item) {
