@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fitness_tracker/models/workout/exercise_database_model.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import 'muscle_anatomy_diagram_painter.dart';
@@ -137,6 +138,11 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
     super.dispose();
   }
 
+  void _launchUrl(Uri _url) {
+    launchUrl(_url);
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -218,280 +224,320 @@ class _DatabaseSearchBoxState extends State<DatabaseSearchBox> {
                     ]
                 ),
                 height: value * 3,
-                child: _expandPanel ? Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    //mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
-                      GestureDetector(
-                        onTap: () {
-                          Clipboard.setData(ClipboardData(text: widget.exerciseModel.exercise));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: const Text("Copied Exercise Name To Clipboard!"),
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                child: _expandPanel ? ClipRRect(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      //mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                  
+                        GestureDetector(
+                          onTap: () {
+                            Clipboard.setData(ClipboardData(text: widget.exerciseModel.exercise));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: const Text("Copied Exercise Name To Clipboard!"),
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                margin: EdgeInsets.only(
+                                  bottom: MediaQuery.of(context).size.height * 0.6695,
+                                  right: 20,
+                                  left: 20,
+                                ),
+                                dismissDirection: DismissDirection.none,
+                                duration: const Duration(milliseconds: 700),
                               ),
-                              margin: EdgeInsets.only(
-                                bottom: MediaQuery.of(context).size.height * 0.6695,
-                                right: 20,
-                                left: 20,
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: widget.exerciseModel.mechanics.isNotEmpty ? Text(
+                                  widget.exerciseModel.mechanics + " Exercise",
+                                  style: boldTextStyle.copyWith(fontSize: 22),
+                                ) : const SizedBox.shrink(),
                               ),
-                              dismissDirection: DismissDirection.none,
-                              duration: const Duration(milliseconds: 700),
+                              IconButton(
+                                  onPressed: () {
+                                    Clipboard.setData(ClipboardData(text: widget.exerciseModel.exercise));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: const Text("Copied Exercise Name To Clipboard!"),
+                                        behavior: SnackBarBehavior.floating,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        margin: EdgeInsets.only(
+                                          bottom: MediaQuery.of(context).size.height * 0.6695,
+                                          right: 20,
+                                          left: 20,
+                                        ),
+                                        dismissDirection: DismissDirection.none,
+                                        duration: const Duration(milliseconds: 700),
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(Icons.copy, color: Colors.white,
+                                  )
+                              ),
+                            ],
+                          ),
+                        ),
+                  
+                        const SizedBox(height: 25,),
+                  
+                        Center(
+                          child: Transform.scale(
+                            scale: 0.72.w,
+                            child: Stack(
+                              children: [
+                                Transform.translate(
+                                  offset: const Offset(-130,0),
+                                  child: Stack(
+                                    children: [
+                  
+                  
+                                      Transform.scale(
+                                        scale: 0.5,
+                                        child: Transform.translate(
+                                          offset: const Offset(-240, -149),
+                                          child: CustomPaint(
+                                            size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                                            painter: FrontAnatomyCustomPainterColour(
+                                              chest: checkMuscle(["Pectoralis Major"]),
+                                              abdominals: checkMuscle(["Rectus Abdominis"]),
+                                              calves: checkMuscle(["Gastrocnemius", "Soleus"]),
+                                              quadriceps: checkMuscle(["Quadriceps Femoris"]),
+                                              anteriorDelts: checkMuscle(["Anterior Deltoids"]),
+                                              midDelts: checkMuscle(["Medial Deltoids"]),
+                                              obliques: checkMuscle(["Obliques"]),
+                                              forearms: checkMuscle(["Brachioradialis"]),
+                                              biceps: checkMuscle(["Biceps Brachii"]),
+                                              serratusAnterior: checkMuscle(["Serratus Anterior"]),
+                                              trapezius: checkMuscle(["Upper Trapezius"]),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                  
+                                      Transform.scale(
+                                        scale: 1.88,
+                                        child: Transform.translate(
+                                          offset: const Offset(47, 45),
+                                          child: CustomPaint(
+                                            size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                                            painter: FrontAnatomyCustomPainter(),
+                                          ),
+                                        ),
+                                      ),
+                  
+                  
+                                    ],
+                                  ),
+                                ),
+                  
+                  
+                                Transform.translate(
+                                  offset: const Offset(130,0),
+                                  child: Stack(
+                                    children: [
+                  
+                                      Transform.scale(
+                                        scale: 1.88,
+                                        child: Transform.translate(
+                                          offset: const Offset(47, 45),
+                                          child: CustomPaint(
+                                            size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                                            painter: BackAnatomyCustomPainter(),
+                                          ),
+                                        ),
+                                      ),
+                  
+                                      Transform.scale(
+                                        scale: 0.5,
+                                        child: Transform.translate(
+                                          offset: const Offset(-240, -148),
+                                          child: CustomPaint(
+                                            size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                                            painter: BackAnatomyCustomPainterColour(
+                                              upperTrapezius: checkMuscle(["Upper Trapezius"]),
+                                              lowerTrapezius: checkMuscle(["Lower Trapezius"]),
+                                              calves: checkMuscle(["Gastrocnemius", "Soleus"]),
+                                              posteriorDeltoid: checkMuscle(["Posterior Deltoids"]),
+                                              medialDeltoid: checkMuscle(["Medial Deltoids"]),
+                                              hamstrings: checkMuscle(["Biceps Femoris"]),
+                                              forearms: checkMuscle(["Brachioradialis"]),
+                                              triceps: checkMuscle(["Triceps Brachii"]),
+                                              erectorSpinea: checkMuscle(["Erector Spinae"]),
+                                              glutes: checkMuscle(["Gluteus Maximus"]),
+                                              latissimusDorsi: checkMuscle(["Latissimus Dorsi"]),
+                                              infraspinatus: checkMuscle(["Infraspinatus", "Teres Major", "Teres Minor", "Subscapularis"]),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                  
+                                    ],
+                                  ),
+                                ),
+                  
+                  
+                              ],
                             ),
-                          );
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          ),
+                        ),
+                  
+                        const SizedBox(height: 225,),
+                  
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Center(
-                              child: widget.exerciseModel.mechanics.isNotEmpty ? Text(
-                                widget.exerciseModel.mechanics + " Exercise",
-                                style: boldTextStyle.copyWith(fontSize: 22),
-                              ) : const SizedBox.shrink(),
+                            Text(
+                              widget.exerciseModel.secondaryMuscle.isEmpty ?
+                              "Working Muscle: " :
+                              "Working Muscles: ",
+                              style: boldTextStyle.copyWith(fontSize: 18),
+                              textAlign: TextAlign.left,
                             ),
-                            IconButton(
-                                onPressed: () {
-                                  Clipboard.setData(ClipboardData(text: widget.exerciseModel.exercise));
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Text("Copied Exercise Name To Clipboard!"),
-                                      behavior: SnackBarBehavior.floating,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      margin: EdgeInsets.only(
-                                        bottom: MediaQuery.of(context).size.height * 0.6695,
-                                        right: 20,
-                                        left: 20,
-                                      ),
-                                      dismissDirection: DismissDirection.none,
-                                      duration: const Duration(milliseconds: 700),
-                                    ),
-                                  );
-                                },
-                                icon: Icon(Icons.copy, color: Colors.white,
-                                )
-                            ),
+                            widget.exerciseModel.primaryMuscle.isNotEmpty ? Text(
+                              "- " + widget.exerciseModel.primaryMuscle,
+                              style: boldTextStyle,
+                              textAlign: TextAlign.left,
+                            ) : const SizedBox.shrink(),
+                  
+                            widget.exerciseModel.secondaryMuscle.isNotEmpty ? Text(
+                              "- " + widget.exerciseModel.secondaryMuscle,
+                              style: boldTextStyle,
+                              textAlign: TextAlign.left,
+                            ) : const SizedBox.shrink(),
+                  
+                            widget.exerciseModel.tertiaryMuscle.isNotEmpty ? Text(
+                              "- " + widget.exerciseModel.tertiaryMuscle,
+                              style: boldTextStyle,
+                              textAlign: TextAlign.left,
+                            ) : const SizedBox.shrink(),
                           ],
                         ),
-                      ),
-
-                      const SizedBox(height: 25,),
-
-                      Center(
-                        child: Transform.scale(
-                          scale: 0.72.w,
-                          child: Stack(
-                            children: [
-                              Transform.translate(
-                                offset: const Offset(-130,0),
-                                child: Stack(
-                                  children: [
-
-
-                                    Transform.scale(
-                                      scale: 0.5,
-                                      child: Transform.translate(
-                                        offset: const Offset(-240, -149),
-                                        child: CustomPaint(
-                                          size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                                          painter: FrontAnatomyCustomPainterColour(
-                                            chest: checkMuscle(["Pectoralis Major"]),
-                                            abdominals: checkMuscle(["Rectus Abdominis"]),
-                                            calves: checkMuscle(["Gastrocnemius", "Soleus"]),
-                                            quadriceps: checkMuscle(["Quadriceps Femoris"]),
-                                            anteriorDelts: checkMuscle(["Anterior Deltoids"]),
-                                            midDelts: checkMuscle(["Medial Deltoids"]),
-                                            obliques: checkMuscle(["Obliques"]),
-                                            forearms: checkMuscle(["Brachioradialis"]),
-                                            biceps: checkMuscle(["Biceps Brachii"]),
-                                            serratusAnterior: checkMuscle(["Serratus Anterior"]),
-                                            trapezius: checkMuscle(["Upper Trapezius"]),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    Transform.scale(
-                                      scale: 1.88,
-                                      child: Transform.translate(
-                                        offset: const Offset(47, 45),
-                                        child: CustomPaint(
-                                          size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                                          painter: FrontAnatomyCustomPainter(),
-                                        ),
-                                      ),
-                                    ),
-
-
-                                  ],
+                  
+                        const SizedBox(height: 25,),
+                  
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Equipment Needed:",
+                              style: boldTextStyle.copyWith(fontSize: 18),
+                              textAlign: TextAlign.left,
+                            ),
+                            widget.exerciseModel.primaryEquipment.isNotEmpty ? Text(
+                              "- " + widget.exerciseModel.primaryEquipment + " x " + widget.exerciseModel.numPrimaryItems,
+                              style: boldTextStyle,
+                              textAlign: TextAlign.left,
+                            ) : const SizedBox.shrink(),
+                  
+                            widget.exerciseModel.secondaryEquipment.isNotEmpty ? Text(
+                              "- " + widget.exerciseModel.secondaryEquipment + " x " + widget.exerciseModel.numSecondaryItems,
+                              style: boldTextStyle,
+                              textAlign: TextAlign.left,
+                            ) : const SizedBox.shrink(),
+                  
+                          ],
+                        ),
+                  
+                        const SizedBox(height: 25,),
+                  
+                        widget.exerciseModel.shortVideo.isNotEmpty && displayShortYoutubeVideo ? Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "Short video explanation of the exercise",
+                                  style: boldTextStyle.copyWith(fontSize: 18),
                                 ),
+                                IconButton(
+                                  onPressed: () => _launchUrl(Uri.parse(widget.exerciseModel.shortVideo)),
+                                  icon: const Icon(
+                                    Icons.open_in_new,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              ],
+                            ),
+                            YoutubePlayer(
+                              controller: shortVideoController!,
+                              showVideoProgressIndicator: true,
+                              progressIndicatorColor: Colors.red,
+                              progressColors: const ProgressBarColors(
+                                playedColor: Colors.red,
+                                handleColor: Colors.red,
                               ),
-
-
-                              Transform.translate(
-                                offset: const Offset(130,0),
-                                child: Stack(
-                                  children: [
-
-                                    Transform.scale(
-                                      scale: 1.88,
-                                      child: Transform.translate(
-                                        offset: const Offset(47, 45),
-                                        child: CustomPaint(
-                                          size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                                          painter: BackAnatomyCustomPainter(),
-                                        ),
-                                      ),
-                                    ),
-
-                                    Transform.scale(
-                                      scale: 0.5,
-                                      child: Transform.translate(
-                                        offset: const Offset(-240, -148),
-                                        child: CustomPaint(
-                                          size: Size(diagramWidth, (diagramWidth*0.7561837477848735).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                                          painter: BackAnatomyCustomPainterColour(
-                                            upperTrapezius: checkMuscle(["Upper Trapezius"]),
-                                            lowerTrapezius: checkMuscle(["Lower Trapezius"]),
-                                            calves: checkMuscle(["Gastrocnemius", "Soleus"]),
-                                            posteriorDeltoid: checkMuscle(["Posterior Deltoids"]),
-                                            medialDeltoid: checkMuscle(["Medial Deltoids"]),
-                                            hamstrings: checkMuscle(["Biceps Femoris"]),
-                                            forearms: checkMuscle(["Brachioradialis"]),
-                                            triceps: checkMuscle(["Triceps Brachii"]),
-                                            erectorSpinea: checkMuscle(["Erector Spinae"]),
-                                            glutes: checkMuscle(["Gluteus Maximus"]),
-                                            latissimusDorsi: checkMuscle(["Latissimus Dorsi"]),
-                                            infraspinatus: checkMuscle(["Infraspinatus", "Teres Major", "Teres Minor", "Subscapularis"]),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                  ],
+                              bottomActions: [
+                                CurrentPosition(),
+                                ProgressBar(
+                                  isExpanded: true,
+                                  colors: const ProgressBarColors(
+                                    playedColor: Colors.red,
+                                    handleColor: Colors.red,
+                                    bufferedColor: Colors.white38,
+                                    backgroundColor: Colors.white24,
+                                  ),
                                 ),
+                                RemainingDuration(),
+                              ],
+                            ),
+                          ],
+                        ) : const SizedBox.shrink(),
+                  
+                        const SizedBox(height: 25,),
+                  
+                        widget.exerciseModel.longVideo.isNotEmpty && displayLongYoutubeVideo ? Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "Long video explanation of the exercise",
+                                  style: boldTextStyle.copyWith(fontSize: 18),
+                                ),
+                                IconButton(
+                                  onPressed: () => _launchUrl(Uri.parse(widget.exerciseModel.longVideo)),
+                                  icon: const Icon(
+                                    Icons.open_in_new,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              ],
+                            ),
+                            YoutubePlayer(
+                              controller: longVideoController!,
+                              showVideoProgressIndicator: true,
+                              progressIndicatorColor: Colors.red,
+                              progressColors: const ProgressBarColors(
+                                playedColor: Colors.red,
+                                handleColor: Colors.red,
                               ),
-
-
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 225,),
-
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.exerciseModel.secondaryMuscle.isEmpty ?
-                            "Working Muscle: " :
-                            "Working Muscles: ",
-                            style: boldTextStyle.copyWith(fontSize: 18),
-                            textAlign: TextAlign.left,
-                          ),
-                          widget.exerciseModel.primaryMuscle.isNotEmpty ? Text(
-                            "- " + widget.exerciseModel.primaryMuscle,
-                            style: boldTextStyle,
-                            textAlign: TextAlign.left,
-                          ) : const SizedBox.shrink(),
-
-                          widget.exerciseModel.secondaryMuscle.isNotEmpty ? Text(
-                            "- " + widget.exerciseModel.secondaryMuscle,
-                            style: boldTextStyle,
-                            textAlign: TextAlign.left,
-                          ) : const SizedBox.shrink(),
-
-                          widget.exerciseModel.tertiaryMuscle.isNotEmpty ? Text(
-                            "- " + widget.exerciseModel.tertiaryMuscle,
-                            style: boldTextStyle,
-                            textAlign: TextAlign.left,
-                          ) : const SizedBox.shrink(),
-                        ],
-                      ),
-
-                      const SizedBox(height: 25,),
-
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Equipment Needed:",
-                            style: boldTextStyle.copyWith(fontSize: 18),
-                            textAlign: TextAlign.left,
-                          ),
-                          widget.exerciseModel.primaryEquipment.isNotEmpty ? Text(
-                            "- " + widget.exerciseModel.primaryEquipment + " x " + widget.exerciseModel.numPrimaryItems,
-                            style: boldTextStyle,
-                            textAlign: TextAlign.left,
-                          ) : const SizedBox.shrink(),
-
-                          widget.exerciseModel.secondaryEquipment.isNotEmpty ? Text(
-                            "- " + widget.exerciseModel.secondaryEquipment + " x " + widget.exerciseModel.numSecondaryItems,
-                            style: boldTextStyle,
-                            textAlign: TextAlign.left,
-                          ) : const SizedBox.shrink(),
-
-                        ],
-                      ),
-
-                      const SizedBox(height: 25,),
-
-                      widget.exerciseModel.shortVideo.isNotEmpty && displayShortYoutubeVideo ? YoutubePlayerBuilder(
-                        player: YoutubePlayer(
-                          controller: shortVideoController!,
-                          showVideoProgressIndicator: true,
-                          progressIndicatorColor: Colors.amber,
-                          progressColors: const ProgressBarColors(
-                            playedColor: Colors.amber,
-                            handleColor: Colors.amberAccent,
-                          ),
-                        ),
-                        builder: (context, player) {
-                          return Column(
-                            children: [
-                              Text(
-                                "Short video explanation of the exercise",
-                                style: boldTextStyle.copyWith(fontSize: 18),
-                              ),
-                              player,
-                            ],
-                          );
-                        },
-                      ) : const SizedBox.shrink(),
-
-                      const SizedBox(height: 25,),
-
-                      widget.exerciseModel.longVideo.isNotEmpty && displayLongYoutubeVideo ? YoutubePlayerBuilder(
-                        player: YoutubePlayer(
-                          controller: longVideoController!,
-                          showVideoProgressIndicator: true,
-                          progressIndicatorColor: Colors.amber,
-                          progressColors: const ProgressBarColors(
-                            playedColor: Colors.amber,
-                            handleColor: Colors.amberAccent,
-                          ),
-                        ),
-                        builder: (context, player) {
-                          return Column(
-                            children: [
-                              Text(
-                                "Long video explanation of the exercise",
-                                style: boldTextStyle.copyWith(fontSize: 18),
-                              ),
-                              player,
-                            ],
-                          );
-                        },
-                      ) : const SizedBox.shrink(),
-
-                    ],
+                              bottomActions: [
+                                CurrentPosition(),
+                                ProgressBar(
+                                  isExpanded: true,
+                                  colors: const ProgressBarColors(
+                                    playedColor: Colors.red,
+                                    handleColor: Colors.red,
+                                    bufferedColor: Colors.white38,
+                                    backgroundColor: Colors.white24,
+                                  ),
+                                ),
+                                RemainingDuration(),
+                              ],
+                            ),
+                          ],
+                        ) : const SizedBox.shrink(),
+                  
+                      ],
+                    ),
                   ),
                 ) : const SizedBox.shrink(),
               ),

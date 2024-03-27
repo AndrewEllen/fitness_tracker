@@ -13,6 +13,7 @@ class DropDownForm extends StatefulWidget {
     required this.listOfItems,
     required this.label,
     this.validate = true,
+    this.callback,
   }) : super(key: key);
 
   final TextEditingController formController;
@@ -20,6 +21,7 @@ class DropDownForm extends StatefulWidget {
   final List<String> listOfItems;
   final String label;
   final bool validate;
+  final VoidCallback? callback;
 
   @override
   State<DropDownForm> createState() => _DropDownFormState();
@@ -39,7 +41,6 @@ class _DropDownFormState extends State<DropDownForm> {
 
     List<String> sortListBySimilarity(List<Map> similarityMap) {
 
-      print(similarityMap);
       // Sorting the list in descending order based on the values of the map items
       similarityMap.sort((a, b) => (b.values.first as num).compareTo(a.values.first as num));
 
@@ -197,7 +198,10 @@ class _DropDownFormState extends State<DropDownForm> {
                             onTap: () {
                               FirebaseAnalytics.instance.logEvent(name: widget.label.replaceAll(" ", "_")+'_dropdown_selected');
                               widget.formController.text = widget.listOfItems[index];
-                              print(widget.listOfItems[index]);
+
+                              if (widget.callback != null) {
+                                widget.callback!();
+                              }
                 
                               setState(() {
                                 _displayDropdown = false;
@@ -218,8 +222,11 @@ class _DropDownFormState extends State<DropDownForm> {
                           onTap: () {
                             FirebaseAnalytics.instance.logEvent(name: widget.label.replaceAll(" ", "_")+'_dropdown_selected');
                             widget.formController.text = searchList[index];
-                            print(searchList[index]);
-                
+
+                            if (widget.callback != null) {
+                              widget.callback!();
+                            }
+
                             setState(() {
                               _displayDropdown = false;
                             });
