@@ -115,7 +115,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 10.h),
+      padding: EdgeInsets.only(bottom: 2.h),
       child: InkWell(
         onTap: onTap,
         child: Column(
@@ -164,7 +164,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                 decoration: const BoxDecoration(
                   border: Border(
                       top: BorderSide(
-                        color: Colors.white30,
+                        color: Colors.black26,
                       )
                   ),
                   boxShadow: [

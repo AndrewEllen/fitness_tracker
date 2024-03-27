@@ -26,31 +26,92 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
 
     context.watch<WorkoutProvider>().routinesList;
 
+    final filteredMain = widget.routine.exercises
+        .where((exercise) => exercise.mainOrAccessory == 1)
+        .toList();
+
+    final filteredAccessories = widget.routine.exercises
+        .where((exercise) => exercise.mainOrAccessory == 0)
+        .toList();
+
     return Column(
       children: [
+
+        filteredMain.isNotEmpty ? Container(
+          width: double.maxFinite,
+          decoration: const BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+                  color: Colors.black26,
+                )
+            ),
+            boxShadow: [
+              basicAppShadow
+            ],
+            color: appTertiaryColour,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "- Main Exercises",
+              style: boldTextStyle.copyWith(
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ) : const SizedBox.shrink(),
+
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           itemCount: widget.routine.exercises.length,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
 
-            return RoutinePageExerciseBox(
+            return widget.routine.exercises[index].mainOrAccessory == 1 ? RoutinePageExerciseBox(
               key: UniqueKey(),
               routine: widget.routine,
               index: index,
-            );
+            ) : const SizedBox.shrink();
             },
         ),
+
+        filteredAccessories.isNotEmpty ? Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Container(
+            width: double.maxFinite,
+            decoration: const BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(
+                    color: Colors.black26,
+                  )
+              ),
+              boxShadow: [
+                basicAppShadow
+              ],
+              color: appTertiaryColour,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                " -Accessory Exercises",
+                style: boldTextStyle.copyWith(
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          ),
+        ) : const SizedBox.shrink(),
+
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           itemCount: widget.routine.exercises.length,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            return RoutinePageExerciseBox(
+            return widget.routine.exercises[index].mainOrAccessory == 0 ? RoutinePageExerciseBox(
               key: UniqueKey(),
               routine: widget.routine,
               index: index,
-            );
+            ) : const SizedBox.shrink();
           },
         ),
       ],

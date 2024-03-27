@@ -387,23 +387,6 @@ void createRoutine(RoutinesModel routine) async {
 
 void updateRoutineData(RoutinesModel routine) async {
 
-  Future<Map> fetchExerciseData(String exerciseName) async {
-
-    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc(firebaseAuth.currentUser!.uid)
-        .collection('workout-data')
-        .doc(exerciseName)
-        .get();
-
-    return {
-      "exerciseType": snapshot.data()?["exerciseTrackingType"] ?? 0,
-      "mainOrAccessory": snapshot.data()?["type"] ?? 1,
-    };
-  }
-
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   mapData(data) async {
@@ -411,17 +394,13 @@ void updateRoutineData(RoutinesModel routine) async {
     List<Map> exerciseListToReturn = [];
 
     for (ExerciseListModel exerciseListData in data) {
-      Map? exerciseData;
-      if (exerciseListData.exerciseTrackingType == null) {
-        exerciseData = await fetchExerciseData(exerciseListData.exerciseName);
-      }
 
       exerciseListToReturn.add(
           {
             "exerciseName": exerciseListData.exerciseName,
             "exerciseDate": exerciseListData.exerciseDate,
-            "exerciseTrackingType": exerciseListData.exerciseTrackingType ?? exerciseData?["exerciseTrackingType"] ?? 0,
-            "mainOrAccessory": exerciseListData.mainOrAccessory ?? exerciseData?["mainOrAccessory"] ?? 0,
+            "exerciseTrackingType": exerciseListData.exerciseTrackingType ?? 0,
+            "mainOrAccessory": exerciseListData.mainOrAccessory ?? 0,
           }
       );
     }
