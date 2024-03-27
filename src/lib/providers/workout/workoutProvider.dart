@@ -169,6 +169,19 @@ class WorkoutProvider with ChangeNotifier {
 
   }
 
+  void RemoveWorkoutCache(String exerciseName) {
+
+    print(_exerciseList);
+
+    _exerciseList.removeAt(
+        _exerciseList.indexWhere((element) => element.exerciseName == exerciseName)
+    );
+
+    print(_exerciseList);
+
+    notifyListeners();
+  }
+
   void AddNewWorkout(ExerciseModel newExercise) {
 
     _exerciseList.add(newExercise);

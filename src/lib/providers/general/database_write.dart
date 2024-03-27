@@ -218,6 +218,25 @@ void deleteGrocery(GroceryItem groceryItem, String groceryListID) async {
 
 }
 
+void updateExercise(ExerciseModel exercise) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-data')
+      .doc(exercise.exerciseName)
+      .update({
+    "category": exercise.category,
+    "primary-muscle": exercise.primaryMuscle,
+    "secondary-muscle": exercise.secondaryMuscle,
+    "tertiary-muscle": exercise.tertiaryMuscle,
+    "exerciseTrackingType": exercise.exerciseTrackingType,
+  });
+
+}
+
 void createNewExercise(ExerciseModel exercise) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;

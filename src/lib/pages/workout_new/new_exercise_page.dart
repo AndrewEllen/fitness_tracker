@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../models/workout/reps_weight_stats_model.dart';
+import '../../providers/general/database_write.dart';
 import '../../providers/general/page_change_provider.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/general/app_dropdown_form.dart';
@@ -162,6 +163,17 @@ class _NewExercisePageState extends State<NewExercisePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    exerciseList = exerciseList;
+
+    for (String exercise in context.read<WorkoutProvider>().exerciseNamesList) {
+      if (!exerciseList.contains(exercise)) {
+        exerciseList.add(exercise);
+      }
+    }
+
+    exerciseList.sort();
+
 
     List<String> categoriesList = <String>[
       'Adductors', 'Forearms', 'Back', 'Hamstrings', 'Biceps', 'Trapezius', 'Triceps', 'Glutes', 'Hip Flexors', 'Calves', 'Shoulders', 'Quadriceps', 'Abductors', 'Chest', 'Abdominals', 'Cardio'
@@ -456,7 +468,7 @@ class _NewExercisePageState extends State<NewExercisePage> {
 
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: const Text("Exercise already exists"),
+                                    content: const Text("Updating Exercise"),
                                     behavior: SnackBarBehavior.floating,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
@@ -470,6 +482,26 @@ class _NewExercisePageState extends State<NewExercisePage> {
                                     duration: const Duration(milliseconds: 1500),
                                   ),
                                 );
+
+                                updateExercise(
+                                    ExerciseModel(
+                                      exerciseName: exerciseController.text,
+                                      exerciseTrackingData: RepsWeightStatsMeasurement(
+                                        measurementName: '',
+                                        dailyLogs: [],
+                                      ),
+                                      exerciseMaxRepsAndWeight: {},
+                                      category: categoriesController.text,
+                                      primaryMuscle: primaryMuscleController.text,
+                                      secondaryMuscle: secondaryMuscleController.text,
+                                      tertiaryMuscle: tertiaryMuscleController.text,
+                                      exerciseTrackingType: typeDropDownMenuValue == 0 ? weightTypeDropDownMenuValue : null,
+                                    )
+                                );
+
+                                context.read<WorkoutProvider>().RemoveWorkoutCache(exerciseController.text);
+
+                                context.read<PageChange>().backPage();
 
                               }
 
