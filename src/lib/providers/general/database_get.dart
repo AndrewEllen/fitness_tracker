@@ -888,6 +888,8 @@ GetRoutinesData({options = const GetOptions(source: Source.serverAndCache)}) asy
         ExerciseListModel(
           exerciseName: exercise["exerciseName"],
           exerciseDate: exercise["exerciseDate"],
+          exerciseTrackingType: exercise["exerciseTrackingType"],
+          mainOrAccessory: exercise["mainOrAccessory"],
         )
     ];
 

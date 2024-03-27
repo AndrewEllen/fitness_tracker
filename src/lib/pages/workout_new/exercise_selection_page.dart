@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
+import 'package:fitness_tracker/models/workout/exercise_model.dart';
 import 'package:fitness_tracker/pages/workout_new/new_exercise_page.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
@@ -38,6 +41,23 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
   List<int> boolIndexBackupList = [];
 
   List<String> searchList = [];
+
+  Future<Map> fetchExerciseData(String exerciseName) async {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('workout-data')
+        .doc(exerciseName)
+        .get();
+
+    return {
+      "exerciseType": snapshot.data()?["exerciseTrackingType"] ?? 0,
+      "mainOrAccessory": snapshot.data()?["type"] ?? 1,
+    };
+  }
 
   void searchForExercise(String value) {
 
@@ -431,18 +451,25 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
                       child: SizedBox(
                         height: 35.h,
                         child: AppButton(
-                          onTap: () {
+                          onTap: () async {
 
-                            setState(() {
-                              _selectedExerciseList = [
-                                for(ExerciseListCheckbox exercise in checkboxList)
-                                  if (exercise.isChecked)
-                                    ExerciseListModel(
-                                        exerciseName: exercise.exerciseName,
-                                        exerciseDate: "",
-                                    ),
-                              ];
-                            });
+                            _selectedExerciseList = [];
+
+                            for(ExerciseListCheckbox exercise in checkboxList) {
+                              if (exercise.isChecked) {
+
+                                Map exerciseData = await fetchExerciseData(exercise.exerciseName);
+
+                                _selectedExerciseList.add(ExerciseListModel(
+                                  exerciseName: exercise.exerciseName,
+                                  exerciseDate: "",
+                                  exerciseTrackingType: exerciseData["exerciseTrackingType"],
+                                  mainOrAccessory: exerciseData["mainOrAccessory"],
+                                ));
+                              }
+                            }
+
+                            setState(() {_selectedExerciseList;});
 
                             context.read<WorkoutProvider>().addExerciseToRoutine(widget.routine, _selectedExerciseList);
 

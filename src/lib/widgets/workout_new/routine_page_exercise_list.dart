@@ -26,17 +26,34 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
 
     context.watch<WorkoutProvider>().routinesList;
 
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: widget.routine.exercises.length,
-      shrinkWrap: true,
-      itemBuilder: (BuildContext context, int index) {
-        return RoutinePageExerciseBox(
-          key: UniqueKey(),
-          routine: widget.routine,
-          index: index,
-        );
-        },
+    return Column(
+      children: [
+        ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: widget.routine.exercises.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+
+            return RoutinePageExerciseBox(
+              key: UniqueKey(),
+              routine: widget.routine,
+              index: index,
+            );
+            },
+        ),
+        ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: widget.routine.exercises.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            return RoutinePageExerciseBox(
+              key: UniqueKey(),
+              routine: widget.routine,
+              index: index,
+            );
+          },
+        ),
+      ],
     );
   }
 }
