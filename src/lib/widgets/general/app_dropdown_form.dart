@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/constants.dart';
 import 'package:flutter/material.dart';
@@ -39,19 +40,17 @@ class _DropDownFormState extends State<DropDownForm> {
 
   void searchForExercise(String value) {
 
-    List<String> sortListBySimilarity(List<Map> similarityMap) {
 
-      // Sorting the list in descending order based on the values of the map items
-      similarityMap.sort((a, b) => (b.values.first as num).compareTo(a.values.first as num));
+    List<Map> sortListBySimilarity(List<Map> similarityMap) {
 
-      // Extracting the keys from the sorted list of maps
-      List<String> orderedList = similarityMap.map((map) => map.keys.first.toString()).toList();
+      // Create a new list with the same elements and then sort it
+      List<Map<dynamic, dynamic>> sortedList = List<Map<dynamic, dynamic>>.from(similarityMap);
+      sortedList.sort((a, b) => (b.values.first as num).compareTo(a.values.first as num));
 
-      return orderedList;
+      return sortedList;
     }
 
-    List<String> checkSimilarity(String searchWord, String searchItem) {
-      List<Map> _wordsSimilarity = [];
+    Map checkSimilarity(String searchWord, String searchItem,) {
 
       for(String searchWord in searchWord.split(" ")) {
 
@@ -59,40 +58,62 @@ class _DropDownFormState extends State<DropDownForm> {
           double _similarity = searchWord.jaccardSimilarity(itemWord);
           if (_similarity > 0.42) {
 
-            _wordsSimilarity.add({
-              searchItem: _similarity
-            });
+            Map _wordsSimilarity = {
+              searchItem: _similarity,
+              "listItem": searchItem,
+            };
 
-            return sortListBySimilarity(_wordsSimilarity);
+            return _wordsSimilarity;
           }
 
         }
       }
-      return [];
+      return {
+        searchItem: 0,
+        "listItem": searchItem,
+      };
     }
 
-    List<String> internalSearchList = [];
 
-    List<String> listToSearch = widget.listOfItems;
+
+
+    searchList = widget.listOfItems;
+
+    List<String> listSearchItems = [];
 
     if (value.isNotEmpty) {
 
-      for (var item in listToSearch) {
+      List<Map> internalSearchList = [];
 
-        if (item.toLowerCase().contains(value.toLowerCase())) {
-          internalSearchList.add(item);
+      searchList.asMap().forEach((index, item) {
 
-        } else {
-
-          internalSearchList.addAll(checkSimilarity(value, item));
-
+        Map similarityMap = checkSimilarity(
+          value,
+          item,
+        );
+        if (similarityMap.values.first > 0.43) {
+          internalSearchList.add(similarityMap);
         }
-      }
-    }
+      });
 
-    setState(() {
-      searchList = internalSearchList;
-    });
+      sortListBySimilarity(internalSearchList);
+      print(internalSearchList);
+
+      internalSearchList.asMap().forEach((index, item) {
+        listSearchItems.add(item["listItem"]);
+      });
+
+
+
+      setState(() {
+        searchList = listSearchItems;
+      });
+
+    } else {
+      setState(() {
+        searchList;
+      });
+    }
 
   }
 
@@ -149,7 +170,10 @@ class _DropDownFormState extends State<DropDownForm> {
                   ),
                 ),
               ),
-            onChanged: (value) => searchForExercise(value),
+            onChanged: (value) => EasyDebounce.debounce(
+              "levenshteinDistanceDebouncerExercise",
+              const Duration(milliseconds: 200),
+                  () => searchForExercise(value)),
             onTap: () {
               FirebaseAnalytics.instance.logEvent(name: widget.label.replaceAll(" ", "_")+'_dropdown_selected');
                 setState(() {
