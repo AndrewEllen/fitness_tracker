@@ -385,6 +385,38 @@ void createRoutine(RoutinesModel routine) async {
 
 }
 
+void updateRoutineOrder(RoutinesModel routine) async {
+
+  mapData(data) {
+
+    return [
+      for (ExerciseListModel exerciseListData in data)
+        {
+          "exerciseName": exerciseListData.exerciseName,
+          "exerciseDate": exerciseListData.exerciseDate,
+          "exerciseTrackingType": exerciseListData.exerciseTrackingType,
+          "mainOrAccessory": exerciseListData.mainOrAccessory,
+        }
+    ];
+
+  }
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('routine-data')
+      .doc(routine.routineName)
+      .update({
+    "routineName": routine.routineName,
+    "routineDate": routine.routineDate,
+    "routineID": routine.routineID,
+    "exercises": mapData(routine.exercises),
+  });
+
+}
+
 void updateRoutineData(RoutinesModel routine) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;

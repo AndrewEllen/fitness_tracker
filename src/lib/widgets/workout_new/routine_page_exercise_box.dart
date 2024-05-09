@@ -14,9 +14,10 @@ import '../general/app_default_button.dart';
 
 
 class RoutinePageExerciseBox extends StatefulWidget {
-  RoutinePageExerciseBox({Key? key, required this.routine, required this.index}) : super(key: key);
+  RoutinePageExerciseBox({Key? key, required this.routine, required this.index, this.dragList}) : super(key: key);
   RoutinesModel routine;
   int index;
+  bool? dragList = false;
 
   @override
   State<RoutinePageExerciseBox> createState() => _RoutinePageExerciseBoxState();
@@ -153,8 +154,8 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                     _expandPanel = !_expandPanel;
                   });
                 },
-                icon: const Icon(
-                  Icons.more_vert, color: Colors.white,
+                icon: Icon(
+                  !widget.dragList! ? Icons.more_vert : Icons.drag_handle, color: Colors.white,
                 ),
               ),
             ),
@@ -172,7 +173,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                   ],
                   color: appTertiaryColour,
                 ),
-                child: SizedBox(
+                child: !widget.dragList! ? SizedBox(
                   width: double.maxFinite,
                   height: 24.h,
                   child: Center(
@@ -183,7 +184,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                       ),
                     ),
                   ),
-                ),
+                ) : const SizedBox.shrink(),
               ),
             ),
             TweenAnimationBuilder(

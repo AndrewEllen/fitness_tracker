@@ -10,10 +10,12 @@ import 'package:provider/provider.dart';
 
 import '../../pages/workout_new/workout_exercise_page.dart';
 import '../../pages/workout_new/workout_routine_page.dart';
+import '../../providers/general/database_write.dart';
 
 class RoutinePageExerciseList extends StatefulWidget {
-  RoutinePageExerciseList({Key? key, required this.routine}) : super(key: key);
+  RoutinePageExerciseList({Key? key, required this.routine, required this.dragList}) : super(key: key);
   RoutinesModel routine;
+  bool dragList;
 
   @override
   State<RoutinePageExerciseList> createState() => _RoutinePageExerciseListState();
@@ -37,13 +39,25 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
     return Column(
       children: [
 
-        ListView.builder(
+        ReorderableListView.builder(
+          buildDefaultDragHandles: widget.dragList,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: widget.routine.exercises.length,
           shrinkWrap: true,
+          onReorder: (int oldIndex, int newIndex) {
+            setState(() {
+              if (oldIndex < newIndex) {
+                newIndex -= 1;
+              }
+              final item = widget.routine.exercises.removeAt(oldIndex);
+              widget.routine.exercises.insert(newIndex, item);
+              updateRoutineOrder(widget.routine);
+            });
+          },
           itemBuilder: (BuildContext context, int index) {
 
             return RoutinePageExerciseBox(
+              dragList: widget.dragList,
               key: UniqueKey(),
               routine: widget.routine,
               index: index,

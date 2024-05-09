@@ -15,19 +15,50 @@ import '../../widgets/workout_new/routine_page_exercise_list.dart';
 import 'exercise_database_search.dart';
 import 'exercise_selection_page.dart';
 
-class WorkoutRoutinePage extends StatelessWidget {
+class WorkoutRoutinePage extends StatefulWidget {
   WorkoutRoutinePage({Key? key, required this.routine}) : super(key: key);
   RoutinesModel routine;
 
+  @override
+  State<WorkoutRoutinePage> createState() => _WorkoutRoutinePageState();
+}
+
+class _WorkoutRoutinePageState extends State<WorkoutRoutinePage> {
   final GlobalKey<ExpandableFabState> _key = GlobalKey<ExpandableFabState>();
+
+  late bool dragList = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomSheet: dragList ? SizedBox(
+        width: double.maxFinite,
+        height: 35.h,
+        child: Material(
+          color: appSecondaryColour,
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                dragList = false;
+              });
+            },
+            child: Ink(
+              child: const Center(
+                child: Text(
+                  "Tap to stop dragging items",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ) : null,
       appBar: AppBar(
         backgroundColor: appTertiaryColour,
         title: Text(
-          routine.routineName,
+          widget.routine.routineName,
           style: boldTextStyle,
         ),
       ),
@@ -108,6 +139,31 @@ class WorkoutRoutinePage extends StatelessWidget {
                   ),
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.only(right: 14.0.w),
+                child: SizedBox(
+                  width: 48.w,
+                  child: FloatingActionButton(
+                      tooltip: "Reorganise Exercise List",
+                      backgroundColor: appSecondaryColour,
+                      heroTag: null,
+                      child: const Icon(
+                        Icons.drag_handle,
+                      ),
+                      onPressed: () {
+                        final menuState = _key.currentState;
+                        if (menuState != null) {
+                          menuState.toggle();
+                        }
+
+                        setState(() {
+                          dragList = !dragList;
+                        });
+
+                      }
+                  ),
+                ),
+              ),
               SizedBox(
                 width: 48.w,
                 child: FloatingActionButton(
@@ -122,7 +178,7 @@ class WorkoutRoutinePage extends StatelessWidget {
                     if (menuState != null) {
                       menuState.toggle();
                     }
-                    context.read<PageChange>().changePageCache(ExerciseSelectionPage(routine: routine));
+                    context.read<PageChange>().changePageCache(ExerciseSelectionPage(routine: widget.routine));
                   }
                 ),
               ),
@@ -188,7 +244,8 @@ class WorkoutRoutinePage extends StatelessWidget {
         },
         child: SingleChildScrollView(
           child: RoutinePageExerciseList(
-            routine: routine,
+            routine: widget.routine,
+            dragList: dragList,
           ),
         ),
       ),
