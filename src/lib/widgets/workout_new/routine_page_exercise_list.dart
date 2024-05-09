@@ -26,18 +26,32 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
 
     context.watch<WorkoutProvider>().routinesList;
 
-    final filteredMain = widget.routine.exercises
-        .where((exercise) => exercise.mainOrAccessory == 1)
-        .toList();
+    //final filteredMain = widget.routine.exercises
+    //    .where((exercise) => exercise.mainOrAccessory == 1)
+    //    .toList();
 
-    final filteredAccessories = widget.routine.exercises
-        .where((exercise) => exercise.mainOrAccessory == 0)
-        .toList();
+    //final filteredAccessories = widget.routine.exercises
+    //    .where((exercise) => exercise.mainOrAccessory == 0)
+    //    .toList();
 
     return Column(
       children: [
 
-        filteredMain.isNotEmpty ? Container(
+        ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: widget.routine.exercises.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+
+            return RoutinePageExerciseBox(
+              key: UniqueKey(),
+              routine: widget.routine,
+              index: index,
+            );
+          },
+        ),
+
+        /*filteredMain.isNotEmpty ? Container(
           width: double.maxFinite,
           decoration: const BoxDecoration(
             border: Border(
@@ -113,7 +127,7 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
               index: index,
             ) : const SizedBox.shrink();
           },
-        ),
+        ),*/
       ],
     );
   }

@@ -227,13 +227,13 @@ void updateExercise(ExerciseModel exercise) async {
       .doc(firebaseAuth.currentUser!.uid)
       .collection('workout-data')
       .doc(exercise.exerciseName)
-      .update({
+      .set({
     "category": exercise.category,
     "primary-muscle": exercise.primaryMuscle,
     "secondary-muscle": exercise.secondaryMuscle,
     "tertiary-muscle": exercise.tertiaryMuscle,
     "exerciseTrackingType": exercise.exerciseTrackingType,
-  });
+  }, SetOptions(merge: true));
 
 }
 
@@ -253,7 +253,7 @@ void createNewExercise(ExerciseModel exercise) async {
         "tertiary-muscle": exercise.tertiaryMuscle,
         "type": exercise.type,
         "exerciseTrackingType": exercise.exerciseTrackingType,
-      });
+      }, SetOptions(merge: true));
 
 }
 
@@ -296,7 +296,7 @@ void saveExerciseLogs(ExerciseModel exercise, Map log) async {
         "timeStamp": DateFormat("dd/MM/yyyy").parse(log["measurementDate"]).toUtc(),
         "data": logToSave,
         "type": exercise.type,
-      });
+      }, SetOptions(merge: true));
 
 }
 
@@ -309,7 +309,7 @@ void saveExerciseMaxRepsAtWeight(String exerciseName, Map maxWeightAtReps) async
       .doc(firebaseAuth.currentUser!.uid)
       .collection('workout-data')
       .doc(exerciseName)
-      .set({"data": maxWeightAtReps});
+      .set({"data": maxWeightAtReps}, SetOptions(merge: true));
 
 }
 
@@ -334,7 +334,7 @@ void updateLogData(ExerciseModel exercise, int index) async {
       "intensityValues": exercise.exerciseTrackingData.dailyLogs[index]["intensityValues"]
       }
     ],
-  });
+  }, SetOptions(merge: true));
 
 }
 

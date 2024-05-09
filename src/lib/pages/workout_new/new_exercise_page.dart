@@ -331,7 +331,7 @@ class _NewExercisePageState extends State<NewExercisePage> {
                     ),
                   ),
 
-                  typeDropDownMenuValue == 0 ? Padding(
+                  /*typeDropDownMenuValue == 0*/ false ? Padding(
                     padding: const EdgeInsets.only(top: 20, left: 50.0, right: 50.0),
                     child: DropdownMenu(
                       initialSelection: 0,
