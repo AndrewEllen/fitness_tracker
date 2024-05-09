@@ -113,9 +113,15 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
       }
     }
 
-    setState(() {
-      searchList = internalSearchList;
-    });
+    if (searchController.text.isEmpty) {
+      setState(() {
+        searchList = listToSearch;
+      });
+    } else {
+      setState(() {
+        searchList = internalSearchList;
+      });
+    }
 
   }
 
@@ -237,6 +243,11 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
     );
   }
 
+  @override
+  void initState() {
+    searchList = context.read<WorkoutProvider>().exerciseNamesList;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -267,7 +278,7 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
                 padding: EdgeInsets.only(top:110.h),
                 shrinkWrap: true,
                 controller: scrollController,
-                itemCount: searchController.text.isNotEmpty ? searchList.length : checkboxList.length,
+                itemCount: checkboxList.length,
                 itemBuilder: (BuildContext context, int index) {
 
                   return Dismissible(
@@ -329,20 +340,23 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
                             });
                             scrollController.animateTo(
                               scrollController.position.maxScrollExtent,
-                              duration: Duration(seconds: 2),
+                              duration: const Duration(seconds: 2),
                               curve: Curves.fastOutSlowIn,
                             );
                           }
 
-                          return CheckboxListTile(
+                          return searchList.contains(checkboxList[index].exerciseName) ? CheckboxListTile(
                             key: UniqueKey(),
                             title: Text(
-                              searchList.isNotEmpty ? searchList[index] : checkboxList[index].exerciseName,
+                              checkboxList[index].exerciseName,
                               style: boldTextStyle,
                             ),
                             controlAffinity: ListTileControlAffinity.trailing,
                             value: checkboxList[index].isChecked,
                             onChanged: (value) {
+
+                              print(checkboxList[index].exerciseName);
+                              print(checkboxList[index].isChecked);
 
                               setState(() {
                                 checkboxList[index].isChecked = value!;
@@ -356,7 +370,7 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
 
 
                             },
-                          );
+                          ) : const SizedBox.shrink();
                         }
                     ),
                   );
