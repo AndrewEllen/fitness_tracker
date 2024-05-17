@@ -335,11 +335,93 @@ CheckFoodBarcode(String barcodeDisplayValue, {bool recipe = false, options = con
 
       print("openFF");
 
-      ProductResultV3 product = await CheckFoodBarcodeOpenFF(barcodeDisplayValue);
+      Object product;
 
-      FoodItem newFoodItem = ConvertToFoodItem(product.product, scannedBarcode: barcodeDisplayValue);
+      try {
+        product = await Future.value(CheckFoodBarcodeOpenFF(barcodeDisplayValue)).timeout(const Duration(seconds: 3));
+      } catch (e) {
+        product = "failed";
+      }
 
-      newFoodItem.foodName = newFoodItem.foodName.capitalize();
+
+      if (product.runtimeType == ProductResultV3) {
+
+        product as ProductResultV3;
+
+        FoodItem newFoodItem = ConvertToFoodItem(product.product, scannedBarcode: barcodeDisplayValue);
+
+        newFoodItem.foodName = newFoodItem.foodName.capitalize();
+
+        return newFoodItem;
+
+      } else {
+
+      }
+
+      FoodItem newFoodItem = FoodItem(
+          newItem: true,
+          recipe: false,
+          firebaseItem: true,
+          barcode: barcodeDisplayValue,
+          foodName: "",
+          quantity: "",
+          servingSize: "",
+          servings: "",
+          calories: "",
+          kiloJoules: "",
+          proteins: "",
+          carbs: "",
+          fiber: "",
+          sugars: "",
+          fat: "",
+          saturatedFat: "",
+          polyUnsaturatedFat: "",
+          monoUnsaturatedFat: "",
+          transFat: "",
+          cholesterol: "",
+          calcium: "",
+          iron: "",
+          sodium: "",
+          zinc: "",
+          magnesium: "",
+          potassium: "",
+          vitaminA: "",
+          vitaminB1: "",
+          vitaminB2: "",
+          vitaminB3: "",
+          vitaminB6: "",
+          vitaminB9: "",
+          vitaminB12: "",
+          vitaminC: "",
+          vitaminD: "",
+          vitaminE: "",
+          vitaminK: "",
+          omega3: "",
+          omega6: "",
+          alcohol: "",
+          biotin: "",
+          butyricAcid: "",
+          caffeine: "",
+          capricAcid: "",
+          caproicAcid: "",
+          caprylicAcid: "",
+          chloride: "",
+          chromium: "",
+          copper: "",
+          docosahexaenoicAcid: "",
+          eicosapentaenoicAcid: "",
+          erucicAcid: "",
+          fluoride: "",
+          iodine: "",
+          manganese: "",
+          molybdenum: "",
+          myristicAcid: "",
+          oleicAcid: "",
+          palmiticAcid: "",
+          pantothenicAcid: "",
+          selenium: "",
+          stearicAcid: "",
+      );
 
       return newFoodItem;
 
