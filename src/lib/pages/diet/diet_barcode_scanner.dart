@@ -122,7 +122,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
             child: IconButton(
               color: Colors.white,
               icon: const Icon(
-                MdiIcons.scanner,
+                MdiIcons.scanHelper,
                 size: 48,
               ),
                 onPressed: () async {
@@ -253,18 +253,6 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
               child: ScannedBarcodeLabel(barcodes: scannerController.barcodes),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 50.0.h),
-            child: Center(
-              child: SizedBox(
-                width: 100.w,
-                height: 100.w,
-                child: const CircularProgressIndicator(
-                  color: appSecondaryColour,
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );
@@ -391,7 +379,7 @@ class ScannedBarcodeLabel extends StatelessWidget {
 
         if (scannedBarcodes.isEmpty) {
           return const Text(
-            'Scan something!',
+            'Scan A Barcode',
             overflow: TextOverflow.fade,
             style: TextStyle(color: Colors.white),
           );
