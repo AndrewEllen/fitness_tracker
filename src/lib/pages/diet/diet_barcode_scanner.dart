@@ -25,7 +25,7 @@ class BarcodeScannerPage extends StatefulWidget {
 
 class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
 
-  bool _isScanned = false;
+  String currentBarcode = "";
 
   MobileScannerController scannerController = MobileScannerController(
     torchEnabled: false,
@@ -126,15 +126,13 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                 size: 48,
               ),
                 onPressed: () async {
+                  debugPrint("Scan Pressed");
 
-                  BarcodeCapture barcodes = await scannerController.barcodes.first;
-                  String? barcodeValue = barcodes.barcodes.first.displayValue;
+                  String barcodeToUse = currentBarcode;
 
-                  debugPrint(barcodeValue);
+                  if (barcodeToUse.isNotEmpty) {
 
-                  if (barcodeValue != null && !_isScanned) {
-
-                    FoodItem newFoodItem = await CheckFoodBarcode(barcodeValue!);
+                    FoodItem newFoodItem = await CheckFoodBarcode(barcodeToUse);
 
                     debugPrint(newFoodItem.barcode);
                     debugPrint(newFoodItem.foodName);
@@ -148,8 +146,6 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                     } else {
 
                       context.read<UserNutritionData>().setCurrentFoodItem(newFoodItem);
-
-                      _isScanned = true;
 
                       if (newFoodItem.newItem) {
                         scannerController.stop();
@@ -230,16 +226,16 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
         fit: StackFit.expand,
         children: [
           MobileScanner(
-              scanWindow: scanWindow,
+            scanWindow: scanWindow,
             key: UniqueKey(),
-            errorBuilder: (context, error, child) {
-              scannerController.stop();
-              scannerController.start();
-              debugPrint("Scanner Error");
-              return const CircularProgressIndicator();
-            },
             controller: scannerController,
+              onDetect: (capture) async {
+                final List<Barcode> barcodes = capture.barcodes;
 
+                debugPrint('Barcode found! ${barcodes[0].displayValue}');
+
+                currentBarcode = barcodes[0].displayValue ?? "";
+              }
           ),
           _buildBarcodeOverlay(),
           _buildScanWindow(scanWindow),
