@@ -476,6 +476,16 @@ class _FoodNewNutritionEditState extends State<FoodNewNutritionEdit> {
                     height: 40.h,
                     child: DietListHeaderBox(
                       width: _width,
+                      title: "Barcode: " + barcodeController.text,
+                      largeTitle: true,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(
+                    width: _width / 2,
+                    height: 40.h,
+                    child: DietListHeaderBox(
+                      width: _width,
                       title: "Values per 100g",
                       largeTitle: true,
                       color: Colors.white,
