@@ -157,7 +157,7 @@ class _NewExercisePageState extends State<NewExercisePage> {
   };
 
   List<String> muscleList = <String>[
-  'Triceps Brachii ', 'Rhomboids', 'Rectus Abdominis', 'Latissimus Dorsi', 'Gluteus Medius', 'Teres Major', 'Gluteus Minimus', 'Anterior Deltoids', 'Iliopsoas', 'Infraspinatus', 'Gluteus Maximus', 'Biceps Femoris', 'Brachialis', 'Gastrocnemius', 'Soleus', 'Teres Minor', 'Subscapularis ', 'Quadriceps Femoris', 'Upper Trapezius', 'Adductor Magnus', 'Rectus Abdominis ', 'Tensor Fasciae Latae', 'Biceps Brachii', 'Lower Trapezius', 'Rectus Femoris', 'Triceps Brachaii', 'Tibialis Anterior', 'Pectoralis Major', 'Triceps Brachii', 'Erector Spinae', 'Anterior Deltoids ', 'Medial Deltoids', 'Brachioradialis', 'Obliques', 'Serratus Anterior', 'Posterior Deltoids'
+  'Triceps Brachii ', 'Rhomboids', 'Rectus Abdominis', 'Latissimus Dorsi', 'Gluteus Medius', 'Teres Major', 'Gluteus Minimus', 'Anterior Deltoids', 'Iliopsoas', 'Infraspinatus', 'Gluteus Maximus', 'Biceps Femoris', 'Brachialis', 'Gastrocnemius', 'Soleus', 'Teres Minor', 'Subscapularis ', 'Quadriceps Femoris', 'Upper Trapezius', 'Adductor Magnus', 'Rectus Abdominis ', 'Tensor Fasciae Latae', 'Biceps Brachii', 'Lower Trapezius', 'Rectus Femoris', 'Tibialis Anterior', 'Pectoralis Major', 'Erector Spinae', 'Anterior Deltoids ', 'Medial Deltoids', 'Brachioradialis', 'Obliques', 'Serratus Anterior', 'Posterior Deltoids'
 ];
 
 
