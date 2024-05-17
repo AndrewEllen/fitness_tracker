@@ -801,6 +801,9 @@ GetExerciseLogData(String exerciseName, {options = const GetOptions(source: Sour
           ],
         ),
         category: repsAndWeightSnapshot.data()?["category"],
+        primaryMuscle: repsAndWeightSnapshot.data()?["primary-muscle"],
+        secondaryMuscle: repsAndWeightSnapshot.data()?["secondary-muscle"],
+        tertiaryMuscle: repsAndWeightSnapshot.data()?["tertiary-muscle"],
         type: repsAndWeightSnapshot.data()?["type"] ?? 0,
         exerciseTrackingType: repsAndWeightSnapshot.data()?["exerciseTrackingType"],
         exerciseMaxRepsAndWeight: repsAndWeightSnapshot.data()?["data"] == null ? {}
@@ -885,6 +888,8 @@ GetRoutinesData({options = const GetOptions(source: Source.serverAndCache)}) asy
         ExerciseListModel(
           exerciseName: exercise["exerciseName"],
           exerciseDate: exercise["exerciseDate"],
+          exerciseTrackingType: exercise["exerciseTrackingType"],
+          mainOrAccessory: exercise["mainOrAccessory"],
         )
     ];
 

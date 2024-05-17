@@ -12,12 +12,18 @@ import 'package:provider/provider.dart';
 
 import '../../models/workout/routines_model.dart';
 import '../../widgets/workout_new/routine_page_exercise_list.dart';
+import 'exercise_database_search.dart';
 import 'exercise_selection_page.dart';
 
-class WorkoutRoutinePage extends StatelessWidget {
+class WorkoutRoutinePage extends StatefulWidget {
   WorkoutRoutinePage({Key? key, required this.routine}) : super(key: key);
   RoutinesModel routine;
 
+  @override
+  State<WorkoutRoutinePage> createState() => _WorkoutRoutinePageState();
+}
+
+class _WorkoutRoutinePageState extends State<WorkoutRoutinePage> {
   final GlobalKey<ExpandableFabState> _key = GlobalKey<ExpandableFabState>();
 
   @override
@@ -26,7 +32,7 @@ class WorkoutRoutinePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: appTertiaryColour,
         title: Text(
-          routine.routineName,
+          widget.routine.routineName,
           style: boldTextStyle,
         ),
       ),
@@ -84,26 +90,51 @@ class WorkoutRoutinePage extends StatelessWidget {
           },
         ),
         children: [
-          SizedBox(
-            width: 46.w,
-            child: FloatingActionButton(
-              tooltip: "Add Exercise",
-              backgroundColor: appSecondaryColour,
-              heroTag: null,
-              child: const Icon(
-                Icons.add,
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 14.0.w),
+                child: SizedBox(
+                  width: 48.w,
+                  child: FloatingActionButton(
+                      tooltip: "Search New Exercises",
+                      backgroundColor: appSecondaryColour,
+                      heroTag: null,
+                      child: const Icon(
+                        Icons.search,
+                      ),
+                      onPressed: () {
+                        final menuState = _key.currentState;
+                        if (menuState != null) {
+                          menuState.toggle();
+                        }
+                        context.read<PageChange>().changePageCache(ExerciseDatabaseSearch());
+                      }
+                  ),
+                ),
               ),
-              onPressed: () {
-                final menuState = _key.currentState;
-                if (menuState != null) {
-                  menuState.toggle();
-                }
-                context.read<PageChange>().changePageCache(ExerciseSelectionPage(routine: routine));
-              }
-            ),
+              SizedBox(
+                width: 48.w,
+                child: FloatingActionButton(
+                  tooltip: "Add Exercise",
+                  backgroundColor: appSecondaryColour,
+                  heroTag: null,
+                  child: const Icon(
+                    Icons.add,
+                  ),
+                  onPressed: () {
+                    final menuState = _key.currentState;
+                    if (menuState != null) {
+                      menuState.toggle();
+                    }
+                    context.read<PageChange>().changePageCache(ExerciseSelectionPage(routine: widget.routine));
+                  }
+                ),
+              ),
+            ],
           ),
           SizedBox(
-            width: 46.w,
+            width: 48.w,
             child: FloatingActionButton(
               tooltip: "View Past Workouts",
               backgroundColor: appSecondaryColour,
@@ -123,7 +154,7 @@ class WorkoutRoutinePage extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: 46.w,
+            width: 48.w,
             child: FloatingActionButton(
               tooltip: "View Current Workout",
               backgroundColor: context.watch<WorkoutProvider>().workoutStarted
@@ -160,10 +191,8 @@ class WorkoutRoutinePage extends StatelessWidget {
           overscroll.disallowIndicator();
           return true;
         },
-        child: SingleChildScrollView(
-          child: RoutinePageExerciseList(
-            routine: routine,
-          ),
+        child: RoutinePageExerciseList(
+          routine: widget.routine,
         ),
       ),
     );

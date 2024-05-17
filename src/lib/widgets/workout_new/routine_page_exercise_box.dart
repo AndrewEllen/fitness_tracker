@@ -114,135 +114,137 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 10.h),
-      child: InkWell(
-        onTap: onTap,
-        child: Column(
-          children: [
-            ListTile(
-              tileColor: appTertiaryColour,
-              leading: Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: appSecondaryColour,
-                ),
-                width: 40.h,
-                height: 40.h,
-                child: Center(
-                  child: Text(
-                    widget.routine.exercises[widget.index].exerciseName[0],
-                    style: boldTextStyle,
+    return Material(
+      color: Colors.transparent,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 2.h),
+        child: InkWell(
+          onTap: onTap,
+          child: Column(
+            children: [
+              ListTile(
+                tileColor: appTertiaryColour,
+                leading: Container(
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: appSecondaryColour,
                   ),
-                ),
-              ),
-              title: Text(
-                widget.routine.exercises[widget.index].exerciseName,
-                style: boldTextStyle,
-              ),
-              subtitle: Text(
-                daysPassedCalculator(widget.routine.exercises[widget.index].exerciseDate),
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.white70,
-                ),
-              ),
-              trailing: IconButton(
-                onPressed: () {
-                  setState(() {
-                    _expandPanel = !_expandPanel;
-                  });
-                },
-                icon: const Icon(
-                  Icons.more_vert, color: Colors.white,
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: onTap,
-              child: Ink(
-                decoration: const BoxDecoration(
-                  border: Border(
-                      top: BorderSide(
-                        color: Colors.white30,
-                      )
-                  ),
-                  boxShadow: [
-                    basicAppShadow
-                  ],
-                  color: appTertiaryColour,
-                ),
-                child: SizedBox(
-                  width: double.maxFinite,
-                  height: 24.h,
+                  width: 40.h,
+                  height: 40.h,
                   child: Center(
                     child: Text(
-                      "Open",
-                      style: boldTextStyle.copyWith(
-                        color: appSecondaryColour,
-                      ),
+                      widget.routine.exercises[widget.index].exerciseName[0],
+                      style: boldTextStyle,
                     ),
                   ),
                 ),
+                title: Text(
+                  widget.routine.exercises[widget.index].exerciseName,
+                  style: boldTextStyle,
+                ),
+                subtitle: Text(
+                  daysPassedCalculator(widget.routine.exercises[widget.index].exerciseDate),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.white70,
+                  ),
+                ),
+                trailing: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _expandPanel = !_expandPanel;
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.more_vert, color: Colors.white,
+                  ),
+                ),
               ),
-            ),
-            TweenAnimationBuilder(
-              tween: Tween<double>(begin: 0.0, end: _expandPanel ? 40 : 0),
-              duration: const Duration(milliseconds: 250),
-              builder: (context, value, _) => ClipRRect(
-                child: Material(
-                  type: MaterialType.transparency,
-                  child: Ink(
-                    height: value.h,
-                    color: Colors.red,
-                    child: InkWell(
-                      onTap: () async {
-                        bool _delete = await showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              backgroundColor: appTertiaryColour,
-                              titleTextStyle: const TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 22,
-                              ),
-                              contentTextStyle: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
-                              title: const Text('Do you want to remove this Exercise?'),
-                              content: const Text("It can be added again later"),
-                              actions: <Widget>[
-                                AppButton(
-                                  onTap: () => Navigator.of(context).pop(false),
-                                  buttonText: "No",
-                                ),
-                                AppButton(
-                                  onTap: () => Navigator.of(context).pop(true),
-                                  buttonText: "Yes",
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                        if (_delete) {
-                          print("deleting");
-                          context.read<WorkoutProvider>().deleteExerciseFromRoutine(widget.index, widget.routine);
-                        }
-                      },
-                      child: const Center(
-                        child: Icon(
-                          Icons.delete,
-                          color: Colors.white,
+              InkWell(
+                onTap: onTap,
+                child: Ink(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                        top: BorderSide(
+                          color: Colors.black26,
+                        )
+                    ),
+                    boxShadow: [
+                      basicAppShadow
+                    ],
+                    color: appTertiaryColour,
+                  ),
+                  child: SizedBox(
+                    width: double.maxFinite,
+                    height: 24.h,
+                    child: Center(
+                      child: Text(
+                        "Open",
+                        style: boldTextStyle.copyWith(
+                          color: appSecondaryColour,
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+              TweenAnimationBuilder(
+                tween: Tween<double>(begin: 0.0, end: _expandPanel ? 40 : 0),
+                duration: const Duration(milliseconds: 250),
+                builder: (context, value, _) => ClipRRect(
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: Ink(
+                      height: value.h,
+                      color: Colors.red,
+                      child: InkWell(
+                        onTap: () async {
+                          bool _delete = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: appTertiaryColour,
+                                titleTextStyle: const TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 22,
+                                ),
+                                contentTextStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                                title: const Text('Do you want to remove this Exercise?'),
+                                content: const Text("It can be added again later"),
+                                actions: <Widget>[
+                                  AppButton(
+                                    onTap: () => Navigator.of(context).pop(false),
+                                    buttonText: "No",
+                                  ),
+                                  AppButton(
+                                    onTap: () => Navigator.of(context).pop(true),
+                                    buttonText: "Yes",
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          if (_delete) {
+                            context.read<WorkoutProvider>().deleteExerciseFromRoutine(widget.index, widget.routine);
+                          }
+                        },
+                        child: const Center(
+                          child: Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

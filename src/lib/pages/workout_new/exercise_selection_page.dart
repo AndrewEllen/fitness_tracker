@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
+import 'package:fitness_tracker/models/workout/exercise_model.dart';
 import 'package:fitness_tracker/pages/workout_new/new_exercise_page.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:fitness_tracker/widgets/general/app_default_button.dart';
@@ -38,6 +41,23 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
   List<int> boolIndexBackupList = [];
 
   List<String> searchList = [];
+
+  Future<Map> fetchExerciseData(String exerciseName) async {
+
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('workout-data')
+        .doc(exerciseName)
+        .get();
+
+    return {
+      "exerciseType": snapshot.data()?["exerciseTrackingType"] ?? 0,
+      "mainOrAccessory": snapshot.data()?["type"] ?? 1,
+    };
+  }
 
   void searchForExercise(String value) {
 
@@ -93,9 +113,15 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
       }
     }
 
-    setState(() {
-      searchList = internalSearchList;
-    });
+    if (searchController.text.isEmpty) {
+      setState(() {
+        searchList = listToSearch;
+      });
+    } else {
+      setState(() {
+        searchList = internalSearchList;
+      });
+    }
 
   }
 
@@ -217,6 +243,11 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
     );
   }
 
+  @override
+  void initState() {
+    searchList = context.read<WorkoutProvider>().exerciseNamesList;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -247,7 +278,7 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
                 padding: EdgeInsets.only(top:110.h),
                 shrinkWrap: true,
                 controller: scrollController,
-                itemCount: searchController.text.isNotEmpty ? searchList.length : checkboxList.length,
+                itemCount: checkboxList.length,
                 itemBuilder: (BuildContext context, int index) {
 
                   return Dismissible(
@@ -309,20 +340,23 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
                             });
                             scrollController.animateTo(
                               scrollController.position.maxScrollExtent,
-                              duration: Duration(seconds: 2),
+                              duration: const Duration(seconds: 2),
                               curve: Curves.fastOutSlowIn,
                             );
                           }
 
-                          return CheckboxListTile(
+                          return searchList.contains(checkboxList[index].exerciseName) ? CheckboxListTile(
                             key: UniqueKey(),
                             title: Text(
-                              searchList.isNotEmpty ? searchList[index] : checkboxList[index].exerciseName,
+                              checkboxList[index].exerciseName,
                               style: boldTextStyle,
                             ),
                             controlAffinity: ListTileControlAffinity.trailing,
                             value: checkboxList[index].isChecked,
                             onChanged: (value) {
+
+                              print(checkboxList[index].exerciseName);
+                              print(checkboxList[index].isChecked);
 
                               setState(() {
                                 checkboxList[index].isChecked = value!;
@@ -336,7 +370,7 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
 
 
                             },
-                          );
+                          ) : const SizedBox.shrink();
                         }
                     ),
                   );
@@ -431,18 +465,25 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
                       child: SizedBox(
                         height: 35.h,
                         child: AppButton(
-                          onTap: () {
+                          onTap: () async {
 
-                            setState(() {
-                              _selectedExerciseList = [
-                                for(ExerciseListCheckbox exercise in checkboxList)
-                                  if (exercise.isChecked)
-                                    ExerciseListModel(
-                                        exerciseName: exercise.exerciseName,
-                                        exerciseDate: "",
-                                    ),
-                              ];
-                            });
+                            _selectedExerciseList = [];
+
+                            for(ExerciseListCheckbox exercise in checkboxList) {
+                              if (exercise.isChecked) {
+
+                                Map exerciseData = await fetchExerciseData(exercise.exerciseName);
+
+                                _selectedExerciseList.add(ExerciseListModel(
+                                  exerciseName: exercise.exerciseName,
+                                  exerciseDate: "",
+                                  exerciseTrackingType: exerciseData["exerciseTrackingType"],
+                                  mainOrAccessory: exerciseData["mainOrAccessory"],
+                                ));
+                              }
+                            }
+
+                            setState(() {_selectedExerciseList;});
 
                             context.read<WorkoutProvider>().addExerciseToRoutine(widget.routine, _selectedExerciseList);
 

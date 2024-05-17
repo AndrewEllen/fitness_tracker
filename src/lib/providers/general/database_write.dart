@@ -218,6 +218,25 @@ void deleteGrocery(GroceryItem groceryItem, String groceryListID) async {
 
 }
 
+void updateExercise(ExerciseModel exercise) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('workout-data')
+      .doc(exercise.exerciseName)
+      .set({
+    "category": exercise.category,
+    "primary-muscle": exercise.primaryMuscle,
+    "secondary-muscle": exercise.secondaryMuscle,
+    "tertiary-muscle": exercise.tertiaryMuscle,
+    "exerciseTrackingType": exercise.exerciseTrackingType,
+  }, SetOptions(merge: true));
+
+}
+
 void createNewExercise(ExerciseModel exercise) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -229,9 +248,12 @@ void createNewExercise(ExerciseModel exercise) async {
       .doc(exercise.exerciseName)
       .set({
         "category": exercise.category,
+        "primary-muscle": exercise.primaryMuscle,
+        "secondary-muscle": exercise.secondaryMuscle,
+        "tertiary-muscle": exercise.tertiaryMuscle,
         "type": exercise.type,
         "exerciseTrackingType": exercise.exerciseTrackingType,
-      });
+      }, SetOptions(merge: true));
 
 }
 
@@ -274,7 +296,7 @@ void saveExerciseLogs(ExerciseModel exercise, Map log) async {
         "timeStamp": DateFormat("dd/MM/yyyy").parse(log["measurementDate"]).toUtc(),
         "data": logToSave,
         "type": exercise.type,
-      });
+      }, SetOptions(merge: true));
 
 }
 
@@ -287,7 +309,7 @@ void saveExerciseMaxRepsAtWeight(String exerciseName, Map maxWeightAtReps) async
       .doc(firebaseAuth.currentUser!.uid)
       .collection('workout-data')
       .doc(exerciseName)
-      .set({"data": maxWeightAtReps});
+      .set({"data": maxWeightAtReps}, SetOptions(merge: true));
 
 }
 
@@ -312,7 +334,7 @@ void updateLogData(ExerciseModel exercise, int index) async {
       "intensityValues": exercise.exerciseTrackingData.dailyLogs[index]["intensityValues"]
       }
     ],
-  });
+  }, SetOptions(merge: true));
 
 }
 
@@ -340,6 +362,8 @@ void createRoutine(RoutinesModel routine) async {
         {
           "exerciseName": exerciseListData.exerciseName,
           "exerciseDate": exerciseListData.exerciseDate,
+          "exerciseTrackingType": exerciseListData.exerciseTrackingType,
+          "mainOrAccessory": exerciseListData.mainOrAccessory,
         }
       ];
 
@@ -361,9 +385,7 @@ void createRoutine(RoutinesModel routine) async {
 
 }
 
-void updateRoutineData(RoutinesModel routine) async {
-
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+void updateRoutineOrder(RoutinesModel routine) async {
 
   mapData(data) {
 
@@ -372,8 +394,51 @@ void updateRoutineData(RoutinesModel routine) async {
         {
           "exerciseName": exerciseListData.exerciseName,
           "exerciseDate": exerciseListData.exerciseDate,
+          "exerciseTrackingType": exerciseListData.exerciseTrackingType,
+          "mainOrAccessory": exerciseListData.mainOrAccessory,
         }
     ];
+
+  }
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('routine-data')
+      .doc(routine.routineName)
+      .update({
+    "routineName": routine.routineName,
+    "routineDate": routine.routineDate,
+    "routineID": routine.routineID,
+    "exercises": mapData(routine.exercises),
+  });
+
+}
+
+void updateRoutineData(RoutinesModel routine) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  mapData(data) async {
+
+    List<Map> exerciseListToReturn = [];
+
+    for (ExerciseListModel exerciseListData in data) {
+
+      exerciseListToReturn.add(
+          {
+            "exerciseName": exerciseListData.exerciseName,
+            "exerciseDate": exerciseListData.exerciseDate,
+            "exerciseTrackingType": exerciseListData.exerciseTrackingType ?? 0,
+            "mainOrAccessory": exerciseListData.mainOrAccessory ?? 0,
+          }
+      );
+    }
+
+
+    return exerciseListToReturn;
 
   }
 
@@ -386,7 +451,7 @@ void updateRoutineData(RoutinesModel routine) async {
     "routineName": routine.routineName,
     "routineDate": routine.routineDate,
     "routineID": routine.routineID,
-    "exercises": mapData(routine.exercises),
+    "exercises": await mapData(routine.exercises),
   });
 
 }

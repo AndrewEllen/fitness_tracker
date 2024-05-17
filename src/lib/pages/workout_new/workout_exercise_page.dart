@@ -4,6 +4,7 @@ import 'package:fitness_tracker/constants.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/workout/exercise_model.dart';
+import 'package:fitness_tracker/pages/workout_new/workout_exercise_anatomy_page.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_exercise_graphs_page.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_log_page.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
@@ -92,7 +93,8 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
 
     context.watch<WorkoutProvider>().exerciseList;
     return DefaultTabController(
-      length: 2,
+      length: 3,
+      initialIndex: 1,
       child: Scaffold(
         appBar: AppBar(
           actions: [
@@ -145,6 +147,9 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
                   indicatorColor: appSenaryColour,
                   tabs: [
                     Tab(icon: Icon(
+                      MdiIcons.human,
+                    )),
+                    Tab(icon: Icon(
                       MdiIcons.notebookPlusOutline
                     )),
                     Tab(icon: Icon(
@@ -165,8 +170,12 @@ class _WorkoutExercisePageState extends State<WorkoutExercisePage> {
           },
           child: TabBarView(
             children: [
+
+              AnatomyDiagramPage(exerciseModel: widget.exercise),
+
               ListView(
                 children: [
+
                   Container(
                     margin: EdgeInsets.only(bottom: 14.h),
                     color: appTertiaryColour,

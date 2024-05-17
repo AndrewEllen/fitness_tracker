@@ -8,6 +8,7 @@ class ExerciseListModel {
       'exerciseDate': exerciseDate,
       'category': category,
       'exerciseTrackingType': exerciseTrackingType,
+      'mainOrAccessory': mainOrAccessory,
     };
   }
 
@@ -21,10 +22,12 @@ class ExerciseListModel {
     required this.exerciseDate,
     this.category,
     this.exerciseTrackingType = 0,
+    this.mainOrAccessory = 0,
   });
 
   String exerciseName;
   String exerciseDate;
   String? category;
   int? exerciseTrackingType;
+  int? mainOrAccessory;
 }

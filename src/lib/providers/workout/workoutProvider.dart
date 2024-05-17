@@ -169,6 +169,19 @@ class WorkoutProvider with ChangeNotifier {
 
   }
 
+  void RemoveWorkoutCache(String exerciseName) {
+
+    print(_exerciseList);
+
+    _exerciseList.removeAt(
+        _exerciseList.indexWhere((element) => element.exerciseName == exerciseName)
+    );
+
+    print(_exerciseList);
+
+    notifyListeners();
+  }
+
   void AddNewWorkout(ExerciseModel newExercise) {
 
     _exerciseList.add(newExercise);
@@ -749,6 +762,9 @@ class WorkoutProvider with ChangeNotifier {
       _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].type = data.type;
       _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseTrackingType = data.exerciseTrackingType;
       _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].category = data.category;
+      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].primaryMuscle = data.primaryMuscle;
+      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].secondaryMuscle = data.secondaryMuscle;
+      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].tertiaryMuscle = data.tertiaryMuscle;
 
     }
     setMaxWeightAtRep(_exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseMaxRepsAndWeight);

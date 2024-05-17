@@ -15,6 +15,7 @@ import '../../widgets/general/app_default_button.dart';
 import '../../widgets/workout_new/home_page_routines_list.dart';
 import '../../widgets/workout_new/workout_daily_tracker.dart';
 import '../../widgets/workout_new/workout_home_stats_dropdown.dart';
+import 'exercise_database_search.dart';
 
 class WorkoutHomePageNew extends StatefulWidget {
   WorkoutHomePageNew({Key? key}) : super(key: key);
@@ -195,29 +196,54 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
               child: Icon(
                 MdiIcons.closeCircle,
                 color: Colors.red,
-                size: 46.w,
+                size: 48.w,
               ),
               onPressed: onPressed,
             );
           },
         ),
         children: [
-          SizedBox(
-            width: 46.w,
-            child: FloatingActionButton(
-              tooltip: "Add Routine",
-              backgroundColor: appSecondaryColour,
-              heroTag: null,
-              child: const Icon(
-                Icons.add,
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 14.0.w),
+                child: SizedBox(
+                  width: 48.w,
+                  child: FloatingActionButton(
+                      tooltip: "Search New Exercises",
+                      backgroundColor: appSecondaryColour,
+                      heroTag: null,
+                      child: const Icon(
+                        Icons.search,
+                      ),
+                      onPressed: () {
+                        final menuState = _key.currentState;
+                        if (menuState != null) {
+                          menuState.toggle();
+                        }
+                        context.read<PageChange>().changePageCache(ExerciseDatabaseSearch());
+                      }
+                  ),
+                ),
               ),
-              onPressed: () => newRoutine(
-                this.context,
+              SizedBox(
+                width: 48.w,
+                child: FloatingActionButton(
+                  tooltip: "Add Routine",
+                  backgroundColor: appSecondaryColour,
+                  heroTag: null,
+                  child: const Icon(
+                    Icons.add,
+                  ),
+                  onPressed: () => newRoutine(
+                    this.context,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
           SizedBox(
-            width: 46.w,
+            width: 48.w,
             child: FloatingActionButton(
               tooltip: "View Past Workouts",
               backgroundColor: appSecondaryColour,
@@ -237,7 +263,7 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
             ),
           ),
           SizedBox(
-            width: 46.w,
+            width: 48.w,
             child: FloatingActionButton(
               tooltip: "View Current Workout",
               backgroundColor: context.watch<WorkoutProvider>().workoutStarted
