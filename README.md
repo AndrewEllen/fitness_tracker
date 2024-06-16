@@ -80,7 +80,6 @@ FIT is my solution to these issues. It seamlessly combines workout tracking and 
 | 📄 | **Documentation** | The project features moderately detailed documentation with explanations of key files, data models, provider classes, and UI components. However, additional documentation on architecture and design decisions would further enhance understanding and onboarding for new contributors. |
 | 🔌 | **Integrations**  | Key integrations include Firebase for authentication, database management, and analytics. The project also leverages Kotlin for Android development, enhancing platform-specific functionalities and performance. Additional integrations with chart libraries and APIs support the fitness tracking app's features. |
 | 🧩 | **Modularity**    | The codebase demonstrates modularity through structured folders for diet, stats, groceries, workout, and general functionalities. Reusable widgets enhance code reusability and maintainability. Separation of concerns is evident in the division of data providers and UI components. |
-| 🧪 | **Testing**       | Testing frameworks are not explicitly mentioned in the repository contents, indicating a potential area for improvement. Introduction of unit and widget tests using packages like `flutter_test` and `mockito` would strengthen overall code reliability. |
 | ⚡️  | **Performance**   | The app's efficiency is supported through Firebase's real-time data updates and cloud services, enhancing speed and responsiveness. Utilizing Kotlin for Android development and Flutter's UI components contributes to optimized performance across platforms. Improvements in asynchronous data handling could further enhance performance. |
 | 🛡️ | **Security**      | Security measures revolve around Firebase Authentication for user sign-in, sign-up, and data management. The Firestore database ensures secure data storage and retrieval. Password visibility toggling enhances user privacy and protection. |
 | 📦 | **Dependencies**  | Key dependencies include Jetbrains, Gradle, Kotlin, Dart, and various Flutter packages for UI components, state management, and data handling. External libraries like charting, Firebase, and barcode scanning enrich the app's functionality. Managing dependencies efficiently is crucial for maintaining compatibility and performance. |
@@ -866,41 +865,41 @@ FIT is my solution to these issues. It seamlessly combines workout tracking and 
 > 7. Setup the Cloud Firestore rules by copy pasting the following:
 > ```console
 > rules_version = '2';
-   service cloud.firestore {
-   match /databases/{database}/documents {
-      match /predefined-data/predefined-categories {
-         allow get: if request.auth != null;
-      }
-      match /predefined-data/predefined-exercises {
-         allow get: if request.auth != null;
-      }
-      match /predefined-data/predefined-routines {
-         allow get: if request.auth != null;
-      }
-      match /exercise-database/{document=**} {
-         allow read, get: if request.auth != null;
-      }
-      match /predefined-data/predefined-training-plans {
-         allow get: if request.auth != null;
-      }
-      match /user-data/{user}/{document=**} {
-         allow read, update, delete: if request.auth != null && request.auth.uid == user;
-         allow create: if request.auth != null;
-      }
-      match /food-data/{barcode=**} {
-         allow read, update: if request.auth != null;
-         allow create: if request.auth != null;
-      }
-      match /recipe-data/{barcode=**} {
-         allow read, update: if request.auth != null;
-         allow create: if request.auth != null;
-      }
-      match /grocery-lists/{document=**} {
-         allow read, update, delete: if request.auth != null;
-         allow create: if request.auth != null;
-      }
-   }
-   }
+>   service cloud.firestore {
+>   match /databases/{database}/documents {
+>      match /predefined-data/predefined-categories {
+>         allow get: if request.auth != null;
+>      }
+>      match /predefined-data/predefined-exercises {
+>         allow get: if request.auth != null;
+>      }
+>      match /predefined-data/predefined-routines {
+>         allow get: if request.auth != null;
+>      }
+>      match /exercise-database/{document=**} {
+>         allow read, get: if request.auth != null;
+>      }
+>      match /predefined-data/predefined-training-plans {
+>         allow get: if request.auth != null;
+>      }
+>      match /user-data/{user}/{document=**} {
+>         allow read, update, delete: if request.auth != null && request.auth.uid == user;
+>         allow create: if request.auth != null;
+>      }
+>      match /food-data/{barcode=**} {
+>         allow read, update: if request.auth != null;
+>         allow create: if request.auth != null;
+>      }
+>      match /recipe-data/{barcode=**} {
+>         allow read, update: if request.auth != null;
+>         allow create: if request.auth != null;
+>      }
+>      match /grocery-lists/{document=**} {
+>         allow read, update, delete: if request.auth != null;
+>         allow create: if request.auth != null;
+>      }
+>   }
+>   }
 > ```
 >
 > 8. Create and add your OCR API key:
