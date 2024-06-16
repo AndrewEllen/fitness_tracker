@@ -907,7 +907,7 @@ FIT is my solution to these issues. It seamlessly combines workout tracking and 
 > Sign up to https://ocr.space/OCRAPI
 > Create the file "OCRapiKey.dart" inside of src/lib
 > Add this line to the file
-   const OCRAPIKEY = "APIKEY";
+>   const OCRAPIKEY = "APIKEY";
 > Where APIKEY is the API key you just created
 > ```
 >
@@ -916,7 +916,7 @@ FIT is my solution to these issues. It seamlessly combines workout tracking and 
 > In Android studio run build android apk
 > or
 > In the IDE console run 
-   flutter build apk
+>   flutter build apk
 > ```
 >
 > 10. Install the app:
