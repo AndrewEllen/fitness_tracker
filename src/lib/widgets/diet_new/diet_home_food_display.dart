@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_expanding_container.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +11,7 @@ import '../../constants.dart';
 import '../../models/diet/food_data_list_item.dart';
 import '../../pages/diet/diet_barcode_scanner.dart';
 import '../../pages/diet/diet_food_display_page.dart';
+import '../../pages/diet/diet_food_search_page.dart';
 import '../diet/diet_category_add_bar.dart';
 import '../diet/food_list_item_box.dart';
 import '../general/app_container_header.dart';
@@ -28,6 +32,64 @@ class DietHomeFoodDisplay extends StatefulWidget {
 }
 
 class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
+
+  foodMenu(BuildContext context) async {
+    FirebaseAnalytics.instance.logEvent(name: 'food_add_pressed');
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: AlertDialog(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            actions: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+
+                  const Spacer(),
+
+                  FloatingActionButton(
+                    backgroundColor: appSecondaryColour,
+                    child: const Icon(
+                        Icons.search
+                    ),
+                    onPressed: () {
+                      context.read<PageChange>().changePageCache(FoodSearchPage(category: widget.title));
+                      Navigator.pop(context);
+                    },
+                  ),
+
+                  const Spacer(),
+
+                  FloatingActionButton(
+                    backgroundColor: appSecondaryColour,
+                    child: const Icon(
+                        MdiIcons.barcodeScan
+                    ),
+                    onPressed: () {
+                      context.read<PageChange>().changePageCache(BarcodeScannerPage(category: widget.title));
+                      Navigator.pop(context);
+                    },
+                  ),
+
+                  const Spacer(),
+
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+
+
+
   editEntry(BuildContext context, int index, String value, double width) {
 
 
@@ -251,43 +313,15 @@ class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
               ],
             ),
           ),
-          Stack(
-            children: [
-              DietHomeBottomButton(
-                category: widget.title,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FloatingActionButton(
+              backgroundColor: appSecondaryColour,
+              child: const Icon(
+                  Icons.add
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 0.5.h),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                    width: 60.w,
-                    height: 29.h,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(10),
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(10)),
-                      child: Material(
-                        type: MaterialType.transparency,
-                        //shape: const CircleBorder(),
-                        clipBehavior: Clip.antiAlias,
-                        child: IconButton(
-                          padding: EdgeInsets.zero,
-                          icon: const Icon(
-                            MdiIcons.barcodeScan,
-                            color: Colors.white,
-                          ),
-                          onPressed: () => context.read<PageChange>().changePageCache(BarcodeScannerPage(category: widget.title)),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+              onPressed: () => foodMenu(context)
+            ),
           ),
         ],
       ),

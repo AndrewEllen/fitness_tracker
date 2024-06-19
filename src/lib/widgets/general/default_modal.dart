@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class ModalBottomSheet {
   static void showModal(BuildContext context, Widget child, {double heightFactor = 0.9}) {
     showModalBottomSheet(
-      backgroundColor: appPrimaryColour,
+      backgroundColor: appTertiaryColour,
       showDragHandle: true,
       isScrollControlled: true,
       context: context,
