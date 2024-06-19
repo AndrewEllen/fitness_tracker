@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/widgets/general/screen_width_expanding_container.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -60,6 +61,7 @@ class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
                     onPressed: () {
                       context.read<PageChange>().changePageCache(FoodSearchPage(category: widget.title));
                       Navigator.pop(context);
+                      Navigator.pop(context);
                     },
                   ),
 
@@ -72,6 +74,7 @@ class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
                     ),
                     onPressed: () {
                       context.read<PageChange>().changePageCache(BarcodeScannerPage(category: widget.title));
+                      Navigator.pop(context);
                       Navigator.pop(context);
                     },
                   ),
@@ -88,156 +91,204 @@ class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
   }
 
 
-
-
-  editEntry(BuildContext context, int index, String value, double width) {
-
+  editEntry(BuildContext context, int index, String value) async {
+    FirebaseAnalytics.instance.logEvent(name: 'food_edit_pressed');
+    final double radius = 10;
 
     String servingCalculation(String nutritionValue) {
-
       try {
         return ((double.parse(nutritionValue) / 100)
             * (double.parse(widget.foodList[index].foodServingSize) *
-                double.parse(widget.foodList[index].foodServings))).toStringAsFixed(1);
+                double.parse(widget.foodList[index].foodServings))).toStringAsFixed(0);
       } catch (error) {
         return "0";
       }
-
-
-
     }
 
-
-    double buttonSize = width/17;
-
-    showDialog(
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          insetPadding: const EdgeInsets.all(0),
-          backgroundColor: appTertiaryColour,
-          title: const Text(
-            "Edit Selection",
-            style: TextStyle(
-              color: appSecondaryColour,
-            ),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              RichText(
-                text: TextSpan(text: 'Editing: ',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16.h,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(text: value,
-                      style: TextStyle(
-                        color: appSecondaryColour,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.h,
-                      ),
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: AlertDialog(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+
+            content: SizedBox(
+              width: 1000.w,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+
+                  Text(
+                    value,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: appSecondaryColour,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22.h,
                     ),
-                  ],
-                ),
+                  ),
+
+                  const Padding(
+                    padding: EdgeInsets.all(12.0),
+                    child: Divider(
+                      color: Colors.transparent,
+                      thickness: 1,
+                    ),
+                  ),
+
+                  Row(
+                    children: [
+                      const Spacer(),
+                      SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: Stack(
+                          children: [
+                            PieChart(
+                              PieChartData(
+                                  sectionsSpace: 8,
+                                  sections: [
+                                    PieChartSectionData(
+                                      value: widget.foodList[index].foodItemData.proteins == "0"  && widget.foodList[index].foodItemData.carbs == "0"  && widget.foodList[index].foodItemData.fat == "0" ? 1 : 0,
+                                      color: Colors.grey,
+                                      radius: radius,
+                                      showTitle: false,
+                                    ),
+                                    PieChartSectionData(
+                                      value: double.parse(widget.foodList[index].foodItemData.proteins),
+                                      color: Colors.redAccent,
+                                      radius: radius,
+                                      showTitle: false,
+                                    ),
+                                    PieChartSectionData(
+                                      value: double.parse(widget.foodList[index].foodItemData.carbs),
+                                      color: Colors.blueAccent,
+                                      radius: radius,
+                                      showTitle: false,
+                                    ),
+                                    PieChartSectionData(
+                                      value: double.parse(widget.foodList[index].foodItemData.fat),
+                                      color: Colors.purple,
+                                      radius: radius,
+                                      showTitle: false,
+                                    ),
+                                  ]
+                              ),
+                            ),
+                            Center(
+                              child: Text(
+                                "${servingCalculation(widget.foodList[index].foodItemData.calories)}Kcal",
+                                style: boldTextStyle.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 18.h,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const Spacer(),
+
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            servingCalculation(widget.foodList[index].foodItemData.proteins)
+                                + "g of Protein",
+                            style: const TextStyle(
+                              color: Colors.redAccent,
+                            ),
+                          ),
+                          Text(
+                            servingCalculation(widget.foodList[index].foodItemData.carbs)
+                                + "g of Carbs",
+                            style: const TextStyle(
+                              color: Colors.blueAccent,
+                            ),
+                          ),
+                          Text(
+                            servingCalculation(widget.foodList[index].foodItemData.fat)
+                                + "g of Fat",
+                            style: const TextStyle(
+                              color: Colors.purple,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Divider(
+                      color: Colors.transparent,
+                      thickness: 1,
+                    ),
+                  ),
+
+                ],
               ),
-              Text(
-                servingCalculation(widget.foodList[index].foodItemData.calories)
-                    + " Kcal",
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                servingCalculation(widget.foodList[index].foodItemData.proteins)
-                    + "g of Protein",
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                servingCalculation(widget.foodList[index].foodItemData.carbs)
-                    + "g of Carbs",
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                servingCalculation(widget.foodList[index].foodItemData.fat)
-                    + "g of Fat",
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
+            ),
+
+            actions: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+
+                  const Spacer(),
+
+                  FloatingActionButton(
+                    backgroundColor: Colors.red,
+                    child: const Icon(
+                        MdiIcons.delete
+                    ),
+                    onPressed: () {
+                      context.read<UserNutritionData>().deleteFoodFromDiary(index, widget.title);
+                      Navigator.pop(context);
+                    },
+                  ),
+
+                  const Spacer(flex: 4,),
+
+                  FloatingActionButton(
+                    backgroundColor: appSecondaryColour,
+                    child: const Icon(
+                        Icons.edit
+                    ),
+                    onPressed: () {
+                      context.read<UserNutritionData>().setCurrentFoodItem(widget.foodList[index].foodItemData);
+                      context.read<UserNutritionData>().updateCurrentFoodItemServings(widget.foodList[index].foodServings);
+                      context.read<UserNutritionData>().updateCurrentFoodItemServingSize(widget.foodList[index].foodServingSize);
+                      print(widget.foodList[index].foodItemData.recipe);
+                      context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.title, editDiary: true, index: index, recipeEdit: widget.foodList[index].foodItemData.recipe ?? false,));
+
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                  ),
+
+                  const Spacer(),
+
+                ],
               ),
             ],
           ),
-          actions: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-
-              children: [
-                const Spacer(),
-                SizedBox(
-                    height: buttonSize,
-                    child: AppButton(
-                      primaryColor: Colors.red,
-                      buttonText: "Delete",
-                      onTap: () {
-
-                        context.read<UserNutritionData>().deleteFoodFromDiary(index, widget.title);
-
-                        Navigator.pop(context);
-                      },
-                    )
-                ),
-                const Spacer(),
-                SizedBox(
-                    height: buttonSize,
-                    child: AppButton(
-                      buttonText: "Cancel",
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    )
-                ),
-                const Spacer(),
-                SizedBox(
-                    height: buttonSize,
-                    child: AppButton(
-                      primaryColor: appSecondaryColour,
-                      buttonText: "Edit",
-                      onTap: () {
-                        context.read<UserNutritionData>().setCurrentFoodItem(widget.foodList[index].foodItemData);
-
-                        context.read<UserNutritionData>().updateCurrentFoodItemServings(widget.foodList[index].foodServings);
-                        context.read<UserNutritionData>().updateCurrentFoodItemServingSize(widget.foodList[index].foodServingSize);
-                        print(widget.foodList[index].foodItemData.recipe);
-                        context.read<PageChange>().changePageCache(FoodDisplayPage(category: widget.title, editDiary: true, index: index, recipeEdit: widget.foodList[index].foodItemData.recipe ?? false,));
-
-                        Navigator.pop(context);
-                      },
-                    )
-                ),
-                const Spacer(),
-              ],
-            ),
-          ],
         );
       },
     );
   }
 
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
+
+    context.watch<UserNutritionData>();
 
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
@@ -304,7 +355,6 @@ class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
                           this.context,
                           index,
                           widget.foodList[index].foodItemData.foodName,
-                          widget.width
                         ),
                       );
                     },
