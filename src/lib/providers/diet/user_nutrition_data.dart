@@ -314,9 +314,25 @@ class UserNutritionData with ChangeNotifier {
 
   late double _calories = 0;
   late double _breakfastCalories = 0;
+  late double _breakfastProteins = 0;
+  late double _breakfastCarbs = 0;
+  late double _breakfastFats = 0;
+
   late double _lunchCalories = 0;
+  late double _lunchProteins = 0;
+  late double _lunchCarbs = 0;
+  late double _lunchFats = 0;
+
   late double _dinnerCalories = 0;
+  late double _dinnerProteins = 0;
+  late double _dinnerCarbs = 0;
+  late double _dinnerFats = 0;
+
   late double _snacksCalories = 0;
+  late double _snacksProteins = 0;
+  late double _snacksCarbs = 0;
+  late double _snacksFats = 0;
+
   late double _exerciseCalories = 0;
   late double _protein = 0;
   late double _fat = 0;
@@ -448,9 +464,25 @@ class UserNutritionData with ChangeNotifier {
   double get calories => _calories;
 
   double get breakfastCalories => _breakfastCalories;
+  double get breakfastProteins => _breakfastProteins;
+  double get breakfastCarbs => _breakfastCarbs;
+  double get breakfastFats => _breakfastFats;
+
   double get lunchCalories => _lunchCalories;
+  double get lunchProteins => _lunchProteins;
+  double get lunchCarbs => _lunchCarbs;
+  double get lunchFats => _lunchFats;
+
   double get dinnerCalories => _dinnerCalories;
+  double get dinnerProteins => _dinnerProteins;
+  double get dinnerCarbs => _dinnerCarbs;
+  double get dinnerFats => _dinnerFats;
+
   double get snacksCalories => _snacksCalories;
+  double get snacksProteins => _snacksProteins;
+  double get snacksCarbs => _snacksCarbs;
+  double get snacksFats => _snacksFats;
+
   double get exerciseCalories => _exerciseCalories;
 
   double get protein => _protein;
@@ -710,9 +742,25 @@ class UserNutritionData with ChangeNotifier {
     _calories = 0;
 
     _breakfastCalories = 0;
+    _breakfastProteins = 0;
+    _breakfastCarbs = 0;
+    _breakfastFats = 0;
+
     _lunchCalories = 0;
+    _lunchProteins = 0;
+    _lunchCarbs = 0;
+    _lunchFats = 0;
+
     _dinnerCalories = 0;
+    _dinnerProteins = 0;
+    _dinnerCarbs = 0;
+    _dinnerFats = 0;
+
     _snacksCalories = 0;
+    _snacksProteins = 0;
+    _snacksCarbs = 0;
+    _snacksFats = 0;
+
     _exerciseCalories = 0;
 
     _protein = 0;
@@ -799,12 +847,42 @@ class UserNutritionData with ChangeNotifier {
           } catch (exception) {
             _breakfastCalories += 0;
           }
+          try {
+            _breakfastProteins += (double.parse(foodItem.foodItemData.proteins)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _breakfastProteins += 0;
+          }
+          try {
+            _breakfastCarbs += (double.parse(foodItem.foodItemData.carbs)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _breakfastCarbs += 0;
+          }
+          try {
+            _breakfastFats += (double.parse(foodItem.foodItemData.fat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _breakfastFats += 0;
+          }
         }
         else if (category == "lunch") {
           try {
             _lunchCalories += (double.parse(foodItem.foodItemData.calories)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
           } catch (exception) {
             _lunchCalories += 0;
+          }
+          try {
+            _lunchProteins += (double.parse(foodItem.foodItemData.proteins)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _lunchProteins += 0;
+          }
+          try {
+            _lunchCarbs += (double.parse(foodItem.foodItemData.carbs)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _lunchCarbs += 0;
+          }
+          try {
+            _lunchFats += (double.parse(foodItem.foodItemData.fat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _lunchFats += 0;
           }
         }
         else if (category == "dinner") {
@@ -813,12 +891,42 @@ class UserNutritionData with ChangeNotifier {
           } catch (exception) {
             _dinnerCalories += 0;
           }
+          try {
+            _dinnerProteins += (double.parse(foodItem.foodItemData.proteins)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _dinnerProteins += 0;
+          }
+          try {
+            _dinnerCarbs += (double.parse(foodItem.foodItemData.carbs)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _dinnerCarbs += 0;
+          }
+          try {
+            _dinnerFats += (double.parse(foodItem.foodItemData.fat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _dinnerFats += 0;
+          }
         }
         else if (category == "snacks") {
           try {
             _snacksCalories += (double.parse(foodItem.foodItemData.calories)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
           } catch (exception) {
             _snacksCalories += 0;
+          }
+          try {
+            _snacksProteins += (double.parse(foodItem.foodItemData.proteins)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _snacksProteins += 0;
+          }
+          try {
+            _snacksCarbs += (double.parse(foodItem.foodItemData.carbs)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _snacksCarbs += 0;
+          }
+          try {
+            _snacksFats += (double.parse(foodItem.foodItemData.fat)/100) * (double.parse(foodItem.foodServings) * double.parse(foodItem.foodServingSize));
+          } catch (exception) {
+            _snacksFats += 0;
           }
         }
 

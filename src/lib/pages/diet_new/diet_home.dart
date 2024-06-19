@@ -16,6 +16,7 @@ import '../../providers/general/page_change_provider.dart';
 import '../../widgets/diet_new/diet_home_daily_nutrition_display.dart';
 import '../../widgets/diet_new/diet_home_exercise_display.dart';
 import '../../widgets/diet_new/diet_home_food_display.dart';
+import '../../widgets/diet_new/diet_home_meal_box.dart';
 import '../../widgets/diet_new/diet_water_box.dart';
 
 class DietHomePage extends StatefulWidget {
@@ -134,6 +135,61 @@ class _DietHomePageState extends State<DietHomePage> {
                     child: DailyNutritionDisplay(),
                   ),
                 ),
+
+
+
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 4,
+                    bottom: 4,
+                    left: 10,
+                    right: 10,
+                  ),
+                  child: GridView.count(
+                    primary: false,
+                    shrinkWrap: true,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.8,
+                    children: [
+
+                      DietHomeMealBox(
+                        title: "Breakfast",
+                        calorieInformation: context.read<UserNutritionData>().breakfastCalories.toStringAsFixed(0),
+                        proteinsInformation: context.read<UserNutritionData>().breakfastProteins.toStringAsFixed(0),
+                        carbsInformation: context.read<UserNutritionData>().breakfastCarbs.toStringAsFixed(0),
+                        fatsInformation: context.read<UserNutritionData>().breakfastFats.toStringAsFixed(0),
+                      ),
+
+                      DietHomeMealBox(
+                        title: "Lunch",
+                        calorieInformation: context.read<UserNutritionData>().lunchCalories.toStringAsFixed(0),
+                        proteinsInformation: context.read<UserNutritionData>().lunchProteins.toStringAsFixed(0),
+                        carbsInformation: context.read<UserNutritionData>().lunchCarbs.toStringAsFixed(0),
+                        fatsInformation: context.read<UserNutritionData>().lunchFats.toStringAsFixed(0),
+                      ),
+
+                      DietHomeMealBox(
+                        title: "Dinner",
+                        calorieInformation: context.read<UserNutritionData>().dinnerCalories.toStringAsFixed(0),
+                        proteinsInformation: context.read<UserNutritionData>().dinnerProteins.toStringAsFixed(0),
+                        carbsInformation: context.read<UserNutritionData>().dinnerCarbs.toStringAsFixed(0),
+                        fatsInformation: context.read<UserNutritionData>().dinnerFats.toStringAsFixed(0),
+                      ),
+
+                      DietHomeMealBox(
+                        title: "Snacks",
+                        calorieInformation: context.read<UserNutritionData>().snacksCalories.toStringAsFixed(0),
+                        proteinsInformation: context.read<UserNutritionData>().snacksProteins.toStringAsFixed(0),
+                        carbsInformation: context.read<UserNutritionData>().snacksCarbs.toStringAsFixed(0),
+                        fatsInformation: context.read<UserNutritionData>().snacksFats.toStringAsFixed(0),
+                      ),
+
+                    ],
+                  ),
+                ),
+
 
                 DietHomeFoodDisplay(
                   bigContainerMin: _smallContainerMin,
