@@ -151,11 +151,12 @@ class _DietHomePageState extends State<DietHomePage> {
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     crossAxisCount: 2,
-                    childAspectRatio: 0.8,
+                    childAspectRatio: 0.7,
                     children: [
 
                       DietHomeMealBox(
                         title: "Breakfast",
+                        foodList: context.watch<UserNutritionData>().foodListItemsBreakfast,
                         calorieInformation: context.read<UserNutritionData>().breakfastCalories.toStringAsFixed(0),
                         proteinsInformation: context.read<UserNutritionData>().breakfastProteins.toStringAsFixed(0),
                         carbsInformation: context.read<UserNutritionData>().breakfastCarbs.toStringAsFixed(0),
@@ -164,6 +165,7 @@ class _DietHomePageState extends State<DietHomePage> {
 
                       DietHomeMealBox(
                         title: "Lunch",
+                        foodList: context.watch<UserNutritionData>().foodListItemsLunch,
                         calorieInformation: context.read<UserNutritionData>().lunchCalories.toStringAsFixed(0),
                         proteinsInformation: context.read<UserNutritionData>().lunchProteins.toStringAsFixed(0),
                         carbsInformation: context.read<UserNutritionData>().lunchCarbs.toStringAsFixed(0),
@@ -172,6 +174,7 @@ class _DietHomePageState extends State<DietHomePage> {
 
                       DietHomeMealBox(
                         title: "Dinner",
+                        foodList: context.watch<UserNutritionData>().foodListItemsDinner,
                         calorieInformation: context.read<UserNutritionData>().dinnerCalories.toStringAsFixed(0),
                         proteinsInformation: context.read<UserNutritionData>().dinnerProteins.toStringAsFixed(0),
                         carbsInformation: context.read<UserNutritionData>().dinnerCarbs.toStringAsFixed(0),
@@ -180,6 +183,7 @@ class _DietHomePageState extends State<DietHomePage> {
 
                       DietHomeMealBox(
                         title: "Snacks",
+                        foodList: context.watch<UserNutritionData>().foodListItemsSnacks,
                         calorieInformation: context.read<UserNutritionData>().snacksCalories.toStringAsFixed(0),
                         proteinsInformation: context.read<UserNutritionData>().snacksProteins.toStringAsFixed(0),
                         carbsInformation: context.read<UserNutritionData>().snacksCarbs.toStringAsFixed(0),
@@ -188,47 +192,6 @@ class _DietHomePageState extends State<DietHomePage> {
 
                     ],
                   ),
-                ),
-
-
-                DietHomeFoodDisplay(
-                  bigContainerMin: _smallContainerMin,
-                  height: _height,
-                  margin: _margin,
-                  width: _width,
-                  title: "Breakfast",
-                  foodList: context.watch<UserNutritionData>().foodListItemsBreakfast,
-                  caloriesTotal: context.read<UserNutritionData>().breakfastCalories,
-                ),
-
-                DietHomeFoodDisplay(
-                  bigContainerMin: _smallContainerMin,
-                  height: _height,
-                  margin: _margin,
-                  width: _width,
-                  title: "Lunch",
-                  foodList: context.watch<UserNutritionData>().foodListItemsLunch,
-                  caloriesTotal: context.read<UserNutritionData>().lunchCalories,
-                ),
-
-                DietHomeFoodDisplay(
-                  bigContainerMin: _smallContainerMin,
-                  height: _height,
-                  margin: _margin,
-                  width: _width,
-                  title: "Dinner",
-                  foodList: context.watch<UserNutritionData>().foodListItemsDinner,
-                  caloriesTotal: context.read<UserNutritionData>().dinnerCalories,
-                ),
-
-                DietHomeFoodDisplay(
-                  bigContainerMin: _smallContainerMin,
-                  height: _height,
-                  margin: _margin,
-                  width: _width,
-                  title: "Snacks",
-                  foodList: context.watch<UserNutritionData>().foodListItemsSnacks,
-                  caloriesTotal: context.read<UserNutritionData>().snacksCalories,
                 ),
 
                 DietHomeExerciseDisplay(

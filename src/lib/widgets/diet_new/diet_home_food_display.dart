@@ -16,11 +16,10 @@ import 'diet_home_bottom_button.dart';
 import 'food_list_item_box_new.dart';
 
 class DietHomeFoodDisplay extends StatefulWidget {
-  const DietHomeFoodDisplay({Key? key, required this.bigContainerMin,
-    required this.height, required this.margin, required this.width,
+  const DietHomeFoodDisplay({Key? key, required this.width,
     required this.title, required this.foodList, required this.caloriesTotal
   }) : super(key: key);
-  final double bigContainerMin, height, margin, width, caloriesTotal;
+  final double width, caloriesTotal;
   final String title;
   final List<ListFoodItem> foodList;
 
