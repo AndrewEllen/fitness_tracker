@@ -108,6 +108,9 @@ class _AppMainState extends State<AppMain> {
             ),
           ),
           unselectedWidgetColor: Colors.white,
+          bottomSheetTheme: BottomSheetThemeData(
+            dragHandleColor: appSecondaryColour
+          ),
         ),
         color: appPrimaryColour,
         debugShowCheckedModeBanner: false,

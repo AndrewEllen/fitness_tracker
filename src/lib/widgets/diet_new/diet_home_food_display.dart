@@ -152,25 +152,28 @@ class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
                                   sectionsSpace: 8,
                                   sections: [
                                     PieChartSectionData(
-                                      value: widget.foodList[index].foodItemData.proteins == "0"  && widget.foodList[index].foodItemData.carbs == "0"  && widget.foodList[index].foodItemData.fat == "0" ? 1 : 0,
+                                      value: (widget.foodList[index].foodItemData.proteins == "0" || widget.foodList[index].foodItemData.proteins == "")
+                                          && (widget.foodList[index].foodItemData.carbs == "0" || widget.foodList[index].foodItemData.carbs == "")
+                                          && (widget.foodList[index].foodItemData.fat == "0" || widget.foodList[index].foodItemData.fat == "")
+                                          ? 1 : 0,
                                       color: Colors.grey,
                                       radius: radius,
                                       showTitle: false,
                                     ),
                                     PieChartSectionData(
-                                      value: double.parse(widget.foodList[index].foodItemData.proteins),
+                                      value: double.tryParse(widget.foodList[index].foodItemData.proteins) ?? 0,
                                       color: Colors.redAccent,
                                       radius: radius,
                                       showTitle: false,
                                     ),
                                     PieChartSectionData(
-                                      value: double.parse(widget.foodList[index].foodItemData.carbs),
+                                      value: double.tryParse(widget.foodList[index].foodItemData.carbs) ?? 0,
                                       color: Colors.blueAccent,
                                       radius: radius,
                                       showTitle: false,
                                     ),
                                     PieChartSectionData(
-                                      value: double.parse(widget.foodList[index].foodItemData.fat),
+                                      value: double.tryParse(widget.foodList[index].foodItemData.fat) ?? 0,
                                       color: Colors.purple,
                                       radius: radius,
                                       showTitle: false,
@@ -307,7 +310,7 @@ class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 40.h,
+                  height: 60.h,
                   child: Row(
                     children: [
                       Padding(
@@ -317,8 +320,8 @@ class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
                           child: Text(
                             widget.title,
                             style: boldTextStyle.copyWith(
-                              color: appSecondaryColour,
-                              fontSize: 18.h,
+                              color: Colors.white,
+                              fontSize: 24.h,
                             ),
                           ),
                         ),
@@ -331,14 +334,19 @@ class _DietHomeFoodDisplayState extends State<DietHomeFoodDisplay> {
                           child: Text(
                             "${widget.caloriesTotal.toStringAsFixed(0)} Kcal",
                             style: boldTextStyle.copyWith(
-                              color: appSecondaryColour,
-                              fontSize: 18.h,
+                              color: Colors.white,
+                              fontSize: 24.h,
                             ),
                           ),
                         ),
                       ),
                     ],
                   ),
+                ),
+                const Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: appPrimaryColour,
                 ),
                 context.read<UserNutritionData>().isCurrentFoodItemLoaded ? Padding(
                   padding: const EdgeInsets.only(top:4.0),

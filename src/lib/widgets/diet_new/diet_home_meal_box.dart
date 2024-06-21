@@ -254,11 +254,13 @@ class DietHomeMealBox extends StatelessWidget {
                         if (context.mounted) {
                           ModalBottomSheet.showModal(
                             context,
-                            DietHomeFoodDisplay(
-                              width: double.maxFinite,
-                              title: title,
-                              foodList: foodList,
-                              caloriesTotal: double.parse(calorieInformation),
+                            SingleChildScrollView(
+                              child: DietHomeFoodDisplay(
+                                width: double.maxFinite,
+                                title: title,
+                                foodList: foodList,
+                                caloriesTotal: double.parse(calorieInformation),
+                              ),
                             ),
                           );
                         }
