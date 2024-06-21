@@ -1,20 +1,11 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/exports.dart';
-import 'package:fitness_tracker/widgets/general/screen_width_expanding_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
-import '../../models/diet/food_data_list_item.dart';
-import '../../pages/diet/diet_barcode_scanner.dart';
-import '../../pages/diet/diet_food_display_page.dart';
-import '../diet/diet_category_add_bar.dart';
-import '../diet/food_list_item_box.dart';
-import '../general/app_container_header.dart';
-import '../general/app_default_button.dart';
-import 'diet_home_bottom_button.dart';
 
 class DietWaterDisplay extends StatefulWidget {
   const DietWaterDisplay({Key? key, required this.bigContainerMin,
@@ -74,7 +65,7 @@ class _DietWaterDisplayState extends State<DietWaterDisplay> {
                           child: Text(
                             "${context.read<UserNutritionData>().userDailyNutrition.water/2}L",
                             style: boldTextStyle.copyWith(
-                              color: appSecondaryColour,
+                              color: const Color.fromRGBO(43, 103, 217, 1.0),
                               fontSize: 18.h,
                             ),
                           ),
@@ -84,19 +75,21 @@ class _DietWaterDisplayState extends State<DietWaterDisplay> {
                   ),
                 ),
                 RatingBar(
-                  allowHalfRating: false,
+                  allowHalfRating: true,
                   ratingWidget: RatingWidget(
                     full: const Icon(
-                        MdiIcons.cup
+                        MdiIcons.water,
+                      color: Color.fromRGBO(43, 103, 217, 1.0),
                     ),
                     half: const Icon(
-                        MdiIcons.cupOutline
+                      MdiIcons.waterOutline,
+                      color: Color.fromRGBO(43, 103, 217, 1.0),
                     ),
                     empty: const Icon(
-                        MdiIcons.plusBoxOutline
+                        MdiIcons.plusBoxOutline,
                     ),
                   ),
-                  tapOnlyMode: true,
+                  tapOnlyMode: false,
                   onRatingUpdate: (rating) {
                     FirebaseAnalytics.instance.logEvent(name: 'updated_water');
                     context.read<UserNutritionData>().updateWater(rating);
@@ -108,7 +101,7 @@ class _DietWaterDisplayState extends State<DietWaterDisplay> {
             ),
           ),
           Container(
-            height: 30.h,
+            height: 24.h,
             width: double.maxFinite,
             decoration: const BoxDecoration(
               color: appTertiaryColour,

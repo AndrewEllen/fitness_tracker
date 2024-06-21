@@ -51,6 +51,10 @@ extension StringExtension on String {
       String value = txt.toLowerCase();
       int triGramLength = 4;
 
+      if (value.length == 3) {
+        return [" " + value];
+      }
+
       for (int i = 0; i <= value.length - triGramLength; i++) {
 
         triGramList.add(value.substring(i, i + triGramLength));

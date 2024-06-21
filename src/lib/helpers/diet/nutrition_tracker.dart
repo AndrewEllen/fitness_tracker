@@ -551,6 +551,9 @@ SearchByNameTriGramFirebase(String value, {options = const GetOptions(source: So
   List<FoodItem> foodItems = [];
   List<String> searchValues = value.triGram();
 
+  print("here");
+  print(searchValues);
+
   try {
 
 

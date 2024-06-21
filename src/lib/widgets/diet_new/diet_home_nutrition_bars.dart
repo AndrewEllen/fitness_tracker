@@ -14,27 +14,31 @@ class DietHomeNutritionBars extends StatelessWidget {
       height: 140.h,
       child: Column(
         children: [
-          Spacer(),
+          const Spacer(),
           HomeNutritionBarShort(
+            indicatorColour: Colors.redAccent,
+            indicatorBackgroundColour: const Color.fromRGBO(90, 21, 20, 1.0),
             label: "Proteins",
             goal: context.watch<UserNutritionData>().proteinGoal,
             progress: context.watch<UserNutritionData>().protein,
           ),
-          Spacer(),
+          const Spacer(),
           HomeNutritionBarShort(
-            indicatorColour: appSenaryColour,
+            indicatorColour: Colors.purple,
             indicatorBackgroundColour: appSenaryColourDark,
             label: "Fats",
             goal: context.watch<UserNutritionData>().fatGoal,
             progress: context.watch<UserNutritionData>().fat,
           ),
-          Spacer(),
+          const Spacer(),
           HomeNutritionBarShort(
+            indicatorColour: Colors.blueAccent,
+            indicatorBackgroundColour: const Color.fromRGBO(17, 32, 102, 1.0),
             label: "Carbs",
             goal: context.watch<UserNutritionData>().carbohydratesGoal,
             progress: context.watch<UserNutritionData>().carbohydrates,
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );

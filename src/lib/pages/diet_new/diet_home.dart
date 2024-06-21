@@ -16,6 +16,7 @@ import '../../providers/general/page_change_provider.dart';
 import '../../widgets/diet_new/diet_home_daily_nutrition_display.dart';
 import '../../widgets/diet_new/diet_home_exercise_display.dart';
 import '../../widgets/diet_new/diet_home_food_display.dart';
+import '../../widgets/diet_new/diet_home_meal_box.dart';
 import '../../widgets/diet_new/diet_water_box.dart';
 
 class DietHomePage extends StatefulWidget {
@@ -135,44 +136,62 @@ class _DietHomePageState extends State<DietHomePage> {
                   ),
                 ),
 
-                DietHomeFoodDisplay(
-                  bigContainerMin: _smallContainerMin,
-                  height: _height,
-                  margin: _margin,
-                  width: _width,
-                  title: "Breakfast",
-                  foodList: context.watch<UserNutritionData>().foodListItemsBreakfast,
-                  caloriesTotal: context.read<UserNutritionData>().breakfastCalories,
-                ),
 
-                DietHomeFoodDisplay(
-                  bigContainerMin: _smallContainerMin,
-                  height: _height,
-                  margin: _margin,
-                  width: _width,
-                  title: "Lunch",
-                  foodList: context.watch<UserNutritionData>().foodListItemsLunch,
-                  caloriesTotal: context.read<UserNutritionData>().lunchCalories,
-                ),
 
-                DietHomeFoodDisplay(
-                  bigContainerMin: _smallContainerMin,
-                  height: _height,
-                  margin: _margin,
-                  width: _width,
-                  title: "Dinner",
-                  foodList: context.watch<UserNutritionData>().foodListItemsDinner,
-                  caloriesTotal: context.read<UserNutritionData>().dinnerCalories,
-                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 4,
+                    bottom: 4,
+                    left: 10,
+                    right: 10,
+                  ),
+                  child: GridView.count(
+                    primary: false,
+                    shrinkWrap: true,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.7,
+                    children: [
 
-                DietHomeFoodDisplay(
-                  bigContainerMin: _smallContainerMin,
-                  height: _height,
-                  margin: _margin,
-                  width: _width,
-                  title: "Snacks",
-                  foodList: context.watch<UserNutritionData>().foodListItemsSnacks,
-                  caloriesTotal: context.read<UserNutritionData>().snacksCalories,
+                      DietHomeMealBox(
+                        title: "Breakfast",
+                        foodList: context.watch<UserNutritionData>().foodListItemsBreakfast,
+                        calorieInformation: context.read<UserNutritionData>().breakfastCalories.toStringAsFixed(0),
+                        proteinsInformation: context.read<UserNutritionData>().breakfastProteins.toStringAsFixed(0),
+                        carbsInformation: context.read<UserNutritionData>().breakfastCarbs.toStringAsFixed(0),
+                        fatsInformation: context.read<UserNutritionData>().breakfastFats.toStringAsFixed(0),
+                      ),
+
+                      DietHomeMealBox(
+                        title: "Lunch",
+                        foodList: context.watch<UserNutritionData>().foodListItemsLunch,
+                        calorieInformation: context.read<UserNutritionData>().lunchCalories.toStringAsFixed(0),
+                        proteinsInformation: context.read<UserNutritionData>().lunchProteins.toStringAsFixed(0),
+                        carbsInformation: context.read<UserNutritionData>().lunchCarbs.toStringAsFixed(0),
+                        fatsInformation: context.read<UserNutritionData>().lunchFats.toStringAsFixed(0),
+                      ),
+
+                      DietHomeMealBox(
+                        title: "Dinner",
+                        foodList: context.watch<UserNutritionData>().foodListItemsDinner,
+                        calorieInformation: context.read<UserNutritionData>().dinnerCalories.toStringAsFixed(0),
+                        proteinsInformation: context.read<UserNutritionData>().dinnerProteins.toStringAsFixed(0),
+                        carbsInformation: context.read<UserNutritionData>().dinnerCarbs.toStringAsFixed(0),
+                        fatsInformation: context.read<UserNutritionData>().dinnerFats.toStringAsFixed(0),
+                      ),
+
+                      DietHomeMealBox(
+                        title: "Snacks",
+                        foodList: context.watch<UserNutritionData>().foodListItemsSnacks,
+                        calorieInformation: context.read<UserNutritionData>().snacksCalories.toStringAsFixed(0),
+                        proteinsInformation: context.read<UserNutritionData>().snacksProteins.toStringAsFixed(0),
+                        carbsInformation: context.read<UserNutritionData>().snacksCarbs.toStringAsFixed(0),
+                        fatsInformation: context.read<UserNutritionData>().snacksFats.toStringAsFixed(0),
+                      ),
+
+                    ],
+                  ),
                 ),
 
                 DietHomeExerciseDisplay(

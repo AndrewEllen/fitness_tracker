@@ -148,7 +148,7 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appTertiaryColour,
-        title: Text(
+        title: const Text(
           "Workout Tracking",
           style: boldTextStyle,
         ),
@@ -303,11 +303,11 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              WorkoutDailyTracker(),
+              const WorkoutDailyTracker(),
               SizedBox(height: 14.h),
-              workoutHomeStatsDropdown(),
+              const workoutHomeStatsDropdown(),
               SizedBox(height: 14.h),
-              HomePageRoutinesList(),
+              const HomePageRoutinesList(),
             ],
           ),
         ),
