@@ -198,12 +198,51 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false, option
 
     print("IS IN RECIPE");
 
+    QuerySnapshot<Map<String, dynamic>> snapshot;
+
     try {
 
-      final snapshot = await FirebaseFirestore.instance
-          .collection('recipe-data')
-          .where(FieldPath.documentId, whereIn: barcodes)
-          .get(options);
+
+
+      if (options == const GetOptions(source: Source.serverAndCache)) {
+        debugPrint("Checking Local Cache First");
+
+        try {
+
+          snapshot = await FirebaseFirestore.instance
+              .collection('recipe-data')
+              .where(FieldPath.documentId, whereIn: barcodes)
+              .get(const GetOptions(source: Source.cache));
+
+          if (snapshot.docs.isEmpty) {
+            debugPrint("Throwing");
+            throw Exception("Snapshot Docs are empty. Throwing local check");
+          }
+
+          debugPrint("Data Found In Local Firebase Cache");
+
+        } catch (error) {
+          debugPrint(error.toString());
+          debugPrint("No data found in cache or an exception has occurred");
+          debugPrint("Checking Server");
+
+          snapshot = await FirebaseFirestore.instance
+              .collection('recipe-data')
+              .where(FieldPath.documentId, whereIn: barcodes)
+              .get(const GetOptions(source: Source.serverAndCache));
+
+        }
+
+        debugPrint(foodItems.toString());
+
+      } else {
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('recipe-data')
+            .where(FieldPath.documentId, whereIn: barcodes)
+            .get(options);
+
+      }
 
       foodItems = [
         for (QueryDocumentSnapshot document in snapshot.docs)
@@ -211,7 +250,11 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false, option
             ..firebaseItem = true,
       ];
 
-      print(foodItems[0].foodName);
+      for (FoodItem item in foodItems) {
+        debugPrint(item.foodName);
+        debugPrint(item.calories + " Calories");
+        debugPrint(item.sodium + " Salt");
+      }
 
     } catch (exception) {
       print(exception);
@@ -225,18 +268,60 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false, option
 
   } else {
 
+    QuerySnapshot<Map<String, dynamic>> snapshot;
+
     try {
 
-      final snapshot = await FirebaseFirestore.instance
-          .collection('food-data')
-          .where(FieldPath.documentId, whereIn: barcodes)
-          .get(options);
+      if (options == const GetOptions(source: Source.serverAndCache)) {
+        debugPrint("Checking Local Cache First");
+
+        try {
+
+          snapshot = await FirebaseFirestore.instance
+              .collection('food-data')
+              .where(FieldPath.documentId, whereIn: barcodes)
+              .get(const GetOptions(source: Source.cache));
+
+          if (snapshot.docs.isEmpty) {
+            debugPrint("Throwing");
+            throw Exception("Snapshot Docs are empty. Throwing local check");
+          }
+
+          debugPrint("Data Found In Local Firebase Cache");
+
+        } catch (error) {
+          debugPrint(error.toString());
+          debugPrint("No data found in cache or an exception has occurred");
+          debugPrint("Checking Server");
+
+          snapshot = await FirebaseFirestore.instance
+              .collection('food-data')
+              .where(FieldPath.documentId, whereIn: barcodes)
+              .get(const GetOptions(source: Source.serverAndCache));
+
+        }
+
+      } else {
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('food-data')
+            .where(FieldPath.documentId, whereIn: barcodes)
+            .get(options);
+
+      }
 
       foodItems = [
         for (QueryDocumentSnapshot document in snapshot.docs)
           ConvertToFoodItem(document.get("food-data"), firebase: true)
             ..firebaseItem = true,
       ];
+
+      debugPrint(foodItems.toString());
+      for (FoodItem item in foodItems) {
+        debugPrint(item.foodName);
+        debugPrint(item.calories + " Calories");
+        debugPrint(item.sodium + " Salt");
+      }
 
     } catch (exception) {
       print(exception);
@@ -256,12 +341,46 @@ GetUserNutritionData(String date, {options = const GetOptions(source: Source.ser
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection("nutrition-data")
-        .doc(date)
-        .get(options);
+    DocumentSnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      debugPrint("Checking Local Cache First");
+
+      try {
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("nutrition-data")
+            .doc(date)
+            .get(const GetOptions(source: Source.cache));
+
+        debugPrint("Data Found In Local Firebase Cache");
+
+      } catch (error) {
+        debugPrint("No data found in cache or an exception has occurred");
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("nutrition-data")
+            .doc(date)
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+
+    } else {
+      debugPrint("Checking Cache or Server");
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc("${firebaseAuth.currentUser?.uid.toString()}")
+          .collection("nutrition-data")
+          .doc(date)
+          .get(options);
+
+    }
 
     final Map _data = snapshot.get("nutrition-data");
 
@@ -288,11 +407,20 @@ GetUserNutritionData(String date, {options = const GetOptions(source: Source.ser
             options: options
         );
 
+        debugPrint("Food Item List Fetched");
+
         final foodListMap = {for (final food in foodItemList) food.barcode : food};
+
+        debugPrint("Generated Food List Map");
+
         for (final food in foodList) {
+          debugPrint("Food Item List Loop Beginning");
           ///TODO Implement null check
           food.foodItemData = foodListMap[food.barcode]!;
+          debugPrint("Food Item List Loop End");
         }
+
+        debugPrint("Returning Food Item List");
 
         return foodList;
 

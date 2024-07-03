@@ -37,10 +37,10 @@ class _DietHomePageState extends State<DietHomePage> {
     context.read<UserNutritionData>().userDailyNutritionCache.any((element) => element.date.toString() == date)
     ) {
 
-      print("Found");
+      debugPrint("Found In List Cache");
 
-      print(date);
-      print(context.read<UserNutritionData>()
+      debugPrint(date);
+      debugPrint(context.read<UserNutritionData>()
           .userDailyNutritionCache[
       context.read<UserNutritionData>().userDailyNutritionCache
           .indexWhere((element) => element.date == date)].date);
@@ -76,7 +76,9 @@ class _DietHomePageState extends State<DietHomePage> {
         options = const GetOptions(source: Source.cache);
       }
 
-      print("Not Found");
+      debugPrint("Not Found In List Cache");
+
+      debugPrint("Attempting To Fetch From Internet or Local Firestore Cache");
 
       userNutritionData = await GetUserNutritionData(
         date,
