@@ -214,9 +214,10 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false, option
               .where(FieldPath.documentId, whereIn: barcodes)
               .get(const GetOptions(source: Source.cache));
 
-          if (snapshot.docs.isEmpty) {
+
+          if (snapshot.docs.isEmpty || snapshot.docs.length != barcodes.length) {
             debugPrint("Throwing");
-            throw Exception("Snapshot Docs are empty. Throwing local check");
+            throw Exception("Snapshot Docs are empty or incorrect. Throwing local check");
           }
 
           debugPrint("Data Found In Local Firebase Cache");
@@ -232,8 +233,6 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false, option
               .get(const GetOptions(source: Source.serverAndCache));
 
         }
-
-        debugPrint(foodItems.toString());
 
       } else {
 
@@ -264,6 +263,14 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false, option
       }
 
     }
+
+    debugPrint(foodItems.toString());
+    for (FoodItem item in foodItems) {
+      debugPrint(item.foodName);
+      debugPrint(item.calories + " Calories");
+      debugPrint(item.sodium + " Salt");
+    }
+
     return foodItems;
 
   } else {
@@ -282,9 +289,9 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false, option
               .where(FieldPath.documentId, whereIn: barcodes)
               .get(const GetOptions(source: Source.cache));
 
-          if (snapshot.docs.isEmpty) {
+          if (snapshot.docs.isEmpty || snapshot.docs.length != barcodes.length) {
             debugPrint("Throwing");
-            throw Exception("Snapshot Docs are empty. Throwing local check");
+            throw Exception("Snapshot Docs are empty or incorrect. Throwing local check");
           }
 
           debugPrint("Data Found In Local Firebase Cache");
@@ -416,7 +423,26 @@ GetUserNutritionData(String date, {options = const GetOptions(source: Source.ser
         for (final food in foodList) {
           debugPrint("Food Item List Loop Beginning");
           ///TODO Implement null check
-          food.foodItemData = foodListMap[food.barcode]!;
+
+          ///Current error throwing on WOOWOO JUG RECIPE
+          ///Does not appear to be loaded/stored from DB
+
+
+          debugPrint(foodListMap[0].toString());
+
+          try {
+            food.foodItemData = foodListMap[food.barcode]!;
+          } catch (error, stacktrace) {
+
+            debugPrint(error.toString());
+            debugPrint(stacktrace.toString());
+
+            debugPrint("Error on loading food item with barcode " + food.barcode);
+            debugPrint("Category " + food.category);
+            debugPrint("Recipe Status ${food.recipe.toString()}");
+            debugPrint("Food Name ${food.foodItemData.foodName}");
+          }
+
           debugPrint("Food Item List Loop End");
         }
 
@@ -739,8 +765,22 @@ GetRecipeFoodList(List<ListFoodItem> foodList) async {
 
       final foodListMap = {for (final food in foodItemDataComplete) food.barcode : food};
       for (final food in foodList) {
+
         ///TODO Implement null check
-        food.foodItemData = foodListMap[food.barcode]!;
+
+        try {
+          food.foodItemData = foodListMap[food.barcode]!;
+        } catch (error, stacktrace) {
+
+          debugPrint(error.toString());
+          debugPrint(stacktrace.toString());
+
+          debugPrint("Error on loading food item with barcode " + food.barcode);
+          debugPrint("Category " + food.category);
+          debugPrint("Recipe Status ${food.recipe.toString()}");
+          debugPrint("Food Name ${food.foodItemData.foodName}");
+        }
+
       }
 
       return foodList;
