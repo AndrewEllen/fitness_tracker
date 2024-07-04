@@ -362,6 +362,11 @@ GetUserNutritionData(String date, {options = const GetOptions(source: Source.ser
             .doc(date)
             .get(const GetOptions(source: Source.cache));
 
+        if (!snapshot.exists) {
+          debugPrint("Throwing");
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing local check");
+        }
+
         debugPrint("Data Found In Local Firebase Cache");
 
       } catch (error) {
@@ -422,11 +427,6 @@ GetUserNutritionData(String date, {options = const GetOptions(source: Source.ser
 
         for (final food in foodList) {
           debugPrint("Food Item List Loop Beginning");
-          ///TODO Implement null check
-
-          ///Current error throwing on WOOWOO JUG RECIPE
-          ///Does not appear to be loaded/stored from DB
-
 
           debugPrint(foodListMap[0].toString());
 
@@ -526,12 +526,53 @@ GetUserNutritionHistory({options = const GetOptions(source: Source.serverAndCach
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection("nutrition-history-data")
-        .doc("history")
-        .get(options);
+    DocumentSnapshot snapshot;
+
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      debugPrint("Checking Local Cache First");
+
+      try {
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("nutrition-history-data")
+            .doc("history")
+            .get(const GetOptions(source: Source.cache));
+
+
+        if (!snapshot.exists) {
+          debugPrint("Throwing");
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing local check");
+        }
+
+        debugPrint("Data Found In Local Firebase Cache");
+
+      } catch (error) {
+        debugPrint("No data found in cache or an exception has occurred");
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("nutrition-history-data")
+            .doc("history")
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+
+    } else {
+      debugPrint("Checking Cache or Server");
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc("${firebaseAuth.currentUser?.uid.toString()}")
+          .collection("nutrition-history-data")
+          .doc("history")
+          .get(options);
+
+    }
 
     final _data = snapshot.get("history");
 
@@ -1095,6 +1136,8 @@ GetExerciseData({options = const GetOptions(source: Source.serverAndCache)}) asy
 
     bool _exists;
     try {
+      ///Not 100% sure why I'm doing this. Seems to be just a method to check if the field "data" is there else return blank.
+      ///Most likely because attempting to check the field "data" if it is not there throws an error in the containing try catch block
       var test = data["data"];
       _exists = true;
 

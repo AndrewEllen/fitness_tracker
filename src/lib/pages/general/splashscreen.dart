@@ -146,7 +146,9 @@ class _SplashScreenState extends State<SplashScreen> {
       GetUserBioData(options: options).then((result) => userData = result),
       GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString(), options: options).then((result) => userNutrition = result),
       GetUserNutritionHistory(options: options).then((result) => userNutritionHistory = result),
+      ///User Custom Food is stored in one document. Will cause issues down the line.
       GetUserCustomFood(options: options).then((result) => userCustomFood = result),
+      ///User Custom Recipes is stored in one document. Will cause issues down the line.
       GetUserCustomRecipes(options: options).then((result) => userRecipes = result),
       GetUserGroceryListID(options: options).then((result) => groceryListID = result),
       GetUserGroceryLists(options: options).then((result) => groceryLists = result),
