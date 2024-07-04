@@ -2488,7 +2488,7 @@ class UserNutritionData with ChangeNotifier {
 
   void addToNutritionDataCache(UserNutritionModel userNutritionData) {
 
-    //_userDailyNutritionCache.add(userNutritionData);
+    _userDailyNutritionCache.add(userNutritionData);
 
     notifyListeners();
   }
