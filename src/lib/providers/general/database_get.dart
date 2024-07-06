@@ -1036,12 +1036,45 @@ GetUserGroceryLists({options = const GetOptions(source: Source.serverAndCache)})
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection('grocery-data')
-        .doc("grocery-lists")
-        .get(options);
+    DocumentSnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection('grocery-data')
+            .doc("grocery-lists")
+            .get(const GetOptions(source: Source.cache));
+
+        if (!snapshot.exists) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Groceries Lists.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection('grocery-data')
+            .doc("grocery-lists")
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc("${firebaseAuth.currentUser?.uid.toString()}")
+          .collection('grocery-data')
+          .doc("grocery-lists")
+          .get(options);
+
+    }
 
     return List<String>.from(snapshot["groceryLists"]);
 
@@ -1056,12 +1089,45 @@ GetUserGroceryListID({options = const GetOptions(source: Source.serverAndCache)}
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection('grocery-data')
-        .doc("selected-grocery-list")
-        .get(options);
+    DocumentSnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection('grocery-data')
+            .doc("selected-grocery-list")
+            .get(const GetOptions(source: Source.cache));
+
+        if (!snapshot.exists) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Groceries List ID.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection('grocery-data')
+            .doc("selected-grocery-list")
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc("${firebaseAuth.currentUser?.uid.toString()}")
+          .collection('grocery-data')
+          .doc("selected-grocery-list")
+          .get(options);
+
+    }
 
     return snapshot["groceryListID"];
 
@@ -1448,12 +1514,45 @@ GetWorkoutStarted({options = const GetOptions(source: Source.serverAndCache)}) a
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    dynamic snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc(firebaseAuth.currentUser!.uid)
-        .collection('current-workout-data')
-        .where("started", isEqualTo: true)
-        .get(options);
+    QuerySnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('current-workout-data')
+            .where("started", isEqualTo: true)
+            .get(const GetOptions(source: Source.cache));
+
+        if (snapshot.docs.isEmpty) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Check On Workout Now.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('current-workout-data')
+            .where("started", isEqualTo: true)
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('current-workout-data')
+          .where("started", isEqualTo: true)
+          .get(options);
+
+    }
 
     dynamic data = [
       for (QueryDocumentSnapshot document in snapshot.docs)
@@ -1851,7 +1950,7 @@ GetWeekdayExerciseTracking({options = const GetOptions(source: Source.serverAndC
           .get(const GetOptions(source: Source.cache));
 
       if (!snapshot.exists) {
-        throw Exception("Snapshot Docs are empty or incorrect. Throwing Workout Stats.");
+        throw Exception("Snapshot Docs are empty or incorrect. Throwing Workout Weekday Tracking.");
       }
 
     } catch (error, stacktrace) {
@@ -1933,12 +2032,50 @@ GetDailyStreak({options = const GetOptions(source: Source.serverAndCache)}) asyn
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  dynamic snapshot = await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc(firebaseAuth.currentUser!.uid)
-      .collection('user-data')
-      .doc("daily-streak")
-      .get(options);
+  ///When this is not dynamic it has an error. Not sure why.
+  dynamic snapshot;
+
+  if (options == const GetOptions(source: Source.serverAndCache)) {
+
+
+    try {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('user-data')
+          .doc("daily-streak")
+          .get(const GetOptions(source: Source.cache));
+
+      if (!snapshot.exists) {
+        throw Exception("Snapshot Doc Is Empty. Throwing Streak.");
+      }
+
+    } catch (error, stacktrace) {
+      debugPrint(error.toString());
+      debugPrint(stacktrace.toString());
+      debugPrint("Checking Server");
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('user-data')
+          .doc("daily-streak")
+          .get(const GetOptions(source: Source.serverAndCache));
+
+    }
+
+  } else {
+
+    snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('user-data')
+        .doc("daily-streak")
+        .get(options);
+
+  }
+
 
   dynamic parseDateTime(Timestamp? timeStamp) {
 
