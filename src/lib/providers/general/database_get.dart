@@ -1176,23 +1176,97 @@ GetExerciseLogData(String exerciseName, {options = const GetOptions(source: Sour
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc(firebaseAuth.currentUser!.uid)
-        .collection('workout-data')
-        .doc(exerciseName)
-        .collection("exercise-tracking-data")
-        .orderBy("timeStamp", descending: true)
-        .limit(7)
-        .where("timeStamp", isLessThanOrEqualTo: DateTime.now().toUtc())
-        .get(options);
+    QuerySnapshot<Map<String, dynamic>> snapshot;
 
-    final repsAndWeightSnapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc(firebaseAuth.currentUser!.uid)
-        .collection('workout-data')
-        .doc(exerciseName)
-        .get(options);
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('workout-data')
+            .doc(exerciseName)
+            .collection("exercise-tracking-data")
+            .orderBy("timeStamp", descending: true)
+            .limit(7)
+            .where("timeStamp", isLessThanOrEqualTo: DateTime.now().toUtc())
+            .get(const GetOptions(source: Source.cache));
+
+        if (snapshot.docs.isEmpty) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Past Workout Data.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('workout-data')
+            .doc(exerciseName)
+            .collection("exercise-tracking-data")
+            .orderBy("timeStamp", descending: true)
+            .limit(7)
+            .where("timeStamp", isLessThanOrEqualTo: DateTime.now().toUtc())
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('workout-data')
+          .doc(exerciseName)
+          .collection("exercise-tracking-data")
+          .orderBy("timeStamp", descending: true)
+          .limit(7)
+          .where("timeStamp", isLessThanOrEqualTo: DateTime.now().toUtc())
+          .get(options);
+
+    }
+
+    DocumentSnapshot <Map<String, dynamic>> repsAndWeightSnapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        repsAndWeightSnapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('workout-data')
+            .doc(exerciseName)
+            .get(const GetOptions(source: Source.cache));
+
+        if (!repsAndWeightSnapshot.exists) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Past Workout Data.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        repsAndWeightSnapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('workout-data')
+            .doc(exerciseName)
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      repsAndWeightSnapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('workout-data')
+          .doc(exerciseName)
+          .get(options);
+
+    }
 
     Map mapData(data) {
 
@@ -1241,16 +1315,42 @@ GetMoreExerciseLogData(String exerciseName, String date) async {
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc(firebaseAuth.currentUser!.uid)
-        .collection('workout-data')
-        .doc(exerciseName)
-        .collection("exercise-tracking-data")
-        .orderBy("timeStamp", descending: true)
-        .limit(7)
-        .where("timeStamp", isLessThanOrEqualTo: DateTime(previousDay.year, previousDay.month, previousDay.day-1).toUtc())
-        .get();
+    QuerySnapshot<Map<String, dynamic>> snapshot;
+
+    try {
+      debugPrint("Checking Cache First");
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('workout-data')
+          .doc(exerciseName)
+          .collection("exercise-tracking-data")
+          .orderBy("timeStamp", descending: true)
+          .limit(7)
+          .where("timeStamp", isLessThanOrEqualTo: DateTime(previousDay.year, previousDay.month, previousDay.day-1).toUtc())
+          .get(const GetOptions(source: Source.cache));
+
+      if (snapshot.docs.isEmpty) {
+        throw Exception("Snapshot Docs are empty or incorrect. Throwing Past Exercise Data.");
+      }
+
+    } catch (error, stacktrace) {
+      debugPrint(error.toString());
+      debugPrint(stacktrace.toString());
+      debugPrint("Checking Server");
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('workout-data')
+          .doc(exerciseName)
+          .collection("exercise-tracking-data")
+          .orderBy("timeStamp", descending: true)
+          .limit(7)
+          .where("timeStamp", isLessThanOrEqualTo: DateTime(previousDay.year, previousDay.month, previousDay.day-1).toUtc())
+          .get(const GetOptions(source: Source.serverAndCache));
+
+    }
 
     Map mapData(data) {
 
