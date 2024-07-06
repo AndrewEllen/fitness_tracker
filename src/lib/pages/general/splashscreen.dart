@@ -143,22 +143,34 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.wait<void>([
       GetDailyStreak(options: options).then((result) => dailyStreak = result),
       GetUserMeasurements(options: options).then((result) => measurements = result),
+      ///Checks Cache First
       GetUserBioData(options: options).then((result) => userData = result),
+      ///Checks Cache First
       GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString(), options: options).then((result) => userNutrition = result),
+      ///Checks Cache First
       GetUserNutritionHistory(options: options).then((result) => userNutritionHistory = result),
+      ///Checks Cache First
       ///User Custom Food is stored in one document. Will cause issues down the line.
       GetUserCustomFood(options: options).then((result) => userCustomFood = result),
+      ///Checks Cache First
       ///User Custom Recipes is stored in one document. Will cause issues down the line.
       GetUserCustomRecipes(options: options).then((result) => userRecipes = result),
+      ///Checks Cache First
       GetUserGroceryListID(options: options).then((result) => groceryListID = result),
       GetUserGroceryLists(options: options).then((result) => groceryLists = result),
       GetRoutinesData(options: options).then((result) => routines = result),
+      ///Checks Cache First
       GetExerciseData(options: options).then((result) => exercises = result),
+      ///Checks Cache First
       GetCategoriesData(options: options).then((result) => exerciseCategories = result),
+      ///Checks Cache First
       GetWorkoutStarted(options: options).then((result) => workoutStarted = result),
       GetPastWorkoutData(null, options: options).then((result) => workoutLogs = result),
+      ///Checks Cache First
       GetWorkoutOverallStats(options: options).then((result) => workoutOverallStats = result),
+      ///Checks Cache First
       GetWeekdayExerciseTracking(options: options).then((result) => weekdayTrackingValues = result),
+      ///Checks Cache First
     ]);
 
     try {
