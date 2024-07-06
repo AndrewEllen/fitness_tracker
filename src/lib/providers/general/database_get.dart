@@ -68,11 +68,42 @@ GetUserMeasurements({options = const GetOptions(source: Source.serverAndCache)})
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection("stats-measurements")
-        .get(options);
+    QuerySnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("stats-measurements")
+            .get(const GetOptions(source: Source.cache));
+
+        if (snapshot.docs.isEmpty) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Measurements.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("stats-measurements")
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc("${firebaseAuth.currentUser?.uid.toString()}")
+          .collection("stats-measurements")
+          .get(options);
+
+    }
 
     final _data = snapshot.docs.map((doc) => doc.data()).toList();
 
