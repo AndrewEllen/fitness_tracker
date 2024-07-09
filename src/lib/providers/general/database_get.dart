@@ -68,11 +68,42 @@ GetUserMeasurements({options = const GetOptions(source: Source.serverAndCache)})
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection("stats-measurements")
-        .get(options);
+    QuerySnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("stats-measurements")
+            .get(const GetOptions(source: Source.cache));
+
+        if (snapshot.docs.isEmpty) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Measurements.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("stats-measurements")
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc("${firebaseAuth.currentUser?.uid.toString()}")
+          .collection("stats-measurements")
+          .get(options);
+
+    }
 
     final _data = snapshot.docs.map((doc) => doc.data()).toList();
 
@@ -198,12 +229,50 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false, option
 
     print("IS IN RECIPE");
 
+    QuerySnapshot<Map<String, dynamic>> snapshot;
+
     try {
 
-      final snapshot = await FirebaseFirestore.instance
-          .collection('recipe-data')
-          .where(FieldPath.documentId, whereIn: barcodes)
-          .get(options);
+
+
+      if (options == const GetOptions(source: Source.serverAndCache)) {
+        debugPrint("Checking Local Cache First");
+
+        try {
+
+          snapshot = await FirebaseFirestore.instance
+              .collection('recipe-data')
+              .where(FieldPath.documentId, whereIn: barcodes)
+              .get(const GetOptions(source: Source.cache));
+
+
+          if (snapshot.docs.isEmpty || snapshot.docs.length != barcodes.length) {
+            debugPrint("Throwing");
+            throw Exception("Snapshot Docs are empty or incorrect. Throwing local check");
+          }
+
+          debugPrint("Data Found In Local Firebase Cache");
+
+        } catch (error) {
+          debugPrint(error.toString());
+          debugPrint("No data found in cache or an exception has occurred");
+          debugPrint("Checking Server");
+
+          snapshot = await FirebaseFirestore.instance
+              .collection('recipe-data')
+              .where(FieldPath.documentId, whereIn: barcodes)
+              .get(const GetOptions(source: Source.serverAndCache));
+
+        }
+
+      } else {
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('recipe-data')
+            .where(FieldPath.documentId, whereIn: barcodes)
+            .get(options);
+
+      }
 
       foodItems = [
         for (QueryDocumentSnapshot document in snapshot.docs)
@@ -211,7 +280,11 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false, option
             ..firebaseItem = true,
       ];
 
-      print(foodItems[0].foodName);
+      for (FoodItem item in foodItems) {
+        debugPrint(item.foodName);
+        debugPrint(item.calories + " Calories");
+        debugPrint(item.sodium + " Salt");
+      }
 
     } catch (exception) {
       print(exception);
@@ -221,22 +294,72 @@ BatchGetFoodDataFromFirebase(List<String> barcodes, {bool recipe = false, option
       }
 
     }
+
+    debugPrint(foodItems.toString());
+    for (FoodItem item in foodItems) {
+      debugPrint(item.foodName);
+      debugPrint(item.calories + " Calories");
+      debugPrint(item.sodium + " Salt");
+    }
+
     return foodItems;
 
   } else {
 
+    QuerySnapshot<Map<String, dynamic>> snapshot;
+
     try {
 
-      final snapshot = await FirebaseFirestore.instance
-          .collection('food-data')
-          .where(FieldPath.documentId, whereIn: barcodes)
-          .get(options);
+      if (options == const GetOptions(source: Source.serverAndCache)) {
+        debugPrint("Checking Local Cache First");
+
+        try {
+
+          snapshot = await FirebaseFirestore.instance
+              .collection('food-data')
+              .where(FieldPath.documentId, whereIn: barcodes)
+              .get(const GetOptions(source: Source.cache));
+
+          if (snapshot.docs.isEmpty || snapshot.docs.length != barcodes.length) {
+            debugPrint("Throwing");
+            throw Exception("Snapshot Docs are empty or incorrect. Throwing local check");
+          }
+
+          debugPrint("Data Found In Local Firebase Cache");
+
+        } catch (error) {
+          debugPrint(error.toString());
+          debugPrint("No data found in cache or an exception has occurred");
+          debugPrint("Checking Server");
+
+          snapshot = await FirebaseFirestore.instance
+              .collection('food-data')
+              .where(FieldPath.documentId, whereIn: barcodes)
+              .get(const GetOptions(source: Source.serverAndCache));
+
+        }
+
+      } else {
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('food-data')
+            .where(FieldPath.documentId, whereIn: barcodes)
+            .get(options);
+
+      }
 
       foodItems = [
         for (QueryDocumentSnapshot document in snapshot.docs)
           ConvertToFoodItem(document.get("food-data"), firebase: true)
             ..firebaseItem = true,
       ];
+
+      debugPrint(foodItems.toString());
+      for (FoodItem item in foodItems) {
+        debugPrint(item.foodName);
+        debugPrint(item.calories + " Calories");
+        debugPrint(item.sodium + " Salt");
+      }
 
     } catch (exception) {
       print(exception);
@@ -256,12 +379,51 @@ GetUserNutritionData(String date, {options = const GetOptions(source: Source.ser
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection("nutrition-data")
-        .doc(date)
-        .get(options);
+    DocumentSnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      debugPrint("Checking Local Cache First");
+
+      try {
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("nutrition-data")
+            .doc(date)
+            .get(const GetOptions(source: Source.cache));
+
+        if (!snapshot.exists) {
+          debugPrint("Throwing");
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing local check");
+        }
+
+        debugPrint("Data Found In Local Firebase Cache");
+
+      } catch (error) {
+        debugPrint("No data found in cache or an exception has occurred");
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("nutrition-data")
+            .doc(date)
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+
+    } else {
+      debugPrint("Checking Cache or Server");
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc("${firebaseAuth.currentUser?.uid.toString()}")
+          .collection("nutrition-data")
+          .doc(date)
+          .get(options);
+
+    }
 
     final Map _data = snapshot.get("nutrition-data");
 
@@ -288,11 +450,34 @@ GetUserNutritionData(String date, {options = const GetOptions(source: Source.ser
             options: options
         );
 
+        debugPrint("Food Item List Fetched");
+
         final foodListMap = {for (final food in foodItemList) food.barcode : food};
+
+        debugPrint("Generated Food List Map");
+
         for (final food in foodList) {
-          ///TODO Implement null check
-          food.foodItemData = foodListMap[food.barcode]!;
+          debugPrint("Food Item List Loop Beginning");
+
+          debugPrint(foodListMap[0].toString());
+
+          try {
+            food.foodItemData = foodListMap[food.barcode]!;
+          } catch (error, stacktrace) {
+
+            debugPrint(error.toString());
+            debugPrint(stacktrace.toString());
+
+            debugPrint("Error on loading food item with barcode " + food.barcode);
+            debugPrint("Category " + food.category);
+            debugPrint("Recipe Status ${food.recipe.toString()}");
+            debugPrint("Food Name ${food.foodItemData.foodName}");
+          }
+
+          debugPrint("Food Item List Loop End");
         }
+
+        debugPrint("Returning Food Item List");
 
         return foodList;
 
@@ -372,12 +557,53 @@ GetUserNutritionHistory({options = const GetOptions(source: Source.serverAndCach
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection("nutrition-history-data")
-        .doc("history")
-        .get(options);
+    DocumentSnapshot snapshot;
+
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      debugPrint("Checking Local Cache First");
+
+      try {
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("nutrition-history-data")
+            .doc("history")
+            .get(const GetOptions(source: Source.cache));
+
+
+        if (!snapshot.exists) {
+          debugPrint("Throwing");
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing local check");
+        }
+
+        debugPrint("Data Found In Local Firebase Cache");
+
+      } catch (error) {
+        debugPrint("No data found in cache or an exception has occurred");
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("nutrition-history-data")
+            .doc("history")
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+
+    } else {
+      debugPrint("Checking Cache or Server");
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc("${firebaseAuth.currentUser?.uid.toString()}")
+          .collection("nutrition-history-data")
+          .doc("history")
+          .get(options);
+
+    }
 
     final _data = snapshot.get("history");
 
@@ -410,12 +636,48 @@ GetUserCustomFood({options = const GetOptions(source: Source.serverAndCache)}) a
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection("nutrition-custom-food-data")
-        .doc("food")
-        .get(options);
+    DocumentSnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+
+
+      try {
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("nutrition-custom-food-data")
+            .doc("food")
+            .get(const GetOptions(source: Source.cache));
+
+        if (!snapshot.exists) {
+          throw Exception("Snapshot Doc Is Empty. Throwing Custom Food.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("nutrition-custom-food-data")
+            .doc("food")
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc("${firebaseAuth.currentUser?.uid.toString()}")
+          .collection("nutrition-custom-food-data")
+          .doc("food")
+          .get(options);
+
+    }
 
     final _data = snapshot.get("food");
 
@@ -444,12 +706,49 @@ GetUserCustomRecipes({options = const GetOptions(source: Source.serverAndCache)}
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection("nutrition-recipes-food-data")
-        .doc("food")
-        .get(options);
+
+    DocumentSnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+
+
+      try {
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("nutrition-recipes-food-data")
+            .doc("food")
+            .get(const GetOptions(source: Source.cache));
+
+        if (!snapshot.exists) {
+          throw Exception("Snapshot Doc Is Empty. Throwing Custom Recipes.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("nutrition-recipes-food-data")
+            .doc("food")
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc("${firebaseAuth.currentUser?.uid.toString()}")
+          .collection("nutrition-recipes-food-data")
+          .doc("food")
+          .get(options);
+
+    }
 
     final _data = snapshot.get("food");
 
@@ -611,8 +910,22 @@ GetRecipeFoodList(List<ListFoodItem> foodList) async {
 
       final foodListMap = {for (final food in foodItemDataComplete) food.barcode : food};
       for (final food in foodList) {
+
         ///TODO Implement null check
-        food.foodItemData = foodListMap[food.barcode]!;
+
+        try {
+          food.foodItemData = foodListMap[food.barcode]!;
+        } catch (error, stacktrace) {
+
+          debugPrint(error.toString());
+          debugPrint(stacktrace.toString());
+
+          debugPrint("Error on loading food item with barcode " + food.barcode);
+          debugPrint("Category " + food.category);
+          debugPrint("Recipe Status ${food.recipe.toString()}");
+          debugPrint("Food Name ${food.foodItemData.foodName}");
+        }
+
       }
 
       return foodList;
@@ -630,12 +943,48 @@ GetUserBioData({options = const GetOptions(source: Source.serverAndCache)}) asyn
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection("bioData")
-        .doc("bioData")
-        .get(options);
+    DocumentSnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+
+
+      try {
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("bioData")
+            .doc("bioData")
+            .get(const GetOptions(source: Source.cache));
+
+        if (!snapshot.exists) {
+          throw Exception("Snapshot Doc Is Empty. Throwing BioData.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection("bioData")
+            .doc("bioData")
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc("${firebaseAuth.currentUser?.uid.toString()}")
+          .collection("bioData")
+          .doc("bioData")
+          .get(options);
+
+    }
 
     return UserDataModel(
         height: snapshot["bioData"]["height"],
@@ -687,12 +1036,45 @@ GetUserGroceryLists({options = const GetOptions(source: Source.serverAndCache)})
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection('grocery-data')
-        .doc("grocery-lists")
-        .get(options);
+    DocumentSnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection('grocery-data')
+            .doc("grocery-lists")
+            .get(const GetOptions(source: Source.cache));
+
+        if (!snapshot.exists) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Groceries Lists.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection('grocery-data')
+            .doc("grocery-lists")
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc("${firebaseAuth.currentUser?.uid.toString()}")
+          .collection('grocery-data')
+          .doc("grocery-lists")
+          .get(options);
+
+    }
 
     return List<String>.from(snapshot["groceryLists"]);
 
@@ -707,12 +1089,45 @@ GetUserGroceryListID({options = const GetOptions(source: Source.serverAndCache)}
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc("${firebaseAuth.currentUser?.uid.toString()}")
-        .collection('grocery-data')
-        .doc("selected-grocery-list")
-        .get(options);
+    DocumentSnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection('grocery-data')
+            .doc("selected-grocery-list")
+            .get(const GetOptions(source: Source.cache));
+
+        if (!snapshot.exists) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Groceries List ID.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc("${firebaseAuth.currentUser?.uid.toString()}")
+            .collection('grocery-data')
+            .doc("selected-grocery-list")
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc("${firebaseAuth.currentUser?.uid.toString()}")
+          .collection('grocery-data')
+          .doc("selected-grocery-list")
+          .get(options);
+
+    }
 
     return snapshot["groceryListID"];
 
@@ -761,23 +1176,97 @@ GetExerciseLogData(String exerciseName, {options = const GetOptions(source: Sour
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc(firebaseAuth.currentUser!.uid)
-        .collection('workout-data')
-        .doc(exerciseName)
-        .collection("exercise-tracking-data")
-        .orderBy("timeStamp", descending: true)
-        .limit(7)
-        .where("timeStamp", isLessThanOrEqualTo: DateTime.now().toUtc())
-        .get(options);
+    QuerySnapshot<Map<String, dynamic>> snapshot;
 
-    final repsAndWeightSnapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc(firebaseAuth.currentUser!.uid)
-        .collection('workout-data')
-        .doc(exerciseName)
-        .get(options);
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('workout-data')
+            .doc(exerciseName)
+            .collection("exercise-tracking-data")
+            .orderBy("timeStamp", descending: true)
+            .limit(7)
+            .where("timeStamp", isLessThanOrEqualTo: DateTime.now().toUtc())
+            .get(const GetOptions(source: Source.cache));
+
+        if (snapshot.docs.isEmpty) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Past Workout Data.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('workout-data')
+            .doc(exerciseName)
+            .collection("exercise-tracking-data")
+            .orderBy("timeStamp", descending: true)
+            .limit(7)
+            .where("timeStamp", isLessThanOrEqualTo: DateTime.now().toUtc())
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('workout-data')
+          .doc(exerciseName)
+          .collection("exercise-tracking-data")
+          .orderBy("timeStamp", descending: true)
+          .limit(7)
+          .where("timeStamp", isLessThanOrEqualTo: DateTime.now().toUtc())
+          .get(options);
+
+    }
+
+    DocumentSnapshot <Map<String, dynamic>> repsAndWeightSnapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        repsAndWeightSnapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('workout-data')
+            .doc(exerciseName)
+            .get(const GetOptions(source: Source.cache));
+
+        if (!repsAndWeightSnapshot.exists) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Past Workout Data.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        repsAndWeightSnapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('workout-data')
+            .doc(exerciseName)
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      repsAndWeightSnapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('workout-data')
+          .doc(exerciseName)
+          .get(options);
+
+    }
 
     Map mapData(data) {
 
@@ -826,16 +1315,42 @@ GetMoreExerciseLogData(String exerciseName, String date) async {
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc(firebaseAuth.currentUser!.uid)
-        .collection('workout-data')
-        .doc(exerciseName)
-        .collection("exercise-tracking-data")
-        .orderBy("timeStamp", descending: true)
-        .limit(7)
-        .where("timeStamp", isLessThanOrEqualTo: DateTime(previousDay.year, previousDay.month, previousDay.day-1).toUtc())
-        .get();
+    QuerySnapshot<Map<String, dynamic>> snapshot;
+
+    try {
+      debugPrint("Checking Cache First");
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('workout-data')
+          .doc(exerciseName)
+          .collection("exercise-tracking-data")
+          .orderBy("timeStamp", descending: true)
+          .limit(7)
+          .where("timeStamp", isLessThanOrEqualTo: DateTime(previousDay.year, previousDay.month, previousDay.day-1).toUtc())
+          .get(const GetOptions(source: Source.cache));
+
+      if (snapshot.docs.isEmpty) {
+        throw Exception("Snapshot Docs are empty or incorrect. Throwing Past Exercise Data.");
+      }
+
+    } catch (error, stacktrace) {
+      debugPrint(error.toString());
+      debugPrint(stacktrace.toString());
+      debugPrint("Checking Server");
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('workout-data')
+          .doc(exerciseName)
+          .collection("exercise-tracking-data")
+          .orderBy("timeStamp", descending: true)
+          .limit(7)
+          .where("timeStamp", isLessThanOrEqualTo: DateTime(previousDay.year, previousDay.month, previousDay.day-1).toUtc())
+          .get(const GetOptions(source: Source.serverAndCache));
+
+    }
 
     Map mapData(data) {
 
@@ -871,11 +1386,42 @@ GetRoutinesData({options = const GetOptions(source: Source.serverAndCache)}) asy
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  dynamic data = await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc(firebaseAuth.currentUser!.uid)
-      .collection('routine-data')
-      .get(options);
+  QuerySnapshot<Map<String, dynamic>> snapshot;
+
+  if (options == const GetOptions(source: Source.serverAndCache)) {
+    try {
+      debugPrint("Checking Cache First For User Measurements");
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('routine-data')
+          .get(const GetOptions(source: Source.cache));
+
+      if (snapshot.docs.isEmpty) {
+        throw Exception("Snapshot Docs are empty or incorrect. Throwing Routines.");
+      }
+
+    } catch (error, stacktrace) {
+      debugPrint(error.toString());
+      debugPrint(stacktrace.toString());
+      debugPrint("Checking Server");
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('routine-data')
+          .get(const GetOptions(source: Source.serverAndCache));
+
+    }
+  } else {
+
+    snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('routine-data')
+        .get(options);
+
+  }
 
   List<ExerciseListModel> buildExerciseListObjects(data) {
 
@@ -898,7 +1444,7 @@ GetRoutinesData({options = const GetOptions(source: Source.serverAndCache)}) asy
   }
 
   List<RoutinesModel> routines = [
-    for (QueryDocumentSnapshot document in data.docs)
+    for (QueryDocumentSnapshot document in snapshot.docs)
       RoutinesModel(
           routineID: document["routineID"],
           routineDate: document["routineDate"],
@@ -918,16 +1464,51 @@ GetExerciseData({options = const GetOptions(source: Source.serverAndCache)}) asy
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    dynamic data = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc(firebaseAuth.currentUser!.uid)
-        .collection('exercise-data')
-        .doc('exercise-names')
-        .get(options);
+    DocumentSnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('exercise-data')
+            .doc('exercise-names')
+            .get(const GetOptions(source: Source.cache));
+
+        if (!snapshot.exists) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Exercise Data.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('exercise-data')
+            .doc('exercise-names')
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('exercise-data')
+          .doc('exercise-names')
+          .get(options);
+
+    }
 
     bool _exists;
     try {
-      var test = data["data"];
+      ///Not 100% sure why I'm doing this. Seems to be just a method to check if the field "data" is there else return blank.
+      ///Most likely because attempting to check the field "data" if it is not there throws an error in the containing try catch block
+      var test = snapshot["data"];
       _exists = true;
 
     } catch (e) {
@@ -936,7 +1517,7 @@ GetExerciseData({options = const GetOptions(source: Source.serverAndCache)}) asy
 
     }
 
-    List<String> exerciseData = _exists ? List<String>.from(data['data']) : [];
+    List<String> exerciseData = _exists ? List<String>.from(snapshot['data']) : [];
 
     return exerciseData;
 
@@ -958,16 +1539,49 @@ GetCategoriesData({options = const GetOptions(source: Source.serverAndCache)}) a
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    dynamic data = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc(firebaseAuth.currentUser!.uid)
-        .collection('exercise-data')
-        .doc('category-names')
-        .get(options);
+    DocumentSnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('exercise-data')
+            .doc('category-names')
+            .get(const GetOptions(source: Source.cache));
+
+        if (!snapshot.exists) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Categories.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('exercise-data')
+            .doc('category-names')
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('exercise-data')
+          .doc('category-names')
+          .get(options);
+
+    }
 
     bool _exists;
     try {
-      var test = data["data"];
+      var test = snapshot["data"];
       _exists = true;
 
     } catch (e) {
@@ -976,7 +1590,7 @@ GetCategoriesData({options = const GetOptions(source: Source.serverAndCache)}) a
 
     }
 
-    List<String> exerciseData = _exists ? List<String>.from(data['data']) : [];
+    List<String> exerciseData = _exists ? List<String>.from(snapshot['data']) : [];
 
     return exerciseData;
 
@@ -1000,12 +1614,45 @@ GetWorkoutStarted({options = const GetOptions(source: Source.serverAndCache)}) a
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    dynamic snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc(firebaseAuth.currentUser!.uid)
-        .collection('current-workout-data')
-        .where("started", isEqualTo: true)
-        .get(options);
+    QuerySnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('current-workout-data')
+            .where("started", isEqualTo: true)
+            .get(const GetOptions(source: Source.cache));
+
+        if (snapshot.docs.isEmpty) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Check On Workout Now.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('current-workout-data')
+            .where("started", isEqualTo: true)
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('current-workout-data')
+          .where("started", isEqualTo: true)
+          .get(options);
+
+    }
 
     dynamic data = [
       for (QueryDocumentSnapshot document in snapshot.docs)
@@ -1097,7 +1744,7 @@ try {
 
   exercisesToModel(data) {
 
-    print(data[0]["measurementName"]);
+    debugPrint(data[0]["measurementName"]);
 
     return [
       for (Map exercise in data)
@@ -1116,39 +1763,109 @@ try {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  dynamic snapshot;
+  QuerySnapshot<Map<String, dynamic>> snapshot;
 
   if (document != null) {
 
-    print("More data");
+    debugPrint("More data");
 
-    snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc(firebaseAuth.currentUser!.uid)
-        .collection('workout-log-data')
-        .orderBy("time-stamp", descending: true)
-        .limit(7)
-        .startAfterDocument(document)
-        .get(options);
-    
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('workout-log-data')
+            .orderBy("time-stamp", descending: true)
+            .limit(7)
+            .startAfterDocument(document)
+            .get(const GetOptions(source: Source.cache));
+
+        if (snapshot.docs.isEmpty) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Past Workout Data.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('workout-log-data')
+            .orderBy("time-stamp", descending: true)
+            .limit(7)
+            .startAfterDocument(document)
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('workout-log-data')
+          .orderBy("time-stamp", descending: true)
+          .limit(7)
+          .startAfterDocument(document)
+          .get(options);
+
+    }
+
   } else {
 
-    print("Less data");
+    debugPrint("Less data");
 
-    snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc(firebaseAuth.currentUser!.uid)
-        .collection('workout-log-data')
-        .orderBy("time-stamp", descending: true)
-        .limit(7)
-        .where("time-stamp", isLessThanOrEqualTo: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day+1).toUtc())
-        .get(options);
-    
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('workout-log-data')
+            .orderBy("time-stamp", descending: true)
+            .limit(7)
+            .where("time-stamp", isLessThanOrEqualTo: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day+1).toUtc())
+            .get(const GetOptions(source: Source.cache));
+
+        if (snapshot.docs.isEmpty) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Past Workout Data.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('workout-log-data')
+            .orderBy("time-stamp", descending: true)
+            .limit(7)
+            .where("time-stamp", isLessThanOrEqualTo: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day+1).toUtc())
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('workout-log-data')
+          .orderBy("time-stamp", descending: true)
+          .limit(7)
+          .where("time-stamp", isLessThanOrEqualTo: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day+1).toUtc())
+          .get(options);
+
+    }
+
   }
 
   dynamic parseDateTime(Timestamp? timeStamp) {
 
-    print("timestamp");
+    debugPrint("timestamp");
 
     if (timeStamp != null) {
       return timeStamp.toDate();
@@ -1176,7 +1893,7 @@ try {
 
     debugPrint(error.toString());
     debugPrint(stacktrace.toString());
-    print("error");
+    debugPrint("error");
 
   }
 
@@ -1188,12 +1905,45 @@ GetWorkoutOverallStats({options = const GetOptions(source: Source.serverAndCache
 
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    dynamic snapshot = await FirebaseFirestore.instance
-        .collection('user-data')
-        .doc(firebaseAuth.currentUser!.uid)
-        .collection('workout-overall-stats')
-        .doc("stats")
-        .get(options);
+    DocumentSnapshot<Map<String, dynamic>> snapshot;
+
+    if (options == const GetOptions(source: Source.serverAndCache)) {
+      try {
+        debugPrint("Checking Cache First For User Measurements");
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('workout-overall-stats')
+            .doc("stats")
+            .get(const GetOptions(source: Source.cache));
+
+        if (!snapshot.exists) {
+          throw Exception("Snapshot Docs are empty or incorrect. Throwing Workout Stats.");
+        }
+
+      } catch (error, stacktrace) {
+        debugPrint(error.toString());
+        debugPrint(stacktrace.toString());
+        debugPrint("Checking Server");
+
+        snapshot = await FirebaseFirestore.instance
+            .collection('user-data')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection('workout-overall-stats')
+            .doc("stats")
+            .get(const GetOptions(source: Source.serverAndCache));
+
+      }
+    } else {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('workout-overall-stats')
+          .doc("stats")
+          .get(options);
+
+    }
 
     dynamic parseDateTime(Timestamp? timeStamp) {
 
@@ -1285,12 +2035,48 @@ GetWeekdayExerciseTracking({options = const GetOptions(source: Source.serverAndC
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  dynamic snapshot = await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc(firebaseAuth.currentUser!.uid)
-      .collection('current-workout-data')
-      .doc("week-days-worked")
-      .get(options);
+
+  ///When this isn't set to dynamic throws an error. Not sure why yet.
+  dynamic snapshot;
+
+  if (options == const GetOptions(source: Source.serverAndCache)) {
+    try {
+      debugPrint("Checking Cache First For User Measurements");
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('current-workout-data')
+          .doc("week-days-worked")
+          .get(const GetOptions(source: Source.cache));
+
+      if (!snapshot.exists) {
+        throw Exception("Snapshot Docs are empty or incorrect. Throwing Workout Weekday Tracking.");
+      }
+
+    } catch (error, stacktrace) {
+      debugPrint(error.toString());
+      debugPrint(stacktrace.toString());
+      debugPrint("Checking Server");
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('current-workout-data')
+          .doc("week-days-worked")
+          .get(const GetOptions(source: Source.serverAndCache));
+
+    }
+  } else {
+
+    snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('current-workout-data')
+        .doc("week-days-worked")
+        .get(options);
+
+  }
+
 
   dynamic parseDateTime(Timestamp? timeStamp) {
 
@@ -1346,12 +2132,50 @@ GetDailyStreak({options = const GetOptions(source: Source.serverAndCache)}) asyn
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  dynamic snapshot = await FirebaseFirestore.instance
-      .collection('user-data')
-      .doc(firebaseAuth.currentUser!.uid)
-      .collection('user-data')
-      .doc("daily-streak")
-      .get(options);
+  ///When this is not dynamic it has an error. Not sure why.
+  dynamic snapshot;
+
+  if (options == const GetOptions(source: Source.serverAndCache)) {
+
+
+    try {
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('user-data')
+          .doc("daily-streak")
+          .get(const GetOptions(source: Source.cache));
+
+      if (!snapshot.exists) {
+        throw Exception("Snapshot Doc Is Empty. Throwing Streak.");
+      }
+
+    } catch (error, stacktrace) {
+      debugPrint(error.toString());
+      debugPrint(stacktrace.toString());
+      debugPrint("Checking Server");
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('user-data')
+          .doc("daily-streak")
+          .get(const GetOptions(source: Source.serverAndCache));
+
+    }
+
+  } else {
+
+    snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('user-data')
+        .doc("daily-streak")
+        .get(options);
+
+  }
+
 
   dynamic parseDateTime(Timestamp? timeStamp) {
 

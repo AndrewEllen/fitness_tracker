@@ -436,13 +436,14 @@ CheckFoodBarcodeList(List<String> barcodeDisplayValues, List<String> recipeBarco
     List<FoodItem> newFoodItems = <FoodItem>[];
 
     if (barcodeDisplayValues.isNotEmpty) {
-      print("passing");
+      print("CHECKING FOOD LIST");
       newFoodItems.addAll(await BatchGetFoodDataFromFirebase(barcodeDisplayValues, options: options));
-      print("passed");
+      print("CHECKED FOOD LIST");
     }
     if (recipeBarcodeDisplayValues.isNotEmpty) {
       print("CHECKING RECIPE LIST");
       newFoodItems.addAll(await BatchGetFoodDataFromFirebase(recipeBarcodeDisplayValues, recipe: true, options: options));
+      print("CHECKED RECIPE LIST");
     }
 
     return newFoodItems;
