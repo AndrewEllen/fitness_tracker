@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
+import 'package:fitness_tracker/models/workout/training_plan_week_model.dart';
 import 'package:fitness_tracker/models/workout/workout_log_exercise_data.dart';
 import 'package:fitness_tracker/models/workout/workout_overall_stats_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -881,7 +882,18 @@ class WorkoutProvider with ChangeNotifier {
 
       TrainingPlan(
           trainingPlanName: trainingPlanName,
-          trainingPlanWeeks: [],
+          trainingPlanWeeks: [
+            TrainingPlanWeek(
+                weekNumber: 1,
+                mondayRoutineID: "",
+                tuesdayRoutineID: "",
+                wednesdayRoutineID: "",
+                thursdayRoutineID: "",
+                fridayRoutineID: "",
+                saturdayRoutineID: "",
+                sundayRoutineID: "",
+            )
+          ],
       )
 
     );

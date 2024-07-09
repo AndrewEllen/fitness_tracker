@@ -6,7 +6,9 @@ class TrainingPlan {
   Map<String, dynamic> toMap() {
     return {
       'trainingPlanName': trainingPlanName,
-      'trainingPlanWeek': trainingPlanWeeks.asMap(),
+      'trainingPlanWeek': [
+        for (TrainingPlanWeek week in trainingPlanWeeks) week.toMap()
+      ],
     };
   }
   TrainingPlan({

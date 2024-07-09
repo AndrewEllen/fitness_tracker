@@ -204,44 +204,19 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
           },
         ),
         children: [
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(right: 14.0.w),
-                child: SizedBox(
-                  width: 48.w,
-                  child: FloatingActionButton(
-                      tooltip: "Search New Exercises",
-                      backgroundColor: appSecondaryColour,
-                      heroTag: null,
-                      child: const Icon(
-                        Icons.search,
-                      ),
-                      onPressed: () {
-                        final menuState = _key.currentState;
-                        if (menuState != null) {
-                          menuState.toggle();
-                        }
-                        context.read<PageChange>().changePageCache(ExerciseDatabaseSearch());
-                      }
-                  ),
-                ),
+          SizedBox(
+            width: 48.w,
+            child: FloatingActionButton(
+              tooltip: "Add Routine",
+              backgroundColor: appSecondaryColour,
+              heroTag: null,
+              child: const Icon(
+                Icons.add,
               ),
-              SizedBox(
-                width: 48.w,
-                child: FloatingActionButton(
-                  tooltip: "Add Routine",
-                  backgroundColor: appSecondaryColour,
-                  heroTag: null,
-                  child: const Icon(
-                    Icons.add,
-                  ),
-                  onPressed: () => newTrainingPlan(
-                    this.context,
-                  ),
-                ),
+              onPressed: () => newTrainingPlan(
+                this.context,
               ),
-            ],
+            ),
           ),
           SizedBox(
             width: 48.w,

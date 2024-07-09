@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
+import '../../pages/workout_new/training_plan_page.dart';
 import '../../pages/workout_new/workout_exercise_page.dart';
 import '../../providers/general/page_change_provider.dart';
 import '../../providers/workout/workoutProvider.dart';
@@ -15,9 +16,8 @@ import '../general/app_default_button.dart';
 
 
 class TrainingPlanBox extends StatefulWidget {
-  TrainingPlanBox({Key? key, required this.trainingPlan, required this.index}) : super(key: key);
+  TrainingPlanBox({Key? key, required this.trainingPlan}) : super(key: key);
   TrainingPlan trainingPlan;
-  int index;
 
   @override
   State<TrainingPlanBox> createState() => _TrainingPlanBoxState();
@@ -30,63 +30,11 @@ class _TrainingPlanBoxState extends State<TrainingPlanBox> {
 
 
   onTap() async {
-/*    if (context.read<WorkoutProvider>().checkForExerciseData(widget.trainingPlan.exercises[widget.index].exerciseName)) {
 
-      try {
+    context.read<PageChange>().changePageCache(
+        TrainingPlanPage(trainingPlan: widget.trainingPlan)
+    );
 
-        bool result = await InternetConnection().hasInternetAccess;
-        GetOptions options = const GetOptions(source: Source.serverAndCache);
-
-        if (!result) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text("No Internet Connection \nAttempting to load"),
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              margin: EdgeInsets.only(
-                bottom: MediaQuery.of(context).size.height * 0.6695,
-                right: 20,
-                left: 20,
-              ),
-              dismissDirection: DismissDirection.none,
-              duration: const Duration(milliseconds: 700),
-            ),
-          );
-          options = const GetOptions(source: Source.cache);
-        }
-
-        await context.read<WorkoutProvider>().fetchExerciseData(widget.trainingPlan.exercises[widget.index].exerciseName, options);
-
-        context.read<PageChange>().changePageCache(WorkoutExercisePage(
-          routine: widget.trainingPlan,
-          exercise: context.read<WorkoutProvider>().exerciseList[
-          context.read<WorkoutProvider>().exerciseList.indexWhere((element) => element.exerciseName == widget.trainingPlan.exercises[widget.index].exerciseName)
-          ],
-        ));
-      } catch (error) {
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text("Couldn't load data"),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            margin: EdgeInsets.only(
-              bottom: MediaQuery.of(context).size.height * 0.6695,
-              right: 20,
-              left: 20,
-            ),
-            dismissDirection: DismissDirection.none,
-            duration: const Duration(milliseconds: 700),
-          ),
-        );
-
-      }
-
-    }*/
   }
 
 

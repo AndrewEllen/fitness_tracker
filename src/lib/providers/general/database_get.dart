@@ -2338,13 +2338,13 @@ GetTrainingPlans({options = const GetOptions(source: Source.serverAndCache)}) as
       for (Map trainingWeek in data)
         TrainingPlanWeek(
             weekNumber: trainingWeek["weekNumber"],
-            mondayRoutineID: trainingWeek["mondayRoutineID"],
-            tuesdayRoutineID: trainingWeek["tuesdayRoutineID"],
-            wednesdayRoutineID: trainingWeek["wednesdayRoutineID"],
-            thursdayRoutineID: trainingWeek["thursdayRoutineID"],
-            fridayRoutineID: trainingWeek["fridayRoutineID"],
-            saturdayRoutineID: trainingWeek["saturdayRoutineID"],
-            sundayRoutineID: trainingWeek["sundayRoutineID"],
+            mondayRoutineID: trainingWeek["monday"],
+            tuesdayRoutineID: trainingWeek["tuesday"],
+            wednesdayRoutineID: trainingWeek["wednesday"],
+            thursdayRoutineID: trainingWeek["thursday"],
+            fridayRoutineID: trainingWeek["friday"],
+            saturdayRoutineID: trainingWeek["saturday"],
+            sundayRoutineID: trainingWeek["sunday"],
         )
     ];
 

@@ -29,14 +29,6 @@ class _TrainingPlanListState extends State<TrainingPlanList> {
 
     context.watch<WorkoutProvider>().trainingPlanList;
 
-    //final filteredMain = widget.routine.exercises
-    //    .where((exercise) => exercise.mainOrAccessory == 1)
-    //    .toList();
-
-    //final filteredAccessories = widget.routine.exercises
-    //    .where((exercise) => exercise.mainOrAccessory == 0)
-    //    .toList();
-
     return ReorderableListView.builder(
       itemCount: widget.trainingPlans.length,
       shrinkWrap: true,
@@ -47,7 +39,6 @@ class _TrainingPlanListState extends State<TrainingPlanList> {
           child: TrainingPlanBox(
             key: Key(widget.trainingPlans[index].trainingPlanName),
             trainingPlan: widget.trainingPlans[index],
-            index: index,
           ),
         );
 
@@ -60,7 +51,6 @@ class _TrainingPlanListState extends State<TrainingPlanList> {
           }
           final item = widget.trainingPlans.removeAt(oldIndex);
           widget.trainingPlans.insert(newIndex, item);
-          //updateRoutineOrder(widget.trainingPlans);
         });
         context.read<WorkoutProvider>().updateTrainingPlanListOrder(widget.trainingPlans);
       },
@@ -69,7 +59,6 @@ class _TrainingPlanListState extends State<TrainingPlanList> {
         return TrainingPlanBox(
           key: Key(widget.trainingPlans[index].trainingPlanName),
           trainingPlan: widget.trainingPlans[index],
-          index: index,
         );
       },
     );

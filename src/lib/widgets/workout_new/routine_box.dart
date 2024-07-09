@@ -53,9 +53,9 @@ class _RoutineBoxState extends State<RoutineBox> {
     return Padding(
       padding: EdgeInsets.only(bottom: 10.h),
       child: InkWell(
-        onTap: () => context.read<PageChange>().changePageCache(WorkoutRoutinePage(
+        onTap: () => widget.index != -1 ? context.read<PageChange>().changePageCache(WorkoutRoutinePage(
           routine: context.read<WorkoutProvider>().routinesList[widget.index],
-        )),
+        )) : {},
         child: Column(
           children: [
             ListTile(
@@ -69,22 +69,22 @@ class _RoutineBoxState extends State<RoutineBox> {
                 height: 40.h,
                 child: Center(
                   child: Text(
-                    context.read<WorkoutProvider>().routinesList[widget.index].routineName[0],
+                    widget.index != -1 ? context.read<WorkoutProvider>().routinesList[widget.index].routineName[0] : "Zzz",
                     style: boldTextStyle,
                   ),
                 ),
               ),
               title: Text(
-                context.read<WorkoutProvider>().routinesList[widget.index].routineName,
+                widget.index != -1 ? context.read<WorkoutProvider>().routinesList[widget.index].routineName : "Rest Day",
                 style: boldTextStyle,
               ),
-              subtitle: Text(
+              subtitle: widget.index != -1 ? Text(
                 daysPassedCalculator(context.read<WorkoutProvider>().routinesList[widget.index].routineDate),
                 style: const TextStyle(
                   fontSize: 14,
                   color: Colors.white70,
                 ),
-              ),
+              ) : null,
               trailing: IconButton(
                 onPressed: () {
                   setState(() {
@@ -96,10 +96,10 @@ class _RoutineBoxState extends State<RoutineBox> {
                 ),
               ),
             ),
-            InkWell(
-              onTap: () => context.read<PageChange>().changePageCache(WorkoutRoutinePage(
+            widget.index != -1 ? InkWell(
+              onTap: () => widget.index != -1 ? context.read<PageChange>().changePageCache(WorkoutRoutinePage(
                 routine: context.read<WorkoutProvider>().routinesList[widget.index],
-              )),
+              )) : {},
               child: Ink(
                 decoration: const BoxDecoration(
                   border: Border(
@@ -133,7 +133,7 @@ class _RoutineBoxState extends State<RoutineBox> {
                   ),
                 ),
               ),
-            ),
+            ) : const SizedBox.shrink(),
             TweenAnimationBuilder(
               tween: Tween<double>(begin: 0.0, end: _expandPanel ? 40 : 0),
               duration: const Duration(milliseconds: 250),
@@ -174,7 +174,7 @@ class _RoutineBoxState extends State<RoutineBox> {
                             );
                           },
                         );
-                        if (_delete) {
+                        if (_delete && widget.index != -1) {
                           print("deleting");
                           context.read<WorkoutProvider>().deleteRoutine(widget.index);
                         }

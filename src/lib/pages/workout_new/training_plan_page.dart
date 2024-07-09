@@ -1,5 +1,6 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:fitness_tracker/models/workout/training_plan_model.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_log_page.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_logs_home.dart';
 import 'package:flutter/material.dart';
@@ -13,17 +14,19 @@ import '../../providers/general/page_change_provider.dart';
 import '../../providers/workout/workoutProvider.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/workout_new/home_page_routines_list.dart';
+import '../../widgets/workout_new/training_plan_day_box.dart';
 import 'exercise_database_search.dart';
 
 
-class RoutinePageList extends StatefulWidget {
-  const RoutinePageList({Key? key}) : super(key: key);
+class TrainingPlanPage extends StatefulWidget {
+  TrainingPlanPage({Key? key, required this.trainingPlan}) : super(key: key);
+  TrainingPlan trainingPlan;
 
   @override
-  State<RoutinePageList> createState() => _RoutinePageListState();
+  State<TrainingPlanPage> createState() => _TrainingPlanPageState();
 }
 
-class _RoutinePageListState extends State<RoutinePageList> {
+class _TrainingPlanPageState extends State<TrainingPlanPage> {
   late GlobalKey<ExpandableFabState> _key = GlobalKey<ExpandableFabState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController inputController = TextEditingController();
@@ -147,8 +150,8 @@ class _RoutinePageListState extends State<RoutinePageList> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appTertiaryColour,
-        title: const Text(
-          "Workout Tracking",
+        title: Text(
+          widget.trainingPlan.trainingPlanName,
           style: boldTextStyle,
         ),
       ),
@@ -202,44 +205,19 @@ class _RoutinePageListState extends State<RoutinePageList> {
           },
         ),
         children: [
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(right: 14.0.w),
-                child: SizedBox(
-                  width: 48.w,
-                  child: FloatingActionButton(
-                      tooltip: "Search New Exercises",
-                      backgroundColor: appSecondaryColour,
-                      heroTag: null,
-                      child: const Icon(
-                        Icons.search,
-                      ),
-                      onPressed: () {
-                        final menuState = _key.currentState;
-                        if (menuState != null) {
-                          menuState.toggle();
-                        }
-                        context.read<PageChange>().changePageCache(ExerciseDatabaseSearch());
-                      }
-                  ),
-                ),
+          SizedBox(
+            width: 48.w,
+            child: FloatingActionButton(
+              tooltip: "Add Routine",
+              backgroundColor: appSecondaryColour,
+              heroTag: null,
+              child: const Icon(
+                Icons.add,
               ),
-              SizedBox(
-                width: 48.w,
-                child: FloatingActionButton(
-                  tooltip: "Add Routine",
-                  backgroundColor: appSecondaryColour,
-                  heroTag: null,
-                  child: const Icon(
-                    Icons.add,
-                  ),
-                  onPressed: () => newRoutine(
-                    this.context,
-                  ),
-                ),
+              onPressed: () => newRoutine(
+                this.context,
               ),
-            ],
+            ),
           ),
           SizedBox(
             width: 48.w,
@@ -303,7 +281,74 @@ class _RoutinePageListState extends State<RoutinePageList> {
           child: Column(
             children: [
               SizedBox(height: 14.h),
-              const HomePageRoutinesList(),
+
+
+
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: widget.trainingPlan.trainingPlanWeeks.length,
+                itemBuilder: (BuildContext context, int index) {
+
+                  return Column(
+                    children: [
+                      TrainingPlanDayBox(
+                        day: "Monday",
+                        routineIndex: widget.trainingPlan.trainingPlanWeeks[index].mondayRoutineID.isNotEmpty ? context.read<WorkoutProvider>().routinesList.indexWhere(
+                                (value) => value.routineID
+                                == widget.trainingPlan.trainingPlanWeeks[index].mondayRoutineID
+                        ) : -1,
+                      ),
+                      TrainingPlanDayBox(
+                        day: "Tuesday",
+                        routineIndex: widget.trainingPlan.trainingPlanWeeks[index].tuesdayRoutineID.isNotEmpty ? context.read<WorkoutProvider>().routinesList.indexWhere(
+                                (value) => value.routineID
+                                == widget.trainingPlan.trainingPlanWeeks[index].tuesdayRoutineID
+                        ) : -1,
+                      ),
+                      TrainingPlanDayBox(
+                        day: "Wednesday",
+                        routineIndex: widget.trainingPlan.trainingPlanWeeks[index].wednesdayRoutineID.isNotEmpty ? context.read<WorkoutProvider>().routinesList.indexWhere(
+                                (value) => value.routineID
+                                == widget.trainingPlan.trainingPlanWeeks[index].wednesdayRoutineID
+                        ) : -1,
+                      ),
+                      TrainingPlanDayBox(
+                        day: "Thursday",
+                        routineIndex: widget.trainingPlan.trainingPlanWeeks[index].thursdayRoutineID.isNotEmpty ? context.read<WorkoutProvider>().routinesList.indexWhere(
+                                (value) => value.routineID
+                                == widget.trainingPlan.trainingPlanWeeks[index].thursdayRoutineID
+                        ) : -1,
+                      ),
+                      TrainingPlanDayBox(
+                        day: "Friday",
+                        routineIndex: widget.trainingPlan.trainingPlanWeeks[index].fridayRoutineID.isNotEmpty ? context.read<WorkoutProvider>().routinesList.indexWhere(
+                                (value) => value.routineID
+                                == widget.trainingPlan.trainingPlanWeeks[index].fridayRoutineID
+                        ) : -1,
+                      ),
+                      TrainingPlanDayBox(
+                        day: "Saturday",
+                        routineIndex: widget.trainingPlan.trainingPlanWeeks[index].saturdayRoutineID.isNotEmpty ? context.read<WorkoutProvider>().routinesList.indexWhere(
+                                (value) => value.routineID
+                                == widget.trainingPlan.trainingPlanWeeks[index].saturdayRoutineID
+                        ) : -1,
+                      ),
+                      TrainingPlanDayBox(
+                        day: "Sunday",
+                        routineIndex: widget.trainingPlan.trainingPlanWeeks[index].sundayRoutineID.isNotEmpty ? context.read<WorkoutProvider>().routinesList.indexWhere(
+                                (value) => value.routineID
+                                == widget.trainingPlan.trainingPlanWeeks[index].sundayRoutineID
+                        ) : -1,
+                      ),
+
+                    ],
+                  );
+
+                },
+              ),
+
+
             ],
           ),
         ),
