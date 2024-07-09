@@ -308,7 +308,7 @@ class WorkoutProvider with ChangeNotifier {
     double volume = 0;
     double reps = 0;
     double sets = 0;
-    int workoutDuration = _currentWorkout.endOfWorkout!.difference(_currentWorkout.startOfWorkout).inSeconds;
+    int workoutDuration = _currentWorkout.endOfWorkoutInSeconds!;
 
     for (WorkoutLogExerciseDataModel exerciseData in _currentWorkout.exercises) {
       if (exerciseData.type == 0) {
@@ -446,7 +446,7 @@ class WorkoutProvider with ChangeNotifier {
         int index = _routineVolumeStats.indexWhere((element) => element.measurementID == routineName);
 
         _routineVolumeStats[index].measurementValues.add(volume);
-        _routineVolumeStats[index].measurementDates.add(DateTime.now().toString());
+        _routineVolumeStats[index].measurementDates.add(_currentWorkout.startOfWorkout.toString());
 
       } else {
 
@@ -455,7 +455,7 @@ class WorkoutProvider with ChangeNotifier {
                 measurementID: routineName,
                 measurementName: routineName + " Volume",
                 measurementValues: [volume],
-                measurementDates: [DateTime.now().toString()],
+                measurementDates: [_currentWorkout.startOfWorkout.toString()],
             ),
         );
 
@@ -470,22 +470,23 @@ class WorkoutProvider with ChangeNotifier {
 
   }
 
-  void endWorkout(DateTime endOfWorkout) {
+  void endWorkout(DateTime endOfWorkout, int endOfWorkoutInSeconds) {
 
     _workoutStarted = false;
     _currentWorkout.endOfWorkout = endOfWorkout;
+    _currentWorkout.endOfWorkoutInSeconds = endOfWorkoutInSeconds;
 
     if (_currentWorkout.exercises.isNotEmpty) {
 
       FirebaseAnalytics.instance.logEvent(name: 'workout_saved');
 
-      _weekDayExerciseTracker[DateFormat('EEEE').format(DateTime.now())] = true;
-      _weekDayExerciseTracker["lastDate"] = DateTime.now();
+      _weekDayExerciseTracker[DateFormat('EEEE').format(startOfWorkout)] = true;
+      _weekDayExerciseTracker["lastDate"] = startOfWorkout;
       saveDayTracking(_weekDayExerciseTracker);
 
       _currentWorkout.routineNames = {
         for(WorkoutLogExerciseDataModel exercise in _currentWorkout.exercises)
-          exercise.routineName!
+          exercise.routineName
       }.toList();
 
       calculateRoutineStats();

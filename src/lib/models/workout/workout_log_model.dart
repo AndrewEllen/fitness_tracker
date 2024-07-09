@@ -15,6 +15,7 @@ class WorkoutLogModel {
     return {
       'startOfWorkout': startOfWorkout,
       'endOfWorkout': endOfWorkout,
+      'endOfWorkoutInSeconds': endOfWorkoutInSeconds,
       'routineNames': routineNames,
       'exercises': mapDataA(exercises),
     };
@@ -22,12 +23,14 @@ class WorkoutLogModel {
   WorkoutLogModel({
     required this.startOfWorkout,
     this.endOfWorkout,
+    this.endOfWorkoutInSeconds,
     required this.exercises,
     required this.routineNames,
   });
 
   DateTime startOfWorkout;
   DateTime? endOfWorkout;
+  int? endOfWorkoutInSeconds;
   List<WorkoutLogExerciseDataModel> exercises;
   List<String> routineNames;
 }

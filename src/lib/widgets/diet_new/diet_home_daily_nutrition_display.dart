@@ -46,6 +46,7 @@ class DailyNutritionDisplay extends StatelessWidget {
                         child: CalorieCircle(
                           calories: context.watch<UserNutritionData>().calories,
                           caloriesGoal: context.watch<UserNutritionData>().caloriesGoal,
+                          caloriesBurnedTotal: context.watch<UserNutritionData>().exerciseCalories,
                         ),
                       ),
                     ),

@@ -820,7 +820,7 @@ class UserNutritionData with ChangeNotifier {
 
       for (var exercise in exerciseList) {
         try {
-          _calories -= double.parse(exercise.calories);
+          _calories -= (double.parse(exercise.calories)*0.7);
         } catch (exception) {
           _calories += 0;
         }
@@ -1348,6 +1348,10 @@ class UserNutritionData with ChangeNotifier {
     }
 
     int calculateTimeDifference(String firstTime, String secondTime) {
+
+      if (firstTime == secondTime) {
+        return 1;
+      }
 
       List<String> firstTimeSplit = firstTime.split(":");
       List<String> secondTimeSplit = secondTime.split(":");

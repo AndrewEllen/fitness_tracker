@@ -63,6 +63,45 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
 
   }
 
+  int calculateTimeDifference(String firstTime, String secondTime, {bool inSeconds = false}) {
+
+    if (firstTime == secondTime) {
+      debugPrint("Identical Times");
+      if (inSeconds) {
+        return 60;
+      }
+      return 1;
+    }
+
+    List<String> firstTimeSplit = firstTime.split(":");
+    List<String> secondTimeSplit = secondTime.split(":");
+
+    double firstTimeDouble = double.parse(firstTimeSplit[0]);
+    double secondTimeDouble = double.parse(secondTimeSplit[0]);
+
+    if (firstTimeDouble > secondTimeDouble) {
+
+      double dif = 0 + secondTimeDouble;
+      secondTimeSplit[0] = (24 + dif).toString();
+
+    }
+
+    DateTime now = DateTime.now();
+
+    DateTime firstTimeDateTime = DateTime(now.year, now.month, now.day).add(
+        Duration(hours: double.parse(firstTimeSplit[0]).toInt(), minutes: double.parse(firstTimeSplit[1]).toInt()));
+    DateTime secondTimeDateTime = DateTime(now.year, now.month, now.day).add(
+        Duration(hours: double.parse(secondTimeSplit[0]).toInt(), minutes: double.parse(secondTimeSplit[1]).toInt()));
+
+    if (inSeconds) {
+      debugPrint(secondTimeDateTime.difference(firstTimeDateTime).inSeconds.toString());
+      return secondTimeDateTime.difference(firstTimeDateTime).inSeconds;
+    }
+
+    debugPrint(secondTimeDateTime.difference(firstTimeDateTime).inMinutes.toString());
+    return secondTimeDateTime.difference(firstTimeDateTime).inMinutes;
+  }
+
   String totalVolume(WorkoutLogModel? workoutLog) {
 
 
@@ -153,11 +192,16 @@ class _SelectedWorkoutLogPageState extends State<SelectedWorkoutLogPage> {
                     noMargin: true,
                   ),
 
-                  WorkoutLogTopStatsBox(
-                    dataToDisplay: workout!.endOfWorkout!.difference(workout!.startOfWorkout).inMinutes.toString(),
+                  !context.read<WorkoutProvider>().workoutStarted && workout!.exercises.isNotEmpty ? WorkoutLogTopStatsBox(
+                    //dataToDisplay: DateTime.now().difference(workout.startOfWorkout).inMinutes.toString(),
+                    dataToDisplay: calculateTimeDifference(workout.exercises.first.timestamp, workout.exercises.last.timestamp).toString(),
                     title: "Duration",
                     bottomText: "Minutes",
-                  ),
+                  ) : WorkoutLogTopStatsBox(
+                    dataToDisplay: "0",
+                    title: "Duration",
+                    bottomText: "Minutes",
+                  ) ,
 
                 ],
               ),

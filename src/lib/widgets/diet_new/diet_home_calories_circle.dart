@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CalorieCircle extends StatefulWidget {
-  const CalorieCircle({Key? key, required this.caloriesGoal, required this.calories}) : super(key: key);
-  final double caloriesGoal, calories;
+  const CalorieCircle({Key? key, required this.caloriesGoal, required this.calories, required this.caloriesBurnedTotal}) : super(key: key);
+  final double caloriesGoal, calories, caloriesBurnedTotal;
 
   @override
   State<CalorieCircle> createState() => _CalorieCircleState();
@@ -105,13 +105,13 @@ class _CalorieCircleState extends State<CalorieCircle> {
                   children: [
                     const Spacer(),
                     Text(
-                      "${(widget.calories).toStringAsFixed(0)} Kcal Eaten",
+                      "${(widget.calories + (widget.caloriesBurnedTotal * 0.7)).toStringAsFixed(0)} Kcal Eaten",
                       style: boldTextStyle.copyWith(
                         fontSize: 14.h,
                       ),
                     ),
                     Text(
-                      "of ${widget.caloriesGoal.toStringAsFixed(0)} Kcal",
+                      "of ${(widget.caloriesGoal + (widget.caloriesBurnedTotal * 0.7)).toStringAsFixed(0)} Kcal",
                       style: boldTextStyle.copyWith(
                         fontSize: 14.h,
                       ),

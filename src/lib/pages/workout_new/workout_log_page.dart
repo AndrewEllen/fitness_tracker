@@ -66,6 +66,42 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
 
   }
 
+  int calculateTimeDifference(String firstTime, String secondTime, {bool inSeconds = false}) {
+
+    if (firstTime == secondTime) {
+      if (inSeconds) {
+        return 60;
+      }
+      return 1;
+    }
+
+    List<String> firstTimeSplit = firstTime.split(":");
+    List<String> secondTimeSplit = secondTime.split(":");
+
+    double firstTimeDouble = double.parse(firstTimeSplit[0]);
+    double secondTimeDouble = double.parse(secondTimeSplit[0]);
+
+    if (firstTimeDouble > secondTimeDouble) {
+
+      double dif = 0 + secondTimeDouble;
+      secondTimeSplit[0] = (24 + dif).toString();
+
+    }
+
+    DateTime now = DateTime.now();
+
+    DateTime firstTimeDateTime = DateTime(now.year, now.month, now.day).add(
+        Duration(hours: double.parse(firstTimeSplit[0]).toInt(), minutes: double.parse(firstTimeSplit[1]).toInt()));
+    DateTime secondTimeDateTime = DateTime(now.year, now.month, now.day).add(
+        Duration(hours: double.parse(secondTimeSplit[0]).toInt(), minutes: double.parse(secondTimeSplit[1]).toInt()));
+
+    if (inSeconds) {
+      return secondTimeDateTime.difference(firstTimeDateTime).inSeconds;
+    }
+
+    return secondTimeDateTime.difference(firstTimeDateTime).inMinutes;
+  }
+
   double calculateRoutineVolume(WorkoutLogModel workoutLog, String routineName) {
 
     double volume = 0;
@@ -182,11 +218,11 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
             {
               if (context.read<WorkoutProvider>().currentWorkout.exercises.isNotEmpty) {
                 context.read<UserNutritionData>().addCardioCalories(context.read<WorkoutProvider>().currentWorkout),
-                context.read<WorkoutProvider>().endWorkout(DateTime.now()),
+                context.read<WorkoutProvider>().endWorkout(DateTime.now(), calculateTimeDifference(workout.exercises.first.timestamp, workout.exercises.last.timestamp, inSeconds: true)),
                 context.read<WorkoutProvider>().selectLog(0),
                 context.read<PageChange>().changePageRemovePreviousCache(SelectedWorkoutLogPage()),
               } else {
-                context.read<WorkoutProvider>().endWorkout(DateTime.now()),
+                context.read<WorkoutProvider>().endWorkout(DateTime.now(), calculateTimeDifference(workout.exercises.first.timestamp, workout.exercises.last.timestamp, inSeconds: true)),
                 context.read<PageChange>().changePageRemovePreviousCache(WorkoutHomePageNew()),
               }
 
@@ -229,8 +265,9 @@ class _WorkoutLogPageState extends State<WorkoutLogPage> {
                     noMargin: true,
                   ) ,
 
-                  context.read<WorkoutProvider>().workoutStarted ? WorkoutLogTopStatsBox(
-                    dataToDisplay: DateTime.now().difference(workout.startOfWorkout).inMinutes.toString(),
+                  context.read<WorkoutProvider>().workoutStarted && workout.exercises.isNotEmpty ? WorkoutLogTopStatsBox(
+                    //dataToDisplay: DateTime.now().difference(workout.startOfWorkout).inMinutes.toString(),
+                    dataToDisplay: calculateTimeDifference(workout.exercises.first.timestamp, workout.exercises.last.timestamp).toString(),
                     title: "Duration",
                     bottomText: "Minutes",
                   ) : WorkoutLogTopStatsBox(
