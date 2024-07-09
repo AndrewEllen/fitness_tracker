@@ -292,6 +292,19 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
 
                   return Column(
                     children: [
+
+                      Container(
+                        color: appTertiaryColour,
+                        width: double.maxFinite,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Week ${index + 1}",
+                            style: boldTextStyle.copyWith(fontSize: 18.h),
+                          ),
+                        ),
+                      ),
+
                       TrainingPlanDayBox(
                         day: "Monday",
                         routineIndex: widget.trainingPlan.trainingPlanWeeks[index].mondayRoutineID.isNotEmpty ? context.read<WorkoutProvider>().routinesList.indexWhere(
