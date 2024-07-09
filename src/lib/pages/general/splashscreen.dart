@@ -22,6 +22,7 @@ import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../models/stats/stats_model.dart';
+import '../../models/workout/training_plan_model.dart';
 import '../../providers/general/database_get.dart';
 import '../../providers/stats/user_data.dart';
 
@@ -50,6 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
   late WorkoutOverallStatsModel workoutOverallStats;
   late Map<String, dynamic> weekdayTrackingValues;
   late Map<String, dynamic> dailyStreak;
+  late List<TrainingPlan> trainingPlans;
 
   Future<void> stepsCalorieCalculator() async {
 
@@ -159,6 +161,7 @@ class _SplashScreenState extends State<SplashScreen> {
       GetPastWorkoutData(null, options: options).then((result) => workoutLogs = result),
       GetWorkoutOverallStats(options: options).then((result) => workoutOverallStats = result),
       GetWeekdayExerciseTracking(options: options).then((result) => weekdayTrackingValues = result),
+      GetTrainingPlans(options: options).then((result) => trainingPlans = result),
     ]);
 
     try {
@@ -219,6 +222,7 @@ class _SplashScreenState extends State<SplashScreen> {
     try {context.read<UserNutritionData>().setCustomFood(userCustomFood);} catch (exception) {print(exception);}
     try {context.read<UserNutritionData>().setCustomRecipes(userRecipes);} catch (exception) {print(exception);}
 
+    try {context.read<WorkoutProvider>().initialiseTrainingPlans(trainingPlans);} catch (exception) {print(exception);}
     try {context.read<WorkoutProvider>().loadRoutineData(routines);} catch (exception) {print(exception);}
     try {context.read<WorkoutProvider>().loadExerciseNamesData(exercises);} catch (exception) {print(exception);}
     try {context.read<WorkoutProvider>().loadCategoriesNamesData(exerciseCategories);} catch (exception) {print(exception);}

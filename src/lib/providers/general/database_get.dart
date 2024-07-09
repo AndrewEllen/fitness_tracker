@@ -10,6 +10,8 @@ import 'package:fitness_tracker/models/diet/user__foods_model.dart';
 import 'package:fitness_tracker/models/diet/user_nutrition_model.dart';
 import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
 import 'package:fitness_tracker/models/workout/routines_model.dart';
+import 'package:fitness_tracker/models/workout/training_plan_model.dart';
+import 'package:fitness_tracker/models/workout/training_plan_week_model.dart';
 import 'package:fitness_tracker/models/workout/workout_log_exercise_data.dart';
 import 'package:fitness_tracker/models/workout/workout_log_model.dart';
 import 'package:fitness_tracker/models/workout/workout_overall_stats_model.dart';
@@ -2231,4 +2233,133 @@ GetRoutineVolumeData(String routineName, {options = const GetOptions(source: Sou
         measurementValues: List<double>.from(snapshot["measurements-data"]["measurementData"].map((e) => e.toDouble()).toList()),
         measurementDates: List<String>.from(snapshot["measurements-data"]["measurementDate"]),
       );
+}
+
+
+GetTrainingPlanOrder({options = const GetOptions(source: Source.serverAndCache)}) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  DocumentSnapshot snapshot;
+
+  if (options == const GetOptions(source: Source.serverAndCache)) {
+    try {
+      debugPrint("Checking Cache First For Training Plan Order");
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('training-plan-data')
+          .doc("trainingPlanOrder")
+          .get(const GetOptions(source: Source.cache));
+
+      if (!snapshot.exists) {
+        throw Exception("Snapshot Docs are empty or incorrect. Throwing Training Plan Order.");
+      }
+
+    } catch (error, stacktrace) {
+      debugPrint(error.toString());
+      debugPrint(stacktrace.toString());
+      debugPrint("Checking Server");
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('training-plan-data')
+          .doc("trainingPlanOrder")
+          .get(const GetOptions(source: Source.serverAndCache));
+
+    }
+  } else {
+
+    snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('training-plan-data')
+        .doc("trainingPlanOrder")
+        .get(options);
+
   }
+
+  return snapshot["data"].map<int, String>(
+      (key, value) => MapEntry<int, String>(int.parse(key), value.toString())
+  );
+
+}
+
+
+GetTrainingPlans({options = const GetOptions(source: Source.serverAndCache)}) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  QuerySnapshot<Map<String, dynamic>> snapshot;
+
+  if (options == const GetOptions(source: Source.serverAndCache)) {
+    try {
+      debugPrint("Checking Cache First For Training Plans");
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('training-plans')
+          .get(const GetOptions(source: Source.cache));
+
+      if (snapshot.docs.isEmpty) {
+        throw Exception("Snapshot Docs are empty or incorrect. Throwing Training Plans.");
+      }
+
+    } catch (error, stacktrace) {
+      debugPrint(error.toString());
+      debugPrint(stacktrace.toString());
+      debugPrint("Checking Server");
+
+      snapshot = await FirebaseFirestore.instance
+          .collection('user-data')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('training-plans')
+          .get(const GetOptions(source: Source.serverAndCache));
+
+    }
+  } else {
+
+    snapshot = await FirebaseFirestore.instance
+        .collection('user-data')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('training-plans')
+        .get(options);
+
+  }
+
+  List<TrainingPlanWeek> buildTrainingPlanWeekObjects(data) {
+
+    if (data.isEmpty) {
+      return [];
+    }
+
+    List<TrainingPlanWeek> trainingPlanWeeks =  [
+      for (Map trainingWeek in data)
+        TrainingPlanWeek(
+            weekNumber: trainingWeek["weekNumber"],
+            mondayRoutineID: trainingWeek["mondayRoutineID"],
+            tuesdayRoutineID: trainingWeek["tuesdayRoutineID"],
+            wednesdayRoutineID: trainingWeek["wednesdayRoutineID"],
+            thursdayRoutineID: trainingWeek["thursdayRoutineID"],
+            fridayRoutineID: trainingWeek["fridayRoutineID"],
+            saturdayRoutineID: trainingWeek["saturdayRoutineID"],
+            sundayRoutineID: trainingWeek["sundayRoutineID"],
+        )
+    ];
+
+    return trainingPlanWeeks;
+
+  }
+
+  List<TrainingPlan> trainingPlans = [
+    for (QueryDocumentSnapshot document in snapshot.docs)
+      TrainingPlan(
+        trainingPlanName: document["trainingPlanName"],
+        trainingPlanWeeks: buildTrainingPlanWeekObjects(document["trainingPlanWeek"]),
+      )
+  ];
+
+  return trainingPlans;
+
+}

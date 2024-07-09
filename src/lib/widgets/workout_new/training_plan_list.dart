@@ -47,7 +47,7 @@ class _TrainingPlanListState extends State<TrainingPlanList> {
           child: TrainingPlanBox(
             key: Key(widget.trainingPlans[index].trainingPlanName),
             trainingPlan: widget.trainingPlans[index],
-            index: context.read<WorkoutProvider>().trainingPlanListOrder[widget.trainingPlans[index].trainingPlanName],
+            index: index,
           ),
         );
 

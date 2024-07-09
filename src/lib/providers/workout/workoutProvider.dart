@@ -803,7 +803,7 @@ class WorkoutProvider with ChangeNotifier {
 
   late List<TrainingPlan> _trainingPlanList = [];
 
-  late Map _trainingPlanListOrder;
+  late Map<int, String> _trainingPlanListOrder;
 
   List<TrainingPlan> get trainingPlanList => _trainingPlanList;
 
@@ -820,13 +820,53 @@ class WorkoutProvider with ChangeNotifier {
   }
 
 
+  void initialiseTrainingPlanListOrder(Map<int, String> trainingPlanListOrder) {
+
+    _trainingPlanListOrder = trainingPlanListOrder;
+
+  }
+
+
+  Future<void> initialiseTrainingPlans(List<TrainingPlan> trainingPlanList) async {
+
+    _trainingPlanList = trainingPlanList;
+
+    try {
+
+      await Future.wait<void>([
+        GetTrainingPlanOrder(options: const GetOptions(source: Source.serverAndCache)).then((result) => _trainingPlanListOrder = result),
+      ]);
+
+    } catch (error, stacktrace) {
+      debugPrint(error.toString());
+      debugPrint(stacktrace.toString());
+    }
+
+    if (_trainingPlanListOrder.isNotEmpty) {
+      debugPrint("Ordering Training Plans");
+
+      List<TrainingPlan> newListToOrder = [];
+
+      for (String value in _trainingPlanListOrder.values) {
+        newListToOrder.add(_trainingPlanList[_trainingPlanList.indexWhere((item) => item.trainingPlanName == value)]);
+      }
+      _trainingPlanList = newListToOrder;
+
+
+    }
+
+  }
+
+
   void updateTrainingPlanListOrder(List<TrainingPlan> trainingPlans) {
 
     _trainingPlanListOrder = {
 
-      for (int index = 0; index < trainingPlans.length; index++) trainingPlans[index].trainingPlanName: index
+      for (int index = 0; index < trainingPlans.length; index++) index: trainingPlans[index].trainingPlanName
 
     };
+
+    UpdateTrainingPlanOrder(_trainingPlanListOrder);
 
     debugPrint(_trainingPlanListOrder.toString());
 
@@ -845,6 +885,8 @@ class WorkoutProvider with ChangeNotifier {
       )
 
     );
+
+    CreateNewTrainingPlan(_trainingPlanList.last);
 
     updateTrainingPlanListOrder(_trainingPlanList);
 

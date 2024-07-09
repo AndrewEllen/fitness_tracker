@@ -15,6 +15,7 @@ import '../../models/diet/food_item.dart';
 import '../../models/groceries/grocery_item.dart';
 import '../../models/workout/exercise_model.dart';
 import '../../models/workout/reps_weight_stats_model.dart';
+import '../../models/workout/training_plan_model.dart';
 import '../../models/workout/workout_log_model.dart';
 import '../../models/workout/workout_overall_stats_model.dart';
 
@@ -610,5 +611,34 @@ void SaveRoutineVolumeData(StatsMeasurement volumeData) async {
       .collection("workout-routine-stats")
       .doc(volumeData.measurementID)
       .set({"measurements-data": volumeDataMapped});
+
+}
+
+
+void CreateNewTrainingPlan(TrainingPlan newTrainingPlan) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .collection("training-plans")
+      .doc(newTrainingPlan.trainingPlanName)
+      .set(newTrainingPlan.toMap());
+}
+
+
+void UpdateTrainingPlanOrder(Map<int, String> trainingPlanOrder) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .collection("training-plan-data")
+      .doc("trainingPlanOrder")
+      .set({"data": trainingPlanOrder.map<String, String>(
+  (key, value) => MapEntry<String, String>(key.toString(), value.toString())
+  )});
 
 }
