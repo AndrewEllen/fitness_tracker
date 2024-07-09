@@ -13,6 +13,7 @@ import '../../models/stats/stats_model.dart';
 import '../../models/workout/exercise_model.dart';
 import '../../models/workout/reps_weight_stats_model.dart';
 import '../../models/workout/routines_model.dart';
+import '../../models/workout/training_plan_model.dart';
 import '../../models/workout/workout_log_model.dart';
 import '../diet/user_nutrition_data.dart';
 import '../general/database_get.dart';
@@ -797,5 +798,58 @@ class WorkoutProvider with ChangeNotifier {
       debugPrint(error.toString());
     }
   }
+
+
+
+  late List<TrainingPlan> _trainingPlanList = [];
+
+  late Map _trainingPlanListOrder;
+
+  List<TrainingPlan> get trainingPlanList => _trainingPlanList;
+
+  Map get trainingPlanListOrder => _trainingPlanListOrder;
+
+
+  bool checkForTrainingPlanData(String trainingPlanNameToCheck) {
+
+    if (_trainingPlanList.any((value) => value.trainingPlanName == trainingPlanNameToCheck)) {
+      return true;
+    }
+    return false;
+
+  }
+
+
+  void updateTrainingPlanListOrder(List<TrainingPlan> trainingPlans) {
+
+    _trainingPlanListOrder = {
+
+      for (int index = 0; index < trainingPlans.length; index++) trainingPlans[index].trainingPlanName: index
+
+    };
+
+    debugPrint(_trainingPlanListOrder.toString());
+
+    notifyListeners();
+
+  }
+
+
+  void addNewTrainingPlan(String trainingPlanName) {
+
+    _trainingPlanList.add(
+
+      TrainingPlan(
+          trainingPlanName: trainingPlanName,
+          trainingPlanWeeks: [],
+      )
+
+    );
+
+    updateTrainingPlanListOrder(_trainingPlanList);
+
+    notifyListeners();
+  }
+
 
 }

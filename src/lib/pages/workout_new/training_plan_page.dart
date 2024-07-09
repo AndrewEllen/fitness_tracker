@@ -1,9 +1,7 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:fitness_tracker/exports.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_log_page.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_logs_home.dart';
-import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,27 +9,27 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
+import '../../providers/general/page_change_provider.dart';
+import '../../providers/workout/workoutProvider.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/workout_new/home_page_routines_list.dart';
-import '../../widgets/workout_new/training_plan_list.dart';
-import '../../widgets/workout_new/workout_daily_tracker.dart';
-import '../../widgets/workout_new/workout_home_stats_dropdown.dart';
 import 'exercise_database_search.dart';
 
-class WorkoutHomePageNew extends StatefulWidget {
-  WorkoutHomePageNew({Key? key}) : super(key: key);
+
+class RoutinePageList extends StatefulWidget {
+  const RoutinePageList({Key? key}) : super(key: key);
 
   @override
-  State<WorkoutHomePageNew> createState() => _WorkoutHomePageNewState();
+  State<RoutinePageList> createState() => _RoutinePageListState();
 }
 
-class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
+class _RoutinePageListState extends State<RoutinePageList> {
   late GlobalKey<ExpandableFabState> _key = GlobalKey<ExpandableFabState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController inputController = TextEditingController();
 
-  newTrainingPlan(BuildContext context) async {
-    FirebaseAnalytics.instance.logEvent(name: 'training_plan_creation_pressed');
+  newRoutine(BuildContext context) async {
+    FirebaseAnalytics.instance.logEvent(name: 'routine_creation_pressed');
     double buttonSize = 22.h;
 
     await showDialog(
@@ -41,7 +39,7 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
           insetPadding: const EdgeInsets.all(0),
           backgroundColor: appTertiaryColour,
           title: const Text(
-            "Create a Training Plan",
+            "Create a Routine",
             style: TextStyle(
               color: appSecondaryColour,
             ),
@@ -60,9 +58,9 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                       }
                       if (context
                           .read<WorkoutProvider>()
-                          .checkForTrainingPlanData(value!)) {
+                          .checkForRoutineData(value!)) {
                         print("EXISTS");
-                        return "Training Plan Already Exists";
+                        return "Routine Already Exists";
                       }
                       return null;
                     },
@@ -76,21 +74,21 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                     decoration: InputDecoration(
                       isDense: true,
                       label: Text(
-                        "Training Plan Name *",
+                        "Routine Name *",
                         style: boldTextStyle.copyWith(fontSize: 14),
                       ),
                       enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
-                        color: appQuarternaryColour,
-                      )),
+                            color: appQuarternaryColour,
+                          )),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
-                        color: appSecondaryColour,
-                      )),
+                            color: appSecondaryColour,
+                          )),
                       border: const OutlineInputBorder(
                           borderSide: BorderSide(
-                        color: appSecondaryColour,
-                      )),
+                            color: appSecondaryColour,
+                          )),
                     ),
                   ),
                 ),
@@ -121,7 +119,7 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                         if (_formKey.currentState!.validate()) {
                           context
                               .read<WorkoutProvider>()
-                              .addNewTrainingPlan(inputController.text);
+                              .createNewRoutine(inputController.text);
                           inputController.text = "";
 
                           Navigator.pop(context);
@@ -236,7 +234,7 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                   child: const Icon(
                     Icons.add,
                   ),
-                  onPressed: () => newTrainingPlan(
+                  onPressed: () => newRoutine(
                     this.context,
                   ),
                 ),
@@ -273,7 +271,7 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
               heroTag: null,
               child: AvatarGlow(
                 glowCount:
-                    context.watch<WorkoutProvider>().workoutStarted ? 3 : 0,
+                context.watch<WorkoutProvider>().workoutStarted ? 3 : 0,
                 glowColor: Colors.red,
                 glowRadiusFactor: 0.7,
                 child: const Material(
@@ -304,11 +302,8 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const WorkoutDailyTracker(),
               SizedBox(height: 14.h),
-              const workoutHomeStatsDropdown(),
-              SizedBox(height: 14.h),
-              TrainingPlanList(trainingPlans: context.read<WorkoutProvider>().trainingPlanList),
+              const HomePageRoutinesList(),
             ],
           ),
         ),
@@ -316,3 +311,4 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
     );
   }
 }
+
