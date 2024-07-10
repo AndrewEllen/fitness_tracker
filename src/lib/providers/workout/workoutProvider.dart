@@ -937,5 +937,36 @@ class WorkoutProvider with ChangeNotifier {
 
   }
 
+  void removeRoutineFromTrainingPlanDay(int dayOfTheWeek, int trainingPlanWeek, int trainingPlanIndex) {
+
+    debugPrint("Adding Routine To Training Plan");
+
+    switch(dayOfTheWeek) {
+
+      case 0:
+        _trainingPlanList[trainingPlanIndex].trainingPlanWeeks[trainingPlanWeek].mondayRoutineID = "";
+      case 1:
+        _trainingPlanList[trainingPlanIndex].trainingPlanWeeks[trainingPlanWeek].tuesdayRoutineID = "";
+      case 2:
+        _trainingPlanList[trainingPlanIndex].trainingPlanWeeks[trainingPlanWeek].wednesdayRoutineID = "";
+      case 3:
+        _trainingPlanList[trainingPlanIndex].trainingPlanWeeks[trainingPlanWeek].thursdayRoutineID = "";
+      case 4:
+        _trainingPlanList[trainingPlanIndex].trainingPlanWeeks[trainingPlanWeek].fridayRoutineID = "";
+      case 5:
+        _trainingPlanList[trainingPlanIndex].trainingPlanWeeks[trainingPlanWeek].saturdayRoutineID = "";
+      case 6:
+        _trainingPlanList[trainingPlanIndex].trainingPlanWeeks[trainingPlanWeek].sundayRoutineID = "";
+
+    }
+
+    UpdateTrainingPlan(
+        _trainingPlanList[trainingPlanIndex]
+    );
+
+    notifyListeners();
+
+  }
+
 
 }
