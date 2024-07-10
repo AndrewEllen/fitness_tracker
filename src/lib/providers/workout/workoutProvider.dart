@@ -1014,5 +1014,26 @@ class WorkoutProvider with ChangeNotifier {
   }
 
 
+  void removeSetsPlanFromRoutine(String exerciseName, RoutinesModel routine) {
+
+    if (_routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan == null) {
+      _routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan = {};
+    }
+
+    _routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan?["$exerciseName"] = null;
+
+
+    debugPrint(_routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan.toString());
+
+    updateRoutineSetsData(
+      _routinesList[_routinesList.indexOf(routine)],
+      _routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan,
+    );
+
+    notifyListeners();
+
+  }
+
+
 
 }

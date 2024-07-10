@@ -567,6 +567,26 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                                   ),
                                 ) : const SizedBox.shrink(),
 
+                                index == 1
+                                    ? Positioned(
+                                  top: -8.h,
+                                  right: 20.w,
+                                  child: SizedBox(
+                                    width: 30.h,
+                                    child: FloatingActionButton(
+                                      backgroundColor: appSecondaryColour,
+                                      child: Icon(
+                                        Icons.delete,
+                                        size: 20.h,
+                                      ),
+                                      onPressed: () => context.read<WorkoutProvider>().removeSetsPlanFromRoutine(
+                                          widget.routine.exercises[widget.index].exerciseName,
+                                          widget.routine
+                                      ),
+                                    ),
+                                  ),
+                                ) : const SizedBox.shrink(),
+
                               ],
                             )
                                 :
