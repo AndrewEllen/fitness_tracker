@@ -59,9 +59,11 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
   newSetMenu(BuildContext context) async {
     FirebaseAnalytics.instance.logEvent(name: 'new_set_pressed');
 
-    double repsSlider = 6;
+    double repsSliderStart = 6;
+    double repsSliderEnd = 8;
     double setsSlider = 4;
-    TextEditingController repsController = TextEditingController(text: "6");
+    TextEditingController repsControllerStart = TextEditingController(text: "6");
+    TextEditingController repsControllerEnd = TextEditingController(text: "8");
     TextEditingController setsController = TextEditingController(text: "4");
 
     await showDialog(
@@ -74,7 +76,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
             backgroundColor: Colors.transparent,
 
             content: SizedBox(
-              height: 300.h,
+              height: 400.h,
               width: double.maxFinite,
               child: Material(
 
@@ -84,9 +86,12 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
 
                   children: [
 
-                    Text(
-                      "Add new set plan",
-                      style: boldTextStyle,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Add new set plan",
+                        style: boldTextStyle.copyWith(fontSize: 20.h),
+                      ),
                     ),
 
                     StatefulBuilder(
@@ -143,39 +148,80 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                             children: [
 
                               IncrementalCounter(
-                                inputController: repsController,
+                                inputController: repsControllerStart,
                                 suffix: "",
                                 label: "Reps",
                                 smallButtons: false,
                                 function: () {
                                   setState(() {
 
-                                    if (double.parse(repsController.text) == 0) {
-                                      repsController.text = "1";
+                                    if (double.parse(repsControllerStart.text) == 0) {
+                                      repsControllerStart.text = "1";
                                     }
 
-                                    if (double.parse(repsController.text) >= 1
-                                        && double.parse(repsController.text) <= 14)
-                                    {
-                                      repsSlider = double.parse(repsController.text);
+                                    if (double.parse(repsControllerStart.text) > double.parse(repsControllerEnd.text)) {
+                                      repsControllerStart.text =  repsControllerEnd.text;
                                     }
-                                    double.parse(repsController.text);
+
+                                    if (double.parse(repsControllerStart.text) >= 1
+                                        && double.parse(repsControllerStart.text) <= 14
+                                        && double.parse(repsControllerStart.text) <= double.parse(repsControllerEnd.text)
+                                    )
+                                    {
+                                      repsSliderStart = double.parse(repsControllerStart.text);
+                                    }
+                                    double.parse(repsControllerStart.text);
+                                  });
+                                },
+                              ),
+                              IncrementalCounter(
+                                inputController: repsControllerEnd,
+                                suffix: "",
+                                label: "Reps",
+                                smallButtons: false,
+                                function: () {
+                                  setState(() {
+
+                                    if (double.parse(repsControllerEnd.text) == 0) {
+                                      repsControllerEnd.text = "1";
+                                    }
+
+                                    if (double.parse(repsControllerEnd.text) < double.parse(repsControllerStart.text)) {
+                                      repsControllerEnd.text =  repsControllerStart.text;
+                                    }
+
+                                    if (double.parse(repsControllerEnd.text) >= 1
+                                        && double.parse(repsControllerEnd.text) <= 14
+                                        && double.parse(repsControllerEnd.text) >= double.parse(repsControllerStart.text)
+                                    )
+                                    {
+                                      repsSliderEnd = double.parse(repsControllerEnd.text);
+                                    }
+                                    double.parse(repsControllerEnd.text);
                                   });
                                 },
                               ),
 
-                              Slider(
-                                value: repsSlider,
-                                onChanged: (double value) {
+                              RangeSlider(
+                                values: RangeValues(
+                                  repsSliderStart,
+                                  repsSliderEnd,
+                                ),
+                                onChanged: (RangeValues values) {
                                   setState(() {
-                                    repsSlider = value;
-                                    repsController.text = value.toStringAsFixed(0);
+                                    repsSliderStart = values.start;
+                                    repsSliderEnd = values.end;
+                                    repsControllerStart.text = values.start.toStringAsFixed(0);
+                                    repsControllerEnd.text = values.end.toStringAsFixed(0);
                                   });
                                 },
                                 min: 1,
                                 max: 14,
                                 divisions: 13,
-                                label: ((double.parse(repsController.text)*2).floorToDouble()/2).toStringAsFixed(0) + " Reps",
+                                labels: RangeLabels(
+                                    ((double.parse(repsControllerStart.text)*2).floorToDouble()/2).toStringAsFixed(0) + " Reps",
+                                    ((double.parse(repsControllerEnd.text)*2).floorToDouble()/2).toStringAsFixed(0) + " Reps"
+                                ),
                                 activeColor: appSecondaryColour,
                                 inactiveColor: appSecondaryColourDark,
                               ),
@@ -203,9 +249,11 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                   FloatingActionButton(
                     backgroundColor: appSecondaryColour,
                     child: const Icon(
-                        Icons.search
+                        MdiIcons.close
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
 
                   const Spacer(),
@@ -213,9 +261,19 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                   FloatingActionButton(
                     backgroundColor: appSecondaryColour,
                     child: const Icon(
-                        MdiIcons.barcodeScan
+                        MdiIcons.check
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+
+                      context.read<WorkoutProvider>().addSetsPlanToRoutine(
+                        setsController.text,
+                        repsControllerStart.text,
+                        repsControllerEnd.text,
+                        widget.routine.exercises[widget.index].exerciseName,
+                        widget.routine
+                      );
+
+                    },
                   ),
 
                   const Spacer(),

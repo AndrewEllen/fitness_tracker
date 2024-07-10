@@ -984,4 +984,25 @@ class WorkoutProvider with ChangeNotifier {
   }
 
 
+  void addSetsPlanToRoutine(String sets, String repsStart, String repsEnd, String exerciseName, RoutinesModel routine) {
+
+    debugPrint(sets);
+    debugPrint(repsStart);
+    debugPrint(repsEnd);
+    debugPrint(exerciseName);
+
+    _routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan = {
+
+      "$exerciseName": {
+
+        for (int index = 0; index < double.parse(sets); index++) index.toString(): "Set ${index+1} - "
+
+      },
+
+    };
+
+  }
+
+
+
 }
