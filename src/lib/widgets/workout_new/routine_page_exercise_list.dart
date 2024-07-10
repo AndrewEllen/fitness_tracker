@@ -51,7 +51,7 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
       proxyDecorator: (child, index, d) {
 
         return Material(
-          color: Colors.transparent,
+          color: appTertiaryColour,
           child: RoutinePageExerciseBox(
             key: Key(widget.routine.exercises[index].exerciseName),
             routine: widget.routine,

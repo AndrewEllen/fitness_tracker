@@ -312,7 +312,7 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
               ),
             ],
           ) : const SizedBox.shrink(),
-          backgroundColor: appPrimaryColour,
+          backgroundColor: appTertiaryColour,
           appBar: AppBar(
             actions: [
               context.read<WorkoutProvider>().workoutStarted

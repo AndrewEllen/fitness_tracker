@@ -31,6 +31,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
 
 
   late bool _expandPanel = false;
+  late bool _expandSets = false;
 
   String daysPassedCalculator(String oldDate) {
 
@@ -89,7 +90,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "Add new set plan",
+                        "Add Sets",
                         style: boldTextStyle.copyWith(fontSize: 20.h),
                       ),
                     ),
@@ -350,15 +351,26 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
     }
   }
 
+  bool hasSetsData() {
+
+    if (widget.routine.exerciseSetsAndRepsPlan?[widget.routine.exercises[widget.index].exerciseName]
+        != null) {
+      debugPrint("Has Sets Data");
+      return true;
+    }
+
+    debugPrint("Doesn't Have Sets Data");
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Material(
       elevation: 40,
-      shadowColor: Colors.black,
+      shadowColor: appTertiaryColour,
       color: Colors.transparent,
       child: Padding(
-        padding: EdgeInsets.only(bottom: 2.h),
+        padding: EdgeInsets.only(bottom: 4.h, top: 2.h),
         child: Column(
           children: [
             InkWell(
@@ -467,84 +479,138 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                 Container(
                   width: double.maxFinite,
                   color: appTertiaryColour,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Sets And Reps Plan",
-                      style: boldTextStyle,
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: Text(
+                          "Sets And Reps Plan",
+                          style: boldTextStyle,
+                        ),
+                      ),
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 8.0,
+                          bottom: 8.0,
+                          right: 16.0,
+                          left: 8.0,
+                        ),
+                        child: IconButton(
+                            onPressed: () {
+                              if (_expandSets) {
+                                FirebaseAnalytics.instance.logEvent(name: 'expanded_sets');
+                              } else {
+                                FirebaseAnalytics.instance.logEvent(name: 'retracted_sets');
+                              }
+                              setState(() {
+                                _expandSets = !_expandSets;
+                              });
+                            },
+                            icon: Icon(_expandSets ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, color: Colors.white,
+                            )
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                TweenAnimationBuilder(
+                  tween: Tween<double>(begin: 0.0, end: _expandSets ? 180 : 0),
+                  duration: const Duration(milliseconds: 250),
+                  builder: (context, value, _) => ClipRRect(
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: Container(
+                        width: double.maxFinite,
+                        height: value.h,
+                        color: appTertiaryColour.withOpacity(0.8),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          ///Will need to calculate length of all lists in the sets in future
+                          itemCount: (hasSetsData() ?
+                          widget.routine.exerciseSetsAndRepsPlan![widget.routine.exercises[widget.index].exerciseName][0].length : 1),
+
+                          itemBuilder: (BuildContext context, int index) {
+
+                            return hasSetsData() ?
+
+                            Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 8.0,
+                                    bottom: 12.0,
+                                    left: 14.0,
+                                    right: 12.0,
+                                  ),
+                                  child: Text(
+                                    " - " + widget.routine.exerciseSetsAndRepsPlan![widget.routine.exercises[widget.index].exerciseName][0][index.toString()],
+                                    style: boldTextStyle,
+                                  ),
+                                ),
+
+                                index == 0
+                                ? Positioned(
+                                  top: -8.h,
+                                  right: 20.w,
+                                  child: SizedBox(
+                                    width: 30.h,
+                                    child: FloatingActionButton(
+                                      backgroundColor: appSecondaryColour,
+                                      child: Icon(
+                                        Icons.edit,
+                                        size: 20.h,
+                                      ),
+                                      onPressed: () => newSetMenu(context),
+                                    ),
+                                  ),
+                                ) : const SizedBox.shrink(),
+
+                              ],
+                            )
+                                :
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Text(
+                                    "No Sets Yet",
+                                    style: boldTextStyle.copyWith(fontSize: 16.h),
+                                  ),
+                                ),
+                                const Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 12.0,
+                                    bottom: 12.0,
+                                    right: 24.0,
+                                    left: 12.0,
+                                  ),
+                                  child: SizedBox(
+                                    width: 30.h,
+                                    child: FloatingActionButton(
+                                      backgroundColor: appSecondaryColour,
+                                      child: Icon(
+                                        Icons.add,
+                                        size: 20.h,
+                                      ),
+                                      onPressed: () => newSetMenu(context),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+
+                          },
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                Container(
-                  width: double.maxFinite,
-                  color: appTertiaryColour,
-                  child: ListView.builder(
 
-                    shrinkWrap: true,
-                    itemCount: (widget.routine.exerciseSetsAndRepsPlan?[widget.routine.exercises[widget.index]] != null ?
-                    widget.routine.exerciseSetsAndRepsPlan![widget.routine.exercises[widget.index].exerciseName].length : 1),
-
-                    itemBuilder: (BuildContext context, int index) {
-
-                      bool hasSetsData() {
-
-                        if (widget.routine.exerciseSetsAndRepsPlan?[widget.routine.exercises[widget.index].exerciseName]
-                            != null) {
-                          debugPrint("Has Sets Data");
-                          return true;
-                        }
-
-                        debugPrint("Doesn't Have Sets Data");
-                        return false;
-                      }
-
-                      return hasSetsData() ?
-
-                      Container(
-
-                      )
-                      :
-                      Container(
-
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                "No Sets Yet",
-                                style: boldTextStyle.copyWith(fontSize: 16.h),
-                              ),
-                            ),
-                            const Spacer(),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 12.0,
-                                bottom: 12.0,
-                                right: 24.0,
-                                left: 12.0,
-                              ),
-                              child: SizedBox(
-                                width: 30.h,
-                                child: FloatingActionButton(
-                                  backgroundColor: appSecondaryColour,
-                                  child: Icon(
-                                    Icons.add,
-                                    size: 20.h,
-                                  ),
-                                  onPressed: () => newSetMenu(context),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                      );
-
-                    },
-                  ),
-                ),
               ],
             ),
           ],
