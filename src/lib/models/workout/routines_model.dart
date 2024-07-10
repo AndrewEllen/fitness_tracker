@@ -10,6 +10,7 @@ class RoutinesModel {
       'routineDate': routineDate,
       'routineName': routineName,
       'exercises': exercises.asMap(),
+      'exerciseSetsAndRepsPlan': exerciseSetsAndRepsPlan,
     };
   }
 
@@ -18,10 +19,12 @@ class RoutinesModel {
     required this.routineDate,
     required this.routineName,
     required this.exercises,
+    this.exerciseSetsAndRepsPlan = const [],
   });
 
   String routineID;
   String routineDate;
   String routineName;
   List<ExerciseListModel> exercises;
+  List<Map<String, String>>? exerciseSetsAndRepsPlan;
 }
