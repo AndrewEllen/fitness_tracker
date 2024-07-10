@@ -1452,6 +1452,7 @@ GetRoutinesData({options = const GetOptions(source: Source.serverAndCache)}) asy
           routineDate: document["routineDate"],
           routineName: document["routineName"],
           exercises: buildExerciseListObjects(document["exercises"]),
+          exerciseSetsAndRepsPlan: (document.data() as Map<String,dynamic>).containsKey('setsAndRepsPlan') ? document["setsAndRepsPlan"] : {},
       )
   ];
 
