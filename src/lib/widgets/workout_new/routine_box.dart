@@ -11,8 +11,13 @@ import '../general/app_default_button.dart';
 
 
 class RoutineBox extends StatefulWidget {
-  RoutineBox({Key? key, required this.index}) : super(key: key);
-  final int index;
+  RoutineBox({Key? key,
+    required this.routineIndex,
+    required this.dayIndex,
+    required this.trainingPlanWeek,
+    required this.trainingPlanIndex,
+  }) : super(key: key);
+  final int routineIndex, dayIndex, trainingPlanWeek, trainingPlanIndex;
 
   @override
   State<RoutineBox> createState() => _RoutineBoxState();
@@ -53,9 +58,15 @@ class _RoutineBoxState extends State<RoutineBox> {
     return Padding(
       padding: EdgeInsets.only(bottom: 10.h),
       child: InkWell(
-        onTap: () => widget.index != -1 ? context.read<PageChange>().changePageCache(WorkoutRoutinePage(
-          routine: context.read<WorkoutProvider>().routinesList[widget.index],
-        )) : {},
+        onTap: () {
+          context.read<WorkoutProvider>().addRoutineToTrainingPlanDay(
+              context.read<WorkoutProvider>().routinesList[widget.routineIndex].routineID,
+              widget.dayIndex,
+              widget.trainingPlanWeek,
+              widget.trainingPlanIndex
+          );
+          Navigator.pop(context);
+        },
         child: Column(
           children: [
             ListTile(
@@ -69,17 +80,17 @@ class _RoutineBoxState extends State<RoutineBox> {
                 height: 40.h,
                 child: Center(
                   child: Text(
-                    widget.index != -1 ? context.read<WorkoutProvider>().routinesList[widget.index].routineName[0] : "Zzz",
+                    widget.routineIndex != -1 ? context.read<WorkoutProvider>().routinesList[widget.routineIndex].routineName[0] : "Zzz",
                     style: boldTextStyle,
                   ),
                 ),
               ),
               title: Text(
-                widget.index != -1 ? context.read<WorkoutProvider>().routinesList[widget.index].routineName : "Rest Day",
+                widget.routineIndex != -1 ? context.read<WorkoutProvider>().routinesList[widget.routineIndex].routineName : "Rest Day",
                 style: boldTextStyle,
               ),
-              subtitle: widget.index != -1 ? Text(
-                daysPassedCalculator(context.read<WorkoutProvider>().routinesList[widget.index].routineDate),
+              subtitle: widget.routineIndex != -1 ? Text(
+                daysPassedCalculator(context.read<WorkoutProvider>().routinesList[widget.routineIndex].routineDate),
                 style: const TextStyle(
                   fontSize: 14,
                   color: Colors.white70,
@@ -96,9 +107,9 @@ class _RoutineBoxState extends State<RoutineBox> {
                 ),
               ),
             ),
-            widget.index != -1 ? InkWell(
-              onTap: () => widget.index != -1 ? context.read<PageChange>().changePageCache(WorkoutRoutinePage(
-                routine: context.read<WorkoutProvider>().routinesList[widget.index],
+            widget.routineIndex != -1 ? InkWell(
+              onTap: () => widget.routineIndex != -1 ? context.read<PageChange>().changePageCache(WorkoutRoutinePage(
+                routine: context.read<WorkoutProvider>().routinesList[widget.routineIndex],
               )) : {},
               child: Ink(
                 decoration: const BoxDecoration(
@@ -174,9 +185,9 @@ class _RoutineBoxState extends State<RoutineBox> {
                             );
                           },
                         );
-                        if (_delete && widget.index != -1) {
+                        if (_delete && widget.routineIndex != -1) {
                           print("deleting");
-                          context.read<WorkoutProvider>().deleteRoutine(widget.index);
+                          context.read<WorkoutProvider>().deleteRoutine(widget.routineIndex);
                         }
                       },
                       child: const Center(

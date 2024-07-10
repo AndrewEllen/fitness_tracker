@@ -628,6 +628,19 @@ void CreateNewTrainingPlan(TrainingPlan newTrainingPlan) async {
 }
 
 
+void UpdateTrainingPlan(TrainingPlan updatedTrainingPlan) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .collection("training-plans")
+      .doc(updatedTrainingPlan.trainingPlanName)
+      .update(updatedTrainingPlan.toMap());
+}
+
+
 void UpdateTrainingPlanOrder(Map<int, String> trainingPlanOrder) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;

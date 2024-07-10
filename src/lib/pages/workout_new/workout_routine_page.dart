@@ -191,9 +191,7 @@ class _WorkoutRoutinePageState extends State<WorkoutRoutinePage> {
           overscroll.disallowIndicator();
           return true;
         },
-        child: RoutinePageExerciseList(
-          routine: widget.routine,
-        ),
+        child: const SizedBox.shrink()
       ),
     );
   }

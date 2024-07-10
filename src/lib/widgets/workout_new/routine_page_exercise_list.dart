@@ -11,10 +11,19 @@ import 'package:provider/provider.dart';
 import '../../pages/workout_new/workout_exercise_page.dart';
 import '../../pages/workout_new/workout_routine_page.dart';
 import '../../providers/general/database_write.dart';
+import '../general/default_modal.dart';
+import 'home_page_routines_list.dart';
 
 class RoutinePageExerciseList extends StatefulWidget {
-  RoutinePageExerciseList({Key? key, required this.routine}) : super(key: key);
+  RoutinePageExerciseList({Key? key,
+    required this.routine,
+    required this.dayIndex,
+    required this.trainingPlanWeek,
+    required this.trainingPlanIndex,
+  }) : super(key: key);
   RoutinesModel routine;
+  final dayIndex, trainingPlanWeek, trainingPlanIndex;
+
 
   @override
   State<RoutinePageExerciseList> createState() => _RoutinePageExerciseListState();
@@ -25,7 +34,7 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
   @override
   Widget build(BuildContext context) {
 
-    context.watch<WorkoutProvider>().routinesList;
+    context.watch<WorkoutProvider>().trainingPlanList;
 
     //final filteredMain = widget.routine.exercises
     //    .where((exercise) => exercise.mainOrAccessory == 1)
@@ -35,7 +44,8 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
     //    .where((exercise) => exercise.mainOrAccessory == 0)
     //    .toList();
 
-    return ReorderableListView.builder(
+    return widget.routine.routineID != "-1" && widget.routine.routineID != "" && widget.routine.routineID.isNotEmpty ?
+    ReorderableListView.builder(
       itemCount: widget.routine.exercises.length,
       shrinkWrap: true,
       proxyDecorator: (child, index, d) {
@@ -69,6 +79,47 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
           index: index,
         );
       },
+    ) : Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+
+        Icon(
+          MdiIcons.sleep,
+          size: 90.h,
+        ),
+        Text(
+          "Rest Day",
+          style: boldTextStyle.copyWith(fontSize: 40.h),
+        ),
+        Text(
+          "Take the day off, relax a little",
+          style: boldTextStyle.copyWith(fontSize: 14.h),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FloatingActionButton(
+            backgroundColor: appSecondaryColour,
+            child: const Icon(
+                Icons.add
+            ),
+            onPressed: () {
+              if (context.mounted) {
+                ModalBottomSheet.showModal(
+                  context,
+                  RoutinesList(
+                    dayIndex: widget.dayIndex,
+                    trainingPlanWeek: widget.trainingPlanWeek,
+                    trainingPlanIndex: widget.trainingPlanIndex,
+                  ),
+                );
+              }
+            },
+          ),
+        ),
+
+      ],
     );
   }
 }

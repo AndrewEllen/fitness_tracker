@@ -148,7 +148,7 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
     //_key = GlobalKey<ExpandableFabState>();
 
     ///Currently focusing on one week only training plans. Index is here for future support
-    int index = 0;
+    int trainingPlanWeekIndex = 0;
 
     return DefaultTabController(
       length: 7,
@@ -234,81 +234,46 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
             child: TabBarView(
               children: [
                 TrainingPlanDayBox(
+                  dayIndex: 0,
+                  trainingPlanIndex: context.read<WorkoutProvider>().trainingPlanList.indexWhere((value) => value == widget.trainingPlan),
+                  trainingPlanWeek: trainingPlanWeekIndex,
                   day: "Monday",
-                  routineIndex: widget.trainingPlan.trainingPlanWeeks[index]
-                          .mondayRoutineID.isNotEmpty
-                      ? context.read<WorkoutProvider>().routinesList.indexWhere(
-                          (value) =>
-                              value.routineID ==
-                              widget.trainingPlan.trainingPlanWeeks[index]
-                                  .mondayRoutineID)
-                      : -1,
                 ),
                 TrainingPlanDayBox(
+                  dayIndex: 1,
+                  trainingPlanIndex: context.read<WorkoutProvider>().trainingPlanList.indexWhere((value) => value == widget.trainingPlan),
+                  trainingPlanWeek: trainingPlanWeekIndex,
                   day: "Tuesday",
-                  routineIndex: widget.trainingPlan.trainingPlanWeeks[index]
-                          .tuesdayRoutineID.isNotEmpty
-                      ? context.read<WorkoutProvider>().routinesList.indexWhere(
-                          (value) =>
-                              value.routineID ==
-                              widget.trainingPlan.trainingPlanWeeks[index]
-                                  .tuesdayRoutineID)
-                      : -1,
                 ),
                 TrainingPlanDayBox(
+                  dayIndex: 2,
+                  trainingPlanIndex: context.read<WorkoutProvider>().trainingPlanList.indexWhere((value) => value == widget.trainingPlan),
+                  trainingPlanWeek: trainingPlanWeekIndex,
                   day: "Wednesday",
-                  routineIndex: widget.trainingPlan.trainingPlanWeeks[index]
-                          .wednesdayRoutineID.isNotEmpty
-                      ? context.read<WorkoutProvider>().routinesList.indexWhere(
-                          (value) =>
-                              value.routineID ==
-                              widget.trainingPlan.trainingPlanWeeks[index]
-                                  .wednesdayRoutineID)
-                      : -1,
                 ),
                 TrainingPlanDayBox(
+                  dayIndex: 3,
+                  trainingPlanIndex: context.read<WorkoutProvider>().trainingPlanList.indexWhere((value) => value == widget.trainingPlan),
+                  trainingPlanWeek: trainingPlanWeekIndex,
                   day: "Thursday",
-                  routineIndex: widget.trainingPlan.trainingPlanWeeks[index]
-                          .thursdayRoutineID.isNotEmpty
-                      ? context.read<WorkoutProvider>().routinesList.indexWhere(
-                          (value) =>
-                              value.routineID ==
-                              widget.trainingPlan.trainingPlanWeeks[index]
-                                  .thursdayRoutineID)
-                      : -1,
                 ),
                 TrainingPlanDayBox(
+                  dayIndex: 4,
+                  trainingPlanIndex: context.read<WorkoutProvider>().trainingPlanList.indexWhere((value) => value == widget.trainingPlan),
+                  trainingPlanWeek: trainingPlanWeekIndex,
                   day: "Friday",
-                  routineIndex: widget.trainingPlan.trainingPlanWeeks[index]
-                          .fridayRoutineID.isNotEmpty
-                      ? context.read<WorkoutProvider>().routinesList.indexWhere(
-                          (value) =>
-                              value.routineID ==
-                              widget.trainingPlan.trainingPlanWeeks[index]
-                                  .fridayRoutineID)
-                      : -1,
                 ),
                 TrainingPlanDayBox(
+                  dayIndex: 5,
+                  trainingPlanIndex: context.read<WorkoutProvider>().trainingPlanList.indexWhere((value) => value == widget.trainingPlan),
+                  trainingPlanWeek: trainingPlanWeekIndex,
                   day: "Saturday",
-                  routineIndex: widget.trainingPlan.trainingPlanWeeks[index]
-                          .saturdayRoutineID.isNotEmpty
-                      ? context.read<WorkoutProvider>().routinesList.indexWhere(
-                          (value) =>
-                              value.routineID ==
-                              widget.trainingPlan.trainingPlanWeeks[index]
-                                  .saturdayRoutineID)
-                      : -1,
                 ),
                 TrainingPlanDayBox(
+                  dayIndex: 6,
+                  trainingPlanIndex: context.read<WorkoutProvider>().trainingPlanList.indexWhere((value) => value == widget.trainingPlan),
+                  trainingPlanWeek: trainingPlanWeekIndex,
                   day: "Sunday",
-                  routineIndex: widget.trainingPlan.trainingPlanWeeks[index]
-                          .sundayRoutineID.isNotEmpty
-                      ? context.read<WorkoutProvider>().routinesList.indexWhere(
-                          (value) =>
-                              value.routineID ==
-                              widget.trainingPlan.trainingPlanWeeks[index]
-                                  .sundayRoutineID)
-                      : -1,
                 ),
               ],
             ),

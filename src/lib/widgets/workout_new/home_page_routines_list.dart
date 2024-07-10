@@ -9,14 +9,22 @@ import 'package:provider/provider.dart';
 import '../../pages/workout_new/workout_routine_page.dart';
 import '../../providers/workout/workoutProvider.dart';
 
-class HomePageRoutinesList extends StatefulWidget {
-  const HomePageRoutinesList({Key? key}) : super(key: key);
+class RoutinesList extends StatefulWidget {
+  RoutinesList({
+    Key? key,
+    required this.dayIndex,
+    required this.trainingPlanWeek,
+    required this.trainingPlanIndex,
+  }) : super(key: key);
+
+  final int dayIndex, trainingPlanWeek, trainingPlanIndex;
+
 
   @override
-  State<HomePageRoutinesList> createState() => _HomePageRoutinesListState();
+  State<RoutinesList> createState() => _RoutinesListState();
 }
 
-class _HomePageRoutinesListState extends State<HomePageRoutinesList> {
+class _RoutinesListState extends State<RoutinesList> {
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +35,10 @@ class _HomePageRoutinesListState extends State<HomePageRoutinesList> {
       itemBuilder: (BuildContext context, int index) {
         return RoutineBox(
           key: UniqueKey(),
-          index: index,
+          routineIndex: index,
+          dayIndex: widget.dayIndex,
+          trainingPlanIndex: widget.trainingPlanIndex,
+          trainingPlanWeek: widget.trainingPlanWeek,
         );
         },
     );

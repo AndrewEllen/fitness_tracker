@@ -906,4 +906,36 @@ class WorkoutProvider with ChangeNotifier {
   }
 
 
+  void addRoutineToTrainingPlanDay(String routineID, int dayOfTheWeek, int trainingPlanWeek, int trainingPlanIndex) {
+
+    debugPrint("Adding Routine To Training Plan");
+
+    switch(dayOfTheWeek) {
+
+      case 0:
+        _trainingPlanList[trainingPlanIndex].trainingPlanWeeks[trainingPlanWeek].mondayRoutineID = routineID;
+      case 1:
+        _trainingPlanList[trainingPlanIndex].trainingPlanWeeks[trainingPlanWeek].tuesdayRoutineID = routineID;
+      case 2:
+        _trainingPlanList[trainingPlanIndex].trainingPlanWeeks[trainingPlanWeek].wednesdayRoutineID = routineID;
+      case 3:
+        _trainingPlanList[trainingPlanIndex].trainingPlanWeeks[trainingPlanWeek].thursdayRoutineID = routineID;
+      case 4:
+        _trainingPlanList[trainingPlanIndex].trainingPlanWeeks[trainingPlanWeek].fridayRoutineID = routineID;
+      case 5:
+        _trainingPlanList[trainingPlanIndex].trainingPlanWeeks[trainingPlanWeek].saturdayRoutineID = routineID;
+      case 6:
+        _trainingPlanList[trainingPlanIndex].trainingPlanWeeks[trainingPlanWeek].sundayRoutineID = routineID;
+
+    }
+
+    UpdateTrainingPlan(
+      _trainingPlanList[trainingPlanIndex]
+    );
+
+    notifyListeners();
+
+  }
+
+
 }
