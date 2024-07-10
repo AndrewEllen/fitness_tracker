@@ -991,15 +991,20 @@ class WorkoutProvider with ChangeNotifier {
     debugPrint(repsEnd);
     debugPrint(exerciseName);
 
-    _routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan = {
+    if (_routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan == null) {
+      _routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan = {};
+    }
 
-      "$exerciseName": {
+    _routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan?["$exerciseName"] = [{
 
-        for (int index = 0; index < double.parse(sets); index++) index.toString(): "Set ${index+1} - "
+      for (int index = 0; index < double.parse(sets); index++) index.toString(): "Set ${index+1} - $repsStart to $repsEnd Reps"
 
-      },
+    }];
 
-    };
+
+    debugPrint(_routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan.toString());
+
+    notifyListeners();
 
   }
 

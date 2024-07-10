@@ -19,7 +19,7 @@ class RoutinesModel {
     required this.routineDate,
     required this.routineName,
     required this.exercises,
-    this.exerciseSetsAndRepsPlan = const {},
+    this.exerciseSetsAndRepsPlan,
   });
 
   String routineID;

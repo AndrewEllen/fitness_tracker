@@ -273,6 +273,8 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                         widget.routine
                       );
 
+                      Navigator.pop(context);
+
                     },
                   ),
 
@@ -479,11 +481,24 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                   child: ListView.builder(
 
                     shrinkWrap: true,
-                    itemCount: widget.routine.exerciseSetsAndRepsPlan?.length ?? 1,
+                    itemCount: (widget.routine.exerciseSetsAndRepsPlan?[widget.routine.exercises[widget.index]] != null ?
+                    widget.routine.exerciseSetsAndRepsPlan![widget.routine.exercises[widget.index].exerciseName].length : 1),
 
                     itemBuilder: (BuildContext context, int index) {
 
-                      return widget.routine.exerciseSetsAndRepsPlan != null ?
+                      bool hasSetsData() {
+
+                        if (widget.routine.exerciseSetsAndRepsPlan?[widget.routine.exercises[widget.index].exerciseName]
+                            != null) {
+                          debugPrint("Has Sets Data");
+                          return true;
+                        }
+
+                        debugPrint("Doesn't Have Sets Data");
+                        return false;
+                      }
+
+                      return hasSetsData() ?
 
                       Container(
 
