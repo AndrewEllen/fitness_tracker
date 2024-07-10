@@ -168,7 +168,8 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
           builder: (BuildContext context, void Function()? onPressed,
               Animation<double> progress) {
             return AvatarGlow(
-              glowCount: context.watch<WorkoutProvider>().workoutStarted ? 3 : 0,
+              glowCount:
+                  context.watch<WorkoutProvider>().workoutStarted ? 3 : 0,
               glowColor: Colors.red,
               glowRadiusFactor: 0.3,
               child: Material(
@@ -232,9 +233,7 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                 if (menuState != null) {
                   menuState.toggle();
                 }
-                context
-                    .read<PageChange>()
-                    .changePageCache(WorkoutLogsHome());
+                context.read<PageChange>().changePageCache(WorkoutLogsHome());
               },
             ),
           ),
@@ -283,7 +282,51 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
               SizedBox(height: 14.h),
               const workoutHomeStatsDropdown(),
               SizedBox(height: 14.h),
-              TrainingPlanList(trainingPlans: context.read<WorkoutProvider>().trainingPlanList),
+              Container(
+                color: appTertiaryColour,
+                width: double.maxFinite,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    "Training Plans",
+                    style: boldTextStyle.copyWith(fontSize: 18.h),
+                  ),
+                ),
+              ),
+              context.read<WorkoutProvider>().trainingPlanList.isNotEmpty
+                  ? TrainingPlanList(
+                      trainingPlans:
+                          context.read<WorkoutProvider>().trainingPlanList)
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 24.h),
+                        Icon(
+                          MdiIcons.formatListBulleted,
+                          size: 90.h,
+                        ),
+                        Text(
+                          "No Training Plans Yet",
+                          style: boldTextStyle.copyWith(fontSize: 30.h),
+                        ),
+                        Text(
+                          "Try Creating One",
+                          style: boldTextStyle.copyWith(fontSize: 14.h),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: FloatingActionButton(
+                            backgroundColor: appSecondaryColour,
+                            child: const Icon(Icons.add),
+                            onPressed: () {
+                              _key.currentState?.toggle();
+                              newTrainingPlan(context);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
             ],
           ),
         ),

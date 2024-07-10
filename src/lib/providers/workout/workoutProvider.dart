@@ -902,7 +902,6 @@ class WorkoutProvider with ChangeNotifier {
 
     updateTrainingPlanListOrder(_trainingPlanList);
 
-    notifyListeners();
   }
 
 
@@ -962,6 +961,22 @@ class WorkoutProvider with ChangeNotifier {
 
     UpdateTrainingPlan(
         _trainingPlanList[trainingPlanIndex]
+    );
+
+    notifyListeners();
+
+  }
+
+  void deleteTrainingPlan(TrainingPlan trainingPlan) {
+
+    debugPrint("Deleting Training Plan");
+
+    _trainingPlanList.remove(trainingPlan);
+
+    updateTrainingPlanListOrder(_trainingPlanList);
+
+    DeleteTrainingPlan(
+      trainingPlan,
     );
 
     notifyListeners();

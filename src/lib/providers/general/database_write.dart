@@ -641,6 +641,19 @@ void UpdateTrainingPlan(TrainingPlan updatedTrainingPlan) async {
 }
 
 
+void DeleteTrainingPlan(TrainingPlan updatedTrainingPlan) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc("${firebaseAuth.currentUser?.uid.toString()}")
+      .collection("training-plans")
+      .doc(updatedTrainingPlan.trainingPlanName)
+      .delete();
+}
+
+
 void UpdateTrainingPlanOrder(Map<int, String> trainingPlanOrder) async {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;

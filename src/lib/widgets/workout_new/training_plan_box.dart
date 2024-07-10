@@ -148,7 +148,7 @@ class _TrainingPlanBoxState extends State<TrainingPlanBox> {
                             },
                           );
                           if (_delete) {
-                            //context.read<WorkoutProvider>().deleteExerciseFromRoutine(widget.index, widget.trainingPlan);
+                            context.read<WorkoutProvider>().deleteTrainingPlan(widget.trainingPlan);
                           }
                         },
                         child: const Center(
