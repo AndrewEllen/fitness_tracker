@@ -448,7 +448,7 @@ void updateRoutineData(RoutinesModel routine) async {
       .doc(firebaseAuth.currentUser!.uid)
       .collection('routine-data')
       .doc(routine.routineName)
-      .set({
+      .update({
     "routineName": routine.routineName,
     "routineDate": routine.routineDate,
     "routineID": routine.routineID,
