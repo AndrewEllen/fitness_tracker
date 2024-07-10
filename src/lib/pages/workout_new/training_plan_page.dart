@@ -265,10 +265,12 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
                         if (context.mounted) {
                           ModalBottomSheet.showModal(
                             context,
-                            RoutinesList(
-                              dayIndex: trainingPlanDayOfTheWeekIndex,
-                              trainingPlanWeek: trainingPlanWeekIndex,
-                              trainingPlanIndex: context.read<WorkoutProvider>().trainingPlanList.indexOf(widget.trainingPlan),
+                            SingleChildScrollView(
+                              child: RoutinesList(
+                                dayIndex: trainingPlanDayOfTheWeekIndex,
+                                trainingPlanWeek: trainingPlanWeekIndex,
+                                trainingPlanIndex: context.read<WorkoutProvider>().trainingPlanList.indexOf(widget.trainingPlan),
+                              ),
                             ),
                           );
                         }

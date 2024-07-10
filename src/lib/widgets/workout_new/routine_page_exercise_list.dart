@@ -108,10 +108,12 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
               if (context.mounted) {
                 ModalBottomSheet.showModal(
                   context,
-                  RoutinesList(
-                    dayIndex: widget.dayIndex,
-                    trainingPlanWeek: widget.trainingPlanWeek,
-                    trainingPlanIndex: widget.trainingPlanIndex,
+                  SingleChildScrollView(
+                    child: RoutinesList(
+                      dayIndex: widget.dayIndex,
+                      trainingPlanWeek: widget.trainingPlanWeek,
+                      trainingPlanIndex: widget.trainingPlanIndex,
+                    ),
                   ),
                 );
               }
