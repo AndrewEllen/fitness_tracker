@@ -16,6 +16,7 @@ import '../../models/workout/routines_model.dart';
 import '../../providers/general/page_change_provider.dart';
 import '../../providers/workout/workoutProvider.dart';
 import '../../widgets/general/app_default_button.dart';
+import '../../widgets/general/default_modal.dart';
 import '../../widgets/workout_new/home_page_routines_list.dart';
 import '../../widgets/workout_new/training_plan_day_box.dart';
 import 'exercise_database_search.dart';
@@ -336,25 +337,60 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
                   ),
                 ],
               ),
-              SizedBox(
-                width: 48.w,
-                child: FloatingActionButton(
-                  tooltip: "View Past Workouts",
-                  backgroundColor: appSecondaryColour,
-                  heroTag: null,
-                  child: const Icon(
-                    MdiIcons.clipboardClock,
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 14.0.w),
+                    child: SizedBox(
+                      width: 48.w,
+                      child: FloatingActionButton(
+                        tooltip: "View Past Workouts",
+                        backgroundColor: appSecondaryColour,
+                        heroTag: null,
+                        child: const Icon(
+                          MdiIcons.clipboardClock,
+                        ),
+                        onPressed: () {
+                          final menuState = _key.currentState;
+                          if (menuState != null) {
+                            menuState.toggle();
+                          }
+                          context
+                              .read<PageChange>()
+                              .changePageCache(WorkoutLogsHome());
+                        },
+                      ),
+                    ),
                   ),
-                  onPressed: () {
-                    final menuState = _key.currentState;
-                    if (menuState != null) {
-                      menuState.toggle();
-                    }
-                    context
-                        .read<PageChange>()
-                        .changePageCache(WorkoutLogsHome());
-                  },
-                ),
+
+                  SizedBox(
+                    width: 48.w,
+                    child: FloatingActionButton(
+                      tooltip: "Change Routine",
+                      backgroundColor: appSecondaryColour,
+                      heroTag: null,
+                      child: const Icon(
+                        MdiIcons.playlistEdit,
+                      ),
+                      onPressed: () {
+                        final menuState = _key.currentState;
+                        if (menuState != null) {
+                          menuState.toggle();
+                        }
+                        if (context.mounted) {
+                          ModalBottomSheet.showModal(
+                            context,
+                            RoutinesList(
+                              dayIndex: trainingPlanDayOfTheWeekIndex,
+                              trainingPlanWeek: trainingPlanWeekIndex,
+                              trainingPlanIndex: context.read<WorkoutProvider>().trainingPlanList.indexOf(widget.trainingPlan),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
               SizedBox(
                 width: 48.w,
