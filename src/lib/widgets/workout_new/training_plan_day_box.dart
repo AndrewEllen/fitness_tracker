@@ -118,12 +118,25 @@ class TrainingPlanDayBox extends StatelessWidget {
       children: [
 
         selectedRoutine.routineID.isNotEmpty && selectedRoutine.routineID != "-1" ? Container(
-          color: appTertiaryColour,
+          decoration: const BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+                  color: Colors.black26,
+                  width: 2
+                )
+            ),
+            color: appTertiaryColour,
+          ),
           width: double.maxFinite,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(
+              top: 16.0,
+              bottom: 16.0,
+              left: 12.0,
+              right: 12.0,
+            ),
             child: Text(
-              selectedRoutine.routineName,
+              "Routine - " + selectedRoutine.routineName,
               style: boldTextStyle.copyWith(fontSize: 18.h),
             ),
           ),

@@ -108,9 +108,15 @@ class _RoutineBoxState extends State<RoutineBox> {
               ),
             ),
             widget.routineIndex != -1 ? InkWell(
-              onTap: () => widget.routineIndex != -1 ? context.read<PageChange>().changePageCache(WorkoutRoutinePage(
-                routine: context.read<WorkoutProvider>().routinesList[widget.routineIndex],
-              )) : {},
+              onTap: () {
+                context.read<WorkoutProvider>().addRoutineToTrainingPlanDay(
+                    context.read<WorkoutProvider>().routinesList[widget.routineIndex].routineID,
+                    widget.dayIndex,
+                    widget.trainingPlanWeek,
+                    widget.trainingPlanIndex
+                );
+                Navigator.pop(context);
+              },
               child: Ink(
                 decoration: const BoxDecoration(
                   border: Border(
@@ -131,7 +137,7 @@ class _RoutineBoxState extends State<RoutineBox> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Open Routine",
+                          "Select Routine",
                           style: boldTextStyle.copyWith(
                             color: appSecondaryColour,
                           ),

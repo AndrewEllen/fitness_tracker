@@ -4,6 +4,7 @@ import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/workout/training_plan_model.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_log_page.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_logs_home.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,12 +12,14 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
+import '../../models/workout/routines_model.dart';
 import '../../providers/general/page_change_provider.dart';
 import '../../providers/workout/workoutProvider.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/workout_new/home_page_routines_list.dart';
 import '../../widgets/workout_new/training_plan_day_box.dart';
 import 'exercise_database_search.dart';
+import 'exercise_selection_page.dart';
 
 class TrainingPlanPage extends StatefulWidget {
   TrainingPlanPage({Key? key, required this.trainingPlan}) : super(key: key);
@@ -30,6 +33,8 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
   late GlobalKey<ExpandableFabState> _key = GlobalKey<ExpandableFabState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController inputController = TextEditingController();
+
+  int trainingPlanDayOfTheWeekIndex = DateTime.now().weekday-1;
 
   newRoutine(BuildContext context) async {
     FirebaseAnalytics.instance.logEvent(name: 'routine_creation_pressed');
@@ -143,6 +148,74 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
     });
   }
 
+
+  RoutinesModel fetchTrainingPlanRoutine(int dayIndex, int trainingPlanWeekIndex, BuildContext context) {
+
+    if (context.mounted) {
+
+      debugPrint(dayIndex.toString());
+      try {
+
+        switch(dayIndex) {
+
+          case 0:
+            return context.read<WorkoutProvider>().routinesList[
+            context.read<WorkoutProvider>().routinesList.indexWhere(
+                    (value) => value.routineID
+                    == widget.trainingPlan.trainingPlanWeeks[trainingPlanWeekIndex]
+                            .mondayRoutineID)];
+          case 1:
+            return context.read<WorkoutProvider>().routinesList[
+            context.read<WorkoutProvider>().routinesList.indexWhere(
+                    (value) => value.routineID
+                    == widget.trainingPlan.trainingPlanWeeks[trainingPlanWeekIndex]
+                        .tuesdayRoutineID)];
+          case 2:
+            return context.read<WorkoutProvider>().routinesList[
+            context.read<WorkoutProvider>().routinesList.indexWhere(
+                    (value) => value.routineID
+                    == widget.trainingPlan.trainingPlanWeeks[trainingPlanWeekIndex]
+                        .wednesdayRoutineID)];
+          case 3:
+            return context.read<WorkoutProvider>().routinesList[
+            context.read<WorkoutProvider>().routinesList.indexWhere(
+                    (value) => value.routineID
+                    == widget.trainingPlan.trainingPlanWeeks[trainingPlanWeekIndex]
+                        .thursdayRoutineID)];
+          case 4:
+            return context.read<WorkoutProvider>().routinesList[
+            context.read<WorkoutProvider>().routinesList.indexWhere(
+                    (value) => value.routineID
+                    == widget.trainingPlan.trainingPlanWeeks[trainingPlanWeekIndex]
+                        .fridayRoutineID)];
+          case 5:
+            return context.read<WorkoutProvider>().routinesList[
+            context.read<WorkoutProvider>().routinesList.indexWhere(
+                    (value) => value.routineID
+                    == widget.trainingPlan.trainingPlanWeeks[trainingPlanWeekIndex]
+                        .saturdayRoutineID)];
+          case 6:
+            return context.read<WorkoutProvider>().routinesList[
+            context.read<WorkoutProvider>().routinesList.indexWhere(
+                    (value) => value.routineID
+                    == widget.trainingPlan.trainingPlanWeeks[trainingPlanWeekIndex]
+                        .sundayRoutineID)];
+
+        }
+
+      } catch (error) {
+        debugPrint(error.toString());
+
+      }
+
+    }
+
+    return RoutinesModel(
+        routineID: "-1", routineDate: "", routineName: "Rest", exercises: []
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     //_key = GlobalKey<ExpandableFabState>();
@@ -152,10 +225,170 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
 
     return DefaultTabController(
       length: 7,
-      initialIndex: DateTime.now().weekday-1,
+      initialIndex: trainingPlanDayOfTheWeekIndex,
       child: PreferredSize(
         preferredSize: Size.fromHeight(50.h),
         child: Scaffold(
+          floatingActionButton: fetchTrainingPlanRoutine(
+              trainingPlanDayOfTheWeekIndex,
+              trainingPlanWeekIndex,
+              context
+          ).routineID != "-1" ? ExpandableFab(
+
+
+            key: _key,
+            distance: 80.w,
+            overlayStyle: ExpandableFabOverlayStyle(
+              blur: 2,
+            ),
+
+
+            openButtonBuilder: FloatingActionButtonBuilder(
+              size: 16.w,
+              builder: (BuildContext context, void Function()? onPressed,
+                  Animation<double> progress) {
+                return AvatarGlow(
+                  glowCount: context.watch<WorkoutProvider>().workoutStarted ? 3 : 0,
+                  glowColor: Colors.red,
+                  glowRadiusFactor: 0.3,
+                  child: Material(
+                    color: appSenaryColour,
+                    elevation: 8.0,
+                    shape: const CircleBorder(),
+                    child: Padding(
+                      padding: EdgeInsets.all(16.w),
+                      child: const Icon(
+                        Icons.menu,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+            closeButtonBuilder: FloatingActionButtonBuilder(
+              size: 46.w,
+              builder: (BuildContext context, void Function()? onPressed,
+                  Animation<double> progress) {
+                return FloatingActionButton(
+                  foregroundColor: Colors.transparent,
+                  backgroundColor: Colors.transparent,
+                  heroTag: null,
+                  child: Icon(
+                    MdiIcons.closeCircle,
+                    color: Colors.red,
+                    size: 46.w,
+                  ),
+                  onPressed: onPressed,
+                );
+              },
+            ),
+            children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 14.0.w),
+                    child: SizedBox(
+                      width: 48.w,
+                      child: FloatingActionButton(
+                          tooltip: "Search New Exercises",
+                          backgroundColor: appSecondaryColour,
+                          heroTag: null,
+                          child: const Icon(
+                            Icons.search,
+                          ),
+                          onPressed: () {
+                            final menuState = _key.currentState;
+                            if (menuState != null) {
+                              menuState.toggle();
+                            }
+                            context.read<PageChange>().changePageCache(ExerciseDatabaseSearch());
+                          }
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 48.w,
+                    child: FloatingActionButton(
+                        tooltip: "Add Exercise",
+                        backgroundColor: appSecondaryColour,
+                        heroTag: null,
+                        child: const Icon(
+                          Icons.add,
+                        ),
+                        onPressed: () {
+                          final menuState = _key.currentState;
+                          if (menuState != null) {
+                            menuState.toggle();
+                          }
+                          Builder(builder: (context){
+                            final index = DefaultTabController.of(context).index;
+                            // use index at here...
+                            return SizedBox.shrink();
+                          });
+                          context.read<PageChange>().changePageCache(ExerciseSelectionPage(routine: fetchTrainingPlanRoutine(
+                              trainingPlanDayOfTheWeekIndex,
+                            trainingPlanWeekIndex,
+                            context
+                          )));
+                        }
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: 48.w,
+                child: FloatingActionButton(
+                  tooltip: "View Past Workouts",
+                  backgroundColor: appSecondaryColour,
+                  heroTag: null,
+                  child: const Icon(
+                    MdiIcons.clipboardClock,
+                  ),
+                  onPressed: () {
+                    final menuState = _key.currentState;
+                    if (menuState != null) {
+                      menuState.toggle();
+                    }
+                    context
+                        .read<PageChange>()
+                        .changePageCache(WorkoutLogsHome());
+                  },
+                ),
+              ),
+              SizedBox(
+                width: 48.w,
+                child: FloatingActionButton(
+                  tooltip: "View Current Workout",
+                  backgroundColor: context.watch<WorkoutProvider>().workoutStarted
+                      ? appSenaryColour
+                      : appSecondaryColour,
+                  heroTag: null,
+                  child: AvatarGlow(
+                    glowCount:
+                    context.watch<WorkoutProvider>().workoutStarted ? 3 : 0,
+                    glowColor: Colors.red,
+                    glowRadiusFactor: 0.7,
+                    child: const Material(
+                      type: MaterialType.transparency,
+                      elevation: 8.0,
+                      shape: CircleBorder(),
+                      child: Icon(
+                        Icons.access_time_outlined,
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    final menuState = _key.currentState;
+                    if (menuState != null) {
+                      menuState.toggle();
+                    }
+                    context.read<PageChange>().changePageCache(WorkoutLogPage());
+                  },
+                ),
+              ),
+            ],
+          ) : const SizedBox.shrink(),
           backgroundColor: appPrimaryColour,
           appBar: AppBar(
             actions: [
@@ -209,7 +442,13 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
                       ),
                     ),
                   ),
-                  const TabBar(
+                  TabBar(
+                    onTap: (index) => {
+                      print("changing tab index " + index.toString()),
+                      setState(() {
+                        trainingPlanDayOfTheWeekIndex = index;
+                      }),
+                    },
                     isScrollable: true,
                     indicatorColor: appSenaryColour,
                     tabs: [
@@ -232,6 +471,7 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
               return true;
             },
             child: TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 TrainingPlanDayBox(
                   dayIndex: 0,
