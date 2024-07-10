@@ -997,12 +997,17 @@ class WorkoutProvider with ChangeNotifier {
 
     _routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan?["$exerciseName"] = [{
 
-      for (int index = 0; index < double.parse(sets); index++) index.toString(): "Set ${index+1} - $repsStart to $repsEnd Reps"
+      for (int index = 0; index < double.parse(sets); index++) index.toString(): "Set ${index+1}: $repsStart to $repsEnd Reps"
 
     }];
 
 
     debugPrint(_routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan.toString());
+
+    updateRoutineSetsData(
+      _routinesList[_routinesList.indexOf(routine)],
+      _routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan,
+    );
 
     notifyListeners();
 

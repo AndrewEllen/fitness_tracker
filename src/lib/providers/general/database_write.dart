@@ -668,3 +668,17 @@ void UpdateTrainingPlanOrder(Map<int, String> trainingPlanOrder) async {
   )});
 
 }
+
+
+void updateRoutineSetsData(RoutinesModel routine, Map<String, dynamic>? setsAndRepsPlan) async {
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  await FirebaseFirestore.instance
+      .collection('user-data')
+      .doc(firebaseAuth.currentUser!.uid)
+      .collection('routine-data')
+      .doc(routine.routineName)
+      .update({"setsAndRepsPlan": setsAndRepsPlan});
+
+}
