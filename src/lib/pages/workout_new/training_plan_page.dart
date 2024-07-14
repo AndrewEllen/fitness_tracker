@@ -210,7 +210,7 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
                           Builder(builder: (context){
                             final index = DefaultTabController.of(context).index;
                             // use index at here...
-                            return SizedBox.shrink();
+                            return const SizedBox.shrink();
                           });
                           context.read<PageChange>().changePageCache(ExerciseSelectionPage(routine: fetchTrainingPlanRoutine(
                               trainingPlanDayOfTheWeekIndex,

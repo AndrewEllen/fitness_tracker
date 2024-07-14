@@ -139,7 +139,7 @@ class _RoutinesListState extends State<RoutinesList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return context.watch<WorkoutProvider>().routinesList.isNotEmpty ? Column(
       children: [
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
@@ -195,6 +195,36 @@ class _RoutinesListState extends State<RoutinesList> {
           ],
         ),
 
+      ],
+    ) : Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(height: 24.h),
+        Icon(
+          MdiIcons.formatListBulleted,
+          size: 90.h,
+        ),
+        Text(
+          "No Routines Yet",
+          style: boldTextStyle.copyWith(fontSize: 30.h),
+        ),
+        Text(
+          "Try Creating One",
+          style: boldTextStyle.copyWith(fontSize: 14.h),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FloatingActionButton(
+            backgroundColor: appSecondaryColour,
+            child: const Icon(
+                MdiIcons.playlistPlus
+            ),
+            onPressed: () {
+              newRoutine(context);
+            },
+          ),
+        ),
       ],
     );
   }

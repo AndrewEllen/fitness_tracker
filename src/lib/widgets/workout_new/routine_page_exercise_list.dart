@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../pages/workout_new/exercise_selection_page.dart';
 import '../../pages/workout_new/workout_exercise_page.dart';
 import '../../pages/workout_new/workout_routine_page.dart';
 import '../../providers/general/database_write.dart';
@@ -45,7 +46,7 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
     //    .toList();
 
     return widget.routine.routineID != "-1" && widget.routine.routineID != "" && widget.routine.routineID.isNotEmpty ?
-    ReorderableListView.builder(
+    widget.routine.exercises.isNotEmpty ? ReorderableListView.builder(
       itemCount: widget.routine.exercises.length,
       shrinkWrap: true,
       proxyDecorator: (child, index, d) {
@@ -79,6 +80,36 @@ class _RoutinePageExerciseListState extends State<RoutinePageExerciseList> {
           index: index,
         );
       },
+    ) : Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(height: 24.h),
+        Icon(
+          MdiIcons.dumbbell,
+          size: 90.h,
+        ),
+        Text(
+          "No Exercises Added Yet",
+          style: boldTextStyle.copyWith(fontSize: 30.h),
+        ),
+        Text(
+          "Try Adding One",
+          style: boldTextStyle.copyWith(fontSize: 14.h),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FloatingActionButton(
+            backgroundColor: appSecondaryColour,
+            child: const Icon(
+                MdiIcons.playlistPlus
+            ),
+            onPressed: () {
+              context.read<PageChange>().changePageCache(ExerciseSelectionPage(routine: widget.routine));
+            }
+          ),
+        ),
+      ],
     ) : Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
