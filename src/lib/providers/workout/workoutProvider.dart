@@ -1044,6 +1044,39 @@ class WorkoutProvider with ChangeNotifier {
   }
 
 
+  void addCardioSetsPlanToRoutine(String warmup, String workingSet, String cooldown, String exerciseName, RoutinesModel routine) {
+
+    debugPrint(warmup);
+    debugPrint(workingSet);
+    debugPrint(cooldown);
+    debugPrint(exerciseName);
+
+    if (_routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan == null) {
+      _routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan = {};
+    }
+
+
+    _routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan?["$exerciseName"] = [{
+
+      "0": "Warmup: ${warmup.split(".")[0]} Minutes" + (warmup.split(".").length > 1 ? " and " + (double.parse("0."+warmup.split(".")[1]) * 60).toString() + "Seconds" : ""),
+      "1": "Session: ${workingSet.split(".")[0]} Minutes" + (workingSet.split(".").length > 1 ? " and " + (double.parse("0."+workingSet.split(".")[1]) * 60).toString() + "Seconds" : ""),
+      "2": "Cooldown: ${cooldown.split(".")[0]} Minutes" + (cooldown.split(".").length > 1 ? " and " + (double.parse("0."+cooldown.split(".")[1]) * 60).toString() + "Seconds" : ""),
+
+    }];
+
+
+    debugPrint(_routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan.toString());
+
+    updateRoutineSetsData(
+      _routinesList[_routinesList.indexOf(routine)],
+      _routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan,
+    );
+
+    notifyListeners();
+
+  }
+
+
   void removeSetsPlanFromRoutine(String exerciseName, RoutinesModel routine) {
 
     if (_routinesList[_routinesList.indexOf(routine)].exerciseSetsAndRepsPlan == null) {

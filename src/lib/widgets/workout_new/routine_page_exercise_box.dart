@@ -291,6 +291,251 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
   }
 
 
+  newCardioSetMenu(BuildContext context) async {
+    FirebaseAnalytics.instance.logEvent(name: 'new_cardio_set_pressed');
+
+    double warmupSlider = 5;
+    double workingCardioTimeSlider = 20;
+    double cooldownSlider = 5;
+    TextEditingController warmupController = TextEditingController(text: "6");
+    TextEditingController workingCardioController = TextEditingController(text: "8");
+    TextEditingController cooldownController = TextEditingController(text: "4");
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: AlertDialog(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            contentPadding: EdgeInsets.all(0),
+            insetPadding: EdgeInsets.all(15.w),
+            content: SizedBox(
+              height: 500.h,
+              width: double.maxFinite,
+              child: Material(
+
+                type: MaterialType.transparency,
+
+                child: Column(
+
+                  children: [
+
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Add Cardio Plan",
+                        style: boldTextStyle.copyWith(fontSize: 20.h),
+                      ),
+                    ),
+
+                    StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                          return Column(
+                            children: [
+
+                              IncrementalCounter(
+                                inputController: warmupController,
+                                suffix: "mins",
+                                label: "Warmup",
+                                smallButtons: true,
+                                smallIncrementAmount: 0.25,
+                                function: () {
+                                  setState(() {
+
+                                    if (double.parse(warmupController.text) <= 0) {
+                                      warmupController.text = "0";
+                                    }
+
+                                    if (double.parse(warmupController.text) >= 0
+                                        && double.parse(warmupController.text) <= 10)
+                                    {
+                                      warmupSlider = double.parse(warmupController.text);
+                                    }
+                                    double.parse(warmupController.text);
+                                  });
+                                },
+                              ),
+
+                              Slider(
+                                value: warmupSlider,
+                                onChanged: (double value) {
+                                  setState(() {
+                                    warmupSlider = value;
+                                    warmupController.text = value.toString();
+                                  });
+                                },
+                                min: 0,
+                                max: 10,
+                                divisions: 20,
+                                label: ((double.parse(warmupController.text)*2).floorToDouble()/2).toString() + " Minutes",
+                                activeColor: appSecondaryColour,
+                                inactiveColor: appSecondaryColourDark,
+                              ),
+                            ],
+                          );
+                        }
+                    ),
+
+
+                    StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                          return Column(
+                            children: [
+
+                              IncrementalCounter(
+                                inputController: workingCardioController,
+                                suffix: "mins",
+                                label: "Session",
+                                smallButtons: true,
+                                smallIncrementAmount: 0.25,
+                                function: () {
+                                  setState(() {
+
+                                    if (double.parse(workingCardioController.text) <= 0) {
+                                      workingCardioController.text = "0";
+                                    }
+
+                                    if (double.parse(workingCardioController.text) >= 0
+                                        && double.parse(workingCardioController.text) <= 90)
+                                    {
+                                      workingCardioTimeSlider = double.parse(workingCardioController.text);
+                                    }
+                                    double.parse(workingCardioController.text);
+                                  });
+                                },
+                              ),
+
+                              Slider(
+                                value: workingCardioTimeSlider,
+                                onChanged: (double value) {
+                                  setState(() {
+                                    workingCardioTimeSlider = value;
+                                    workingCardioController.text = value.toString();
+                                  });
+                                },
+                                min: 0,
+                                max: 90,
+                                divisions: 180,
+                                label: ((double.parse(workingCardioController.text)*2).floorToDouble()/2).toString() + " Minutes",
+                                activeColor: appSecondaryColour,
+                                inactiveColor: appSecondaryColourDark,
+                              ),
+                            ],
+                          );
+                        }
+                    ),
+
+
+                    StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                          return Column(
+                            children: [
+
+                              IncrementalCounter(
+                                inputController: cooldownController,
+                                suffix: "mins",
+                                label: "Cooldown",
+                                smallButtons: true,
+                                smallIncrementAmount: 0.25,
+                                function: () {
+                                  setState(() {
+
+                                    if (double.parse(cooldownController.text) <= 0) {
+                                      cooldownController.text = "0";
+                                    }
+
+                                    if (double.parse(cooldownController.text) >= 0
+                                        && double.parse(cooldownController.text) <= 10)
+                                    {
+                                      cooldownSlider = double.parse(cooldownController.text);
+                                    }
+                                    double.parse(cooldownController.text);
+                                  });
+                                },
+                              ),
+
+                              Slider(
+                                value: cooldownSlider,
+                                onChanged: (double value) {
+                                  setState(() {
+                                    cooldownSlider = value;
+                                    cooldownController.text = value.toString();
+                                  });
+                                },
+                                min: 0,
+                                max: 10,
+                                divisions: 20,
+                                label: ((double.parse(cooldownController.text)*2).floorToDouble()/2).toString() + " Minutes",
+                                activeColor: appSecondaryColour,
+                                inactiveColor: appSecondaryColourDark,
+                              ),
+                            ],
+                          );
+                        }
+                    ),
+
+
+                  ],
+
+                ),
+
+              ),
+            ),
+
+            actions: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+
+                  const Spacer(),
+
+                  FloatingActionButton(
+                    backgroundColor: appSecondaryColour,
+                    child: const Icon(
+                        MdiIcons.close
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+
+                  const Spacer(),
+
+                  FloatingActionButton(
+                    backgroundColor: appSecondaryColour,
+                    child: const Icon(
+                        MdiIcons.check
+                    ),
+                    onPressed: () {
+
+                      context.read<WorkoutProvider>().addCardioSetsPlanToRoutine(
+                          warmupController.text,
+                          workingCardioController.text,
+                          cooldownController.text,
+                          widget.routine.exercises[widget.index].exerciseName,
+                          widget.routine
+                      );
+
+                      Navigator.pop(context);
+
+                    },
+                  ),
+
+                  const Spacer(),
+
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+
   onTap() async {
     if (context.read<WorkoutProvider>().checkForExerciseData(widget.routine.exercises[widget.index].exerciseName)) {
 
@@ -481,10 +726,11 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                   color: appTertiaryColour,
                   child: Row(
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.all(12.0),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
                         child: Text(
-                          "Sets And Reps Plan",
+                          widget.routine.exercises[widget.index].exerciseTrackingType == 0
+                              ? "Sets And Reps Plan" : "Cardio Plan",
                           style: boldTextStyle,
                         ),
                       ),
@@ -562,7 +808,8 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                                         Icons.edit,
                                         size: 20.h,
                                       ),
-                                      onPressed: () => newSetMenu(context),
+                                      onPressed: () => widget.routine.exercises[widget.index].exerciseTrackingType == 0 ?
+                                      newSetMenu(context) : newCardioSetMenu(context)
                                     ),
                                   ),
                                 ) : const SizedBox.shrink(),
@@ -597,7 +844,8 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                                 Padding(
                                   padding: const EdgeInsets.all(12.0),
                                   child: Text(
-                                    "No Sets Yet",
+                                    widget.routine.exercises[widget.index].exerciseTrackingType == 0 ?
+                                    "No Sets Yet" : "No Cardio Plan Yet",
                                     style: boldTextStyle.copyWith(fontSize: 16.h),
                                   ),
                                 ),
@@ -617,7 +865,8 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                                         Icons.add,
                                         size: 20.h,
                                       ),
-                                      onPressed: () => newSetMenu(context),
+                                      onPressed: () => widget.routine.exercises[widget.index].exerciseTrackingType == 0 ?
+                                      newSetMenu(context) : newCardioSetMenu(context),
                                     ),
                                   ),
                                 ),
