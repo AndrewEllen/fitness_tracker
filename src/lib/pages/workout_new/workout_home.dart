@@ -172,14 +172,14 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
 
                               if (trainingPlanData.isNotEmpty) {
 
-                                String uniqueTag = Uuid().v4().toString().substring(0,13);
+                                String uniqueTag = const Uuid().v4().toString().substring(0,13);
 
                                 final TrainingPlan trainingPlan = trainingPlanData[0];
 
                                 if (inputController.text.isNotEmpty) {
                                   trainingPlan.trainingPlanName = inputController.text;
                                 } else {
-                                  trainingPlan.trainingPlanName += " - $uniqueTag";
+                                  trainingPlan.trainingPlanName = trainingPlan.trainingPlanName + " - $uniqueTag";
                                 }
 
                                 final List<RoutinesModel> trainingPlanRoutines = trainingPlanData[1];
@@ -216,6 +216,8 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                                 context.read<WorkoutProvider>().addNewTrainingPlanFromTrainingPlan(trainingPlan);
                               }
 
+                              inputController.text = "";
+                              inputShareController.text = "";
 
                             } else {
 

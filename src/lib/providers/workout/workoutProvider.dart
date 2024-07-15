@@ -530,6 +530,10 @@ class WorkoutProvider with ChangeNotifier {
 
   void createNewRoutineFromRoutine(RoutinesModel routine) {
 
+    if (routine.routineID == "-1") {
+      return;
+    }
+
     RoutinesModel newRoutine = routine;
 
     createRoutine(newRoutine);
