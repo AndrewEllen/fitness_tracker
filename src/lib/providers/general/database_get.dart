@@ -2358,6 +2358,7 @@ GetTrainingPlans({options = const GetOptions(source: Source.serverAndCache)}) as
       TrainingPlan(
         trainingPlanName: document["trainingPlanName"],
         trainingPlanWeeks: buildTrainingPlanWeekObjects(document["trainingPlanWeek"]),
+        trainingPlanID: document["trainingPlanID"],
       )
   ];
 

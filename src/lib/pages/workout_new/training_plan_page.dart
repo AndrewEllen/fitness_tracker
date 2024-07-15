@@ -1,7 +1,11 @@
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
 import 'package:fitness_tracker/models/workout/training_plan_model.dart';
+import 'package:fitness_tracker/models/workout/training_plan_share.dart';
+import 'package:fitness_tracker/models/workout/training_plan_week_share_model.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_log_page.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_logs_home.dart';
 import 'package:flutter/gestures.dart';
@@ -10,9 +14,11 @@ import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../constants.dart';
 import '../../models/workout/routines_model.dart';
+import '../../providers/general/database_write.dart';
 import '../../providers/general/page_change_provider.dart';
 import '../../providers/workout/workoutProvider.dart';
 import '../../widgets/general/app_default_button.dart';
@@ -315,6 +321,97 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
           backgroundColor: appTertiaryColour,
           appBar: AppBar(
             actions: [
+
+              IconButton(
+                icon: const Icon(
+                  Icons.share,
+                ),
+                onPressed: () async {
+
+                  final String uuid;
+                  if (widget.trainingPlan.trainingPlanID != null) {
+                    uuid = widget.trainingPlan.trainingPlanID!;
+
+
+                    
+
+
+                  } else {
+                    uuid = const Uuid().v4().toString();
+                  }
+
+                  final trainingPlanShare =
+                  TrainingPlanShare(
+                      trainingPlanName: widget.trainingPlan.trainingPlanName,
+                      ///Type is a List for future when I add multi week plans. For now its just the one week.
+                      trainingPlanWeeks: [TrainingPlanWeekShare(
+                          weekNumber: 1,
+                        mondayRoutine: fetchTrainingPlanRoutine(
+                            0,
+                            trainingPlanWeekIndex,
+                            context
+                        ),
+                        tuesdayRoutine: fetchTrainingPlanRoutine(
+                            1,
+                            trainingPlanWeekIndex,
+                            context
+                        ),
+                        wednesdayRoutine: fetchTrainingPlanRoutine(
+                            2,
+                            trainingPlanWeekIndex,
+                            context
+                        ),
+                        thursdayRoutine: fetchTrainingPlanRoutine(
+                            3,
+                            trainingPlanWeekIndex,
+                            context
+                        ),
+                        fridayRoutine: fetchTrainingPlanRoutine(
+                            4,
+                            trainingPlanWeekIndex,
+                            context
+                        ),
+                        saturdayRoutine: fetchTrainingPlanRoutine(
+                            5,
+                            trainingPlanWeekIndex,
+                            context
+                        ),
+                        sundayRoutine: fetchTrainingPlanRoutine(
+                            6,
+                            trainingPlanWeekIndex,
+                            context
+                        ),
+
+                      )],
+                    trainingPlanID: uuid,
+                  );
+
+                  debugPrint(trainingPlanShare.toMap().toString());
+
+                  try {
+
+                    await FirebaseFirestore.instance
+                        .collection('training-plans')
+                        .doc(trainingPlanShare.trainingPlanID)
+                        .set({
+                      "data": trainingPlanShare.toMap()
+                    });
+
+                    widget.trainingPlan.trainingPlanID = uuid;
+
+                    UpdateTrainingPlan(
+                        widget.trainingPlan
+                    );
+
+                  } catch (error, stacktrace) {
+                    debugPrint(error.toString());
+                    debugPrint(stacktrace.toString());
+                  }
+
+
+                },
+              ),
+
               context.read<WorkoutProvider>().workoutStarted
                   ? Padding(
                       padding: EdgeInsets.only(top: 8.h, bottom: 8.h),
