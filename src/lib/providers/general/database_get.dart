@@ -2382,6 +2382,11 @@ GetTrainingPlanByCode(String trainingPlanCode, {options = const GetOptions(sourc
         )
     ];
 
+    for (final exercise in exercises) {
+      debugPrint(exercise.mainOrAccessory.toString());
+      debugPrint(exercise.exerciseTrackingType.toString());
+    }
+
     return exercises;
 
   }

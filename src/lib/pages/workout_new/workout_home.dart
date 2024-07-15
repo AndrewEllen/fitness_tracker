@@ -190,23 +190,6 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
 
                                 List<ExerciseListModel> exerciseList = [];
 
-                                for (ExerciseListModel exercise in exerciseList) {
-
-                                  context.read<WorkoutProvider>().AddNewWorkout(
-                                      ExerciseModel(
-                                        exerciseName: exercise.exerciseName,
-                                        exerciseTrackingData: RepsWeightStatsMeasurement(
-                                            measurementName: '',
-                                            dailyLogs: []
-                                        ),
-                                        exerciseMaxRepsAndWeight: {},
-                                        category: exercise.category,
-                                        exerciseTrackingType: exercise.exerciseTrackingType,
-                                        ///Add type and muscles
-                                      )
-                                  );
-                                }
-
                                 for (final RoutinesModel routine in trainingPlanRoutines) {
                                   routine.routineName += " - $uniqueTag";
 
@@ -228,6 +211,25 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                                   }
                                   context.read<WorkoutProvider>().createNewRoutineFromRoutine(routine);
                                 }
+
+                                for (ExerciseListModel exercise in exerciseList) {
+
+                                  context.read<WorkoutProvider>().AddNewWorkout(
+                                      ExerciseModel(
+                                        exerciseName: exercise.exerciseName,
+                                        exerciseTrackingData: RepsWeightStatsMeasurement(
+                                            measurementName: '',
+                                            dailyLogs: []
+                                        ),
+                                        exerciseMaxRepsAndWeight: {},
+                                        category: exercise.category,
+                                        exerciseTrackingType: exercise.exerciseTrackingType,
+                                        type: exercise.mainOrAccessory,
+                                        ///Add type and muscles
+                                      )
+                                  );
+                                }
+
                                 context.read<WorkoutProvider>().addNewTrainingPlanFromTrainingPlan(trainingPlan);
                               }
 
