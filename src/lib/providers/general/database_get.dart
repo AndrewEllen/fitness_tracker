@@ -2358,10 +2358,105 @@ GetTrainingPlans({options = const GetOptions(source: Source.serverAndCache)}) as
       TrainingPlan(
         trainingPlanName: document["trainingPlanName"],
         trainingPlanWeeks: buildTrainingPlanWeekObjects(document["trainingPlanWeek"]),
-        trainingPlanID: document["trainingPlanID"],
+        trainingPlanID: (document.data() as Map<String,dynamic>).containsKey('trainingPlanID') ? document["trainingPlanID"] : null,
       )
   ];
 
   return trainingPlans;
+
+}
+
+
+GetTrainingPlanByCode(String trainingPlanCode, {options = const GetOptions(source: Source.server)}) async {
+
+
+  List<ExerciseListModel> generateExerciseList(data) {
+
+    List<ExerciseListModel> exercises =  [
+      for (Map exercise in data)
+        ExerciseListModel(
+          exerciseName: exercise["exerciseName"],
+          exerciseDate: exercise["exerciseDate"],
+          exerciseTrackingType: exercise["exerciseTrackingType"],
+          mainOrAccessory: exercise["mainOrAccessory"],
+        )
+    ];
+
+    return exercises;
+
+  }
+
+
+  final DocumentSnapshot snapshot = await FirebaseFirestore.instance
+      .collection('training-plans')
+      .doc(trainingPlanCode)
+      .get(options);
+
+  final snapshotData = snapshot["data"];
+
+  final List<RoutinesModel> routinesList = [
+    RoutinesModel(
+      routineID: snapshotData["trainingPlanWeek"][0]["monday"]["routineID"],
+      routineDate: "",
+      routineName: snapshotData["trainingPlanWeek"][0]["monday"]["routineName"],
+      exercises: generateExerciseList(snapshotData["trainingPlanWeek"][0]["monday"]["exercises"]),
+    ),
+    RoutinesModel(
+      routineID: snapshotData["trainingPlanWeek"][0]["tuesday"]["routineID"],
+      routineDate: "",
+      routineName: snapshotData["trainingPlanWeek"][0]["tuesday"]["routineName"],
+      exercises: generateExerciseList(snapshotData["trainingPlanWeek"][0]["tuesday"]["exercises"]),
+    ),
+    RoutinesModel(
+      routineID: snapshotData["trainingPlanWeek"][0]["wednesday"]["routineID"],
+      routineDate: "",
+      routineName: snapshotData["trainingPlanWeek"][0]["wednesday"]["routineName"],
+      exercises: generateExerciseList(snapshotData["trainingPlanWeek"][0]["wednesday"]["exercises"]),
+    ),
+    RoutinesModel(
+      routineID: snapshotData["trainingPlanWeek"][0]["thursday"]["routineID"],
+      routineDate: "",
+      routineName: snapshotData["trainingPlanWeek"][0]["thursday"]["routineName"],
+      exercises: generateExerciseList(snapshotData["trainingPlanWeek"][0]["thursday"]["exercises"]),
+    ),
+    RoutinesModel(
+      routineID: snapshotData["trainingPlanWeek"][0]["friday"]["routineID"],
+      routineDate: "",
+      routineName: snapshotData["trainingPlanWeek"][0]["friday"]["routineName"],
+      exercises: generateExerciseList(snapshotData["trainingPlanWeek"][0]["friday"]["exercises"]),
+    ),
+    RoutinesModel(
+      routineID: snapshotData["trainingPlanWeek"][0]["saturday"]["routineID"],
+      routineDate: "",
+      routineName: snapshotData["trainingPlanWeek"][0]["saturday"]["routineName"],
+      exercises: generateExerciseList(snapshotData["trainingPlanWeek"][0]["saturday"]["exercises"]),
+    ),
+    RoutinesModel(
+      routineID: snapshotData["trainingPlanWeek"][0]["sunday"]["routineID"],
+      routineDate: "",
+      routineName: snapshotData["trainingPlanWeek"][0]["sunday"]["routineName"],
+      exercises: generateExerciseList(snapshotData["trainingPlanWeek"][0]["sunday"]["exercises"]),
+    ),
+
+  ];
+
+  final TrainingPlan trainingPlan = TrainingPlan(
+    trainingPlanName: snapshotData["trainingPlanName"],
+    trainingPlanWeeks: [
+      TrainingPlanWeek(
+          weekNumber: 1,
+          mondayRoutineID: snapshotData["trainingPlanWeek"][0]["monday"]["routineID"],
+          tuesdayRoutineID: snapshotData["trainingPlanWeek"][0]["tuesday"]["routineID"],
+          wednesdayRoutineID: snapshotData["trainingPlanWeek"][0]["wednesday"]["routineID"],
+          thursdayRoutineID: snapshotData["trainingPlanWeek"][0]["thursday"]["routineID"],
+          fridayRoutineID: snapshotData["trainingPlanWeek"][0]["friday"]["routineID"],
+          saturdayRoutineID: snapshotData["trainingPlanWeek"][0]["saturday"]["routineID"],
+          sundayRoutineID: snapshotData["trainingPlanWeek"][0]["sunday"]["routineID"],
+      ),
+    ],
+    trainingPlanID: trainingPlanCode,
+  );
+
+  return [trainingPlan, routinesList];
 
 }

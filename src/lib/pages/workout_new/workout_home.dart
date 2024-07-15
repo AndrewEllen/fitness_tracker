@@ -1,6 +1,9 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:fitness_tracker/exports.dart';
+import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
+import 'package:fitness_tracker/models/workout/exercise_model.dart';
+import 'package:fitness_tracker/models/workout/reps_weight_stats_model.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_log_page.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_logs_home.dart';
 import 'package:fitness_tracker/providers/workout/workoutProvider.dart';
@@ -9,8 +12,13 @@ import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../constants.dart';
+import '../../models/workout/routines_model.dart';
+import '../../models/workout/training_plan_model.dart';
+import '../../providers/general/database_get.dart';
+import '../../providers/general/database_write.dart';
 import '../../widgets/general/app_default_button.dart';
 import '../../widgets/workout_new/home_page_routines_list.dart';
 import '../../widgets/workout_new/training_plan_list.dart';
@@ -29,6 +37,9 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
   late GlobalKey<ExpandableFabState> _key = GlobalKey<ExpandableFabState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController inputController = TextEditingController();
+
+  final GlobalKey<FormState> _formShareKey = GlobalKey<FormState>();
+  final TextEditingController inputShareController = TextEditingController();
 
   newTrainingPlan(BuildContext context) async {
     FirebaseAnalytics.instance.logEvent(name: 'training_plan_creation_pressed');
@@ -95,6 +106,41 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                   ),
                 ),
               ),
+
+              Flexible(
+                child: Form(
+                  key: _formShareKey,
+                  child: TextFormField(
+                    controller: inputShareController,
+                    cursorColor: Colors.white,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: (18),
+                    ),
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      label: Text(
+                        "Import Training Plan Code (Optional)",
+                        style: boldTextStyle.copyWith(fontSize: 14),
+                      ),
+                      enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: appQuarternaryColour,
+                          )),
+                      focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: appSecondaryColour,
+                          )),
+                      border: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: appSecondaryColour,
+                          )),
+                    ),
+                  ),
+                ),
+              ),
+
             ],
           ),
           actions: [
@@ -117,15 +163,72 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                     child: AppButton(
                       primaryColor: appSecondaryColour,
                       buttonText: "Create",
-                      onTap: () {
-                        if (_formKey.currentState!.validate()) {
-                          context
-                              .read<WorkoutProvider>()
-                              .addNewTrainingPlan(inputController.text);
-                          inputController.text = "";
+                      onTap: () async {
+                          if (_formKey.currentState!.validate()) {
 
-                          Navigator.pop(context);
-                        }
+                            if (inputShareController.text.isNotEmpty) {
+
+                              List trainingPlanData = await GetTrainingPlanByCode(inputShareController.text);
+
+                              if (trainingPlanData.isNotEmpty) {
+
+                                String uniqueTag = Uuid().v4().toString().substring(0,13);
+
+                                final TrainingPlan trainingPlan = trainingPlanData[0];
+
+                                if (inputController.text.isNotEmpty) {
+                                  trainingPlan.trainingPlanName = inputController.text;
+                                } else {
+                                  trainingPlan.trainingPlanName += " - $uniqueTag";
+                                }
+
+                                final List<RoutinesModel> trainingPlanRoutines = trainingPlanData[1];
+
+                                List<ExerciseListModel> exerciseList = [];
+
+                                for (ExerciseListModel exercise in exerciseList) {
+
+                                  context.read<WorkoutProvider>().AddNewWorkout(
+                                      ExerciseModel(
+                                        exerciseName: exercise.exerciseName,
+                                        exerciseTrackingData: RepsWeightStatsMeasurement(
+                                            measurementName: '',
+                                            dailyLogs: []
+                                        ),
+                                        exerciseMaxRepsAndWeight: {},
+                                        category: exercise.category,
+                                        exerciseTrackingType: exercise.exerciseTrackingType,
+                                        ///Add type and muscles
+                                      )
+                                  );
+                                }
+
+                                for (final RoutinesModel routine in trainingPlanRoutines) {
+                                  routine.routineName += " - $uniqueTag";
+                                  for (ExerciseListModel exercise in routine.exercises) {
+                                    exercise.exerciseName += " - $uniqueTag";
+                                    if (!exerciseList.contains(exercise)) {
+                                      exerciseList.add(exercise);
+                                    }
+                                  }
+                                  context.read<WorkoutProvider>().createNewRoutineFromRoutine(routine);
+                                }
+                                context.read<WorkoutProvider>().addNewTrainingPlanFromTrainingPlan(trainingPlan);
+                              }
+
+
+                            } else {
+
+                              context
+                                  .read<WorkoutProvider>()
+                                  .addNewTrainingPlan(inputController.text);
+                              inputController.text = "";
+
+                            }
+
+                            Navigator.pop(context);
+                          }
+
                       },
                     )),
                 const Spacer(),

@@ -528,6 +528,17 @@ class WorkoutProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void createNewRoutineFromRoutine(RoutinesModel routine) {
+
+    RoutinesModel newRoutine = routine;
+
+    createRoutine(newRoutine);
+
+    _routinesList.add(newRoutine);
+
+    notifyListeners();
+  }
+
   void deleteRoutine(int index) {
 
     print(index);
@@ -895,6 +906,21 @@ class WorkoutProvider with ChangeNotifier {
             )
           ],
       )
+
+    );
+
+    CreateNewTrainingPlan(_trainingPlanList.last);
+
+    updateTrainingPlanListOrder(_trainingPlanList);
+
+  }
+
+
+  void addNewTrainingPlanFromTrainingPlan(TrainingPlan trainingPlan) {
+
+    _trainingPlanList.add(
+
+        trainingPlan
 
     );
 
