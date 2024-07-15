@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/helpers/general/string_extensions.dart';
+import 'package:fitness_tracker/models/workout/exercise_list_model.dart';
 import 'package:fitness_tracker/models/workout/training_plan_model.dart';
 import 'package:fitness_tracker/models/workout/training_plan_share.dart';
 import 'package:fitness_tracker/models/workout/training_plan_week_share_model.dart';
@@ -15,12 +16,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../constants.dart';
+import '../../models/workout/exercise_model.dart';
 import '../../models/workout/routines_model.dart';
+import '../../providers/general/database_get.dart';
 import '../../providers/general/database_write.dart';
 import '../../providers/general/page_change_provider.dart';
 import '../../providers/workout/workoutProvider.dart';
@@ -108,6 +112,61 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
     return RoutinesModel(
         routineID: "-1", routineDate: "", routineName: "Rest", exercises: []
     );
+  }
+
+
+  fetchMuscleMap(
+      List<RoutinesModel> routinesList,
+      ) async {
+
+    Map<String, dynamic> muscleMap = {};
+
+    bool result = await InternetConnection().hasInternetAccess;
+    GetOptions options = const GetOptions(source: Source.serverAndCache);
+
+    if (!result) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text("No Internet Connection \nAttempting to load"),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height * 0.6695,
+            right: 20,
+            left: 20,
+          ),
+          dismissDirection: DismissDirection.none,
+          duration: const Duration(milliseconds: 700),
+        ),
+      );
+      options = const GetOptions(source: Source.cache);
+    }
+
+    for (RoutinesModel routine in routinesList) {
+
+      for (ExerciseListModel exerciseListItem in routine.exercises) {
+
+        debugPrint(exerciseListItem.exerciseName);
+
+        ExerciseModel exercise = await GetExerciseLogData(exerciseListItem.exerciseName);
+
+        String primaryMuscle = exercise.primaryMuscle ?? "";
+        String secondaryMuscle = exercise.secondaryMuscle ?? "";
+        String tertiaryMuscle = exercise.tertiaryMuscle ?? "";
+
+        muscleMap[exerciseListItem.exerciseName] = {
+          "primaryMuscle": primaryMuscle,
+          "secondaryMuscle": secondaryMuscle,
+          "tertiaryMuscle": tertiaryMuscle,
+        };
+
+      }
+
+    }
+
+    return muscleMap;
   }
 
 
@@ -507,7 +566,45 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
                             trainingPlanWeekIndex,
                             context
                         ),
-
+                        exerciseMuscleMap: await fetchMuscleMap(
+                          [
+                            fetchTrainingPlanRoutine(
+                                0,
+                                trainingPlanWeekIndex,
+                                context
+                            ),
+                            fetchTrainingPlanRoutine(
+                                1,
+                                trainingPlanWeekIndex,
+                                context
+                            ),
+                            fetchTrainingPlanRoutine(
+                                2,
+                                trainingPlanWeekIndex,
+                                context
+                            ),
+                            fetchTrainingPlanRoutine(
+                                3,
+                                trainingPlanWeekIndex,
+                                context
+                            ),
+                            fetchTrainingPlanRoutine(
+                                4,
+                                trainingPlanWeekIndex,
+                                context
+                            ),
+                            fetchTrainingPlanRoutine(
+                                5,
+                                trainingPlanWeekIndex,
+                                context
+                            ),
+                            fetchTrainingPlanRoutine(
+                                6,
+                                trainingPlanWeekIndex,
+                                context
+                            ),
+                          ]
+                        ),
                       )],
                     trainingPlanID: uuid,
                   );

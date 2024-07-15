@@ -13,6 +13,7 @@ class TrainingPlanWeekShare {
       'friday': fridayRoutine.toMap(),
       'saturday': saturdayRoutine.toMap(),
       'sunday': sundayRoutine.toMap(),
+      'exerciseMuscleMap': exerciseMuscleMap,
     };
   }
   TrainingPlanWeekShare({
@@ -24,6 +25,7 @@ class TrainingPlanWeekShare {
     required this.fridayRoutine,
     required this.saturdayRoutine,
     required this.sundayRoutine,
+    required this.exerciseMuscleMap
   });
 
   int weekNumber;
@@ -34,4 +36,5 @@ class TrainingPlanWeekShare {
   RoutinesModel fridayRoutine;
   RoutinesModel saturdayRoutine;
   RoutinesModel sundayRoutine;
+  Map<String,dynamic> exerciseMuscleMap;
 }

@@ -1172,6 +1172,9 @@ GetUserGroceries(String groceryListID) async {
   }
 }
 
+///todo fetch exercise data even if no logs exist
+///appears to not be doing that
+
 GetExerciseLogData(String exerciseName, {options = const GetOptions(source: Source.serverAndCache)}) async {
   try {
 
@@ -2492,6 +2495,6 @@ GetTrainingPlanByCode(String trainingPlanCode, {options = const GetOptions(sourc
   );
 
 
-  return [trainingPlan, routinesList];
+  return [trainingPlan, routinesList, snapshotData["trainingPlanWeek"][0]["exerciseMuscleMap"]];
 
 }

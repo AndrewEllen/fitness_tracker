@@ -225,7 +225,15 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                                         category: exercise.category,
                                         exerciseTrackingType: exercise.exerciseTrackingType,
                                         type: exercise.mainOrAccessory,
-                                        ///Add type and muscles
+                                          primaryMuscle: trainingPlanData[2][
+                                            exercise.exerciseName.substring(0,exercise.exerciseName.length-16)
+                                          ]["primaryMuscle"],
+                                          secondaryMuscle: trainingPlanData[2][
+                                          exercise.exerciseName.substring(0,exercise.exerciseName.length-16)
+                                          ]["secondaryMuscle"],
+                                          tertiaryMuscle: trainingPlanData[2][
+                                          exercise.exerciseName.substring(0,exercise.exerciseName.length-16)
+                                          ]["tertiaryMuscle"]
                                       )
                                   );
                                 }
