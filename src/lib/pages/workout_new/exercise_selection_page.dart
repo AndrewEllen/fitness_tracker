@@ -54,8 +54,8 @@ class _ExerciseSelectionPageState extends State<ExerciseSelectionPage> {
         .get();
 
     return {
-      "exerciseType": (snapshot["type"] as Map<String,dynamic>).containsKey('type') ? snapshot : {},
-      "exerciseType": snapshot["exerciseTrackingType"] ?? 0,
+      "exerciseType": snapshot["type"] ?? 0,
+      "mainOrAccessory": snapshot["exerciseTrackingType"] ?? 1,
       ///add main or accessory back
       //"mainOrAccessory": snapshot.data()?["type"] ?? 1,
     };

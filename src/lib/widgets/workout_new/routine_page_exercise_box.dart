@@ -729,7 +729,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                       Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Text(
-                          widget.routine.exercises[widget.index].exerciseTrackingType == 0
+                          widget.routine.exercises[widget.index].mainOrAccessory == 0
                               ? "Sets And Reps Plan" : "Cardio Plan",
                           style: boldTextStyle,
                         ),
@@ -808,7 +808,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                                         Icons.edit,
                                         size: 20.h,
                                       ),
-                                      onPressed: () => widget.routine.exercises[widget.index].exerciseTrackingType == 0 ?
+                                      onPressed: () => widget.routine.exercises[widget.index].mainOrAccessory == 0 ?
                                       newSetMenu(context) : newCardioSetMenu(context)
                                     ),
                                   ),
@@ -844,7 +844,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                                 Padding(
                                   padding: const EdgeInsets.all(12.0),
                                   child: Text(
-                                    widget.routine.exercises[widget.index].exerciseTrackingType == 0 ?
+                                    widget.routine.exercises[widget.index].mainOrAccessory == 0 ?
                                     "No Sets Yet" : "No Cardio Plan Yet",
                                     style: boldTextStyle.copyWith(fontSize: 16.h),
                                   ),
@@ -865,7 +865,7 @@ class _RoutinePageExerciseBoxState extends State<RoutinePageExerciseBox> {
                                         Icons.add,
                                         size: 20.h,
                                       ),
-                                      onPressed: () => widget.routine.exercises[widget.index].exerciseTrackingType == 0 ?
+                                      onPressed: () => widget.routine.exercises[widget.index].mainOrAccessory == 0 ?
                                       newSetMenu(context) : newCardioSetMenu(context),
                                     ),
                                   ),
