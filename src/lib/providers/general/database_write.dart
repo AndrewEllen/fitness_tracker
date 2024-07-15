@@ -382,6 +382,7 @@ void createRoutine(RoutinesModel routine) async {
           "routineDate": routine.routineDate,
           "routineID": routine.routineID,
           "exercises": mapData(routine.exercises),
+          "setsAndRepsPlan": routine.exerciseSetsAndRepsPlan ?? {}
       });
 
 }

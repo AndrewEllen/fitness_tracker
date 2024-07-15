@@ -170,6 +170,8 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
 
                               List trainingPlanData = await GetTrainingPlanByCode(inputShareController.text);
 
+                              debugPrint("Returned");
+
                               if (trainingPlanData.isNotEmpty) {
 
                                 String uniqueTag = const Uuid().v4().toString().substring(0,13);
@@ -183,6 +185,8 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                                 }
 
                                 final List<RoutinesModel> trainingPlanRoutines = trainingPlanData[1];
+
+                                debugPrint("Resolved Training Plan");
 
                                 List<ExerciseListModel> exerciseList = [];
 
@@ -205,6 +209,17 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
 
                                 for (final RoutinesModel routine in trainingPlanRoutines) {
                                   routine.routineName += " - $uniqueTag";
+
+                                  if (routine.exerciseSetsAndRepsPlan != null) {
+
+                                    Map<String, dynamic> oldMap = routine.exerciseSetsAndRepsPlan!;
+                                    Map<String, dynamic> newMap = {};
+                                    oldMap.forEach((key, value) {
+                                      newMap["$key - $uniqueTag"] = value;
+                                    });
+                                    routine.exerciseSetsAndRepsPlan = newMap;
+                                  }
+
                                   for (ExerciseListModel exercise in routine.exercises) {
                                     exercise.exerciseName += " - $uniqueTag";
                                     if (!exerciseList.contains(exercise)) {

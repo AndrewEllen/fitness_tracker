@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_tracker/helpers/diet/nutrition_tracker.dart';
@@ -2003,7 +2002,7 @@ GetWorkoutOverallStats({options = const GetOptions(source: Source.serverAndCache
       averageDurationThisYear: 0,
       averageDurationThisMonth: 0,
       lastLog: DateTime.now(),
-    );;
+    );
 
   } catch (e, stackTrace) {
 
@@ -2394,68 +2393,98 @@ GetTrainingPlanByCode(String trainingPlanCode, {options = const GetOptions(sourc
 
   final snapshotData = snapshot["data"];
 
+  final List<String> routinesListIDs = [
+    snapshotData["trainingPlanWeek"][0]["monday"]["routineID"],
+    snapshotData["trainingPlanWeek"][0]["tuesday"]["routineID"],
+    snapshotData["trainingPlanWeek"][0]["wednesday"]["routineID"],
+    snapshotData["trainingPlanWeek"][0]["thursday"]["routineID"],
+    snapshotData["trainingPlanWeek"][0]["friday"]["routineID"],
+    snapshotData["trainingPlanWeek"][0]["saturday"]["routineID"],
+    snapshotData["trainingPlanWeek"][0]["sunday"]["routineID"],
+  ];
+
+  for (int i = 0; i < routinesListIDs.length; i++) {
+    if (routinesListIDs[i] != "-1") {
+      routinesListIDs[i] = const Uuid().v4().toString();
+    }
+  }
+
   final List<RoutinesModel> routinesList = [
     RoutinesModel(
-      routineID: snapshotData["trainingPlanWeek"][0]["monday"]["routineID"],
+      routineID: routinesListIDs[0],
       routineDate: "",
       routineName: snapshotData["trainingPlanWeek"][0]["monday"]["routineName"],
       exercises: generateExerciseList(snapshotData["trainingPlanWeek"][0]["monday"]["exercises"]),
+      exerciseSetsAndRepsPlan: (snapshotData["trainingPlanWeek"][0]["monday"] as Map<String,dynamic>).containsKey('exerciseSetsAndRepsPlan') ? snapshotData["trainingPlanWeek"][0]["monday"]["exerciseSetsAndRepsPlan"] : {},
     ),
     RoutinesModel(
-      routineID: snapshotData["trainingPlanWeek"][0]["tuesday"]["routineID"],
+      routineID: routinesListIDs[1],
       routineDate: "",
       routineName: snapshotData["trainingPlanWeek"][0]["tuesday"]["routineName"],
       exercises: generateExerciseList(snapshotData["trainingPlanWeek"][0]["tuesday"]["exercises"]),
+      exerciseSetsAndRepsPlan: (snapshotData["trainingPlanWeek"][0]["tuesday"] as Map<String,dynamic>).containsKey('exerciseSetsAndRepsPlan') ? snapshotData["trainingPlanWeek"][0]["tuesday"]["exerciseSetsAndRepsPlan"] : {},
     ),
     RoutinesModel(
-      routineID: snapshotData["trainingPlanWeek"][0]["wednesday"]["routineID"],
+      routineID: routinesListIDs[2],
       routineDate: "",
       routineName: snapshotData["trainingPlanWeek"][0]["wednesday"]["routineName"],
       exercises: generateExerciseList(snapshotData["trainingPlanWeek"][0]["wednesday"]["exercises"]),
+      exerciseSetsAndRepsPlan: (snapshotData["trainingPlanWeek"][0]["wednesday"] as Map<String,dynamic>).containsKey('exerciseSetsAndRepsPlan') ? snapshotData["trainingPlanWeek"][0]["wednesday"]["exerciseSetsAndRepsPlan"] : {},
     ),
     RoutinesModel(
-      routineID: snapshotData["trainingPlanWeek"][0]["thursday"]["routineID"],
+      routineID: routinesListIDs[3],
       routineDate: "",
       routineName: snapshotData["trainingPlanWeek"][0]["thursday"]["routineName"],
       exercises: generateExerciseList(snapshotData["trainingPlanWeek"][0]["thursday"]["exercises"]),
+      exerciseSetsAndRepsPlan: (snapshotData["trainingPlanWeek"][0]["thursday"] as Map<String,dynamic>).containsKey('exerciseSetsAndRepsPlan') ? snapshotData["trainingPlanWeek"][0]["thursday"]["exerciseSetsAndRepsPlan"] : {},
     ),
     RoutinesModel(
-      routineID: snapshotData["trainingPlanWeek"][0]["friday"]["routineID"],
+      routineID: routinesListIDs[4],
       routineDate: "",
       routineName: snapshotData["trainingPlanWeek"][0]["friday"]["routineName"],
       exercises: generateExerciseList(snapshotData["trainingPlanWeek"][0]["friday"]["exercises"]),
+      exerciseSetsAndRepsPlan: (snapshotData["trainingPlanWeek"][0]["friday"] as Map<String,dynamic>).containsKey('exerciseSetsAndRepsPlan') ? snapshotData["trainingPlanWeek"][0]["friday"]["exerciseSetsAndRepsPlan"] : {},
     ),
     RoutinesModel(
-      routineID: snapshotData["trainingPlanWeek"][0]["saturday"]["routineID"],
+      routineID: routinesListIDs[5],
       routineDate: "",
       routineName: snapshotData["trainingPlanWeek"][0]["saturday"]["routineName"],
       exercises: generateExerciseList(snapshotData["trainingPlanWeek"][0]["saturday"]["exercises"]),
+      exerciseSetsAndRepsPlan: (snapshotData["trainingPlanWeek"][0]["saturday"] as Map<String,dynamic>).containsKey('exerciseSetsAndRepsPlan') ? snapshotData["trainingPlanWeek"][0]["saturday"]["exerciseSetsAndRepsPlan"] : {},
     ),
     RoutinesModel(
-      routineID: snapshotData["trainingPlanWeek"][0]["sunday"]["routineID"],
+      routineID: routinesListIDs[6],
       routineDate: "",
       routineName: snapshotData["trainingPlanWeek"][0]["sunday"]["routineName"],
       exercises: generateExerciseList(snapshotData["trainingPlanWeek"][0]["sunday"]["exercises"]),
+      exerciseSetsAndRepsPlan: (snapshotData["trainingPlanWeek"][0]["sunday"] as Map<String,dynamic>).containsKey('exerciseSetsAndRepsPlan') ? snapshotData["trainingPlanWeek"][0]["sunday"]["exerciseSetsAndRepsPlan"] : {},
     ),
 
   ];
+
+  for (final RoutinesModel routine in routinesList) {
+
+    debugPrint(routine.exerciseSetsAndRepsPlan.toString());
+
+  }
 
   final TrainingPlan trainingPlan = TrainingPlan(
     trainingPlanName: snapshotData["trainingPlanName"],
     trainingPlanWeeks: [
       TrainingPlanWeek(
           weekNumber: 1,
-          mondayRoutineID: snapshotData["trainingPlanWeek"][0]["monday"]["routineID"],
-          tuesdayRoutineID: snapshotData["trainingPlanWeek"][0]["tuesday"]["routineID"],
-          wednesdayRoutineID: snapshotData["trainingPlanWeek"][0]["wednesday"]["routineID"],
-          thursdayRoutineID: snapshotData["trainingPlanWeek"][0]["thursday"]["routineID"],
-          fridayRoutineID: snapshotData["trainingPlanWeek"][0]["friday"]["routineID"],
-          saturdayRoutineID: snapshotData["trainingPlanWeek"][0]["saturday"]["routineID"],
-          sundayRoutineID: snapshotData["trainingPlanWeek"][0]["sunday"]["routineID"],
+          mondayRoutineID: routinesListIDs[0],
+          tuesdayRoutineID: routinesListIDs[1],
+          wednesdayRoutineID: routinesListIDs[2],
+          thursdayRoutineID: routinesListIDs[3],
+          fridayRoutineID: routinesListIDs[4],
+          saturdayRoutineID: routinesListIDs[5],
+          sundayRoutineID: routinesListIDs[6],
       ),
     ],
     trainingPlanID: trainingPlanCode,
   );
+
 
   return [trainingPlan, routinesList];
 
