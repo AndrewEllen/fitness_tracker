@@ -2376,7 +2376,8 @@ GetTrainingPlanByCode(String trainingPlanCode, {options = const GetOptions(sourc
         ExerciseListModel(
           exerciseName: exercise["exerciseName"],
           exerciseDate: exercise["exerciseDate"],
-          exerciseTrackingType: exercise["exerciseTrackingType"],
+          ///For some reason tracking type and accessory are swapped around
+          exerciseTrackingType: exercise["mainOrAccessory"],
           mainOrAccessory: exercise["mainOrAccessory"],
         )
     ];

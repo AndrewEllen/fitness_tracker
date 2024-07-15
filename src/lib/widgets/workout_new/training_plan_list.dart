@@ -32,6 +32,7 @@ class _TrainingPlanListState extends State<TrainingPlanList> {
     return ReorderableListView.builder(
       itemCount: widget.trainingPlans.length,
       shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       proxyDecorator: (child, index, d) {
 
         return Material(
