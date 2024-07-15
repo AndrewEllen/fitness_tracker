@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -10,6 +12,7 @@ import 'package:fitness_tracker/pages/workout_new/workout_log_page.dart';
 import 'package:fitness_tracker/pages/workout_new/workout_logs_home.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -328,12 +331,135 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
                 ),
                 onPressed: () async {
 
+                  FirebaseAnalytics.instance.logEvent(name: 'share_set_pressed');
+
                   final String uuid;
                   if (widget.trainingPlan.trainingPlanID != null) {
-                    uuid = widget.trainingPlan.trainingPlanID!;
+
+                    Future<bool> newSetMenu(BuildContext context) async {
+
+                      return await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child: AlertDialog(
+                              elevation: 0,
+                              backgroundColor: Colors.transparent,
+
+                              content: SizedBox(
+                                height: 400.h,
+                                width: double.maxFinite,
+                                child: Material(
+
+                                  type: MaterialType.transparency,
+
+                                  child: Column(
+
+                                    children: [
+
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          "This training plan has been shared previously",
+                                          style: boldTextStyle.copyWith(fontSize: 20.h),
+                                        ),
+                                      ),
+
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          "Would you like to share a new version or share the old version?",
+                                          style: boldTextStyle.copyWith(fontSize: 20.h),
+                                        ),
+                                      ),
+
+                                    ],
+
+                                  ),
+
+                                ),
+                              ),
+
+                              actions: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+
+                                    const Spacer(),
+
+                                    FloatingActionButton(
+                                      backgroundColor: appSecondaryColour,
+                                      child: const Icon(
+                                          MdiIcons.close
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context, false);
+                                      },
+                                    ),
+
+                                    const Spacer(),
+
+                                    FloatingActionButton(
+                                      backgroundColor: appSecondaryColour,
+                                      child: const Icon(
+                                          MdiIcons.contentCopy
+                                      ),
+                                      onPressed: () {
+                                        Clipboard.setData(ClipboardData(text: widget.trainingPlan.trainingPlanID!));
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: const Text("Copied Share Code To Clipboard!"),
+                                            behavior: SnackBarBehavior.floating,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            margin: EdgeInsets.only(
+                                              bottom: MediaQuery.of(context).size.height * 0.6695,
+                                              right: 20,
+                                              left: 20,
+                                            ),
+                                            dismissDirection: DismissDirection.none,
+                                            duration: const Duration(milliseconds: 700),
+                                          ),
+                                        );
+                                        Navigator.pop(context, false);
+                                      },
+                                    ),
+
+                                    const Spacer(),
+
+                                    FloatingActionButton(
+                                      backgroundColor: appSecondaryColour,
+                                      child: const Icon(
+                                          MdiIcons.archivePlus
+                                      ),
+                                      onPressed: () {
+
+                                        Navigator.pop(context, true);
+
+                                      },
+                                    ),
+
+                                    const Spacer(),
+
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ) ?? false;
+                    }
 
 
-                    
+
+                    if (await newSetMenu(context)) {
+                      uuid = const Uuid().v4().toString();
+                    } else {
+                      return;
+                    }
 
 
                   } else {
@@ -401,6 +527,24 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
 
                     UpdateTrainingPlan(
                         widget.trainingPlan
+                    );
+
+                    Clipboard.setData(ClipboardData(text: uuid));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text("Shared And Copied Code To Clipboard!"),
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        margin: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).size.height * 0.6695,
+                          right: 20,
+                          left: 20,
+                        ),
+                        dismissDirection: DismissDirection.none,
+                        duration: const Duration(milliseconds: 700),
+                      ),
                     );
 
                   } catch (error, stacktrace) {
