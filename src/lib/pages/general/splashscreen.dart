@@ -34,6 +34,9 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+  double loadingValue = 0;
+
   late List<String> categories;
   late List<StatsMeasurement> measurements;
   late UserDataModel userData;
@@ -117,6 +120,27 @@ class _SplashScreenState extends State<SplashScreen> {
 
   }
 
+  final double loadingValueAdjustment = 0.021;
+  void IncrementLoadingBar({bool completeBar = false}) {
+
+    if (completeBar == true) {
+      setState(() {
+        loadingValue = 1;
+      });
+    }
+
+    loadingValue += loadingValueAdjustment;
+
+    if (loadingValue > 1) {
+      loadingValue = 1;
+    }
+
+    setState(() {
+      loadingValue;
+    });
+
+  }
+
   void fetchData() async {
 
     bool result = await InternetConnection().hasInternetAccess;
@@ -143,98 +167,241 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
     await Future.wait<void>([
-      GetDailyStreak(options: options).then((result) => dailyStreak = result),
-      GetUserMeasurements(options: options).then((result) => measurements = result),
-      GetUserBioData(options: options).then((result) => userData = result),
-      GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString(), options: options).then((result) => userNutrition = result),
-      GetUserNutritionHistory(options: options).then((result) => userNutritionHistory = result),
-      ///User Custom Food is stored in one document. Will cause issues down the line.
-      GetUserCustomFood(options: options).then((result) => userCustomFood = result),
-      ///User Custom Recipes is stored in one document. Will cause issues down the line.
-      GetUserCustomRecipes(options: options).then((result) => userRecipes = result),
-      GetUserGroceryListID(options: options).then((result) => groceryListID = result),
-      GetUserGroceryLists(options: options).then((result) => groceryLists = result),
-      GetRoutinesData(options: options).then((result) => routines = result),
-      GetExerciseData(options: options).then((result) => exercises = result),
-      GetCategoriesData(options: options).then((result) => exerciseCategories = result),
-      GetWorkoutStarted(options: options).then((result) => workoutStarted = result),
-      GetPastWorkoutData(null, options: options).then((result) => workoutLogs = result),
-      GetWorkoutOverallStats(options: options).then((result) => workoutOverallStats = result),
-      GetWeekdayExerciseTracking(options: options).then((result) => weekdayTrackingValues = result),
-      GetTrainingPlans(options: options).then((result) => trainingPlans = result),
+      GetDailyStreak(options: options).then((result) {
+        dailyStreak = result;
+        IncrementLoadingBar();
+      }),
+      GetUserMeasurements(options: options).then((result) {
+        measurements = result;
+        IncrementLoadingBar();
+      }),
+      GetUserBioData(options: options).then((result) {
+        userData = result;
+        IncrementLoadingBar();
+      }),
+      GetUserNutritionData(context.read<UserNutritionData>().nutritionDate.toString(), options: options).then((result) {
+        userNutrition = result;
+        IncrementLoadingBar();
+      }),
+    GetUserNutritionHistory(options: options).then((result) {
+      userNutritionHistory = result;
+      IncrementLoadingBar();
+    }),
+    ///User Custom Food is stored in one document. Will cause issues down the line.
+    GetUserCustomFood(options: options).then((result) {
+      userCustomFood = result;
+      IncrementLoadingBar();
+    }),
+    ///User Custom Recipes is stored in one document. Will cause issues down the line.
+    GetUserCustomRecipes(options: options).then((result) {
+      userRecipes = result;
+      IncrementLoadingBar();
+    }),
+    GetUserGroceryListID(options: options).then((result) {
+      groceryListID = result;
+      IncrementLoadingBar();
+    }),
+    GetUserGroceryLists(options: options).then((result) {
+      groceryLists = result;
+      IncrementLoadingBar();
+    }),
+    GetRoutinesData(options: options).then((result) {
+      routines = result;
+      IncrementLoadingBar();
+    }),
+    GetExerciseData(options: options).then((result) {
+      exercises = result;
+      IncrementLoadingBar();
+    }),
+    GetCategoriesData(options: options).then((result) {
+      exerciseCategories = result;
+      IncrementLoadingBar();
+    }),
+    GetWorkoutStarted(options: options).then((result) {
+      workoutStarted = result;
+      IncrementLoadingBar();
+    }),
+    GetPastWorkoutData(null, options: options).then((result) {
+      workoutLogs = result;
+      IncrementLoadingBar();
+    }),
+    GetWorkoutOverallStats(options: options).then((result) {
+      workoutOverallStats = result;
+      IncrementLoadingBar();
+    }),
+    GetWeekdayExerciseTracking(options: options).then((result) {
+      weekdayTrackingValues = result;
+      IncrementLoadingBar();
+    }),
+    GetTrainingPlans(options: options).then((result) {
+      trainingPlans = result;
+      IncrementLoadingBar();
+    }),
     ]);
 
     try {
 
-      DateTime now = DateTime.now();
-      DateTime then = dailyStreak["lastDate"];
+    DateTime now = DateTime.now();
+    DateTime then = dailyStreak["lastDate"];
 
-      if (DateTime(now.year, now.month, now.day) == DateTime(then.year, then.month, then.day)) {
+    if (DateTime(now.year, now.month, now.day) == DateTime(then.year, then.month, then.day)) {
 
-        debugPrint("today");
+    debugPrint("today");
 
-        try {context.read<GeneralDataProvider>().setDailyStreak(dailyStreak);} catch (exception) {print(exception);}
+    try {context.read<GeneralDataProvider>().setDailyStreak(dailyStreak);} catch (exception) {print(exception);}
 
-      } else if (DateTime(now.year, now.month, now.day) == DateTime(then.year, then.month, then.day+1)) {
+    } else if (DateTime(now.year, now.month, now.day) == DateTime(then.year, then.month, then.day+1)) {
 
-        debugPrint("new day");
-        try {context.read<GeneralDataProvider>().updateDailyStreak(dailyStreak);} catch (exception) {print(exception);}
+    debugPrint("new day");
+    try {context.read<GeneralDataProvider>().updateDailyStreak(dailyStreak);} catch (exception) {print(exception);}
 
-      } else if (
-        (
-            DateTime(now.year, now.month, now.day, now.hour)
-                .difference(
-                DateTime(then.year, then.month, then.day, then.hour+24)
-            )
-        ).inHours <= 13
-      ) {
+    } else if (
+    (
+    DateTime(now.year, now.month, now.day, now.hour)
+        .difference(
+    DateTime(then.year, then.month, then.day, then.hour+24)
+    )
+    ).inHours <= 13
+    ) {
 
-        debugPrint("new day (within 13 hours)");
-        try {context.read<GeneralDataProvider>().updateDailyStreak(dailyStreak);} catch (exception) {print(exception);}
+    debugPrint("new day (within 13 hours)");
+    try {context.read<GeneralDataProvider>().updateDailyStreak(dailyStreak);} catch (exception) {print(exception);}
 
-      } else {
+    } else {
 
-        debugPrint("Streak lost");
-        try {context.read<GeneralDataProvider>().setDailyStreak(<String, dynamic>{
-          "lastDate": DateTime.now(),
-          "dailyStreak": 0,
-        });} catch (exception) {print(exception);}
+    debugPrint("Streak lost");
+    try {context.read<GeneralDataProvider>().setDailyStreak(<String, dynamic>{
+    "lastDate": DateTime.now(),
+    "dailyStreak": 0,
+    });} catch (exception) {print(exception);}
 
-      }
+    }
     } catch (exception) {print(exception);}
 
-    try {context.read<UserData>().setUserBioData(userData);} catch (exception) {print(exception);}
-    try {context.read<UserNutritionData>().setCalories(userData.calories);} catch (exception) {print(exception);}
-    try {context.read<UserNutritionData>().setUserWeight(double.parse(userData.weight));} catch (exception) {print(exception);}
-    try {context.read<UserNutritionData>().setUserAge(double.parse(userData.age));} catch (exception) {print(exception);}
-    try {context.read<UserNutritionData>().setUserGender(double.parse(userData.biologicalSex));} catch (exception) {print(exception);}
-    try {context.read<UserNutritionData>().setUserActivity(double.parse(userData.activityLevel));} catch (exception) {print(exception);}
+    try {
+      context.read<UserData>().setUserBioData(userData);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
 
-    try {context.read<GroceryProvider>().setGroceryListID(groceryListID);} catch (exception) {print(exception);}
-    try {context.read<GroceryProvider>().setGroceryLists(groceryLists);} catch (exception) {print(exception);}
-    try {context.read<GroceryProvider>().setGroceryList();} catch (exception) {print(exception);}
+    try {
+      context.read<UserNutritionData>().setCalories(userData.calories);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
 
-    try {context.read<UserStatsMeasurements>().initialiseStatsMeasurements(measurements);} catch (exception) {print(exception);}
-    try {context.read<UserNutritionData>().setCurrentFoodDiary(userNutrition);} catch (exception) {print(exception);}
-    try {context.read<UserNutritionData>().addToNutritionDataCache(userNutrition);} catch (exception) {print(exception);}
+    try {
+      context.read<UserNutritionData>().setUserWeight(double.parse(userData.weight));
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
 
-    try {context.read<UserNutritionData>().setFoodHistory(userNutritionHistory);} catch (exception) {print(exception);}
-    try {context.read<UserNutritionData>().setCustomFood(userCustomFood);} catch (exception) {print(exception);}
-    try {context.read<UserNutritionData>().setCustomRecipes(userRecipes);} catch (exception) {print(exception);}
+    try {
+      context.read<UserNutritionData>().setUserAge(double.parse(userData.age));
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
 
-    try {context.read<WorkoutProvider>().initialiseTrainingPlans(trainingPlans);} catch (exception) {print(exception);}
-    try {context.read<WorkoutProvider>().loadRoutineData(routines);} catch (exception) {print(exception);}
-    try {context.read<WorkoutProvider>().loadExerciseNamesData(exercises);} catch (exception) {print(exception);}
-    try {context.read<WorkoutProvider>().loadCategoriesNamesData(exerciseCategories);} catch (exception) {print(exception);}
+    try {
+      context.read<UserNutritionData>().setUserGender(double.parse(userData.biologicalSex));
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
 
-    try {context.read<WorkoutProvider>().loadWorkoutStarted(workoutStarted);} catch (exception) {print(exception);}
-    try {context.read<WorkoutProvider>().loadWorkoutLogs(workoutLogs);} catch (exception) {print(exception);}
-    try {context.read<WorkoutProvider>().loadOverallStats(workoutOverallStats);} catch (exception) {print(exception);}
-    try {context.read<WorkoutProvider>().loadWeekdayExerciseTracking(weekdayTrackingValues);} catch (exception) {print(exception);}
+    try {
+      context.read<UserNutritionData>().setUserActivity(double.parse(userData.activityLevel));
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+
+    try {
+      context.read<GroceryProvider>().setGroceryListID(groceryListID);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+    try {
+      context.read<GroceryProvider>().setGroceryLists(groceryLists);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+    try {
+      context.read<GroceryProvider>().setGroceryList();
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+
+    try {
+      context.read<UserStatsMeasurements>().initialiseStatsMeasurements(measurements);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+    try {
+      context.read<UserNutritionData>().setCurrentFoodDiary(userNutrition);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+    try {
+      context.read<UserNutritionData>().addToNutritionDataCache(userNutrition);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+
+    try {
+      context.read<UserNutritionData>().setFoodHistory(userNutritionHistory);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+    try {
+      context.read<UserNutritionData>().setCustomFood(userCustomFood);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+    try {
+      context.read<UserNutritionData>().setCustomRecipes(userRecipes);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+    try {
+      context.read<WorkoutProvider>().initialiseTrainingPlans(trainingPlans);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+    try {
+      context.read<WorkoutProvider>().loadRoutineData(routines);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+    try {
+      context.read<WorkoutProvider>().loadExerciseNamesData(exercises);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+    try {
+      context.read<WorkoutProvider>().loadCategoriesNamesData(exerciseCategories);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+    try {
+      context.read<WorkoutProvider>().loadWorkoutStarted(workoutStarted);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+    try {
+      context.read<WorkoutProvider>().loadWorkoutLogs(workoutLogs);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+    try {
+      context.read<WorkoutProvider>().loadOverallStats(workoutOverallStats);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
+    try {
+      context.read<WorkoutProvider>().loadWeekdayExerciseTracking(weekdayTrackingValues);
+      IncrementLoadingBar();
+    } catch (exception) {print(exception);}
+
 
 
     try {await stepsCalorieCalculator();} catch (exception) {print(exception);}
+    IncrementLoadingBar();
 
+    IncrementLoadingBar(completeBar: true);
     context.read<PageChange>().setDataLoadingStatus(false);
   }
 
@@ -247,7 +414,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double _height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: appPrimaryColour,
       body: Stack(
@@ -269,6 +436,34 @@ class _SplashScreenState extends State<SplashScreen> {
                       ),
                     ),
                 ),
+
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        bottom: 325.h,
+                        left: 75.w,
+                        right: 75.w,
+                    ),
+                    child: LinearProgressIndicator(
+                      value: loadingValue,
+                      color: appSecondaryColour,
+                      backgroundColor: appTertiaryColour,
+                    ),
+                  ),
+                ),
+
+                const Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: EdgeInsets.all(14.0),
+                    child: Text(
+                      "Version Beta 1.47",
+                      style: boldTextStyle,
+                    ),
+                  ),
+                ),
+
               ],
             )
     );
