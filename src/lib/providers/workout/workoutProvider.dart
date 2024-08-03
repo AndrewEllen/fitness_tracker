@@ -783,6 +783,8 @@ class WorkoutProvider with ChangeNotifier {
       _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].primaryMuscle = data.primaryMuscle;
       _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].secondaryMuscle = data.secondaryMuscle;
       _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].tertiaryMuscle = data.tertiaryMuscle;
+      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].quaternaryMuscle = data.quaternaryMuscle;
+      _exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].quinaryMuscle = data.quinaryMuscle;
 
     }
     setMaxWeightAtRep(_exerciseList[_exerciseList.indexWhere((element) => element.exerciseName == exerciseName)].exerciseMaxRepsAndWeight);

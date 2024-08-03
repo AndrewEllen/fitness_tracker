@@ -10,6 +10,8 @@ class ExerciseModel {
       'primaryMuscle': primaryMuscle,
       'secondaryMuscle': secondaryMuscle,
       'tertiaryMuscle': tertiaryMuscle,
+      'quaternaryMuscle': quaternaryMuscle,
+      'quinaryMuscle': quinaryMuscle,
       'type': type,
       'exerciseTrackingType': exerciseTrackingType,
     };
@@ -23,6 +25,8 @@ class ExerciseModel {
     this.primaryMuscle,
     this.secondaryMuscle,
     this.tertiaryMuscle,
+    this.quaternaryMuscle,
+    this.quinaryMuscle,
     this.type = 0,
     this.exerciseTrackingType,
   });
@@ -34,6 +38,8 @@ class ExerciseModel {
   String? primaryMuscle;
   String? secondaryMuscle;
   String? tertiaryMuscle;
+  String? quaternaryMuscle;
+  String? quinaryMuscle;
   int? type;
   int? exerciseTrackingType;
 }

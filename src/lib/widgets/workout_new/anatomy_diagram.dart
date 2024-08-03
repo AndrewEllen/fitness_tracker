@@ -23,19 +23,36 @@ class AnatomyDiagram extends StatelessWidget {
       if (musclesToCheck.contains(exerciseModel!.secondaryMuscle?.trim() ?? false)) {
         return {
           "display": true,
-          "colour": 0xffff5900
+          "colour": 0xff2f00
         };
       }
       if (musclesToCheck.contains(exerciseModel!.tertiaryMuscle?.trim() ?? false)) {
         return {
           "display": true,
-          "colour": 0xffffca5e
+          "colour": 0xff5100
         };
       }
+
+      if (musclesToCheck.contains(exerciseModel!.quaternaryMuscle?.trim() ?? false)) {
+        return {
+          "display": true,
+          "colour": 0xff8000
+        };
+      }
+
+      if (musclesToCheck.contains(exerciseModel!.quinaryMuscle?.trim() ?? false)) {
+        return {
+          "display": true,
+          "colour": 0xffb300
+        };
+      }
+
       return {
         "display": false,
         "colour": 0xffff0000
       };
+
+      /// Not really sure why I have an else statement here that then checks the same thing but I don't want to mess with it.
     } else {
       if (musclesToCheck.contains(exerciseDatabaseModel?.primaryMuscle.trim() ?? false)) {
         return {

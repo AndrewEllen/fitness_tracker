@@ -458,7 +458,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: Padding(
                     padding: EdgeInsets.all(14.0),
                     child: Text(
-                      "Version Beta 1.47",
+                      "Version Beta 1.48",
                       style: boldTextStyle,
                     ),
                   ),

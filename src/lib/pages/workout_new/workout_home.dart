@@ -233,7 +233,13 @@ class _WorkoutHomePageNewState extends State<WorkoutHomePageNew> {
                                           ]["secondaryMuscle"],
                                           tertiaryMuscle: trainingPlanData[2][
                                           exercise.exerciseName.substring(0,exercise.exerciseName.length-16)
-                                          ]["tertiaryMuscle"]
+                                          ]["tertiaryMuscle"],
+                                          quaternaryMuscle: trainingPlanData[2][
+                                          exercise.exerciseName.substring(0,exercise.exerciseName.length-16)
+                                          ]["quaternaryMuscle"],
+                                          quinaryMuscle: trainingPlanData[2][
+                                          exercise.exerciseName.substring(0,exercise.exerciseName.length-16)
+                                          ]["quinaryMuscle"],
                                       )
                                   );
                                 }

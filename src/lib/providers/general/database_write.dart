@@ -233,6 +233,8 @@ void updateExercise(ExerciseModel exercise) async {
     "primary-muscle": exercise.primaryMuscle,
     "secondary-muscle": exercise.secondaryMuscle,
     "tertiary-muscle": exercise.tertiaryMuscle,
+    "quaternary-muscle": exercise.quaternaryMuscle,
+    "quinary-muscle": exercise.quinaryMuscle,
     "exerciseTrackingType": exercise.exerciseTrackingType,
   }, SetOptions(merge: true));
 
@@ -252,6 +254,8 @@ void createNewExercise(ExerciseModel exercise) async {
         "primary-muscle": exercise.primaryMuscle,
         "secondary-muscle": exercise.secondaryMuscle,
         "tertiary-muscle": exercise.tertiaryMuscle,
+        "quaternary-muscle": exercise.quaternaryMuscle,
+        "quinary-muscle": exercise.quinaryMuscle,
         "type": exercise.type,
         "exerciseTrackingType": exercise.exerciseTrackingType,
       }, SetOptions(merge: true));

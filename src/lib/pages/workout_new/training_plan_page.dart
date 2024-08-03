@@ -155,11 +155,15 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
         String primaryMuscle = exercise.primaryMuscle ?? "";
         String secondaryMuscle = exercise.secondaryMuscle ?? "";
         String tertiaryMuscle = exercise.tertiaryMuscle ?? "";
+        String quaternaryMuscle = exercise.quaternaryMuscle ?? "";
+        String quinaryMuscle = exercise.quinaryMuscle ?? "";
 
         muscleMap[exerciseListItem.exerciseName] = {
           "primaryMuscle": primaryMuscle,
           "secondaryMuscle": secondaryMuscle,
           "tertiaryMuscle": tertiaryMuscle,
+          "quaternaryMuscle": quaternaryMuscle,
+          "quinaryMuscle": quinaryMuscle,
         };
 
       }
@@ -611,6 +615,8 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
 
                   debugPrint(trainingPlanShare.toMap().toString());
 
+                  debugPrint("Training Plan Printed");
+
                   try {
 
                     await FirebaseFirestore.instance
@@ -619,6 +625,8 @@ class _TrainingPlanPageState extends State<TrainingPlanPage> {
                         .set({
                       "data": trainingPlanShare.toMap()
                     });
+
+                    debugPrint("Written");
 
                     widget.trainingPlan.trainingPlanID = uuid;
 
